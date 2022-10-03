@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.DbConnection;
+import userVO.CatVO;
 import userVO.HomeVO;
+import userVO.LocVO;
 import userVO.MainFlagVO;
 
 public class MainDAO {
@@ -31,22 +33,26 @@ public class MainDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<String> selectGu() throws SQLException {
+	public List<LocVO> selectGu() throws SQLException {
 		DbConnection db = DbConnection.getInstance();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<String> list = new ArrayList<>();
+		List<LocVO> list = new ArrayList<>();
 		try{
 			con=db.getConn();
 			StringBuilder sb = new StringBuilder();
-			sb.append(" select gu ")
+			sb.append(" select * ")
 			  .append(" from loc_category ");
 			pstmt= con.prepareStatement(sb.toString());
 			rs = pstmt.executeQuery();
 			
+			LocVO lVO = null;
 			while(rs.next()) {
-				list.add(rs.getString("gu"));
+				lVO = new LocVO();
+				lVO.setGu_idx(rs.getInt("gu_idx"));
+				lVO.setGu(rs.getString("gu"));
+				list.add(lVO);
 			}
 		} finally {
 			db.dbClose(rs, pstmt, con);
@@ -59,22 +65,26 @@ public class MainDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<String> selectCat() throws SQLException {
+	public List<CatVO> selectCat() throws SQLException {
 		DbConnection db = DbConnection.getInstance();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<String> list = new ArrayList<>();
+		List<CatVO> list = new ArrayList<>();
 		try{
 			con=db.getConn();
 			StringBuilder sb = new StringBuilder();
-			sb.append(" select category ")
+			sb.append(" select * ")
 			  .append(" from product_category ");
 			pstmt= con.prepareStatement(sb.toString());
 			rs = pstmt.executeQuery();
 			
+			CatVO cVO = null;
 			while(rs.next()) {
-				list.add(rs.getString("category"));
+				cVO = new CatVO();
+				cVO.setCategory_idx(rs.getInt("category_idx"));
+				cVO.setCategory(rs.getString("category"));
+				list.add(cVO);
 			}
 		} finally {
 			db.dbClose(rs, pstmt, con);
@@ -96,6 +106,7 @@ public class MainDAO {
 			StringBuilder sb = new StringBuilder();
 			sb.append(" insert into search(word) values(?) ");
 			pstmt= con.prepareStatement(sb.toString());
+			pstmt.setString(1, keyword);
 			pstmt.executeUpdate();
 		} finally {
 			db.dbClose(null, pstmt, con);
@@ -134,10 +145,8 @@ public class MainDAO {
 			}
 			
 			//가격 여부 선택시
-			if(mfVO.getPriceFlag() != -1) {
+			if(mfVO.getPriceFlag() != 0) {
 				switch(mfVO.getPriceFlag()) {
-				case 0: 
-					break;
 				case 1:
 					sb.append(" and free = 'Y' ");
 					break;
