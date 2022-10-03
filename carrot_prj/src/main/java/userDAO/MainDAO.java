@@ -26,6 +26,84 @@ public class MainDAO {
 		return mDAO;
 	}
 	
+	/**
+	 * 구불러오기
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<String> selectGu() throws SQLException {
+		DbConnection db = DbConnection.getInstance();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<String> list = new ArrayList<>();
+		try{
+			con=db.getConn();
+			StringBuilder sb = new StringBuilder();
+			sb.append(" select gu ")
+			  .append(" from loc_category ");
+			pstmt= con.prepareStatement(sb.toString());
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				list.add(rs.getString("gu"));
+			}
+		} finally {
+			db.dbClose(rs, pstmt, con);
+		}
+		return list;
+	}
+	
+	/**
+	 * 카테고리 불러오기
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<String> selectCat() throws SQLException {
+		DbConnection db = DbConnection.getInstance();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<String> list = new ArrayList<>();
+		try{
+			con=db.getConn();
+			StringBuilder sb = new StringBuilder();
+			sb.append(" select category ")
+			  .append(" from product_category ");
+			pstmt= con.prepareStatement(sb.toString());
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				list.add(rs.getString("category"));
+			}
+		} finally {
+			db.dbClose(rs, pstmt, con);
+		}
+		return list;
+	}
+	
+	/**
+	 * 단어검색 시 키워드에 추가
+	 * @param keyword
+	 * @throws SQLException
+	 */
+	public void insetKeyword(String keyword) throws SQLException {
+		DbConnection db = DbConnection.getInstance();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con = db.getConn();
+			StringBuilder sb = new StringBuilder();
+			sb.append(" insert into search(word) values(?) ");
+			pstmt= con.prepareStatement(sb.toString());
+			pstmt.executeUpdate();
+		} finally {
+			db.dbClose(null, pstmt, con);
+		}
+	}
+	
+	
+	
 	public List<HomeVO> selectProduct(MainFlagVO mfVO) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
 		Connection con = null;
@@ -51,7 +129,7 @@ public class MainDAO {
 			}
 			
 			//상품카테고리 선택시
-			if(mfVO.getCategoryFlag() != -1) {
+			if(mfVO.getCategoryFlag() != 0) {
 				sb.append(" and category_idx=? ");
 			}
 			
@@ -143,9 +221,7 @@ public class MainDAO {
 				pstmt.setInt(1, mfVO.getMinPrice());
 				pstmt.setInt(2, mfVO.getMaxPrice());
 			}
-			
 			rs = pstmt.executeQuery();
-			
 			HomeVO hVO = null;
 			while(rs.next()) {
 				hVO = new HomeVO();
