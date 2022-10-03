@@ -45,9 +45,9 @@ public class DbConnection {
 			cnfe.printStackTrace();
 		}//end catch
 		//2. Connection 얻기
-		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String id = "scott";
-		String pass = "tiger";
+		String url = "jdbc:oracle:thin:@211.63.89.151:1521:orcl";
+		String id = "carrot";
+		String pass = "baby";
 		
 		con = DriverManager.getConnection(url, id, pass);
 		return con;
