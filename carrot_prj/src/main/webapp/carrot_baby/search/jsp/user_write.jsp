@@ -1,3 +1,7 @@
+<%@page import="userVO.CatVO"%>
+<%@page import="userVO.LocVO"%>
+<%@page import="java.util.List"%>
+<%@page import="userDAO.PostDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -19,7 +23,20 @@ $(function() {
 	
 	upload.addEventListener('click', () => imgUpload.click());
 	
-})
+	$("#sharechk").change (function() {
+		var st = this.checked;
+		if(st){
+			$("#price").prop("disabled",true);
+			$("#price").css("background", "#ccc");
+			$("#price").val("0");
+		} else{
+			$("#price").prop("disabled", false);
+			$("#price").css("background", "none");
+		}//end else
+		
+	});//change
+	
+});//ready
 </script>
 </head>
 <body>
@@ -34,58 +51,61 @@ $(function() {
 	<div class="write-wrap">
 		<h1 class="write-title">중고거래 글쓰기</h1>
 		<div class="write">
+		<%
+		//PostDAO와 연결
+		PostDAO pDAO = PostDAO.getInstance();
+		%>
 			<div class="write-sel-wrap">
+			<% 
+			//LocVO 리스트로 받기
+			List<LocVO> locCatList = pDAO.selectLoc();
+			//뷰페이지로 보내기 위해 scope 객체에 설정
+			request.setAttribute("loc_cat", locCatList);
+			%>
 						<div class="write-sel-wrap-text">서울특별시</div>
 						<select name="region" class="write-select">
 							<option value="">동네를 선택하세요</option>
-							<option value="강남구">강남구</option>
-							<option value="강동구">강동구</option>
-							<option value="강북구">강북구</option>
-							<option value="강서구">강서구</option>
-							<option value="관악구">관악구</option>
-							<option value="광진구">광진구</option>
-							<option value="구로구">구로구</option>
-							<option value="금천구">금천구</option>
-							<option value="노원구">노원구</option>
-							<option value="도봉구">도봉구</option>
-							<option value="동대문구">동대문구</option>
-							<option value="동작구">동작구</option>
-							<option value="마포구">마포구</option>
-							<option value="서대문구">서대문구</option>
-							<option value="서초구">서초구</option>
-							<option value="성동구">성동구</option>
-							<option value="성북구">성북구</option>
-							<option value="송파구">송파구</option>
-							<option value="양천구">양천구</option>
-							<option value="영등포구">영등포구</option>
-							<option value="용산구">용산구</option>
-							<option value="은평구">은평구</option>
-							<option value="종로구">종로구</option>
-							<option value="중구">중구</option>
-							<option value="중랑구">중랑구</option></select>
+							<%
+						//scope 객체 받기.
+						List<LocVO> listLoc = (List<LocVO>)request.getAttribute("loc_cat");
+						%>
+						<%//향상된 for문으로 listLoc 출력
+						for(LocVO lVO : listLoc ) { %>
+							<option value = "<%=lVO.getGu_idx() %>"><%=lVO.getGu() %></option>
+						<%}//end for %>
+						</select>
 			</div>
 			<div class="write-sel-wrap">
+			<%
+			//CatVO 리스트로 받기
+			List<CatVO> pCatList = pDAO.selectCat();
+			//scope 객체에 설정
+			request.setAttribute("p_cat", pCatList);
+			%>
 						<div class="write-sel-wrap-text">카테고리</div>
 						<select name="region" class="write-select">
 							<option value="">카테고리를 선택하세요</option>
-							<option value="출산/육아용품">출산/육아용품</option>
-							<option value="유아동안전/실내용품">유아동안전/실내용품</option>
-							<option value="유아동의류">유아동의류</option>
-							<option value="유아동잡화">유아동잡화</option>
-							<option value="유아동가구">유아동가구</option>
-							<option value="유아동교구/완구">유아동교구/완구</option>
-							<option value="기타 유아동용품">기타 유아동용품</option>
+							<%
+							//scope 객체 받기
+							List<CatVO> listCat = (List<CatVO>)request.getAttribute("p_cat");
+							%>
+							<%
+							//향상된 for문으로 listCat 출력
+							for(CatVO cVO : listCat) {%>
+								<option value = "<%= cVO.getCategory_idx()%>"><%= cVO.getCategory() %></option>
+							<%}//end for %>
 						</select>
 			</div>
 			<div class="write-sel-wrap">
 						<div class="write-sel-wrap-text">판매가격</div>
 						<div class="write-sel-wrap-right">
 							<div class="checkbox-share-wrap">
-								<input type="checkbox" name="checkbox" class="checkbox-share">
+								<input type="checkbox" name="sharechk" id= "sharechk" class="checkbox-share">
 								<span class="checkbox-share-txt">나눔</span>
 							</div>
 							<div class="checkbox-price-wrap">
-								<input type="text" name="text" class="checkbox-price-input">
+								<input type="text" name="price"  id = "price" class="checkbox-price-input" style= "text-align:right" 
+											oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
 								<span class="checkbox-price-txt">원</span>
 							</div>
 						</div>

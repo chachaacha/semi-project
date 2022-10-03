@@ -46,8 +46,8 @@ public class PostDAO {
 			StringBuilder select = new StringBuilder();
 			select
 			.append("	select	gu_idx, gu	")
-			.append("	from	loc_category	");
-			
+			.append("	from	loc_category	")
+			.append("	order by gu");
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
 		//5. 쿼리문 생성 후 결과 얻기
@@ -87,7 +87,7 @@ public class PostDAO {
 			StringBuilder select = new StringBuilder();
 			select
 			.append("	select	category_idx, category	")
-			.append("	from	producty_category		");
+			.append("	from	product_category		");
 			
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
