@@ -118,6 +118,7 @@ function zipcodeapi() {
 					<th><label><span style="color:red">*</span>아이디</label></th>
 					<td>
 						<input type="text" placeholder="아이디를 입력해주세요" name="id" id="id" class="inputTxt inputIdtype"  maxlength="20"  />
+						<input type="button" value="아이디 중복 확인" class="formBtn" />
 					</td>
 				</tr>
 						<tr>

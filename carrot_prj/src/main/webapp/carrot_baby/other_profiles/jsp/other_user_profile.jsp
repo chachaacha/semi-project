@@ -55,10 +55,10 @@
   					<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
 					</svg>
 				</div><!-- profile_img -->
-				<div class="nick_name">별명
+				<div class="nick_name">라멘조아(rame***)
 					<div class="btns">
-						<button class="confirm">신고하기</button>
-						<button class="block">차단하기</button>
+						<button class="confirm" type="button">신고하기</button>
+						<button class="block" type="button">차단하기</button>
 					</div><!-- btns -->
 				</div><!-- 별명 -->
 				<div class="region">서울 어디어디</div>
