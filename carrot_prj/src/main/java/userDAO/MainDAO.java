@@ -124,7 +124,7 @@ public class MainDAO {
 			}
 			
 			//구 카테고리 드롭박스 선택시
-			if(mfVO.getGuFlag() != -1) {
+			if(mfVO.getGuFlag() != 0) {
 				sb.append(" and gu_idx=? ");
 			}
 			
@@ -156,7 +156,7 @@ public class MainDAO {
 				case 6:
 					sb.append(" and price > 100000 ");
 					break;
-				default :
+				case 7 :
 					sb.append(" and price between ? and ? ");
 				}
 			}
@@ -170,7 +170,7 @@ public class MainDAO {
 				case 1:
 					sb.append(" order by posetd_date ");
 					break;
-				default : 
+				case 2: 
 					sb.append(" order by liked_cnt desc ");
 				}
 			}
@@ -180,9 +180,9 @@ public class MainDAO {
 			//바인드 변수가 밀리는 현상?? 어떻게 처리? 모든 경우의 수에 맞게 처리~
 			if(mfVO.getKeyword() != "" ) { // 키워드만 검색
 				pstmt.setString(1, mfVO.getKeyword());
-				if(mfVO.getGuFlag() != -1) { // 키워드랑 구 선택
+				if(mfVO.getGuFlag() != 0) { // 키워드랑 구 선택
 					pstmt.setInt(2, mfVO.getGuFlag());
-					if(mfVO.getCategoryFlag() != -1) {// 키워드랑 구랑 카테고리랑 선택
+					if(mfVO.getCategoryFlag() != 0) {// 키워드랑 구랑 카테고리랑 선택
 						pstmt.setInt(3, mfVO.getCategoryFlag()); 
 						if(mfVO.getPriceFlag() == 7) {// 키워드랑 구랑 카테고리랑 가격직접설정 선택까지
 							pstmt.setInt(4, mfVO.getMinPrice());
@@ -192,16 +192,16 @@ public class MainDAO {
 						pstmt.setInt(3, mfVO.getMinPrice());
 						pstmt.setInt(4, mfVO.getMaxPrice());
 					}
-				} else if(mfVO.getCategoryFlag() != -1) { //키워드랑 카테고리만 선택
+				} else if(mfVO.getCategoryFlag() != 0) { //키워드랑 카테고리만 선택
 					pstmt.setInt(2, mfVO.getCategoryFlag());
 					if(mfVO.getPriceFlag() == 7) {//키워드랑 카테고리랑 가격직접설정 선택
 						pstmt.setInt(3, mfVO.getMinPrice());
 						pstmt.setInt(4, mfVO.getMaxPrice());
 					}
 				}
-			} else if(mfVO.getGuFlag() != -1) { // 구만 선택
+			} else if(mfVO.getGuFlag() != 0) { // 구만 선택
 				pstmt.setInt(1, mfVO.getGuFlag());
-				if(mfVO.getCategoryFlag() != -1) {// 구랑 카테고리만 선택
+				if(mfVO.getCategoryFlag() != 0) {// 구랑 카테고리만 선택
 					pstmt.setInt(2, mfVO.getCategoryFlag()); 
 					if(mfVO.getPriceFlag() == 7) {// 구랑 카테고리랑 가격직접설정 선택
 						pstmt.setInt(3, mfVO.getMinPrice());
@@ -211,7 +211,7 @@ public class MainDAO {
 					pstmt.setInt(2, mfVO.getMinPrice());
 					pstmt.setInt(3, mfVO.getMaxPrice());
 				}
-			} else if(mfVO.getCategoryFlag() != -1) {// 카테고리만 선택
+			} else if(mfVO.getCategoryFlag() != 0) {// 카테고리만 선택
 				pstmt.setInt(1, mfVO.getCategoryFlag()); 
 				if(mfVO.getPriceFlag() == 7) { // 카테고리랑 가격 설정만 선택
 					pstmt.setInt(2, mfVO.getMinPrice());
