@@ -100,7 +100,7 @@ public class MainDAO {
 			pstmt = con.prepareStatement(sb.toString());
 			
 			//바인드 변수가 밀리는 현상?? 어떻게 처리? 모든 경우의 수에 맞게 처리~
-			if(mfVO.getKeyword() != null ) { // 키워드만 검색
+			if(mfVO.getKeyword() != "" ) { // 키워드만 검색
 				pstmt.setString(1, mfVO.getKeyword());
 				if(mfVO.getGuFlag() != -1) { // 키워드랑 구 선택
 					pstmt.setInt(2, mfVO.getGuFlag());
