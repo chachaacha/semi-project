@@ -41,6 +41,10 @@ public class MainDAO {
 			  .append("where 1=1 ")
 			  .append("and rank between 1 and 16 ");
 			
+			if(mfVO.getKeyword() != "") {
+				sb.append(" and title like '%'||?||'%' ");
+			}
+			
 			//구 카테고리 드롭박스 선택시
 			if(mfVO.getGuFlag() != -1) {
 				sb.append(" and gu_idx=? ");
@@ -96,25 +100,46 @@ public class MainDAO {
 			pstmt = con.prepareStatement(sb.toString());
 			
 			//바인드 변수가 밀리는 현상?? 어떻게 처리? 모든 경우의 수에 맞게 처리~
-			if(mfVO.getGuFlag() != -1) { // 구만 선택
-				pstmt.setInt(1, mfVO.getGuFlag()); 
-				if(mfVO.getCategoryFlag() != -1) {// 구랑 카테고리선택
-					pstmt.setInt(2, mfVO.getCategoryFlag());
-					if(mfVO.getPriceFlag() == 7) {// 구랑 카테고리랑 가격직접선택까지
+			if(mfVO.getKeyword() != null ) { // 키워드만 검색
+				pstmt.setString(1, mfVO.getKeyword());
+				if(mfVO.getGuFlag() != -1) { // 키워드랑 구 선택
+					pstmt.setInt(2, mfVO.getGuFlag());
+					if(mfVO.getCategoryFlag() != -1) {// 키워드랑 구랑 카테고리랑 선택
+						pstmt.setInt(3, mfVO.getCategoryFlag()); 
+						if(mfVO.getPriceFlag() == 7) {// 키워드랑 구랑 카테고리랑 가격직접설정 선택까지
+							pstmt.setInt(4, mfVO.getMinPrice());
+							pstmt.setInt(5, mfVO.getMaxPrice());
+						}
+					} else if(mfVO.getPriceFlag() == 7) {// 키워드랑 구랑 가격설정직접설정 선택
 						pstmt.setInt(3, mfVO.getMinPrice());
 						pstmt.setInt(4, mfVO.getMaxPrice());
 					}
-				} else if(mfVO.getPriceFlag() == 7) {// 구랑 가격직접선택만 선택했을 때
+				} else if(mfVO.getCategoryFlag() != -1) { //키워드랑 카테고리만 선택
+					pstmt.setInt(2, mfVO.getCategoryFlag());
+					if(mfVO.getPriceFlag() == 7) {//키워드랑 카테고리랑 가격직접설정 선택
+						pstmt.setInt(3, mfVO.getMinPrice());
+						pstmt.setInt(4, mfVO.getMaxPrice());
+					}
+				}
+			} else if(mfVO.getGuFlag() != -1) { // 구만 선택
+				pstmt.setInt(1, mfVO.getGuFlag());
+				if(mfVO.getCategoryFlag() != -1) {// 구랑 카테고리만 선택
+					pstmt.setInt(2, mfVO.getCategoryFlag()); 
+					if(mfVO.getPriceFlag() == 7) {// 구랑 카테고리랑 가격직접설정 선택
+						pstmt.setInt(3, mfVO.getMinPrice());
+						pstmt.setInt(4, mfVO.getMaxPrice());
+					}
+				} else if(mfVO.getPriceFlag() == 7) {// 구랑 가격직접설정만 선택
 					pstmt.setInt(2, mfVO.getMinPrice());
 					pstmt.setInt(3, mfVO.getMaxPrice());
 				}
-			} else if(mfVO.getCategoryFlag() != -1) { // 카테고리만 선택
-				pstmt.setInt(1, mfVO.getCategoryFlag());
-				if(mfVO.getPriceFlag() == 7) {//카테고리랑 가격직접선택 선택
+			} else if(mfVO.getCategoryFlag() != -1) {// 카테고리만 선택
+				pstmt.setInt(1, mfVO.getCategoryFlag()); 
+				if(mfVO.getPriceFlag() == 7) { // 카테고리랑 가격 설정만 선택
 					pstmt.setInt(2, mfVO.getMinPrice());
 					pstmt.setInt(3, mfVO.getMaxPrice());
 				}
-			} else if(mfVO.getPriceFlag() == 7) {// 가격 직접설정만 선택했을 때
+			} else if(mfVO.getPriceFlag() == 7) { // 가격직접설정만 선택
 				pstmt.setInt(1, mfVO.getMinPrice());
 				pstmt.setInt(2, mfVO.getMaxPrice());
 			}

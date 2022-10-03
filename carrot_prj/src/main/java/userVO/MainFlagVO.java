@@ -2,14 +2,14 @@ package userVO;
 
 public class MainFlagVO {
 	private int categoryFlag, guFlag, orderByFlag, priceFlag, minPrice, maxPrice;
-	private String freeFlag;
+	private String freeFlag, keyword;
 	
 	public MainFlagVO() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public MainFlagVO(int categoryFlag, int guFlag, int orderByFlag, int priceFlag, int minPrice, int maxPrice,
-			String freeFlag) {
+			String freeFlag, String keyword) {
 		this.categoryFlag = categoryFlag;
 		this.guFlag = guFlag;
 		this.orderByFlag = orderByFlag;
@@ -17,6 +17,7 @@ public class MainFlagVO {
 		this.minPrice = minPrice;
 		this.maxPrice = maxPrice;
 		this.freeFlag = freeFlag;
+		this.keyword = keyword;
 	}
 
 	public int getCategoryFlag() {
@@ -73,6 +74,14 @@ public class MainFlagVO {
 
 	public void setFreeFlag(String freeFlag) {
 		this.freeFlag = freeFlag;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 
 	
