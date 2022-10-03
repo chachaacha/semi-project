@@ -1,24 +1,34 @@
+<%@page import="managerVO.LoginVO"%>
+<%@page import="managerDAO.LoginDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>사용자로그인</title>
+<title>관리자로그인</title>
 <link rel="stylesheet" type="text/css" href="../../common/css/reset.css"/>
 <link rel="stylesheet" type="text/css" href="../../../common/css/manager_wrap_container.css"/>
 <link rel="stylesheet" type="text/css" href="../css/manager_login.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
-	$(function() {
-		$("#btn").click(function() {
-			alert("로그인이 완료되었습니다.")
-			document.location.href="../../home/jsp/manager_mainhome.jsp";
-		});
+$(function() {
+	//아이디 비번 입력 유효성 검증
+	$("#btn").click(function() {
+		if($(".id").val().trim()=="") {
+			alert("아이디를 입력하세요");
+			return;
+		}
+		if($(".pass").val().trim()=="") {
+			alert("비밀번호를 입력하세요");
+			return;
+		}
+		$("#loginFrm").submit();
 	});
+});
 </script>
-
 </head>
+<% session.invalidate(); %>
 <body>
 	<div class="wrap" style="margin-top: 150px;">
 
@@ -35,18 +45,20 @@
 			</div>
 
 			<!-- 로그인 박스 -->
+			<form method="post" id="loginFrm" action="manager_login_process.jsp">
 			<div class="loginbox_wrap">
 
 				<!-- 주황색박스 -->
 				<div class="loginbox_top">MANAGER LOGIN</div>
 				<!-- 흰색박스  -->
 				<div class="loginbox_main">
-					<input type="text" placeholder="이메일주소" size=60 class="id"> <input
-						type="password" placeholder="비밀번호" size=60 class="pass"> <input
+					<input type="text" placeholder="이메일주소" size=60 class="id" name="manager_id"> <input
+						type="password" placeholder="비밀번호" size=60 class="pass" name="password"> <input
 						type="button" id="btn" value="로그인" class="loginBtn">
 				</div>
 
 			</div>
+			</form>
 			<!-- 로그인 박스 끝 -->
 		</div>
 		<!-- container end -->

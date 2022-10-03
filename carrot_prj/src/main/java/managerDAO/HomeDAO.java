@@ -36,9 +36,9 @@ public class HomeDAO {
 		//3. 쿼리문 생성 객체 얻기
 			StringBuilder selectDe = new StringBuilder();
 			selectDe
-			.append("select count(product_idx), sum(price) ")
+			.append("select count(product_idx) count, sum(price) sum ")
 			.append("from product ")
-			.append("where sold_checked not null and purchased_date = sysdate");
+			.append("where sold_check= 'Y' and to_date(purchased_date,'yyyy-mm-dd') = to_date(sysdate,'yyyy-mm-dd')");
 			
 			pstmt = con.prepareStatement(selectDe.toString());
 		//4. 바인드 변수에 값 설정
@@ -75,9 +75,9 @@ public class HomeDAO {
 		//3. 쿼리문 생성 객체 얻기
 			StringBuilder selectDe = new StringBuilder();
 			selectDe
-			.append("select count(product_idx), sum(price) ")
+			.append("select count(product_idx) count, sum(price) sum ")
 			.append("from product ")
-			.append("where sold_checked not null and purchased_date = sysdate-1");
+			.append("where sold_check ='Y' and to_date(purchased_date,'yyyy-mm-dd') = to_date(sysdate-1,'yyyy-mm-dd')");
 			
 			pstmt = con.prepareStatement(selectDe.toString());
 		//4. 바인드 변수에 값 설정
@@ -114,9 +114,9 @@ public class HomeDAO {
 		//3. 쿼리문 생성 객체 얻기
 			StringBuilder selectDe = new StringBuilder();
 			selectDe
-			.append("select count(product_idx), sum(price) ")
+			.append("select count(product_idx) count, sum(price) sum ")
 			.append("from product ")
-			.append("where sold_checked not null and purchased_date between sysdate-7 and sysdate");
+			.append("where sold_check ='Y' and to_date(purchased_date,'yyyy-mm-dd') between to_date(sysdate-7,'yyyy-mm-dd') and to_date(sysdate,'yyyy-mm-dd')");
 			
 			pstmt = con.prepareStatement(selectDe.toString());
 		//4. 바인드 변수에 값 설정
@@ -155,16 +155,17 @@ public class HomeDAO {
 			StringBuilder selectMb = new StringBuilder();
 			
 			selectMb
-			.append("select count(id)")
-			.append("from member")
-			.append("where join_date = sysdate");
+			.append(" select count(id) count ")
+			.append(" from member ")
+			.append(" where to_date(joined_date,'yyyy=mm-dd') = to_date(sysdate,'yyyy-mm-dd') ");
 			
 			pstmt = con.prepareStatement(selectMb.toString());
 		//4. 바인드 변수에 값 설정
 		//5. 쿼리문 생성 후 결과 얻기
 			rs = pstmt.executeQuery();
-										
-			member_cnt = rs.getInt("count");
+			if(rs.next()) {
+				member_cnt = rs.getInt("count");
+			}
 		} finally {
 		//6. 연결 끊기
 			dc.dbClose(rs, pstmt, con);
@@ -190,15 +191,13 @@ public class HomeDAO {
 			StringBuilder selectMb = new StringBuilder();
 			
 			selectMb
-			.append("select count(id) ")
-			.append("from member ")
-			.append("where quit_date = sysdate");
-			
+			.append(" select count(id) count ")
+			.append(" from member ")
+			.append(" where to_date(quit_date,'yyyy-mm-dd') = to_date(sysdate,'yyyy-mm-dd')");
 			pstmt = con.prepareStatement(selectMb.toString());
 		//4. 바인드 변수에 값 설정
 		//5. 쿼리문 생성 후 결과 얻기
 			rs = pstmt.executeQuery();
-			
 			if(rs.next()) {
 			member_cnt = rs.getInt("count");
 			}
@@ -227,16 +226,17 @@ public class HomeDAO {
 			StringBuilder selectMb = new StringBuilder();
 			
 			selectMb
-			.append("select count(id)")
-			.append("from member")
-			.append("where quit = N ");
+			.append(" select count(id) count ")
+			.append(" from member ")
+			.append(" where quit = 'N' ");
 			
 			pstmt = con.prepareStatement(selectMb.toString());
 		//4. 바인드 변수에 값 설정
 		//5. 쿼리문 생성 후 결과 얻기
 			rs = pstmt.executeQuery();
-										
-			member_cnt = rs.getInt("count");
+			if(rs.next()) {
+				member_cnt = rs.getInt("count");
+			}
 		} finally {
 		//6. 연결 끊기
 			dc.dbClose(rs, pstmt, con);

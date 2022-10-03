@@ -24,9 +24,8 @@ public class LoginDAO {
 	}//getInstance
 	
 	//로그인
-	public String selectLogin(String password) throws SQLException {
+	public String selectLogin(LoginVO lVO) throws SQLException {
 		String id=null;
-
 		DbConnection dc =DbConnection.getInstance();
 		
 		Connection con=null;
@@ -37,16 +36,17 @@ public class LoginDAO {
 			con=dc.getConn();
 			StringBuilder sb = new StringBuilder();
 			sb
-			.append("	select id	")
+			.append("	select manager_id	")
 			.append("	from manager	")
-			.append("	where password=?	");
+			.append("	where manager_id=? and password=?	");
 			
 			pstmt=con.prepareStatement(sb.toString());
-			pstmt.setString(1, password);
+			pstmt.setString(1, lVO.getManager_id());
+			pstmt.setString(2, lVO.getPassword());
 			rs=pstmt.executeQuery();
 			
 			if(rs.next()) {
-				id = rs.getString("id");
+				id = rs.getString("manager_id");
 			}
 		}finally {
 			dc.dbClose(rs, pstmt, con);

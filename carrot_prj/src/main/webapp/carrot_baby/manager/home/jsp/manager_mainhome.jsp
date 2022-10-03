@@ -1,3 +1,4 @@
+<%@page import="managerDAO.HomeDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -35,8 +36,25 @@
 <!-- 현재 메뉴 -->
 <!-- 대시보드 -->
 <%-- --------------------------------------------------------jsp코드 영역------------------------------------------------------------------- --%>
+<jsp:useBean id="hdVO1" class="managerVO.HomeDealVO"></jsp:useBean>
+<jsp:useBean id="hdVO2" class="managerVO.HomeDealVO"></jsp:useBean>
+<jsp:useBean id="hdVO3" class="managerVO.HomeDealVO"></jsp:useBean>
 
-
+<% 
+	// 세션만료시 로그인화면으로 복귀
+	if(session.getAttribute("manager_id")==null) {
+		response.sendRedirect("../../login/jsp/manager_login.jsp");
+	}
+	
+	HomeDAO hDAO = HomeDAO.getInstance();
+	hdVO1= hDAO.selectDeal1();
+	hdVO2= hDAO.selectDeal2();
+	hdVO3= hDAO.selectDeal3();
+	
+	int newMem = hDAO.selectMember1();
+	int quitMem = hDAO.selectMember2();
+	int totalMem = hDAO.selectMember3();
+%>
 <%-- --------------------------------------------------------jsp코드 영역------------------------------------------------------------------- --%>
 
 		<div class="title">■ 오늘의 거래 현황</div>
@@ -57,9 +75,9 @@
 		 <table class="table">
     <caption>거래완료 현황</caption>
     <tr><th>No.</th><th>기간</th><th>거래완료 수량(건)</th><th>거래 금액(원)</th></tr>
-    <tr><td>1</td><td>어제</td><td>3</td><td>30,000</td></tr>
-    <tr><td>2</td><td>오늘</td><td>4</td><td>40,000</td></tr>
-    <tr><td>3</td><td>이번주</td><td>10</td><td>130,000</td></tr>
+    <tr><td>1</td><td>어제</td><td><%= hdVO2.getDoneDeal() %></td><td><%= hdVO2.getAmount() %></td></tr>
+    <tr><td>2</td><td>오늘</td><td><%= hdVO1.getDoneDeal() %></td><td><%= hdVO1.getAmount() %></td></tr>
+    <tr><td>3</td><td>1주간</td><td><%= hdVO3.getDoneDeal() %></td><td><%= hdVO3.getAmount() %></td></tr>
   </table>  
 			<hr>
 		</div>
@@ -69,9 +87,9 @@
 		 <table class="table">
     <caption>오늘의 회원 현황</caption>
     <tr><th>No.</th><th>회원관리</th><th>인원(명)</th>
-    <tr><td>1</td><td>신규회원</td><td>45</td></tr>
-    <tr><td>2</td><td>탈퇴회원</td><td>1</td></tr>
-    <tr><td>3</td><td>전체회원 수</td><td>1,028</td></tr>
+    <tr><td>1</td><td>신규회원</td><td><%= newMem %></td></tr>
+    <tr><td>2</td><td>탈퇴회원</td><td><%= quitMem %></td></tr>
+    <tr><td>3</td><td>전체회원 수</td><td><%= totalMem %></td></tr>
   </table>  
 			<hr>
 		</div>
