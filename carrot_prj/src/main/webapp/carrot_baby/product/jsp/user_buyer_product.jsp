@@ -80,7 +80,7 @@ $(function() {
 			<a class="profile-link" href="../../other_profiles/jsp/other_user_profile.jsp">
 				<div class="article-profile-image-wrap">
 		              <div class="article-profile-image">
-		                <img alt="프로필이미지" src="../../images/profile.png">
+		                <img alt="프로필이미지" src="../../images/profileImg.png">
 		              </div>
 		              <div class="article-profile-left">
 		                <div class="nickname">차승주주(juju****)</div>

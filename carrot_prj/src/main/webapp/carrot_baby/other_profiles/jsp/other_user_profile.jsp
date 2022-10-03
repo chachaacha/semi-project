@@ -50,7 +50,7 @@
 	<div class="oup_wrap">
 		<div class="profile">
 				<div class="profile_img_wrap">
-					<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">
+					<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">
 				</div><!-- profile_img -->
 				<div class="nick_name">라멘조아(rame***)
 					<div class="btns">

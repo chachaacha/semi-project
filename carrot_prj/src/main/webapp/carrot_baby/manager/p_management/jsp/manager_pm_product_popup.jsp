@@ -70,7 +70,7 @@ $(function() {
 			<a class="profile-link" href="#void">
 				<div class="article-profile-image-wrap">
 		              <div class="article-profile-image">
-		                <img alt="프로필이미지" src="../../../images/profile.png">
+		                <img alt="프로필이미지" src="../../images/profileImg.png">
 		              </div>
 		              <div class="article-profile-left">
 		                <div class="nickname">차승주주(juju****)</div>
@@ -126,7 +126,7 @@ $(function() {
 				<a class="profile-link" href="#void">
 				 <div class="comments-profile-image-wrap">
 			             <div class="comments-profile-image">
-			               <img alt="프로필이미지" src="../../../images/profile.png">
+			               <img alt="프로필이미지" src="../../images/profileImg.png">
 			             </div>
 			             <div class="comments-profile-left">
 			               <div class="comments-nickname">사용자(user****)</div>
@@ -149,7 +149,7 @@ $(function() {
 				<a class="profile-link" href="#void">
 				 <div class="comments-profile-image-wrap">
 			             <div class="comments-profile-image">
-			               <img alt="프로필이미지" src="../../../images/profile.png">
+			               <img alt="프로필이미지" src="../../images/profileImg.png">
 			             </div>
 			             <div class="comments-profile-left">
 			               <div class="comments-nickname">차승주주(juju****)<div class="writer">작성자</div></div>

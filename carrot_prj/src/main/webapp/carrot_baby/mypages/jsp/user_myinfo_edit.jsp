@@ -99,7 +99,7 @@ function zipcodeapi() {
 							<td>
 								<div class="profile">
 									<div>
-										<img src="../../images/profile.png" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
+										<img src="../../images/profileImg.png" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
 									</div>
 									
 									<div>

@@ -103,7 +103,7 @@ function zipcodeapi() {
 					<th><label>프로필 사진</label></th>
 					<td>
 						<div class="profile">
-						<div><img src="../../images/profile.png"  class="img"></div>
+						<div><img src="../../images/profileImg.png"  class="img"></div>
 						<div>
 							<div class="upload-btn-wrapper">
 								<button class="formBtn">사진등록</button>

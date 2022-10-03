@@ -38,13 +38,13 @@ $(function() {
 	<div class="contents">
 		<ul>
 			<li><input type="radio" name="report" class="report-wc-radio">
-			<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">  차승주주(chch****)</li>
+			<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">  차승주주(chch****)</li>
 			<li><input type="radio" name="report" class="report-wc-radio">
-			<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">  시크릿주주(secr****)</li>
+			<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">  시크릿주주(secr****)</li>
 			<li><input type="radio" name="report" class="report-wc-radio">
-			<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">  다함께 차차차(dada****)</li>
+			<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">  다함께 차차차(dada****)</li>
 			<li><input type="radio" name="report" class="report-wc-radio">
-			<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">  차파게티 요리사(jjap****)</li>
+			<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">  차파게티 요리사(jjap****)</li>
 		</ul>
 	</div>
 	<button type="button" class="choice-btn">확인</button>

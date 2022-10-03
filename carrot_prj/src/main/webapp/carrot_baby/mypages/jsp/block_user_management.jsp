@@ -35,7 +35,7 @@ $(function() {
 	<div class="profile">
 			<div class="profile-wrap">
 				<div class="profile_img_wrap">
-					<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">
+					<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">
 				</div><!-- profile_img -->
 				<div class="profile-txt-wrap">
 						<div class="nick_name">라멘조아(rame***)</div><!-- 별명 -->
@@ -48,7 +48,7 @@ $(function() {
 	<div class="profile">
 			<div class="profile-wrap">
 				<div class="profile_img_wrap">
-					<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">
+					<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">
 				</div><!-- profile_img -->
 				<div class="profile-txt-wrap">
 						<div class="nick_name">아메리카노(cofe***)</div><!-- 별명 -->
