@@ -125,7 +125,7 @@ body {
 	height: 100%;
 	object-fit: cover;
 	border-radius: 10px;
-	
+	background: #f8edeb;
 }
 
 .swiper-pagination-bullet-active {
@@ -184,6 +184,7 @@ body {
 	height: 50px;
 	object-fit:cover;
 	border-radius: 50%;
+	background: #f8edeb;
 }
 
 .article-profile-left {
@@ -348,6 +349,7 @@ body {
     height: 40px;
     object-fit: cover;
     border-radius: 50%;
+    background: #f8edeb;
 }
 
 .comments-profile-left {

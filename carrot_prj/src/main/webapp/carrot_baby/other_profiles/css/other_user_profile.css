@@ -109,12 +109,20 @@
     font-weight: normal;
     color: #ffffff;
 }
-.profile_img{width:65px;
-			   height:65px;
-			   display: flex;
-			   color: #FF8000;
-			   margin-left: 10px;
-				}
+
+.profile_img_wrap {
+	margin-left: 40px;
+}
+
+.profile-img {
+	width: 65px;
+	height: 65px;
+	object-fit:cover;
+	border-radius: 50%;
+	margin-right: 10px;
+	background: #f8edeb;
+}
+
 .confirm{width: 90px;
 		   height: 25px;
 		   border: 1px solid #DBDBDB;

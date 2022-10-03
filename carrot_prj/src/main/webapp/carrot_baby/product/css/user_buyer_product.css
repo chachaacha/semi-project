@@ -102,6 +102,7 @@
 	height: 50px;
 	object-fit:cover;
 	border-radius: 50%;
+	background: #f8edeb;
 }
 
 .article-profile-left {

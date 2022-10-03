@@ -49,11 +49,8 @@
 	<div class="other_user_profile_title">프로필</div>
 	<div class="oup_wrap">
 		<div class="profile">
-				<div class="profile_img">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="profile_img" viewBox="0 0 16 16">
-  					<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-  					<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-					</svg>
+				<div class="profile_img_wrap">
+					<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">
 				</div><!-- profile_img -->
 				<div class="nick_name">라멘조아(rame***)
 					<div class="btns">

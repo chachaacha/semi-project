@@ -84,7 +84,7 @@ $(function() {
 			<a class="profile-link" href="../../other_profiles/jsp/other_user_profile.jsp">
 				<div class="article-profile-image-wrap">
 		              <div class="article-profile-image">
-		                <img alt="프로필이미지" src="https://d1unjqcospf8gs.cloudfront.net/assets/users/default_profile_80-0443429487fdc2277fc8f9dd1eca6fb8b678862f593e21222ba9f6592b99ad14.png">
+		                <img alt="프로필이미지" src="../../images/profile.png">
 		              </div>
 		              <div class="article-profile-left">
 		                <div class="nickname">차승주주(juju****)</div>

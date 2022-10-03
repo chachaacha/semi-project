@@ -339,6 +339,8 @@ height: 60px;
 	width:70px;
 	height:70px;
 margin: 0 20px;
+background: #f8edeb;
+border-radius: 50%;
 }
 
 /* 사진등록 */
@@ -354,6 +356,21 @@ margin: 0 20px;
 	left: 0;
 	top: 0;
 	opacity: 0;
+}
+
+/* 아이디확인 버튼 */
+.idBtn{
+	cursor: pointer;
+	display: inline-block;
+	padding: 5px 30px;
+	line-height: 35px;
+	font-size: 15px;
+	background-color: #F8A623;
+	color: #FFF;
+	text-decoration: none;
+	margin-left: 10px;
+	border: 0px;
+	border-radius: 15px;
 }
 
 /* 회원정보 폼 버튼 */

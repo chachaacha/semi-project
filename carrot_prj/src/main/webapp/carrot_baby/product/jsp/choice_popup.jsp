@@ -38,17 +38,13 @@ $(function() {
 	<div class="contents">
 		<ul>
 			<li><input type="radio" name="report" class="report-wc-radio">
-			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"> <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-  			<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>  차승주주(chch****)</li>
+			<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">  차승주주(chch****)</li>
 			<li><input type="radio" name="report" class="report-wc-radio">
-			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"> <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-  			<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>  시크릿주주(secr****)</li>
+			<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">  시크릿주주(secr****)</li>
 			<li><input type="radio" name="report" class="report-wc-radio">
-			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"> <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-  			<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>  다함께 차차차(dada****)</li>
+			<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">  다함께 차차차(dada****)</li>
 			<li><input type="radio" name="report" class="report-wc-radio">
-			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"> <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-  			<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>  차파게티 요리사(jjap****)</li>
+			<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">  차파게티 요리사(jjap****)</li>
 		</ul>
 	</div>
 	<button type="button" class="choice-btn">확인</button>

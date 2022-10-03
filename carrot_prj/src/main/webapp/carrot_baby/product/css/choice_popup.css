@@ -122,6 +122,8 @@ body {
 	height: 50px;
 	line-height: 50px;
 	text-align: left;
+	display: flex;
+	align-items: center;
 }
 
 .report-wc-radio, .report-wc-radio:checked {
@@ -143,6 +145,15 @@ body {
 .report-wc-radio:checked {
 	background-color: #ff6900;
 	box-shadow: 0 0 0 1px #ff6900;
+}
+
+.profile-img {
+	width: 20px;
+	height: 20px;
+	object-fit:cover;
+	border-radius: 50%;
+	margin-right: 10px;
+	background: #f8edeb;
 }
 
 .choice-btn {

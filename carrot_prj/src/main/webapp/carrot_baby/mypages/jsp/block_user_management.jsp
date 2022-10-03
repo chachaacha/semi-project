@@ -34,12 +34,9 @@ $(function() {
 	<div class="title">차단 사용자 관리</div>
 	<div class="profile">
 			<div class="profile-wrap">
-					<div class="profile_img">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="profile_img" viewBox="0 0 16 16">
-  						<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-  						<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-						</svg>
-					</div><!-- profile_img -->
+				<div class="profile_img_wrap">
+					<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">
+				</div><!-- profile_img -->
 				<div class="profile-txt-wrap">
 						<div class="nick_name">라멘조아(rame***)</div><!-- 별명 -->
 						<div class="region">서울 어디어디</div>
@@ -50,12 +47,9 @@ $(function() {
 	
 	<div class="profile">
 			<div class="profile-wrap">
-					<div class="profile_img">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="profile_img" viewBox="0 0 16 16">
-  						<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-  						<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-						</svg>
-					</div><!-- profile_img -->
+				<div class="profile_img_wrap">
+					<img alt="프로필이미지" src="../../images/profile.png" class="profile-img">
+				</div><!-- profile_img -->
 				<div class="profile-txt-wrap">
 						<div class="nick_name">아메리카노(cofe***)</div><!-- 별명 -->
 						<div class="region">서울시 강남구 역삼동</div>

@@ -15,6 +15,17 @@
 <script src="https://spi.maps.daum.net/imap/map_js_init/postcode.v2.js"></script>
 
 <script type="text/javascript">
+//아이디 중복확인 팝업창 열기
+$(function() {
+	$("#idbtn").click(function() {
+		window.open("id_duplicate_popup.jsp"," ",
+			"width=520,height=370,top=220,left=700");
+	});
+});
+/* $(function() {
+	$("#idBtn").click(function(){
+}); */
+
 //이메일 입력방식 선택
 function selectEmail(ele){
     var $ele = $(ele);
@@ -92,7 +103,7 @@ function zipcodeapi() {
 					<th><label>프로필 사진</label></th>
 					<td>
 						<div class="profile">
-						<div><img src="../../images/user.png"  class="img"></div>
+						<div><img src="../../images/profile.png"  class="img"></div>
 						<div>
 							<div class="upload-btn-wrapper">
 								<button class="formBtn">사진등록</button>
@@ -118,7 +129,7 @@ function zipcodeapi() {
 					<th><label><span style="color:red">*</span>아이디</label></th>
 					<td>
 						<input type="text" placeholder="아이디를 입력해주세요" name="id" id="id" class="inputTxt inputIdtype"  maxlength="20"  />
-						<input type="button" value="아이디 중복 확인" class="formBtn" />
+						<input type="button" value="아이디 중복 확인" class="idBtn" id="idbtn" />
 					</td>
 				</tr>
 						<tr>
