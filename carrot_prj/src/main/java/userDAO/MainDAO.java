@@ -43,7 +43,8 @@ public class MainDAO {
 			con=db.getConn();
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select * ")
-			  .append(" from loc_category ");
+			  .append(" from loc_category ")
+			  .append(" order by gu");
 			pstmt= con.prepareStatement(sb.toString());
 			rs = pstmt.executeQuery();
 			

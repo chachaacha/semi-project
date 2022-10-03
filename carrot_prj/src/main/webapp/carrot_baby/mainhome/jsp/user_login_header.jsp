@@ -15,9 +15,14 @@ $(function() {
          header.removeClass('shadow');
      }
  });
+ 
+ $(".searchIcon").click(function() {
+		 $("#search").submit();
+ })
+ 
 })
 </script>
-
+<form action="../../search/jsp/user_search.jsp" method="get" id="search">
 <div class="header">
 
 	<div class="wrap-banner">
@@ -25,8 +30,8 @@ $(function() {
 			<a href="../../mainhome/jsp/user_mainhome.jsp"><img src="../../images/logo.png" width="136" height="40"></a>
 			<a class="sale-logo" href="../../search/jsp/user_search.jsp">중고거래</a> <!-- 매물창 링크필요 -->
 		<div class="searchWrap">
-			<input type="text" placeholder="어떤 상품을 찾으시나요?" class="searchBar">
-		<button class="searchIcon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="css-1o7j8sd">
+			<input type="text" placeholder="어떤 상품을 찾으시나요?" class="searchBar" name="word">
+		<button type="button" class="searchIcon" form="search"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="css-1o7j8sd">
 			<path stroke="currentColor" d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
 			<path stroke="currentColor" d="M21 21L17 17" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></button></div>
 		<div class="wrap-login">
@@ -48,3 +53,4 @@ $(function() {
 	</div>
 	
 </div>
+</form>

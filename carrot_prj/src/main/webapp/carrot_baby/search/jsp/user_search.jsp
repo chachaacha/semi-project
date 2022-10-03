@@ -1,5 +1,10 @@
+<%@page import="userVO.LocVO"%>
+<%@page import="userVO.CatVO"%>
+<%@page import="java.util.List"%>
+<%@page import="userDAO.MainDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +17,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
 
-/* 필터 접고 펴는 기능 */
 $(function(){
+/* 필터 접고 펴는 기능 */
 	$(".category-button").click(function() {
 		$(".category-list-wrap").toggle();
 		$(".category-button .down-img").toggleClass("down-img-change");
@@ -36,11 +41,39 @@ $(function(){
 	$(".price-list").click(function() {
 		$(".ant-space-item").hide();
 	})
+	
+	
+	//카테고리의 정보를 가져와서 보기창 텍스트에 적용
+	$(".category-list-text").click(function() {
+		$("content-list-top-left").html("검색결과");
+	})
+	
 });
 
 </script>
 </head>
 <body>
+<!-- 검색창에서 입력된 값을 불러오기 -->
+<jsp:useBean id="sVO" class="userVO.SearchVO" scope="page"></jsp:useBean>
+<jsp:setProperty property="*" name="sVO"/>
+<% 
+//MainDAO 생성
+MainDAO mDAO=MainDAO.getInstance();
+
+//상품 카테고리 조회
+List<CatVO> catList=mDAO.selectCat();
+
+//검색어 db저장
+String searchTxt=sVO.getWord();
+//검색어가 null이 아닐 경우에만 값 저장
+if(searchTxt!=null) {
+mDAO.insetKeyword(searchTxt);
+}
+
+//지역 카테고리 조회
+List<LocVO> lVOList=mDAO.selectGu();
+
+%>
 <div class="wrap">
 
 <!-- header -->
@@ -73,44 +106,17 @@ $(function(){
 							<div>
 								<div class="category-list">
 									<a href="#void">
-										<div class="category-list-text">전체</div>
+										<div class="category-list-text" value="0">전체</div>
 									</a>
 								</div>
-								<div class="category-list">
-									<a href="#void">
-										<div class="category-list-text">출산/육아용품</div>
-									</a>
-								</div>
-								<div class="category-list">
-									<a href="#void">
-										<div class="category-list-text">유아동안전/실내용품</div>
-									</a>
-								</div>
-								<div class="category-list">
-									<a href="#void">
-										<div class="category-list-text">유아동의류</div>
-									</a>
-								</div>
-								<div class="category-list">
-									<a href="#void">
-										<div class="category-list-text">유아동잡화</div>
-									</a>
-								</div>
-								<div class="category-list">
-									<a href="#void">
-										<div class="category-list-text">유아동가구</div>
-									</a>
-								</div>
-								<div class="category-list">
-									<a href="#void">
-										<div class="category-list-text">유아동교구/완구</div>
-									</a>
-								</div>
-								<div class="category-list">
-									<a href="#void">
-										<div class="category-list-text">기타 유아동용품</div>
-									</a>
-								</div>
+								<% 
+									for(CatVO cVO : catList) { %>
+									<div class="category-list">
+										<a href="#">
+											<div class="category-list-text" value="<%=cVO.getCategory_idx()%>"><%=cVO.getCategory() %></div>
+										</a>
+									</div>
+								<%	} %>
 							</div>
 						</div> 
 					</div>
@@ -251,36 +257,26 @@ $(function(){
 			
 				<!-- 오른쪽 매물 위 -->
 				<div class="content-list-top">
-					<div class="content-list-top-left">전체 카테고리(수치)</div>
+					<div class="content-list-top-left">
+					<%
+						/* 검색어 입력 또는 카테고리 선택시 보기창 텍스트 변화 */
+						if(searchTxt==null) {
+							out.print("전체 카테고리");
+						}else {
+							out.print(searchTxt+" 검색 결과");	
+						}
+					%>
+					(수치)</div>
+					
 					<div class="content-list-top-right">
 						<div class="content-list-top-right-text">서울특별시</div>
 						<select name="region" class="hot-articles-nav-select">
 							<option value="">동네를 선택하세요</option>
-							<option value="강남구">강남구</option>
-							<option value="강동구">강동구</option>
-							<option value="강북구">강북구</option>
-							<option value="강서구">강서구</option>
-							<option value="관악구">관악구</option>
-							<option value="광진구">광진구</option>
-							<option value="구로구">구로구</option>
-							<option value="금천구">금천구</option>
-							<option value="노원구">노원구</option>
-							<option value="도봉구">도봉구</option>
-							<option value="동대문구">동대문구</option>
-							<option value="동작구">동작구</option>
-							<option value="마포구">마포구</option>
-							<option value="서대문구">서대문구</option>
-							<option value="서초구">서초구</option>
-							<option value="성동구">성동구</option>
-							<option value="성북구">성북구</option>
-							<option value="송파구">송파구</option>
-							<option value="양천구">양천구</option>
-							<option value="영등포구">영등포구</option>
-							<option value="용산구">용산구</option>
-							<option value="은평구">은평구</option>
-							<option value="종로구">종로구</option>
-							<option value="중구">중구</option>
-							<option value="중랑구">중랑구</option></select>
+								<% 
+									for(LocVO lVO : lVOList) { %>
+									<option value="<%=lVO.getGu_idx() %>"><%=lVO.getGu() %></option>
+								<%	} %>
+							</select>
 					</div>
 				</div>
 				
