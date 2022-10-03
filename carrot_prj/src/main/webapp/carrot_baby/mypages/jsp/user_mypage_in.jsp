@@ -37,11 +37,20 @@
 
 			<!-- 비밀번호 입력  -->
 			<div style="text-align: center; margin: 50px; display: flex; align-items: center; justify-content: center;">
-				<input type="text" placeholder="비밀번호 입력" size="30" class="textBox">
+				<input type="password" name="password" placeholder="비밀번호 입력" size="30" class="textBox">
 				<a href="user_myinfo_edit.jsp">
 					<input type="button" value="확인" class="gBtn">
 				</a>
 			</div>
+			
+			<%
+			String password=(String)session.getAttribute("password");
+			
+			if(password == null){
+				
+				
+			}
+			%>
 
 			<!-- 메인으로 돌아가기 이동 -->
 			<div style="display: block; margin: 0px auto; width: 150px">
