@@ -1,0 +1,88 @@
+@charset "UTF-8";
+
+.on_sale_wrap {
+	margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 1202px;
+}
+
+.on_sale_title{
+				height: 60px;
+				color: #FF8000;
+	 			font-size: 30px; 
+	 			font-weight: bold;
+	 			padding-top: 30px;
+    			
+				}
+.on_sale_item{width: 1200px;
+				  height: 200px;
+				  border: 1px solid #C3C3C3;
+				  border-radius:8px;
+				  margin: 0px auto;
+				  margin-bottom: 15px;
+				  }	
+.on_sale_item_img{width: 160px; /*판매중인 상품 이미지가 들어갈 자리. 사이즈,,,고민 회의 후에 결정하기로*/
+					   height: 160px;
+					   border: 1px solid #C3C3C3;
+					   margin-left: 30px;
+					   margin-top: 20px;
+					  }	
+.on_sale_item_border{width: 950px;
+							height: 160px;
+							border: 1px solid #C3C3C3; /*content 위치 잡기 위해서 임시로 border를 설정해둠*/
+							flex-direction: row; /* row는 가로줄 cloumn은 세로줄*/
+							margin-left: 200px;
+							margin-top: -20px;
+							}		
+.olcl_title{font-size: 20px;
+			margin-left: 15px;
+			margin-top: 10px;
+			font-weight: bold;
+			}
+.edit_del_btn{background: #fff;
+				float: right;
+			    }
+.dong_date{font-size: 11px;
+			  color: #8E8E8E;
+			  margin-top: 3px;
+			  }
+.deal_btn1{width: 160px; /*예약중이 1, 거래완료가 2*/
+			height: 30px;
+			background: #F0EAE1;
+			border-radius: 8px;
+			display: flex;
+			align-items: center;
+			justify-content: space-evenly;
+			}
+.deal_btn2{width: 160px; /*예약중이 1, 거래완료가 2*/
+			height: 30px;
+			background: #F0EAE1;
+			border-radius: 8px;
+			display: flex;
+			align-items: center;
+			justify-content: space-evenly;
+			}
+.price{font-weight: bold;
+}
+.cmt_n_heart{display: flex;
+				 font-size: 13px;
+				 color: #8E8E8E;
+}
+.heart{display: flex;
+		margin-right: 5px;
+}
+.heart_cnt{margin-right: 5px;
+}
+.cmt{display: flex;
+}
+.price{font-size: 16px;
+		font-weight: bold;
+		margin-bottom: 8px;
+		color: black;
+}
+.price_ch{display: flex;
+			flex-direction: column;
+			margin-top: 40px;
+}

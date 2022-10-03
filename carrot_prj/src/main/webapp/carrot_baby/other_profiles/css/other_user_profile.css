@@ -1,0 +1,138 @@
+@charset "UTF-8";
+
+.other_user_profile_title{width: 1000px;
+							height: 60px;
+							color: #FF8000;
+	 						font-size: 28px; 
+	 						font-weight: bold;
+	 						padding-top: 30px;
+    						position: relative;
+    						margin: 0px auto;
+							}
+.ou_item{width: 800px;/*보더 설정되어있는 곳*/
+			height: 160px;
+			border: 1px solid #4F4F4F;
+			border-radius:8px;
+			margin: 0px auto;
+			cursor: pointer;
+			}	
+.ou_img{width: 110px; /*판매중인 상품 이미지가 들어갈 자리. 사이즈,,,고민 회의 후에 결정하기로*/
+		  height: 110px;/*여기가 보더 안에 있는 것들을 조정하는 곳*/
+		  border: 1px solid #4F4F4F;
+		  margin-left: 25px;
+		  margin-top: 30px; /*안에 상품사진 상품제목,날짜 들어가 있는 곳 위치 조정*/
+		  }	
+.ou_border{width: 600px;
+			 height: 110px;
+			 border: 1px solid #6D6D6D; /*content 위치 잡기 위해서 임시로 border를 설정해둠*/
+			 flex-direction: row; /* row는 가로줄 cloumn은 세로줄*/
+			 margin-left: 120px;
+			 margin-top: -18px;
+			}		
+.ou_itm_title{font-size: 15px;
+				font-weight: bold;
+				margin-left: 15px;
+				margin-top: 10px;
+				}
+.dong_date{font-size: 11px;
+			  color: #8E8E8E;
+			  margin-top: 3px;
+			  }
+.oup_wrap{width: 1000px;
+			 margin: 0px auto;
+			 border: 1px solid #C3C3C3;
+			 border-radius: 8px;
+			 margin-bottom: 50px;
+}
+.profile{width: 1000px;
+		 height: 90px;
+		 border: 1px solid #C3C3C3;
+		 border-top-right-radius:  8px;
+		 border-top-left-radius: 8px;
+		 display: flex;
+		 flex-direction: column;
+         justify-content: center;
+		 }
+.ou_item_wrap{width: 850px; /*안에 틀을 전체적으로 감싸는 틀, 사이즈 표시용 이후에 지울예정*/
+				   height: 650px;
+				   border: 1px dotted #333;
+				   border-radius: 8px;
+				   margin: 0px auto;
+ 					}
+.nick_name{font-weight: bold;
+			  font-size: 18px;
+			  justify-content: center;
+			  margin-left: 120px;
+			  margin-top: -60px;
+			  }
+.region{color: #C3C3C3;
+		 margin-left: 120px;
+		}	
+.report_cnt{color:#FFA953; 
+			  margin-left: 120px;
+			}	
+.btn{margin: 0px auto; }
+.buttons{display: inline-flex;
+		   margin-left: 100px;
+		   margin-top: 10px;
+		   margin-bottom: 10px;
+		   }
+.btn:hover {background-color: #B8B8B8; /* div안에 있는데 왜 hover 적용안되냐고,,,해결완*/
+			  background-color: #FFA953;/*div에 클래스 셀렉터를 적용하는게 아니라 버튼의 클래스에 클레스 셀렉터를 적용해야햄*/
+			  }
+.btn{border: 0px;
+	 background-color: #C3C3C3; /*border-color가 아니라 back-groundcolor로 적용해야함.*/
+	  color: white;
+	  font-weight: bold;
+	  border-radius: 8px;
+	  }
+.price{font-weight: bold; 
+		margin-top: 20px;
+       }	
+.deal_btn{border:0px;
+			background-color: #FFA953;
+			color: white;
+	  	    font-weight: bold;
+	  		border-radius: 8px;
+			}	
+.db_align{margin-top: 15px;
+            }	
+.ui-tabs-anchor {background: #FFA953;
+					}
+.ui-widget-header {color: #333333;
+					    font-weight: bold;
+						background: #fff;
+						}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+	border: 0px;
+	background: #FFA953;
+    font-weight: normal;
+    color: #ffffff;
+}
+.profile_img{width:65px;
+			   height:65px;
+			   display: flex;
+			   color: #FF8000;
+			   margin-left: 10px;
+				}
+.confirm{width: 90px;
+		   height: 25px;
+		   border: 1px solid #DBDBDB;
+		   border-radius:10px;
+		   cursor: pointer;
+		   font-size: 12px;
+		   font-weight: normal;
+		   
+}
+.block{width: 90px;
+		   height: 25px;
+		   border: 1px solid #DBDBDB;
+		   border-radius:10px;
+		   cursor: pointer;
+		   font-size: 12px;
+		   font-weight: normal;
+}
+.btns{display:inline-flex;
+}
+
+				

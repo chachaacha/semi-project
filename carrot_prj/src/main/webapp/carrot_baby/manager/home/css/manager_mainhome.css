@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+/* 컨테이너 */
+.main{
+	display:bloxk;
+	margin:0px auto;
+	width:1280px;
+	margin-top:50px;
+	margin-bottom: 50px;
+}
+/* 카테고리이미지 */
+.bi-house-fill {
+	width: 30px;
+	height: 30px;
+	margin: 10px;
+}
+
+.text {
+	font-size: 20px;
+}
+
+/* 대시보드 */
+.title{
+	margin:10px;
+}
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	border-top: 3px solid #495057;
+}
+
+.table th {
+	color: #0A0400;
+	background:#BEBEBE;
+	text-align: center;
+}
+
+.table th, .table td {
+	padding: 10px;
+	border: 1px solid #ddd;
+	text-align: center;
+}
+
+.table th:first-child, .table td:first-child {
+	border-left: 0;
+}
+
+.table th:last-child, .table td:last-child {
+	border-right: 0;
+}
+
+.table tr td:first-child {
+	text-align: center;
+}
+
+.table caption {
+	caption-side: bottom;
+	display: none;
+}

@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+/* 로그인화면 css */
+
+/* 상단 로고이미지 */
+.img {
+	padding: 15px;
+	display: block;
+	margin: 0px auto;
+}
+
+/* 로그인 박스  */
+.loginbox_wrap {
+	display: block;
+	margin: 0px auto;
+	text-align: center;
+	width: 550px;
+	border: 1px solid #EEE;
+	border-radius: 15px;
+}
+
+/* 로그인 박스_상단 */
+.loginbox_top {
+	height: 50px;
+	background-color: orange;
+	color: white;
+	font-size: 30px;
+	border-radius: 15px 15px 0px 0px;
+}
+
+/* 로그인 박스_메인 */
+.loginbox_main {
+	background-color: white;
+	border-radius: 0px 0px 15px 15px;
+}
+
+/* input_text1 */
+.id {
+	height: 40px;
+	margin: 30px 30px 5px 30px;
+	border: 1px solid #EEE;
+}
+
+/* input_text2 */
+.pass {
+	height: 40px;
+	margin: 5px 30px 30px 30px;
+	border: 1px solid #EEE;
+}
+
+/* 로그인 버튼 */
+.loginBtn {
+	width: 400px;
+	height: 40px;
+	cursor: pointer;
+	color: #FFF;
+	background-color: #1F333F;
+	border: 0px;
+	border-radius: 5px;
+	margin: 0px 0px 20px 0px;
+}

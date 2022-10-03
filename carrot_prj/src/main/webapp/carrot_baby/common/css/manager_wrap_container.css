@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+/* wrap css */
+.wrap {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	background: transparent;
+	position: relative;
+}
+
+/* container css */
+.container {
+	flex: 1;
+	width:  1920px;
+	background: #fff;
+	padding-top: 118px;
+}

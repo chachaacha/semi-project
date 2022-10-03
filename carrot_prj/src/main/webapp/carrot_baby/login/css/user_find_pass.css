@@ -1,0 +1,91 @@
+@charset "UTF-8";
+
+/* 상단 로고  */
+.logoImg {
+	display: block;
+	margin: 0px auto;
+	width: 200px;
+	height: 60px;
+	margin-top: 80px;
+	padding-bottom: 10px;
+}
+
+/* 찾기 아이콘 박스 */
+.iconBox {
+	width: 300px;
+	margin: 0px auto;
+	padding-top: 10px;
+	border-top: 1px dotted grey;
+}
+
+.idImg {
+	width: 80px;
+	padding-left: 15px;
+}
+
+.idText {
+	font-size: 30px;
+	color: #E78934;
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+/* 정보입력 박스  */
+.infoBox {
+	margin: 0px auto;
+	text-align: center;
+	border-top: 1px dotted grey;
+	width: 450px;
+	margin-top: 30px;
+	padding-top: 30px;
+}
+
+.infoImg {
+	width: 30px;
+}
+
+.infoText {
+	font-size: 20px;
+	vertical-align: middle;
+	padding: 0 10px;
+}
+
+.textBox {
+	height: 37px;
+	border: 1px solid #dedede;
+	font-size: 14px;
+	padding: 15px;
+	vertical-align: middle;
+	box-sizing: border-box;
+	border-radius: 10px;
+}
+
+/* 버튼 */
+.oBtn {
+	background-color: #FF9326;
+	color: #FFFFFF;
+	text-decoration: none;
+	font-size: 18px;
+	border: 0px;
+	border-radius: 10px;
+	padding: 15px 60px;
+	cursor: pointer;
+}
+
+.gBtn {
+	background-color: #F2F3F6;
+	color: #000;
+	text-decoration: none;
+	font-size: 18px;
+	border: 0px;
+	border-radius: 10px;
+	padding: 15px 60px;
+	cursor: pointer;
+}
+
+.linkText {
+	display: block;
+	margin: 0px auto;
+	width: 360px;
+	padding:20px;
+}

@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+/* 아이콘  */
+.iconImg {
+	margin-top: 70px;
+	width: 200px;
+	height: 200px;
+}
+
+/* 메세지 */
+.msgBox {
+	text-align: center;
+}
+
+/* 주메세지 */
+.msg {
+	font-size: 30px;
+	font-weight: bold;
+}
+
+/* 비밀번호 입력 */
+.textBox {
+	border: 0px;
+	border-radius: 10px;
+	height: 50px;
+	margin-right: 10px;
+}
+
+/* 버튼 */
+.gBtn {
+	background-color: #F2F3F6;
+	color: #000;
+	text-decoration: none;
+	font-size: 18px;
+	border: 0px;
+	border-radius: 10px;
+	padding: 15px 60px;
+	cursor: pointer;
+}
+
+/* 링크 */
+.linkText {
+	color: #000;
+}

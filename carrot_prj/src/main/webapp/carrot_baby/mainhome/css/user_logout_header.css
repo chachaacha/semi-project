@@ -1,0 +1,99 @@
+@charset "UTF-8";
+
+/* header css start */
+.header {
+	width: 1920px;
+	background: white;
+	position: fixed;
+	top: 0;
+	display: block;
+	z-index: 999;
+}
+
+.shadow{
+  box-shadow: 0 6px 4px -4px rgba(0, 0, 0, 0.3);
+}
+
+.header a {
+	text-decoration: none;
+	margin-right: 10px;
+	background-color: transparent;
+	color: #333;
+	vertical-align: baseline;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.wrap-banner {
+	max-width: 1280px;
+	margin: auto;
+	position: relative;
+	padding-left: 40px;
+	padding-right: 40px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 14px;
+	padding-bottom: 14px;
+	min-width: 880px;
+}
+
+.banner {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: relative;	
+}
+
+/* 매물창연결 아이콘 css  */
+.sale-logo{
+	font-size: 20px;
+	font-weight: bold;
+	color: #ff6f0f !important;
+	margin-left: 30px;
+}
+
+/* 검색창 css */
+.searchWrap{
+	flex: 1px;
+	margin: 0 2%;
+	position: relative;
+}
+
+.searchWrap .searchBar {
+	width: 100%;
+	height: 44px;
+	padding: 0 20px;
+	border: none;
+	border-radius: 30px;
+	background-color: #F5F5F5;
+	box-shadow: none;
+	text-align: left;
+	font-size: 14px;
+}
+
+.searchWrap .searchIcon {
+	display: flex;
+ 	justify-content: center;
+ 	align-items: center;
+ 	width: 44px;
+ 	height: 44px;
+ 	position: absolute;
+ 	top: 0;
+ 	bottom: 0;
+ 	right:-30px;
+}
+
+.searchIcon {
+ 	background-color: transparent;
+}
+
+/* 로그인 연결 아이콘 css */
+.wrap-login {
+	position: relative;
+	margin-left: 50px;
+	display: flex;
+ 	justify-content: center;
+ 	align-items: center;
+}
+/* header css end */

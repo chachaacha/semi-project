@@ -1,0 +1,222 @@
+@charset "UTF-8";
+
+.product_management-wrap {
+	width: 1280px;
+	margin: 0 auto;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+/* 상품관리 아이콘 */
+.product_management-icon {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border-bottom: 1px solid gray;
+}
+
+.clipboard-check {
+	padding: 10px;
+}
+
+.product_management-icon span {
+	font-size: 20px;
+}
+
+/* 본문 */
+.product_management {
+	display: flex;
+	margin-top: 20px;
+	flex-direction: column;
+}
+
+/* 상단 필터 */
+.pm_btn-wrap {
+	display: flex;
+	flex-direction: row;
+}
+
+.pm_btn {
+	font-size: 17px;
+	background-color: #fff;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 2px;
+}
+
+.pm_btn:hover {
+	border-bottom: 1px solid #BEBEBE;	
+}
+
+.pm {
+	display: flex;
+	flex-direction: column; 
+	margin-top: 20px;
+}
+
+/* 위 */
+.pm_top {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+
+.report_comments_btn {
+	text-decoration: none;
+}
+
+.rc_txt {
+	background-color: #DEDEDE;
+	color: #0A0400;
+	font-size: 18px;
+	width: 200px;
+	height: 45px;
+	text-align: center;
+	border-radius: 5px;
+	line-height: 45px;
+}
+
+.pm-btn-search {
+	display: flex;
+	align-items: flex-start;
+}
+
+.all-delete-btn, .align-btn {
+	font-size: 15px;
+	background-color: #495057;
+	color: #fff;
+	margin-left: 20px;
+	width: 80px;
+	height: 30px;
+	border-radius: 5px;
+}
+
+.align-btn-wrap {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.align-btn svg {
+	margin-right: 0px;
+	color: #fff;
+}
+
+.align-subbtn{
+	font-size: 13px;
+	background-color: #9EA6AD;
+	color: #fff;
+	width: 80px;
+	height: 30px;
+	border-radius: 5px;
+	margin-left: 20px;
+	margin-top: 2px;
+	display: none;
+}
+
+.align-icon-change {
+	transform: rotate(180deg);
+}
+
+.search-wrap {
+	border: 1px solid #e9ecef;
+	font-size: 18px;
+	width: 800px;
+	height: 45px;
+	border-radius: 5px;
+	display: flex;
+	flex-direction: row;
+}
+
+.search-txt {
+	width: 800px;
+	font-size: 18px;
+	border-color: transparent;
+}
+
+.search-bar {
+	background-color: #DEDEDE;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 60px;
+}
+
+/* 아래 */
+.pm-bottom {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
+}
+
+.category-select {
+  width: 200px;
+  height: 45px;
+  appearance: none;
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: solid 1px #e9ecef;
+  box-sizing: border-box;
+  font-size: 17px;
+  letter-spacing: -0.6px;
+  text-align: left;
+  background: #fff url(https://d1unjqcospf8gs.cloudfront.net/assets/home/articles/icon-arrow-down-ea33c4b4c74ce0aca95580c70c5ba1f464ff5833213b0fc8db5de0fab98b57e1.svg) no-repeat 99% 50%;
+  cursor: pointer;
+}
+
+.table-wrap {
+	width: 1020px;
+	height: 500px;
+	overflow: auto;
+}
+
+.table {
+      border-collapse: collapse;
+      border-top: 3px solid #495057;
+      width: 100%;
+}  
+
+.table th {
+	  color: #0A0400;
+      background: #BEBEBE;
+      text-align: center;
+}
+
+.table th, .table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+      word-break: break-all;
+      vertical-align: middle;
+}
+
+.table th:first-child, .table td:first-child {
+      border-left: 0;
+}
+
+.table th:last-child, .table td:last-child {
+      border-right: 0;
+}
+
+.table tr td:first-child, .table td:last-child {
+      text-align: center;
+}
+
+.table caption{
+	caption-side: bottom; 
+	display: none;
+}
+
+
+.table-title {
+	width: 500px;
+}
+
+.title-link {
+	cursor: pointer;
+}
+
+.table-check{
+	accent-color: #fff;
+}
+

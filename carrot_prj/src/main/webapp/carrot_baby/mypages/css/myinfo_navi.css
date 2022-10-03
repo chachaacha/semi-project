@@ -1,0 +1,69 @@
+@charset "UTF-8";
+
+/* 상단바 */
+ul, li {
+	margin: 0;
+	padding: 0;
+}
+
+.main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 50px;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#topBar {
+	margin: 10px 5px 3px 5px;
+	padding: 5px 0 5px 0;
+	-webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, .3);
+	border-radius: 15px;
+	background-color: #F8A623;
+	width: 1010px;
+	font-size: 20px;
+	font-weight: bold;
+	z-index: 1;
+}
+
+#topBar ul li {
+	float: left;
+	list-style-type: none;
+	padding: 0px 20px;
+}
+
+#topBar a {
+	height: 16px;
+	color: #f1f1f1;
+	font-family: arial;
+	font-size: 19px;
+	padding: 0 10px 0 10px;
+	text-decoration: none;
+}
+
+#topBar a:hover {
+	color: #D4F4FA;
+	border-bottom: 3px solid #58D34A;
+}
+
+#topBar ul ul {
+	display: none;
+	position: absolute;
+	background-color: #F8A623;
+	margin-top: 2px;
+}
+
+#topBar ul li:hover ul {
+	display: block;
+}
+
+#topBar ul ul li {
+	float: none;
+	padding-bottom: 6px;
+}
+/* 상단 네비바 */

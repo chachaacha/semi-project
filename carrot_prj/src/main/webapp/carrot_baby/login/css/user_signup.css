@@ -1,0 +1,84 @@
+@charset "UTF-8";
+
+/* 회원가입 약관동의 css */
+.container{
+	margin:30px;
+}
+
+/* 로그인/회원가입 상단 로고  */
+.logoImg{
+display:block;
+margin: 0px auto;
+width: 200px;
+height: 60px;
+}
+
+/* 이용약관 */
+.title{
+	display:block;
+	margin: 0px auto;
+	width:800px;
+	font-size:25px;
+	font-weight:bold;
+	color: #E67E22;
+}
+
+/* 이용약관 내용  */
+.agreement{
+display:block;
+margin: 0px auto;
+width:800px;
+height:250px;
+border:1px solid #F2F3F6;
+}
+
+/* 체크박스 */
+.checkbox{
+display:block;
+margin: 0px auto;
+padding-top:7px;
+width:806px; 
+height:30px;
+background-color:#F2F3F6;
+border-radius:0 0 10px 10px;
+}
+
+.checkbox > input {
+	cursor: pointer;
+}
+
+/* 텍스트 박스 */
+.textBox{
+	height: 37px;
+	border: 1px solid #dedede;
+	font-size: 14px;
+	padding: 15px;
+	vertical-align: middle;
+	box-sizing: border-box;
+	border-radius: 10px;
+}
+
+/* 버튼 */
+.oBtn{
+	background-color:#FF9326;
+	color:#FFFFFF;
+	text-decoration:none;
+	font-size:20px;
+	font-weight:bold;
+	border:0px;
+	border-radius:10px;
+	padding:15px 60px;
+	cursor: pointer;
+}
+
+.gBtn{
+	background-color:#F2F3F6;
+	color:#000;
+	text-decoration:none;
+	font-size:20px;
+	font-weight:bold;
+	border:0px;
+	border-radius:10px;
+	padding:15px 60px;
+	cursor: pointer;
+}

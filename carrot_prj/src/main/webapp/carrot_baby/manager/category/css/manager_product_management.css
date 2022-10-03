@@ -1,0 +1,134 @@
+@charset "UTF-8";
+
+/* 컨테이너 */
+.main {
+	display: block;
+	margin: 0px auto;
+	width: 1280px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+.top {
+	margin: 35px 130px;
+	float: right;
+}
+
+.table-wrap {
+	display: block;
+	margin: 0px auto;
+	width: 1020px;
+	height: 500px;
+	overflow: auto;
+}
+
+.table {
+	border-collapse: collapse;
+	border-top: 3px solid #495057;
+	width: 100%;
+}
+
+.table th {
+	color: #0A0400;
+	background: #BEBEBE;
+	text-align: center;
+}
+
+.table th, .table td {
+	padding: 10px;
+	border: 1px solid #ddd;
+	text-align: center;
+	font-size: 15px;
+	height: 20px;
+	line-height: 20px;
+}
+
+.table th:first-child, .table td:first-child {
+	border-left: 0;
+}
+
+.table th:last-child, .table td:last-child {
+	border-right: 0;
+}
+
+.table tr td:first-child, .table td:last-child {
+	text-align: center;
+}
+
+.table caption {
+	caption-side: bottom;
+	display: none;
+}
+
+/* 카테고리이미지 */
+.bi-filter-left {
+	width: 30px;
+	height: 30px;
+	margin: 10px;
+}
+
+.text {
+	font-size: 20px;
+}
+
+/* 대시보드 */
+.title {
+	font-size: 20px;
+	margin: 10px;
+}
+
+/* 스크롤박스 */
+.selectBox {
+	width: 350px;
+	height: 50px;
+	margin: -30px;
+	cursor: pointer;
+	font-size: 17px;
+}
+
+/* 텍스트박스 */
+.textBox {
+	height: 45px;
+	margin-left: 20px;
+	cursor: pointer;
+	font-size: 17px;
+}
+
+/* 저장버튼 */
+.btn {
+	display: block;
+	margin: 0px auto;
+	width: 250px;
+	height: 55px;
+	cursor: pointer;
+	background-color: #DEDEDE;
+	border: 0px;
+	border-radius: 5px;
+}
+
+.add-btn {
+	cursor: pointer;
+	height: 50px;
+	padding: 10px 30px;
+	background-color: #DEDEDE;
+	border: 0px;
+	border-radius: 5px;
+}
+
+.del-btn {
+	cursor: pointer;
+	padding: 10px 30px;
+	background-color:#C7AAA6;
+	color: #FFF;
+	border: 0px;
+	border-radius: 5px;
+}
+
+.edit-btn {
+	cursor: pointer;
+	padding: 10px 30px;
+	background-color:#A8ABB3;
+	color: #FFF;
+	border: 0px;
+	border-radius: 5px;
+}

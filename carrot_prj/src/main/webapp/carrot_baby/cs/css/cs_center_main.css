@@ -1,0 +1,76 @@
+@charset "UTF-8";
+.csTitle{ /*고객센터 타이틀*/
+		width: 600px;
+ 		height: 80px; 
+		font-size: 30px; 
+		color: #FF8000; 
+		font-weight: bold; 
+		margin:0px auto; 
+		text-align: center; 
+		padding-top: 23px;
+}
+
+#tabs {
+	width: 1300px;
+	margin: 0 auto;
+	margin-bottom: 50px;
+}
+
+#cs_wrap1{
+			display: flex; /*크기를 바꿔서라도 한줄에 넣음*/
+			flex-direction: row; /* row는 가로줄 cloumn은 세로줄*/
+			justify-content: center; /*정렬 방향, 왼/오/가운데*/
+			margin-bottom: 50px;
+			}
+#cs_wrap2{
+			display: flex; /*크기를 바꿔서라도 한줄에 넣음*/
+			flex-direction: row; /* row는 가로줄 cloumn은 세로줄*/
+			justify-content: center; /*정렬 방향, 왼/오/가운데*/
+			margin-bottom: 60px;
+			}			
+.cs_menu{
+		width: 300px;
+		height: 60px;
+		border:1px;
+		border-radius: 25px 20px 25px 25px;
+		background-color:#E3E3E3;
+		text-align: center;
+		line-height: 60px; /*보더 사이즈에 맞게 글자가 가운데에 오게 위치 조정*/
+		margin-right: 60px;
+		margin-left: 60px;
+}
+.cs_menu:hover{ /*주의사항: : 와 hover사이는 띄우지 않는다. 그러면 적용이 안됨*/
+					background-color: #E3E3E3;
+					background-color: #FFA953;
+}
+.question-1, .question-2{
+	  height: 60px; 
+	  border: 1px solid #EEEEEE;
+	  margin: 0px auto;
+	  margin-top: 40px;
+	  font-weight: bold;
+	  line-height: 60px;
+	  padding-left: 10px;
+	  cursor: pointer;
+	  }
+.answer-1, .answer-2{
+	  	width: 1248px;
+	  	border: 1px solid #EEEEEE;
+	  	margin: 0px auto;
+	  	line-height: 30px;
+	  	background:#F7F7F7;
+	  	padding-left: 10px;
+	  	padding-top: 10px;
+	  	padding-bottom: 10px;
+	  	display: none;
+		}
+		
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover	{
+background-color: #FFA953;
+border: 1px solid #E67E22;
+}
+
+.ui-widget-header {
+	border: 0;
+    background: transparent;
+}

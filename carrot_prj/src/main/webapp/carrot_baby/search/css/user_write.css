@@ -1,0 +1,237 @@
+@charset "UTF-8";
+
+.write-wrap {
+	width: 900px;
+	margin: 0 auto;
+	margin-top: 50px;
+	margin-bottom: 70px;
+	display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.write-title {
+	font-size: 35px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.write {
+	margin-top: 30px;
+	border: 1px solid #BEBEBE;
+	width: 100%;
+	border-radius: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 20px;
+	padding-top: 5px;
+}
+
+.write-sel-wrap {
+	width: 900px;
+	border-bottom: 1px solid #E6E6E6;
+	padding-bottom: 15px;
+	padding-top: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.write-sel-wrap {
+	width: 900px;
+	border-bottom: 1px solid #E6E6E6;
+	padding-bottom: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.write-sel-wrap-text {
+	font-size: 25px;
+	font-weight: 600;
+	line-height: 23px;
+}
+
+.write-select {
+  width: 750px;
+  margin-left: 8px;
+  appearance: none;
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: solid 1px #e9ecef;
+  box-sizing: border-box;
+  font-size: 17px;
+  letter-spacing: -0.6px;
+  text-align: left;
+  background: #fff url(https://d1unjqcospf8gs.cloudfront.net/assets/home/articles/icon-arrow-down-ea33c4b4c74ce0aca95580c70c5ba1f464ff5833213b0fc8db5de0fab98b57e1.svg) no-repeat 99% 50%;
+  cursor: pointer;
+}
+
+.write-sel-wrap-right, .checkbox-share-wrap, .checkbox-price-wrap {
+	display: flex;
+	align-items: center;	
+}
+
+.checkbox-share {
+	width: 20px;
+	height: 20px;
+	margin-right: 5px;
+	accent-color: #fff;
+	cursor: pointer;
+}
+
+.checkbox-share-txt {
+	font-size: 15px;
+}
+
+.checkbox-price-input {
+  width: 600px;
+  margin-left: 8px;
+  appearance: none;
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: solid 1px #e9ecef;
+  box-sizing: border-box;
+  font-size: 17px;
+  letter-spacing: -0.6px;
+  text-align: left;
+  margin-right: 5px;
+}
+
+.checkbox-price-txt {
+	font-size: 20px;
+}
+
+.write-center-wrap {
+	width: 900px;
+	border-bottom: 1px solid #E6E6E6;
+	padding-bottom: 15px;
+	padding-top: 15px;
+	display: flex;
+	flex-direction: column
+}
+
+.write-title-input {
+  width: 900px;
+  appearance: none;
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: solid 1px #e9ecef;
+  box-sizing: border-box;
+  font-size: 17px;
+  letter-spacing: -0.6px;
+  text-align: left;
+  margin: 0 auto;
+}
+
+.img-wrap {
+	display: flex;
+	margin-top:40px;
+}
+
+.imgs-upload {
+	display: none;
+}
+
+.upload {
+	width: 120px;
+	height: 120px;
+	background-color: #BEBEBE;
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	cursor: pointer;
+}
+
+.upload svg {
+	margin-right: 0px;
+	color: #fff;
+}
+
+.imgs-cnt {
+	margin-top: -10px;
+}
+
+.imgs-cnt span {
+	font-size: 20px;
+	color: #fff;
+}
+
+.write-imgs-wrap {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.imgs-preview {
+	margin-left: 33px;
+	margin-bottom: -30px;
+}
+
+.write-imgs {
+	width: 120px;
+	height: 120px;
+	background-color: #BEBEBE;
+	border-radius: 20px;
+	overflow: hidden;
+}
+
+.add-imgs {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.cancel-img {
+	position: relative;
+	right: -105px;
+	top:-130px;
+	color: #FF6900;
+	cursor: pointer;
+}
+
+.thumbnail-img {
+	background-color: #000;
+	opacity: 0.5;
+	color: #fff;
+	text-align: center;
+	position: relative;
+	top: -65px;
+}
+
+.contents-txtarea {
+	  width: 900px;
+	  appearance: none;
+	  padding: 12px 16px;
+	  border-radius: 6px;
+	  border: solid 1px #e9ecef;
+	  box-sizing: border-box;
+	  font-size: 17px;
+	  letter-spacing: -0.6px;
+	  text-align: left;
+	  margin: 0 auto;
+	  margin-top: 30px;
+	  resize: none;
+}
+
+.register-write {
+	  width: 900px;
+	  appearance: none;
+	  box-sizing: border-box;
+	  font-size: 17px;
+	  letter-spacing: -0.6px;
+	  text-align: left;
+	  margin: 0 auto;
+	  margin-top: 10px;
+	  display: flex;
+	  flex-direction: row-reverse;
+}
+
+.report-btn {
+	width: 120px;
+	height: 45px;
+	font-size: 18px;
+	background-color: #FF6900;
+	border-radius: 6px;
+	color: #fff;
+}
