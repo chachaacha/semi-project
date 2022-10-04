@@ -11,6 +11,22 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
+<script type="text/javascript">
+$(function(){
+	//비밀번호 입력 안했을 때
+	$("#chkBtn").click(function(){
+		if($("#pass").val().trim() == null){
+			alert("비밀번호를 입력해주세요.");
+			return;
+		}
+	});
+});
+
+//비밀번호 맞는지 확인
+function checkPass(){
+	var pass
+}
+</script>
 </head>
 <body>
 	<div class="wrap">
@@ -37,20 +53,11 @@
 
 			<!-- 비밀번호 입력  -->
 			<div style="text-align: center; margin: 50px; display: flex; align-items: center; justify-content: center;">
-				<input type="password" name="password" placeholder="비밀번호 입력" size="30" class="textBox">
+				<input type="password" name="pass" placeholder="비밀번호 입력" size="30" class="textBox">
 				<a href="user_myinfo_edit.jsp">
-					<input type="button" value="확인" class="gBtn">
+					<input type="button" value="확인" class="gBtn" id="chkBtn"/>
 				</a>
 			</div>
-			
-			<%
-			String password=(String)session.getAttribute("password");
-			
-			if(password == null){
-				
-				
-			}
-			%>
 
 			<!-- 메인으로 돌아가기 이동 -->
 			<div style="display: block; margin: 0px auto; width: 150px">
