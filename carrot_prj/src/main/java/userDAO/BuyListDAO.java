@@ -11,16 +11,16 @@ import java.util.List;
 import userVO.BuyListVO;
 import common.DbConnection;
 
-public class BuyList1DAO {
-	private static BuyList1DAO blDAO;
+public class BuyListDAO {
+	private static BuyListDAO blDAO;
 	
-	private BuyList1DAO() {
+	private BuyListDAO() {
 		
 	}//BuyListDAO
 	
-	public static BuyList1DAO getInstance() {
+	public static BuyListDAO getInstance() {
 		if( blDAO == null ) {
-			blDAO = new BuyList1DAO();
+			blDAO = new BuyListDAO();
 		}
 		return blDAO;
 	}//getInstance
@@ -77,7 +77,7 @@ public class BuyList1DAO {
 		return list;
 	}//selectBL
 	
-	public int updateBL(int product_idx) throws SQLException {
+	public int updateBL(String product_idx) throws SQLException {
 	int updateCnt = 0;
 		
 	DbConnection dc = DbConnection.getInstance();
@@ -98,7 +98,7 @@ public class BuyList1DAO {
 		
 		pstmt = con.prepareStatement(update.toString());
 	//4. 바인드 변수에 값 설정
-		pstmt.setInt(1, product_idx);
+		pstmt.setString(1, product_idx);
 	//5. 쿼리문 수행 후 결과 얻기
 		updateCnt = pstmt.executeUpdate();
 	} finally {
