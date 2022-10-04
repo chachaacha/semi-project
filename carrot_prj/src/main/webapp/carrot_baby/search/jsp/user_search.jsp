@@ -1,3 +1,5 @@
+<%@page import="userVO.HomeVO"%>
+<%@page import="userVO.MainFlagVO"%>
 <%@page import="userVO.LocVO"%>
 <%@page import="userVO.CatVO"%>
 <%@page import="java.util.List"%>
@@ -45,18 +47,37 @@ $(function(){
 	
 	//카테고리의 정보를 가져와서 보기창 텍스트에 적용
 	$(".category-list-text").click(function() {
-		$("content-list-top-left").html("검색결과");
+		//카테고리의 값 변수에 저장
+		var catTxt=$(this).text();
+		//보기창에 반영
+		$(".content-list-top-left").text(catTxt+" 검색 결과");
 	})
 	
+	//지역의 정보를 가져와서 메인 텍스트에 적용
+	$(".hot-articles-nav-select").change(function() {
+		//지역의 값 변수에 저장
+		var loc=$(".hot-articles-nav-select option:checked").text();
+		//보기창에 반영
+		$(".content-head-title").text(loc+" 중고거래 인기 매물");
+	})
 });
-
 </script>
 </head>
 <body>
+
+<div class="wrap">
+
+<!-- header -->
+<%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
+<!-- header end-->
+
 <!-- 검색창에서 입력된 값을 불러오기 -->
-<jsp:useBean id="sVO" class="userVO.SearchVO" scope="page"></jsp:useBean>
+<jsp:useBean id="sVO" class="userVO.SearchVO" scope="page"/>
+<jsp:useBean id="mfVO" class="userVO.MainFlagVO" scope="page"/>
 <jsp:setProperty property="*" name="sVO"/>
+<jsp:setProperty property="*" name="mfVO"/>
 <% 
+
 //MainDAO 생성
 MainDAO mDAO=MainDAO.getInstance();
 
@@ -66,7 +87,7 @@ List<CatVO> catList=mDAO.selectCat();
 //검색어 db저장
 String searchTxt=sVO.getWord();
 //검색어가 null이 아닐 경우에만 값 저장
-if(searchTxt!=null) {
+if(searchTxt != null && !"".equals(searchTxt)) {
 mDAO.insetKeyword(searchTxt);
 }
 
@@ -74,11 +95,6 @@ mDAO.insetKeyword(searchTxt);
 List<LocVO> lVOList=mDAO.selectGu();
 
 %>
-<div class="wrap">
-
-<!-- header -->
-<%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
-<!-- header end-->
 
 <!-- container -->
 <div class="container">
@@ -113,7 +129,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 									for(CatVO cVO : catList) { %>
 									<div class="category-list">
 										<a href="#">
-											<div class="category-list-text" value="<%=cVO.getCategory_idx()%>"><%=cVO.getCategory() %></div>
+											<div class="category-list-text" value="<%=cVO.getCategory_idx()%>" name="categoryFlag"><%=cVO.getCategory() %></div>
 										</a>
 									</div>
 								<%	} %>
@@ -136,7 +152,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 								<div class="sort-list">
 									<label class="sort-radio-wrap">
 										<span class="sort-radio">
-											<input type="radio" name="sort-radio" class="input-radio" checked="checked">
+											<input type="radio" name="sort-radio" class="input-radio" checked="checked" value="0">
 										</span>
 										<span>최신순</span>
 									</label>
@@ -144,7 +160,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 								<div class="sort-list">
 									<label class="sort-radio-wrap">
 										<span class="sort-radio">
-											<input type="radio"  name="sort-radio" class="input-radio">
+											<input type="radio"  name="sort-radio" class="input-radio" value="1">
 										</span>
 										<span>과거순</span>
 									</label>
@@ -152,7 +168,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 								<div class="sort-list">
 									<label class="sort-radio-wrap">
 										<span class="sort-radio">
-											<input type="radio" name="sort-radio" class="input-radio">
+											<input type="radio" name="sort-radio" class="input-radio" value="2">
 										</span>
 										<span>인기순</span>
 									</label>
@@ -176,7 +192,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 								<div class="price-list">
 									<label class="price-radio-wrap">
 										<span class="price-radio">
-											<input type="radio" name="price-radio" class="input-radio" checked="checked">
+											<input type="radio" name="price-radio" class="input-radio" checked="checked" value="0">
 										</span>
 										<span>전체가격</span>
 									</label>
@@ -184,7 +200,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 								<div class="price-list">
 									<label class="price-radio-wrap">
 										<span class="price-radio">
-											<input type="radio" name="price-radio" class="input-radio">
+											<input type="radio" name="price-radio" class="input-radio" value="1">
 										</span>
 										<span>나눔</span>
 									</label>
@@ -192,7 +208,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 								<div class="price-list">
 									<label class="price-radio-wrap">
 										<span class="price-radio">
-											<input type="radio" name="price-radio" class="input-radio">
+											<input type="radio" name="price-radio" class="input-radio" value="2">
 										</span>
 										<span>5,000원 이하</span>
 									</label>
@@ -200,7 +216,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 								<div class="price-list">
 									<label class="price-radio-wrap">
 										<span class="price-radio">
-											<input type="radio" name="price-radio" class="input-radio">
+											<input type="radio" name="price-radio" class="input-radio" value="3">
 										</span>
 										<span>5,000원 - 1만원 이하</span>
 									</label>
@@ -208,7 +224,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 								<div class="price-list">
 									<label class="price-radio-wrap">
 										<span class="price-radio">
-											<input type="radio" name="price-radio" class="input-radio">
+											<input type="radio" name="price-radio" class="input-radio" value="4">
 										</span>
 										<span>1만원 - 5만원 이하</span>
 									</label>
@@ -216,7 +232,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 								<div class="price-list">
 									<label class="price-radio-wrap">
 										<span class="price-radio">
-											<input type="radio" name="price-radio" class="input-radio">
+											<input type="radio" name="price-radio" class="input-radio" value="5">
 										</span>
 										<span>5만원 - 10만원 이하</span>
 									</label>
@@ -224,7 +240,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 								<div class="price-list">
 									<label class="price-radio-wrap">
 										<span class="price-radio">
-											<input type="radio" name="price-radio" class="input-radio">
+											<input type="radio" name="price-radio" class="input-radio" value="6">
 										</span>
 										<span>10만원 이상</span>
 									</label>
@@ -239,9 +255,9 @@ List<LocVO> lVOList=mDAO.selectGu();
 								</div>
 								<div class="ant-space-item">
 									<form><div class="ant-space-item-input">
-											<input type="tel" name="minPrice" placeholder="최저가" class="ant-input" value="">
+											<input type="tel" name="minPrice" placeholder="최저가" class="ant-input" value="7">
 											<span>~</span>
-											<input type="tel" name="maxPrice" placeholder="최고가" class="ant-input" value="">
+											<input type="tel" name="maxPrice" placeholder="최고가" class="ant-input" value="7">
 										</div>
 										<button type="submit" class="input-btn">적용</button>
 									</form>
@@ -281,7 +297,49 @@ List<LocVO> lVOList=mDAO.selectGu();
 				</div>
 				
 				<!-- 오른쪽 매물 가운데 -->
+<%
+Integer catFlag=mfVO.getCategoryFlag();
+
+
+//상품 리스트 조회
+/* List<HomeVO> hVOList=mDAO.selectProduct(mfVO); */
+
+%>
 				<div class="content-list-middle">
+					<div class="card">
+						<a class="card-link" href="../../product/jsp/user_buyer_product.jsp"><!-- 거래창 연결 링크 필요 -->
+							<div class="card-photo">
+								<img alt="이미지 자리" src="">
+							</div>
+							<div class="card-desc">
+								<h2 class="card-title">글제목</h2>
+								<div class="card-price">가격</div>
+								<div class="card-region-name">지역(시 구까지만 동 x)</div>
+							</div>
+							<div class="card-counts">
+								<span> 하트 0 </span>
+								ㆍ
+								<span> 채팅 0 </span>
+							</div>
+						</a>
+					</div>
+					<div class="card">
+						<a class="card-link" href="../../product/jsp/user_buyer_product.jsp"><!-- 거래창 연결 링크 필요 -->
+							<div class="card-photo">
+								<img alt="이미지 자리" src="">
+							</div>
+							<div class="card-desc">
+								<h2 class="card-title">글제목</h2>
+								<div class="card-price">가격</div>
+								<div class="card-region-name">지역(시 구까지만 동 x)</div>
+							</div>
+							<div class="card-counts">
+								<span> 하트 0 </span>
+								ㆍ
+								<span> 채팅 0 </span>
+							</div>
+						</a>
+					</div>
 					<div class="card">
 						<a class="card-link" href="../../product/jsp/user_buyer_product.jsp"><!-- 거래창 연결 링크 필요 -->
 							<div class="card-photo">
@@ -302,245 +360,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 					<div class="card">
 						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
 							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
+								<img alt="이미지 자리" src="">
 							</div>
 							<div class="card-desc">
 								<h2 class="card-title">글제목</h2>

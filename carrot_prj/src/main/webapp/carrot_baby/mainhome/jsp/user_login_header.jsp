@@ -16,13 +16,13 @@ $(function() {
      }
  });
  
- $(".searchIcon").click(function() {
-		 $("#search").submit();
- })
+ 	$("#searchIconBtn").click(function() {
+		$("#searchInputBar").submit();
+ 	})
  
 })
 </script>
-<form action="../../search/jsp/user_search.jsp" method="get" id="search">
+	<form action="../../search/jsp/user_search.jsp" method="get" id="searchInputBar">
 <div class="header">
 
 	<div class="wrap-banner">
@@ -30,10 +30,13 @@ $(function() {
 			<a href="../../mainhome/jsp/user_mainhome.jsp"><img src="../../images/logo.png" width="136" height="40"></a>
 			<a class="sale-logo" href="../../search/jsp/user_search.jsp">중고거래</a> <!-- 매물창 링크필요 -->
 		<div class="searchWrap">
-			<input type="text" placeholder="어떤 상품을 찾으시나요?" class="searchBar" name="word">
-		<button type="button" class="searchIcon" form="search"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="css-1o7j8sd">
-			<path stroke="currentColor" d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-			<path stroke="currentColor" d="M21 21L17 17" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></button></div>
+			<input type="text" placeholder="어떤 상품을 찾으시나요?" class="searchBar" name="word" autocomplete="off" value="${param.word}">
+			<button type="button" class="searchIcon" id="searchIconBtn">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="css-1o7j8sd">
+				<path stroke="currentColor" d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+				<path stroke="currentColor" d="M21 21L17 17" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+			</button>
+		</div>
 		<div class="wrap-login">
 			<a href="../../login/jsp/user_login.jsp">
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 32 32" fill="rgb(230, 126, 34)" data-svg-content="true"><g><path d="M 16,0C 10.478,0, 6,4.546, 6,10.154L 6,12 L 4,12 C 2.896,12, 2,12.896, 2,14l0,16 c0,1.104, 0.896,2, 2,2l 24,0 c 1.104,0, 2-0.896, 2-2L 30,14 c0-1.104-0.896-2-2-2l-2,0 L 26,10.154 C 26,4.546, 21.522,0, 16,0z M 8,10.154C 8,5.658, 11.588,2, 16,2s 8,3.658, 8,8.154L 24,12 L 8,12 L 8,10.154 z M 28,30L 4,30 L 4,14 l 24,0 L 28,30 z M 20,22c0-2.21-1.79-4-4-4s-4,1.79-4,4s 1.79,4, 4,4S 20,24.21, 20,22z M 16,24c-1.102,0-2-0.898-2-2 s 0.898-2, 2-2s 2,0.898, 2,2S 17.102,24, 16,24z"></path></g></svg>
@@ -53,4 +56,4 @@ $(function() {
 	</div>
 	
 </div>
-</form>
+	</form>
