@@ -105,7 +105,7 @@ public class ProfilDAO {
 				//검색된 레코드를 VO에 저장
 				ppVO = new ProfilPVO();
 				ppVO.setId(rs.getString("id"));
-				ppVO.setProduct_idx(rs.getInt("product_idx"));
+				ppVO.setProduct_idx(rs.getString("product_idx"));
 				ppVO.setThumbnail(rs.getString("thumbnail"));
 				ppVO.setTitle(rs.getString("title"));
 				ppVO.setGu(rs.getString("gu"));
@@ -157,7 +157,7 @@ public class ProfilDAO {
 				//검색된 레코드를 VO에 저장
 				pVO = new ProfilPVO();
 				pVO.setId(rs.getString("id"));
-				pVO.setProduct_idx(rs.getInt("product_idx"));
+				pVO.setProduct_idx(rs.getString("product_idx"));
 				pVO.setThumbnail(rs.getString("thumbnail"));
 				pVO.setTitle(rs.getString("title"));
 				pVO.setGu(rs.getString("gu"));
@@ -209,7 +209,7 @@ public class ProfilDAO {
 				//검색된 레코드를 VO에 저장
 				pVO = new ProfilPVO();
 				pVO.setId(rs.getString("id"));
-				pVO.setProduct_idx(rs.getInt("product_idx"));
+				pVO.setProduct_idx(rs.getString("product_idx"));
 				pVO.setThumbnail(rs.getString("thumbnail"));
 				pVO.setTitle(rs.getString("title"));
 				pVO.setGu(rs.getString("gu"));

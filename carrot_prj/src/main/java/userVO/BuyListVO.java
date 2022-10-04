@@ -3,16 +3,16 @@ package userVO;
 import java.sql.Date;
 
 public class BuyListVO {
-	private String buy_id, thumbnail, title, gu, sold_chk;
+	private String product_idx, buy_id, thumbnail, title, gu, sold_chk;
 	private Date post_date;
-	private int comment_cnt, like_cnt, product_idx, price;
+	private int comment_cnt, like_cnt,  price;
 	
 	public BuyListVO() {
 	}
 
-	public BuyListVO(String buy_id, String thumbnail, String title, String gu, String sold_chk, Date post_date,
-			int comment_cnt, int like_cnt, int product_idx, int price) {
-		super();
+	public BuyListVO(String product_idx, String buy_id, String thumbnail, String title, String gu, String sold_chk,
+			Date post_date, int comment_cnt, int like_cnt, int price) {
+		this.product_idx = product_idx;
 		this.buy_id = buy_id;
 		this.thumbnail = thumbnail;
 		this.title = title;
@@ -21,8 +21,15 @@ public class BuyListVO {
 		this.post_date = post_date;
 		this.comment_cnt = comment_cnt;
 		this.like_cnt = like_cnt;
-		this.product_idx = product_idx;
 		this.price = price;
+	}
+
+	public String getProduct_idx() {
+		return product_idx;
+	}
+
+	public void setProduct_idx(String product_idx) {
+		this.product_idx = product_idx;
 	}
 
 	public String getBuy_id() {
@@ -89,14 +96,6 @@ public class BuyListVO {
 		this.like_cnt = like_cnt;
 	}
 
-	public int getProduct_idx() {
-		return product_idx;
-	}
-
-	public void setProduct_idx(int product_idx) {
-		this.product_idx = product_idx;
-	}
-
 	public int getPrice() {
 		return price;
 	}
@@ -107,9 +106,13 @@ public class BuyListVO {
 
 	@Override
 	public String toString() {
-		return "BuyListVO [buy_id=" + buy_id + ", thumbnail=" + thumbnail + ", title=" + title + ", gu=" + gu
-				+ ", sold_chk=" + sold_chk + ", post_date=" + post_date + ", comment_cnt=" + comment_cnt + ", like_cnt="
-				+ like_cnt + ", product_idx=" + product_idx + ", price=" + price + "]";
+		return "BuyListVO [product_idx=" + product_idx + ", buy_id=" + buy_id + ", thumbnail=" + thumbnail + ", title="
+				+ title + ", gu=" + gu + ", sold_chk=" + sold_chk + ", post_date=" + post_date + ", comment_cnt="
+				+ comment_cnt + ", like_cnt=" + like_cnt + ", price=" + price + "]";
 	}
+	
+	
+
+	
 	
 }

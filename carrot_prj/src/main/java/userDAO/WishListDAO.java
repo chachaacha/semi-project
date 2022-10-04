@@ -56,7 +56,7 @@ public class WishListDAO {
 			
 			while( rs.next() ) {
 				wlVO = new WishListVO();
-				wlVO.setProduct_idx(rs.getInt("product_idx"));
+				wlVO.setProduct_idx(rs.getString("product_idx"));
 				wlVO.setThumbnail(rs.getString("thumbnail"));
 				wlVO.setTitle(rs.getString("title"));
 				wlVO.setGu(rs.getString("gu"));
@@ -94,7 +94,7 @@ public class WishListDAO {
 			pstmt = con.prepareStatement(delete.toString());
 		//4. 바인드 변수 설정
 			pstmt.setString(1, wlVO.getId());
-			pstmt.setInt(2, wlVO.getProduct_idx());
+			pstmt.setString(2, wlVO.getProduct_idx());
 			
 		//5. 쿼리문 수행 후 결과 얻기
 			deleteCnt = pstmt.executeUpdate();

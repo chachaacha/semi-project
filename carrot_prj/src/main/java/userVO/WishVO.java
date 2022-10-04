@@ -1,14 +1,13 @@
 package userVO;
 
 public class WishVO {
-	private String id;
-	private int product_idx;
+	private String id,product_idx;
 	
 	public WishVO() {
-
+		// TODO Auto-generated constructor stub
 	}
 
-	public WishVO(String id, int product_idx) {
+	public WishVO(String id, String product_idx) {
 		super();
 		this.id = id;
 		this.product_idx = product_idx;
@@ -22,11 +21,11 @@ public class WishVO {
 		this.id = id;
 	}
 
-	public int getProduct_idx() {
+	public String getProduct_idx() {
 		return product_idx;
 	}
 
-	public void setProduct_idx(int product_idx) {
+	public void setProduct_idx(String product_idx) {
 		this.product_idx = product_idx;
 	}
 
@@ -34,5 +33,7 @@ public class WishVO {
 	public String toString() {
 		return "WishVO [id=" + id + ", product_idx=" + product_idx + "]";
 	}
+	
+	
 	
 }

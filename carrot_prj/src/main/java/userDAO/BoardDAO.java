@@ -64,7 +64,7 @@ public class BoardDAO {
 				bVO.setContents(rs.getString("contents"));
 				bVO.setPrice(rs.getInt("price"));
 				bVO.setLiked_cnt(rs.getInt("liked_cnt"));
-				bVO.setProduct_idx(rs.getInt("product_idx"));
+				bVO.setProduct_idx(rs.getString("product_idx"));
 				bVO.setReport_cnt(rs.getInt("report_cnt"));
 				bVO.setPost_date(rs.getDate("post_date"));
 			}//end if
@@ -157,7 +157,7 @@ public class BoardDAO {
 			pstmt=con.prepareStatement(insertReportB);
 			pstmt.setString(1, rbVO.getId());
 			pstmt.setString(2, rbVO.getNick());
-			pstmt.setInt(3, rbVO.getProduct_idx());
+			pstmt.setString(3, rbVO.getProduct_idx());
 			pstmt.setInt(4, rbVO.getRr_idx());
 			
 			pstmt.executeUpdate();
@@ -186,8 +186,8 @@ public class BoardDAO {
 			
 			pstmt=con.prepareStatement(updateReportB.toString());
 			
-			pstmt.setInt(1, rbVO.getProduct_idx());
-			pstmt.setInt(2, rbVO.getProduct_idx());
+			pstmt.setString(1, rbVO.getProduct_idx());
+			pstmt.setString(2, rbVO.getProduct_idx());
 			
 			updateCnt=pstmt.executeUpdate();
 		}finally {
@@ -229,7 +229,7 @@ public class BoardDAO {
 				cmVO=new UserCommentVO();
 				cmVO.setComment_idx(rs.getInt("comment_idx"));
 				cmVO.setReply_idx(rs.getInt("reply_idx"));
-				cmVO.setProduct_idx(rs.getInt("product_idx"));
+				cmVO.setProduct_idx(rs.getString("product_idx"));
 				cmVO.setId(rs.getString("id"));
 				cmVO.setNick(rs.getString("nick"));
 				cmVO.setContents(rs.getString("contents"));
@@ -260,8 +260,8 @@ public class BoardDAO {
 			
 			pstmt=con.prepareStatement(insertComm);
 			
-			pstmt.setInt(1, cVO.getProduct_idx());
-			pstmt.setInt(2, cVO.getProduct_idx());
+			pstmt.setString(1, cVO.getProduct_idx());
+			pstmt.setString(2, cVO.getProduct_idx());
 			pstmt.setString(3, cVO.getId());
 			pstmt.setString(4, cVO.getNick());
 			pstmt.setString(5, cVO.getContents());
@@ -288,8 +288,8 @@ public class BoardDAO {
 			pstmt=con.prepareStatement(insertReply);
 			
 			pstmt.setInt(1, cVO.getComment_idx());
-			pstmt.setInt(2, cVO.getProduct_idx());
-			pstmt.setInt(3, cVO.getProduct_idx());
+			pstmt.setString(2, cVO.getProduct_idx());
+			pstmt.setString(3, cVO.getProduct_idx());
 			pstmt.setString(4, cVO.getId());
 			pstmt.setString(5, cVO.getNick());
 			pstmt.setString(6, cVO.getContents());
@@ -323,7 +323,7 @@ public class BoardDAO {
 			pstmt.setString(1, cVO.getNew_contents());
 			pstmt.setInt(2, cVO.getComment_idx());
 			pstmt.setInt(3, cVO.getReply_idx());
-			pstmt.setInt(4, cVO.getProduct_idx());
+			pstmt.setString(4, cVO.getProduct_idx());
 			
 			updateCnt=pstmt.executeUpdate();
 		}finally {
@@ -376,8 +376,8 @@ public class BoardDAO {
 			.append("	where product_idx=?	");
 			
 			pstmt=con.prepareStatement(updateReportC.toString());
-			pstmt.setInt(1, cVO.getProduct_idx());
-			pstmt.setInt(2, cVO.getProduct_idx());
+			pstmt.setString(1, cVO.getProduct_idx());
+			pstmt.setString(2, cVO.getProduct_idx());
 			
 			updateCnt=pstmt.executeUpdate();
 		}finally {
@@ -408,7 +408,7 @@ public class BoardDAO {
 			pstmt=con.prepareStatement(updateDropC.toString());
 			pstmt.setInt(1, cVO.getComment_idx());
 			pstmt.setInt(2, cVO.getReply_idx());
-			pstmt.setInt(3, cVO.getProduct_idx());
+			pstmt.setString(3, cVO.getProduct_idx());
 			
 			updateCnt=pstmt.executeUpdate();
 		}finally {
@@ -434,7 +434,7 @@ public class BoardDAO {
 			
 			pstmt=con.prepareStatement(insertWish);
 			pstmt.setString(1, wVO.getId());
-			pstmt.setInt(2, wVO.getProduct_idx());
+			pstmt.setString(2, wVO.getProduct_idx());
 			
 			pstmt.executeUpdate();
 		}finally {
@@ -457,7 +457,7 @@ public class BoardDAO {
 			String deleteWish = "delete from wishlist where id=? and product_idx=?";
 			pstmt=con.prepareStatement(deleteWish);
 			pstmt.setString(1, wVO.getId());
-			pstmt.setInt(2, wVO.getProduct_idx());
+			pstmt.setString(2, wVO.getProduct_idx());
 			
 			deleteCnt=pstmt.executeUpdate();
 		}finally {
@@ -518,7 +518,7 @@ public class BoardDAO {
 			
 			pstmt=con.prepareStatement(selectTrader.toString());
 			
-			pstmt.setInt(1, cVO.getProduct_idx());
+			pstmt.setString(1, cVO.getProduct_idx());
 			pstmt.setInt(2, cVO.getComment_idx());
 			pstmt.setInt(3, cVO.getReply_idx());
 			
@@ -556,7 +556,7 @@ public class BoardDAO {
 			
 			pstmt=con.prepareStatement(updateTrader.toString());
 			pstmt.setString(1,bVO.getBuy_id());
-			pstmt.setInt(2, bVO.getProduct_idx());
+			pstmt.setString(2, bVO.getProduct_idx());
 			
 			updateCnt=pstmt.executeUpdate();
 		}finally {

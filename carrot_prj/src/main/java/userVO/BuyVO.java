@@ -2,16 +2,23 @@ package userVO;
 
 public class BuyVO {
 	
-	private String buy_id, sold_chk;
-	private int product_idx;
+	private String product_idx,buy_id, sold_chk;
 	
 	public BuyVO() {
+		// TODO Auto-generated constructor stub
 	}
 
-	public BuyVO(String buy_id, String sold_chk, int product_idx) {
-		super();
+	public BuyVO(String product_idx, String buy_id, String sold_chk) {
+		this.product_idx = product_idx;
 		this.buy_id = buy_id;
 		this.sold_chk = sold_chk;
+	}
+
+	public String getProduct_idx() {
+		return product_idx;
+	}
+
+	public void setProduct_idx(String product_idx) {
 		this.product_idx = product_idx;
 	}
 
@@ -31,17 +38,12 @@ public class BuyVO {
 		this.sold_chk = sold_chk;
 	}
 
-	public int getProduct_idx() {
-		return product_idx;
-	}
-
-	public void setProduct_idx(int product_idx) {
-		this.product_idx = product_idx;
-	}
-
 	@Override
 	public String toString() {
-		return "BuyVO [buy_id=" + buy_id + ", sold_chk=" + sold_chk + ", product_idx=" + product_idx + "]";
+		return "BuyVO [product_idx=" + product_idx + ", buy_id=" + buy_id + ", sold_chk=" + sold_chk + "]";
 	}
+	
+	
+	
 	
 }

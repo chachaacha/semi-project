@@ -65,7 +65,7 @@ public class MySalesDAO {
 			
 			while( rs.next() ) {
 				mssVO = new MySalesVO();
-				mssVO.setProduct_idx(rs.getInt("product_idx"));
+				mssVO.setProduct_idx(rs.getString("product_idx"));
 				mssVO.setThumbnail(rs.getString("thumbnail"));
 				mssVO.setTitle(rs.getString("title"));
 				mssVO.setGu(rs.getString("gu"));
@@ -140,7 +140,7 @@ public class MySalesDAO {
 			pstmt = con.prepareStatement(update.toString());
 		//4. 바인드 변수에 값 설정
 			pstmt.setString(1, msVO.getReserved());
-			pstmt.setInt(2, msVO.getProduct_idx());
+			pstmt.setString(2, msVO.getProduct_idx());
 		//5. 쿼리문 수행 후 결과 얻기
 			updateCnt = pstmt.executeUpdate();
 		} finally {
@@ -181,7 +181,7 @@ public class MySalesDAO {
 			
 			while( rs.next() ) {
 				msVO = new MySalesVO();
-				msVO.setProduct_idx(rs.getInt("product_idx"));
+				msVO.setProduct_idx(rs.getString("product_idx"));
 				msVO.setThumbnail(rs.getString("thumbnail"));
 				msVO.setTitle(rs.getString("title"));
 				msVO.setGu(rs.getString("gu"));
@@ -219,7 +219,7 @@ public class MySalesDAO {
 			pstmt = con.prepareStatement(update.toString());
 		//4. 바인드 변수에 값 설정
 			pstmt.setString(1, bVO.getBuy_id());
-			pstmt.setInt(2, bVO.getProduct_idx());
+			pstmt.setString(2, bVO.getProduct_idx());
 		//5. 쿼리문 수행 후 결과 얻기
 		} finally {
 		//.6 연결 끊기

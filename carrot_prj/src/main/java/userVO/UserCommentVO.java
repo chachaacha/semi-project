@@ -3,28 +3,33 @@ package userVO;
 import java.util.Date;
 
 public class UserCommentVO {
-	private int comment_idx, reply_idx, product_idx, reported_num;
-	private String id, contents, new_contents, deleted, nick;
+	private int comment_idx, reply_idx,  reported_num;
+	private String id, product_idx, contents, new_contents, deleted, nick;
 	private Date posted_date;
 	
 	public UserCommentVO() {
 
 	}
+	
+	
+	
 
-	public UserCommentVO(int comment_idx, int reply_idx, int product_idx, int reported_num, String id, String contents,
-			String new_contents, String deleted, String nick, Date posted_date) {
-		super();
+	public UserCommentVO(int comment_idx, int reply_idx, int reported_num, String id, String product_idx,
+			String contents, String new_contents, String deleted, String nick, Date posted_date) {
 		this.comment_idx = comment_idx;
 		this.reply_idx = reply_idx;
-		this.product_idx = product_idx;
 		this.reported_num = reported_num;
 		this.id = id;
+		this.product_idx = product_idx;
 		this.contents = contents;
 		this.new_contents = new_contents;
 		this.deleted = deleted;
 		this.nick = nick;
 		this.posted_date = posted_date;
 	}
+
+
+
 
 	public int getComment_idx() {
 		return comment_idx;
@@ -42,14 +47,6 @@ public class UserCommentVO {
 		this.reply_idx = reply_idx;
 	}
 
-	public int getProduct_idx() {
-		return product_idx;
-	}
-
-	public void setProduct_idx(int product_idx) {
-		this.product_idx = product_idx;
-	}
-
 	public int getReported_num() {
 		return reported_num;
 	}
@@ -64,6 +61,14 @@ public class UserCommentVO {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getProduct_idx() {
+		return product_idx;
+	}
+
+	public void setProduct_idx(String product_idx) {
+		this.product_idx = product_idx;
 	}
 
 	public String getContents() {
@@ -106,12 +111,17 @@ public class UserCommentVO {
 		this.posted_date = posted_date;
 	}
 
+
+
+
 	@Override
 	public String toString() {
-		return "CommentVO [comment_idx=" + comment_idx + ", reply_idx=" + reply_idx + ", product_idx=" + product_idx
-				+ ", reported_num=" + reported_num + ", id=" + id + ", contents=" + contents + ", new_contents="
-				+ new_contents + ", deleted=" + deleted + ", nick=" + nick + ", posted_date=" + posted_date + "]";
+		return "UserCommentVO [comment_idx=" + comment_idx + ", reply_idx=" + reply_idx + ", reported_num="
+				+ reported_num + ", id=" + id + ", product_idx=" + product_idx + ", contents=" + contents
+				+ ", new_contents=" + new_contents + ", deleted=" + deleted + ", nick=" + nick + ", posted_date="
+				+ posted_date + "]";
 	}
 
+	
 	
 }

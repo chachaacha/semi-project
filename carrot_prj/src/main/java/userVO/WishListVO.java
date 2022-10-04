@@ -2,23 +2,30 @@ package userVO;
 
 public class WishListVO {
 	
-	private String thumbnail, title, gu, id;
-	private int product_idx, price, comment_cnt, like_cnt;
+	private String product_idx, thumbnail, title, gu, id;
+	private int  price, comment_cnt, like_cnt;
 	
 	public WishListVO() {
 	}
 
-	public WishListVO(String humbnail, String title, String gu, String id, int product_idx, int price, int comment_cnt,
-			int like_cnt) {
-		super();
-		this.thumbnail = humbnail;
+	public WishListVO(String product_idx, String thumbnail, String title, String gu, String id, int price,
+			int comment_cnt, int like_cnt) {
+		this.product_idx = product_idx;
+		this.thumbnail = thumbnail;
 		this.title = title;
 		this.gu = gu;
 		this.id = id;
-		this.product_idx = product_idx;
 		this.price = price;
 		this.comment_cnt = comment_cnt;
 		this.like_cnt = like_cnt;
+	}
+
+	public String getProduct_idx() {
+		return product_idx;
+	}
+
+	public void setProduct_idx(String product_idx) {
+		this.product_idx = product_idx;
 	}
 
 	public String getThumbnail() {
@@ -53,14 +60,6 @@ public class WishListVO {
 		this.id = id;
 	}
 
-	public int getProduct_idx() {
-		return product_idx;
-	}
-
-	public void setProduct_idx(int product_idx) {
-		this.product_idx = product_idx;
-	}
-
 	public int getPrice() {
 		return price;
 	}
@@ -87,8 +86,11 @@ public class WishListVO {
 
 	@Override
 	public String toString() {
-		return "WishListVO [thumbnail=" + thumbnail + ", title=" + title + ", gu=" + gu + ", id=" + id + ", product_idx="
-				+ product_idx + ", price=" + price + ", comment_cnt=" + comment_cnt + ", like_cnt=" + like_cnt + "]";
-	} 
+		return "WishListVO [product_idx=" + product_idx + ", thumbnail=" + thumbnail + ", title=" + title + ", gu=" + gu
+				+ ", id=" + id + ", price=" + price + ", comment_cnt=" + comment_cnt + ", like_cnt=" + like_cnt + "]";
+	}
+	 
+	
+	
 
 }

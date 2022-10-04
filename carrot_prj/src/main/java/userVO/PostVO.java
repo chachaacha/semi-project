@@ -1,35 +1,26 @@
 package userVO;
 
 public class PostVO {
-	private int product_idx, price, gu_idx, category_idx;
-	private String id, gu, category, free, title, thumbnail, contents;
+	private int  price, gu_idx, category_idx;
+	private String id, product_idx, gu, category, free, title, thumbnail, contents;
 	
 	public PostVO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PostVO(int product_idx, int price, int gu_idx, int category_idx, String id, String gu, String category,
+	public PostVO(int price, int gu_idx, int category_idx, String id, String product_idx, String gu, String category,
 			String free, String title, String thumbnail, String contents) {
-		super();
-		this.product_idx = product_idx;
 		this.price = price;
 		this.gu_idx = gu_idx;
 		this.category_idx = category_idx;
 		this.id = id;
+		this.product_idx = product_idx;
 		this.gu = gu;
 		this.category = category;
 		this.free = free;
 		this.title = title;
 		this.thumbnail = thumbnail;
 		this.contents = contents;
-	}
-
-	public int getProduct_idx() {
-		return product_idx;
-	}
-
-	public void setProduct_idx(int product_idx) {
-		this.product_idx = product_idx;
 	}
 
 	public int getPrice() {
@@ -62,6 +53,14 @@ public class PostVO {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getProduct_idx() {
+		return product_idx;
+	}
+
+	public void setProduct_idx(String product_idx) {
+		this.product_idx = product_idx;
 	}
 
 	public String getGu() {
@@ -114,9 +113,13 @@ public class PostVO {
 
 	@Override
 	public String toString() {
-		return "PostVO [product_idx=" + product_idx + ", price=" + price + ", gu_idx=" + gu_idx + ", category_idx="
-				+ category_idx + ", id=" + id + ", gu=" + gu + ", category=" + category + ", free=" + free + ", title="
-				+ title + ", thumbnail=" + thumbnail + ", contents=" + contents + "]";
+		return "PostVO [price=" + price + ", gu_idx=" + gu_idx + ", category_idx=" + category_idx + ", id=" + id
+				+ ", product_idx=" + product_idx + ", gu=" + gu + ", category=" + category + ", free=" + free
+				+ ", title=" + title + ", thumbnail=" + thumbnail + ", contents=" + contents + "]";
 	}
+	
+	
+
+	
 
 }

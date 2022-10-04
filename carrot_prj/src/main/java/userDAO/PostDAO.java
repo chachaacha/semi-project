@@ -139,7 +139,7 @@ public class PostDAO {
 			
 			while( rs.next() ) {
 				iVO = new ImgVO();
-				iVO.setProduct_idx(rs.getInt("product_idx"));
+				iVO.setProduct_idx(rs.getString("product_idx"));
 				iVO.setProduct_img(rs.getString("product_img"));
 				iVO.setImg_num(rs.getInt("img_num"));
 				
@@ -178,13 +178,13 @@ public class PostDAO {
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정.
 			pstmt.setString(1, pVO.getId());
-			pstmt.setInt(2, pVO.getProduct_idx());
+			pstmt.setString(2, pVO.getProduct_idx());
 		//5. 쿼리문 생성 후 결과 얻기.
 			rs = pstmt.executeQuery();
 			
 			while( rs.next() ) {
 				pVO = new PostVO();
-				pVO.setProduct_idx(rs.getInt("product_idx"));
+				pVO.setProduct_idx(rs.getString("product_idx"));
 				pVO.setGu(rs.getString("gu"));
 				pVO.setCategory(rs.getString("category"));
 				pVO.setFree(rs.getString("free"));
@@ -221,7 +221,7 @@ public class PostDAO {
 			
 			pstmt = con.prepareStatement(insert.toString());
 		//4. 바인드 변수에 값 설정
-			pstmt.setInt(1, iVO.getProduct_idx());
+			pstmt.setString(1, iVO.getProduct_idx());
 			pstmt.setString(2, iVO.getProduct_img());
 			pstmt.setInt(3, iVO.getImg_num());
 		//5. 쿼리문 수행 후 결과 얻기
@@ -295,7 +295,7 @@ public int updatePost(PostVO pVO) throws SQLException {
 		pstmt.setString(5, pVO.getTitle());
 		pstmt.setString(6, pVO.getThumbnail());
 		pstmt.setString(7, pVO.getContents());
-		pstmt.setInt(8, pVO.getProduct_idx());
+		pstmt.setString(8, pVO.getProduct_idx());
 	//5. 쿼리문 수행 후 결과 얻기
 		updateCnt = pstmt.executeUpdate();
 	} finally {

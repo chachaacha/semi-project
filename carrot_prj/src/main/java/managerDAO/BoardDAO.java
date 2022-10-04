@@ -65,7 +65,7 @@ private static BoardDAO bDAO;
 				bVO.setContents(rs.getString("contents"));
 				bVO.setPrice(rs.getInt("price"));
 				bVO.setLiked_cnt(rs.getInt("liked_cnt"));
-				bVO.setProduct_idx(rs.getInt("product_idx"));
+				bVO.setProduct_idx(rs.getString("product_idx"));
 				bVO.setReport_cnt(rs.getInt("report_cnt"));
 				bVO.setPost_date(rs.getDate("post_date"));
 			}//end if
@@ -151,7 +151,7 @@ private static BoardDAO bDAO;
 				mcmVO=new MangerCommentVO();
 				mcmVO.setComment_idx(rs.getInt("comment_idx"));
 				mcmVO.setReply_idx(rs.getInt("reply_idx"));
-				mcmVO.setProduct_idx(rs.getInt("product_idx"));
+				mcmVO.setProduct_idx(rs.getString("product_idx"));
 				mcmVO.setId(rs.getString("id"));
 				mcmVO.setNick(rs.getString("nick"));
 				mcmVO.setContents(rs.getString("contents"));
@@ -194,7 +194,7 @@ private static BoardDAO bDAO;
 			pstmt=con.prepareStatement(updateDropC.toString());
 			pstmt.setInt(1, mcVO.getComment_idx());
 			pstmt.setInt(2, mcVO.getReply_idx());
-			pstmt.setInt(3, mcVO.getProduct_idx());
+			pstmt.setString(3, mcVO.getProduct_idx());
 			
 			updateCnt=pstmt.executeUpdate();
 		}finally {
@@ -222,8 +222,8 @@ private static BoardDAO bDAO;
 			.append("	where product_idx=?	");
 			
 			pstmt=con.prepareStatement(updateReportC.toString());
-			pstmt.setInt(1, mcVO.getProduct_idx());
-			pstmt.setInt(2, mcVO.getProduct_idx());
+			pstmt.setString(1, mcVO.getProduct_idx());
+			pstmt.setString(2, mcVO.getProduct_idx());
 			
 			updateCnt=pstmt.executeUpdate();
 		}finally {

@@ -57,7 +57,7 @@ public class MyCommDAO {
 			while( rs.next() ) {
 				mcVO = new MyCommVO();
 				mcVO.setId(rs.getString("id"));
-				mcVO.setProduct_idx(rs.getInt("product_idx"));
+				mcVO.setProduct_idx(rs.getString("product_idx"));
 				mcVO.setComment_idx(rs.getInt("comment_idx"));
 				mcVO.setReply_idx(rs.getInt("reply_idx"));
 				mcVO.setTitle(rs.getString("title"));
@@ -97,7 +97,7 @@ public class MyCommDAO {
 				//4. 바인드 변수에 값 설정
 					pstmt.setString(1, mcVO.getRe_contents());
 					pstmt.setString(2, mcVO.getId());
-					pstmt.setInt(3, mcVO.getProduct_idx());
+					pstmt.setString(3, mcVO.getProduct_idx());
 					pstmt.setInt(4, mcVO.getComment_idx());
 					pstmt.setInt(5, mcVO.getReply_idx());
 				//5. 쿼리문 수행 후 결과 얻기

@@ -1,15 +1,14 @@
 package userVO;
 
 public class ReportBVO {
-	private String id, nick;
-	private int product_idx, rr_idx;
+	private String id, nick, product_idx;
+	private int  rr_idx;
 	
 	public ReportBVO() {
 
 	}
 
-	public ReportBVO(String id, String nick, int product_idx, int rr_idx) {
-		super();
+	public ReportBVO(String id, String nick, String product_idx, int rr_idx) {
 		this.id = id;
 		this.nick = nick;
 		this.product_idx = product_idx;
@@ -32,11 +31,11 @@ public class ReportBVO {
 		this.nick = nick;
 	}
 
-	public int getProduct_idx() {
+	public String getProduct_idx() {
 		return product_idx;
 	}
 
-	public void setProduct_idx(int product_idx) {
+	public void setProduct_idx(String product_idx) {
 		this.product_idx = product_idx;
 	}
 
@@ -52,5 +51,7 @@ public class ReportBVO {
 	public String toString() {
 		return "ReportBVO [id=" + id + ", nick=" + nick + ", product_idx=" + product_idx + ", rr_idx=" + rr_idx + "]";
 	}
+
+	
 
 }

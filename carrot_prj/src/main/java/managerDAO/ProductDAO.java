@@ -45,7 +45,7 @@ public class ProductDAO {
 			ProductVO pVO = null;
 			while(rs.next()) {
 				pVO = new ProductVO();
-				pVO.setProduct_idx(rs.getInt("product_idx"));
+				pVO.setProduct_idx(rs.getString("product_idx"));
 				pVO.setTitle(rs.getString("title"));
 				pVO.setId(rs.getString("id"));
 				pVO.setCategory(rs.getString("category"));
@@ -94,7 +94,7 @@ public class ProductDAO {
 			ProductVO pVO = null;
 			while(rs.next()) {
 				pVO = new ProductVO();
-				pVO.setProduct_idx(rs.getInt("product_idx"));
+				pVO.setProduct_idx(rs.getString("product_idx"));
 				pVO.setTitle(rs.getString("title"));
 				pVO.setId(rs.getString("id"));
 				pVO.setCategory(rs.getString("category"));
@@ -141,7 +141,7 @@ public class ProductDAO {
 			ProductVO pVO = null;
 			while(rs.next()) {
 				pVO = new ProductVO();
-				pVO.setProduct_idx(rs.getInt("product_idx"));
+				pVO.setProduct_idx(rs.getString("product_idx"));
 				pVO.setTitle(rs.getString("title"));
 				pVO.setId(rs.getString("id"));
 				pVO.setCategory(rs.getString("category"));
@@ -189,7 +189,7 @@ public class ProductDAO {
 			ProductVO pVO = null;
 			while(rs.next()) {
 				pVO = new ProductVO();
-				pVO.setProduct_idx(rs.getInt("product_idx"));
+				pVO.setProduct_idx(rs.getString("product_idx"));
 				pVO.setTitle(rs.getString("title"));
 				pVO.setId(rs.getString("id"));
 				pVO.setCategory(rs.getString("category"));
@@ -229,7 +229,7 @@ public class ProductDAO {
 			ProductVO pVO = null;
 			while(rs.next()) {
 				pVO = new ProductVO();
-				pVO.setProduct_idx(rs.getInt("product_idx"));
+				pVO.setProduct_idx(rs.getString("product_idx"));
 				pVO.setTitle(rs.getString("title"));
 				pVO.setId(rs.getString("id"));
 				pVO.setCategory(rs.getString("category"));

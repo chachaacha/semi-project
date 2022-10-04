@@ -3,27 +3,20 @@ package managerVO;
 import java.util.Date;
 
 public class BoardVO {
-	private String id, nick, gu, title, category, contents;
-	private int price, liked_cnt, product_idx, report_cnt;
+	private String product_idx, id, nick, gu, title, category, contents;
+	private int price, liked_cnt, report_cnt;
 	private Date post_date;
 	
 	public BoardVO() {
 
 	}
-	
-	public BoardVO(String id, String nick, String gu, String title, String category, String contents, int price,
-			int liked_cnt, int product_idx, int report_cnt, Date post_date) {
-		this.id = id;
-		this.nick = nick;
-		this.gu = gu;
-		this.title = title;
-		this.category = category;
-		this.contents = contents;
-		this.price = price;
-		this.liked_cnt = liked_cnt;
+
+	public String getProduct_idx() {
+		return product_idx;
+	}
+
+	public void setProduct_idx(String product_idx) {
 		this.product_idx = product_idx;
-		this.report_cnt = report_cnt;
-		this.post_date = post_date;
 	}
 
 	public String getId() {
@@ -90,14 +83,6 @@ public class BoardVO {
 		this.liked_cnt = liked_cnt;
 	}
 
-	public int getProduct_idx() {
-		return product_idx;
-	}
-
-	public void setProduct_idx(int product_idx) {
-		this.product_idx = product_idx;
-	}
-
 	public int getReport_cnt() {
 		return report_cnt;
 	}
@@ -116,10 +101,11 @@ public class BoardVO {
 
 	@Override
 	public String toString() {
-		return "BoardVO [id=" + id + ", nick=" + nick + ", gu=" + gu + ", title=" + title + ", category=" + category
-				+ ", contents=" + contents + ", price=" + price + ", liked_cnt=" + liked_cnt + ", product_idx="
-				+ product_idx + ", report_cnt=" + report_cnt + ", post_date=" + post_date + "]";
+		return "BoardVO [product_idx=" + product_idx + ", id=" + id + ", nick=" + nick + ", gu=" + gu + ", title="
+				+ title + ", category=" + category + ", contents=" + contents + ", price=" + price + ", liked_cnt="
+				+ liked_cnt + ", report_cnt=" + report_cnt + ", post_date=" + post_date + "]";
 	}
 	
 	
+
 }

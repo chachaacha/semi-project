@@ -3,17 +3,17 @@ package userVO;
 import java.sql.Date;
 
 public class MySalesVO {
-	private String id, thumbnail, title, gu, reserved, sold_chk;
+	private String id, product_idx, thumbnail, title, gu, reserved, sold_chk;
 	private Date post_date;
-	private int comment_cnt, like_cnt, product_idx, price;
+	private int comment_cnt, like_cnt, price;
 	
 	public MySalesVO() {
 	}
 
-	public MySalesVO(String id, String thumbnail, String title, String gu, String reserved, String sold_chk,
-			Date post_date, int comment_cnt, int like_cnt, int product_idx, int price) {
-		super();
+	public MySalesVO(String id, String product_idx, String thumbnail, String title, String gu, String reserved,
+			String sold_chk, Date post_date, int comment_cnt, int like_cnt, int price) {
 		this.id = id;
+		this.product_idx = product_idx;
 		this.thumbnail = thumbnail;
 		this.title = title;
 		this.gu = gu;
@@ -22,7 +22,6 @@ public class MySalesVO {
 		this.post_date = post_date;
 		this.comment_cnt = comment_cnt;
 		this.like_cnt = like_cnt;
-		this.product_idx = product_idx;
 		this.price = price;
 	}
 
@@ -32,6 +31,14 @@ public class MySalesVO {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getProduct_idx() {
+		return product_idx;
+	}
+
+	public void setProduct_idx(String product_idx) {
+		this.product_idx = product_idx;
 	}
 
 	public String getThumbnail() {
@@ -98,14 +105,6 @@ public class MySalesVO {
 		this.like_cnt = like_cnt;
 	}
 
-	public int getProduct_idx() {
-		return product_idx;
-	}
-
-	public void setProduct_idx(int product_idx) {
-		this.product_idx = product_idx;
-	}
-
 	public int getPrice() {
 		return price;
 	}
@@ -116,8 +115,12 @@ public class MySalesVO {
 
 	@Override
 	public String toString() {
-		return "MySalesVO [id=" + id + ", thumbnail=" + thumbnail + ", title=" + title + ", gu=" + gu + ", reserved="
-				+ reserved + ", buy_chk=" + sold_chk + ", post_date=" + post_date + ", comment_cnt=" + comment_cnt
-				+ ", like_cnt=" + like_cnt + ", product_idx=" + product_idx + ", price=" + price + "]";
+		return "MySalesVO [id=" + id + ", product_idx=" + product_idx + ", thumbnail=" + thumbnail + ", title=" + title
+				+ ", gu=" + gu + ", reserved=" + reserved + ", sold_chk=" + sold_chk + ", post_date=" + post_date
+				+ ", comment_cnt=" + comment_cnt + ", like_cnt=" + like_cnt + ", price=" + price + "]";
 	}
+	
+	
+
+	
 }
