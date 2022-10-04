@@ -26,6 +26,42 @@ public class ProductDAO {
 		return pDAO;
 	}
 	
+	
+	public List<ProductVO> selectProduct() throws SQLException {
+		DbConnection db = DbConnection.getInstance();
+		Connection con = null;
+		PreparedStatement pstmt =null;
+		ResultSet rs = null;
+		List<ProductVO> list = new ArrayList<>();
+		try {
+			con = db.getConn();
+			StringBuffer sb = new StringBuffer();
+			sb.append(" select product_idx, title, id, (select category from product_category where category_idx = p.category_idx ) category, decode(sold_check,'Y','거래완료','N','판매중') sold_check, posted_date, report_cnt ")
+			  .append(" from product p ");
+
+			pstmt = con.prepareStatement(sb.toString());
+			rs = pstmt.executeQuery();
+			
+			ProductVO pVO = null;
+			while(rs.next()) {
+				pVO = new ProductVO();
+				pVO.setProduct_idx(rs.getInt("product_idx"));
+				pVO.setTitle(rs.getString("title"));
+				pVO.setId(rs.getString("id"));
+				pVO.setCategory(rs.getString("category"));
+				pVO.setSold_check(rs.getString("sold_check"));
+				pVO.setPosted_date(rs.getDate("posted_date"));
+				pVO.setReport_cnt(rs.getInt("report_cnt"));
+				list.add(pVO);
+			}
+		} finally {
+			db.dbClose(rs, pstmt, con);
+		}
+		return list;
+	}
+	
+	
+	
 	/**
 	 * 전체상품리스트
 	 * @param psVO
@@ -41,7 +77,7 @@ public class ProductDAO {
 		try {
 			con = db.getConn();
 			StringBuffer sb = new StringBuffer();
-			sb.append(" select title, id, (select category from product_categroy where category_idx = p.category_idx ) category, decode(sold_checked,'Y','거래완료','N','판매중') sold_checked, posted_date, reported_cnt ")
+			sb.append(" select product_idx, title, id, (select category from product_category where category_idx = p.category_idx ) category, decode(sold_check,'Y','거래완료','N','판매중') sold_check, posted_date, report_cnt ")
 			  .append(" from product p ")
 			  .append(" where 1=1 ");
 			if(psVO.getCategoryFlag() != -1) {
@@ -58,12 +94,13 @@ public class ProductDAO {
 			ProductVO pVO = null;
 			while(rs.next()) {
 				pVO = new ProductVO();
+				pVO.setProduct_idx(rs.getInt("product_idx"));
 				pVO.setTitle(rs.getString("title"));
 				pVO.setId(rs.getString("id"));
 				pVO.setCategory(rs.getString("category"));
-				pVO.setSold_checked(rs.getString("sold_checked"));
+				pVO.setSold_check(rs.getString("sold_check"));
 				pVO.setPosted_date(rs.getDate("posted_date"));
-				pVO.setReported_cnt(rs.getInt("reported_cnt"));
+				pVO.setReport_cnt(rs.getInt("report_cnt"));
 				list.add(pVO);
 			}
 		} finally {
@@ -86,10 +123,10 @@ public class ProductDAO {
 		try {
 			con = db.getConn();
 			StringBuffer sb = new StringBuffer();
-			sb.append(" select title, id, (select category from product_categroy where category_idx = p.category_idx ) category, decode(sold_checked,'Y','거래완료','N','판매중') sold_checked, posted_date, reported_cnt ")
+			sb.append(" select product_idx, title, id, (select category from product_category where category_idx = p.category_idx ) category, decode(sold_check,'Y','거래완료','N','판매중') sold_check, posted_date, report_cnt ")
 			  .append(" from product p ")
 			  .append(" where 1=1 ")
-			  .append(" and sold_checked = 'N' ");
+			  .append(" and sold_check = 'N' ");
 			if(psVO.getCategoryFlag() != -1) {
 				sb.append(" and category_idx=? ");
 			} 
@@ -104,12 +141,13 @@ public class ProductDAO {
 			ProductVO pVO = null;
 			while(rs.next()) {
 				pVO = new ProductVO();
+				pVO.setProduct_idx(rs.getInt("product_idx"));
 				pVO.setTitle(rs.getString("title"));
 				pVO.setId(rs.getString("id"));
 				pVO.setCategory(rs.getString("category"));
-				pVO.setSold_checked(rs.getString("sold_checked"));
+				pVO.setSold_check(rs.getString("sold_check"));
 				pVO.setPosted_date(rs.getDate("posted_date"));
-				pVO.setReported_cnt(rs.getInt("reported_cnt"));
+				pVO.setReport_cnt(rs.getInt("report_cnt"));
 				list.add(pVO);
 			}
 			return list;
@@ -134,10 +172,10 @@ public class ProductDAO {
 		try {
 			con = db.getConn();
 			StringBuffer sb = new StringBuffer();
-			sb.append(" select title, id, (select category from product_categroy where category_idx = p.category_idx ) category, decode(sold_checked,'Y','거래완료','N','판매중') sold_checked, posted_date, reported_cnt ")
+			sb.append(" select product_idx, title, id, (select category from product_category where category_idx = p.category_idx ) category, decode(sold_check,'Y','거래완료','N','판매중') sold_check, posted_date, report_cnt ")
 			  .append(" from product p ")
 			  .append(" where 1=1 ")
-			  .append(" and sold_checked = 'Y' ");
+			  .append(" and sold_check = 'Y' ");
 			if(psVO.getCategoryFlag() != -1) {
 				sb.append(" and category_idx=? ");
 			} 
@@ -151,12 +189,13 @@ public class ProductDAO {
 			ProductVO pVO = null;
 			while(rs.next()) {
 				pVO = new ProductVO();
+				pVO.setProduct_idx(rs.getInt("product_idx"));
 				pVO.setTitle(rs.getString("title"));
 				pVO.setId(rs.getString("id"));
 				pVO.setCategory(rs.getString("category"));
-				pVO.setSold_checked(rs.getString("sold_checked"));
+				pVO.setSold_check(rs.getString("sold_check"));
 				pVO.setPosted_date(rs.getDate("posted_date"));
-				pVO.setReported_cnt(rs.getInt("reported_cnt"));
+				pVO.setReport_cnt(rs.getInt("report_cnt"));
 				list.add(pVO);
 			}
 		} finally {
@@ -180,7 +219,7 @@ public class ProductDAO {
 		try {
 			con = db.getConn();
 			StringBuffer sb = new StringBuffer();
-			sb.append(" select title, id, (select category from product_categroy where category_idx = p.category_idx ) category, decode(sold_checked,'Y','거래완료','N','판매중') sold_checked, posted_date, reported_cnt ")
+			sb.append(" select product_idx, title, id, (select category from product_category where category_idx = p.category_idx ) category, decode(sold_check,'Y','거래완료','N','판매중') sold_check, posted_date, report_cnt ")
 			  .append(" from product p ")
 			  .append(" where title like '%'||?||'%' ");
 			pstmt = con.prepareStatement(sb.toString());
@@ -190,12 +229,13 @@ public class ProductDAO {
 			ProductVO pVO = null;
 			while(rs.next()) {
 				pVO = new ProductVO();
+				pVO.setProduct_idx(rs.getInt("product_idx"));
 				pVO.setTitle(rs.getString("title"));
 				pVO.setId(rs.getString("id"));
 				pVO.setCategory(rs.getString("category"));
-				pVO.setSold_checked(rs.getString("sold_checked"));
+				pVO.setSold_check(rs.getString("sold_check"));
 				pVO.setPosted_date(rs.getDate("posted_date"));
-				pVO.setReported_cnt(rs.getInt("reported_cnt"));
+				pVO.setReport_cnt(rs.getInt("report_cnt"));
 				list.add(pVO);
 			}
 		} finally {

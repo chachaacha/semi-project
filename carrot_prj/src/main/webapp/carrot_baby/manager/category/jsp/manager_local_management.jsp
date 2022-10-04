@@ -12,7 +12,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
 </head>
+<% 
+// 세션만료시 로그인화면으로 복귀
+	if(session.getAttribute("manager_id")==null) {
+		response.sendRedirect("../../login/jsp/manager_login.jsp");
+	}
+%>
 <body>
+
 <div class="wrap">
 
 <!-- header -->

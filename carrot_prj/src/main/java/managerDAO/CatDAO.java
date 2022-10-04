@@ -40,7 +40,8 @@ public class CatDAO {
 		StringBuilder sb = new StringBuilder();
 		sb
 		.append("	select category, category_idx	")
-		.append("	from product_category	");
+		.append("	from product_category	")
+		.append("   order by category_idx ");
 		
 		pstmt=con.prepareStatement(sb.toString());
 		

@@ -1,3 +1,8 @@
+<%@page import="managerVO.ProductVO"%>
+<%@page import="managerDAO.ProductDAO"%>
+<%@page import="managerVO.CatVO"%>
+<%@page import="java.util.List"%>
+<%@page import="managerDAO.CatDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -28,9 +33,29 @@ $(function() {
 		window.open("manager_pm_product_popup.jsp","product_popup",
 				"width=780,height=930,top=0,left=560");
 	})
+	
+	
 })
 </script>
 </head>
+<% 
+// 세션만료시 로그인화면으로 복귀
+	if(session.getAttribute("manager_id")==null) {
+		response.sendRedirect("../../login/jsp/manager_login.jsp");
+	}
+%>
+<jsp:useBean id="cVO" class="managerVO.CatVO"></jsp:useBean>
+<jsp:useBean id="pVO" class="managerVO.ProductVO"></jsp:useBean>
+<% 
+  	// 상품카테고리 불러오기
+	CatDAO cDAO = CatDAO.getInstance();  
+	List<CatVO> catList = cDAO.selectCat();	
+	
+	// 상품목록
+	ProductDAO pDAO = ProductDAO.getInstance();
+	List<ProductVO> proList = pDAO.selectProduct();
+%>
+ 
 <body>
 <form name="mpc">
 <div class="wrap">
@@ -94,30 +119,22 @@ $(function() {
 				<div class="pm-bottom">
 					<select name="category" class="category-select">
 							<option value="">카테고리</option>
-							<option value="출산/육아용품">출산/육아용품</option>
-							<option value="유아동안전/실내용품">유아동안전/실내용품</option>
-							<option value="유아동의류">유아동의류</option>
-							<option value="유아동잡화">유아동잡화</option>
-							<option value="유아동가구">유아동가구</option>
-							<option value="유아동교구/완구">유아동교구/완구</option>
-							<option value="기타 유아동용품">기타 유아동용품</option>
+					<% for(int i = 0; i<catList.size(); i++){
+							 cVO = catList.get(i);  %>
+							<option value="<%= cVO.getCategory_idx()%>"><%= cVO.getCategory() %></option>
+					<% } %>
+			
 					</select>
+					
+					
 					<div class="table-wrap">
 						 <table class="table">
 						    <caption>표 제목</caption>
 						    <tr><th><input type="checkbox" name="checkbox" class="table-check"></th><th class="table-title">제목</th><th>작성자</th><th>상품카테고리</th><th>상태</th><th>등록일</th><th>신고수</th></tr>
-						    <tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title title-link">라멘 지식을 전수합니다</td><td>juju1234</td><td>출산/육아용품</td><td>판매중</td><td>2022-09-22</td><td>3</td></tr>
-						    <tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title "></td><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title"></td><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title"></td><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title"></td><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title"></td><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title"></td><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title"></td><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title"></td><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title"></td><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title"></td><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title"></td><td></td><td></td><td></td><td></td><td></td></tr>
+							<% for(int i = 0 ; i < proList.size() ; i++){ 
+								pVO = proList.get(i); %>
+						    	<tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title "><%= pVO.getTitle() %></td><td><%= pVO.getId() %></td><td><%= pVO.getCategory() %></td><td><%= pVO.getSold_check() %></td><td><%= pVO.getPosted_date() %></td><td><%= pVO.getReport_cnt() %></td></tr>
+						    <% } %>
 						  </table>  
 					</div>
 				</div>

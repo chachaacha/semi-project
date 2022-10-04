@@ -3,22 +3,13 @@ package managerVO;
 import java.sql.Date;
 
 public class ProductVO {
-	private String title, id, category, sold_checked;
+	private String title, id, category, sold_check;
 	private Date posted_date;
-	private int reported_cnt;
+	private int report_cnt;
+	private long product_idx;
 	
 	public ProductVO() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public ProductVO(String title, String id, String category, String sold_checked, Date posted_date,
-			int reported_cnt) {
-		this.title = title;
-		this.id = id;
-		this.category = category;
-		this.sold_checked = sold_checked;
-		this.posted_date = posted_date;
-		this.reported_cnt = reported_cnt;
 	}
 
 	public String getTitle() {
@@ -45,12 +36,12 @@ public class ProductVO {
 		this.category = category;
 	}
 
-	public String getSold_checked() {
-		return sold_checked;
+	public String getSold_check() {
+		return sold_check;
 	}
 
-	public void setSold_checked(String sold_checked) {
-		this.sold_checked = sold_checked;
+	public void setSold_check(String sold_check) {
+		this.sold_check = sold_check;
 	}
 
 	public Date getPosted_date() {
@@ -61,21 +52,27 @@ public class ProductVO {
 		this.posted_date = posted_date;
 	}
 
-	public int getReported_cnt() {
-		return reported_cnt;
+	public int getReport_cnt() {
+		return report_cnt;
 	}
 
-	public void setReported_cnt(int reported_cnt) {
-		this.reported_cnt = reported_cnt;
+	public void setReport_cnt(int report_cnt) {
+		this.report_cnt = report_cnt;
+	}
+
+	public long getProduct_idx() {
+		return product_idx;
+	}
+
+	public void setProduct_idx(int product_idx) {
+		this.product_idx = product_idx;
 	}
 
 	@Override
 	public String toString() {
-		return "ProductVO [title=" + title + ", id=" + id + ", category=" + category + ", sold_checked=" + sold_checked
-				+ ", posted_date=" + posted_date + ", reported_cnt=" + reported_cnt + "]";
+		return "ProductVO [title=" + title + ", id=" + id + ", category=" + category + ", sold_check=" + sold_check
+				+ ", posted_date=" + posted_date + ", report_cnt=" + report_cnt + ", product_idx=" + product_idx + "]";
 	}
-	
-	
-	
 
+	
 }
