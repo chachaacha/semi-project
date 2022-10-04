@@ -15,6 +15,24 @@
 <link rel="stylesheet" type="text/css" href="../css/manager_product_category.css"/>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<% 
+// 세션만료시 로그인화면으로 복귀
+	if(session.getAttribute("manager_id")==null) {
+		response.sendRedirect("../../login/jsp/manager_login.jsp");
+	}
+%>
+<jsp:useBean id="cVO" class="managerVO.CatVO"></jsp:useBean>
+<jsp:useBean id="pVO" class="managerVO.ProductVO"></jsp:useBean>
+<jsp:useBean id="psVO" class="managerVO.ProductSearchVO"></jsp:useBean>
+<% 
+  	// 상품카테고리 불러오기
+	CatDAO cDAO = CatDAO.getInstance();  
+	List<CatVO> catList = cDAO.selectCat();	
+	
+	// 상품목록
+	ProductDAO pDAO = ProductDAO.getInstance();
+	List<ProductVO> proList = pDAO.selectProduct();
+%>
 <script type="text/javascript">
 $(function() {
 	$(".align-btn").click(function() {
@@ -34,28 +52,56 @@ $(function() {
 				"width=780,height=930,top=0,left=560");
 	})
 	
+	//검색버튼 눌렀을 시
+	$("#searchBtn").click(function(){
+		var word =  $("#searchWord").val();//폼 입력값을 불러와서 
+		location.href="manager_product_category.jsp?searchWord="+word+""; // 쿼리 스트링을 통해 웹 파라메터로 받고 
+		<% proList = pDAO.selectKeywordProduct(request.getParameter("searchWord")); %> // 그 값을 사용
+	});
 	
-})
+	//전체버튼 눌렀을 시
+ 	$("#totalBtn").click(function(){
+		var catFlag = $("#categorySelect").val();
+		location.href="manager_product_category.jsp?category="+catFlag+"";
+		<% 
+			if(request.getParameter("category") != null) {// 이거왜 하는 건지 모르겠다.//질문하기
+				psVO.setCategoryFlag(Integer.parseInt(request.getParameter("category")));
+				proList = pDAO.selectAllProduct(psVO);
+			}
+		%>
+	}); 
+	
+ 	//판매중버튼 눌렀을 시
+ 	$("#sellingBtn").click(function(){
+		var catFlag = $("#categorySelect").val();
+		location.href="manager_product_category.jsp?category="+catFlag+"";
+		<% 
+			if(request.getParameter("category") != null) {
+				psVO.setCategoryFlag(Integer.parseInt(request.getParameter("category")));
+				proList = pDAO.selectOnSaleProduct(psVO);
+			}
+		%>
+	});  
+ 	
+ 	//거래완료버튼 눌렀을 시
+ 	$("#soldoutBtn").click(function(){
+		var catFlag = $("#categorySelect").val();
+		location.href="manager_product_category.jsp?category="+catFlag+"";
+		<% 
+			if(request.getParameter("category") != null) {
+				psVO.setCategoryFlag(Integer.parseInt(request.getParameter("category")));
+				proList = pDAO.selectSoldProduct(psVO);
+			}
+		%>
+	});  
+	
+	
+});
+
+
 </script>
 </head>
-<% 
-// 세션만료시 로그인화면으로 복귀
-	if(session.getAttribute("manager_id")==null) {
-		response.sendRedirect("../../login/jsp/manager_login.jsp");
-	}
-%>
-<jsp:useBean id="cVO" class="managerVO.CatVO"></jsp:useBean>
-<jsp:useBean id="pVO" class="managerVO.ProductVO"></jsp:useBean>
-<% 
-  	// 상품카테고리 불러오기
-	CatDAO cDAO = CatDAO.getInstance();  
-	List<CatVO> catList = cDAO.selectCat();	
-	
-	// 상품목록
-	ProductDAO pDAO = ProductDAO.getInstance();
-	List<ProductVO> proList = pDAO.selectProduct();
-%>
- 
+
 <body>
 <form name="mpc">
 <div class="wrap">
@@ -83,9 +129,9 @@ $(function() {
 		
 			<!-- 상단 필터 -->
 			<div class="pm_btn-wrap">
-				<button type="button" class="pm_btn">전체</button>
-				<button type="button" class="pm_btn">판매중</button>
-				<button type="button" class="pm_btn">거래완료</button>
+				<button type="button" class="pm_btn" id="totalBtn">전체</button>
+				<button type="button" class="pm_btn" id="sellingBtn">판매중</button>
+				<button type="button" class="pm_btn" id="soldoutBtn">거래완료</button>
 			</div>
 			
 			<div class="pm">
@@ -107,8 +153,8 @@ $(function() {
 						</div>
 					</div>
 					<div class="search-wrap">
-						<input type="text" class="search-txt" placeholder="제목을 입력하세요.">
-						<button type="button" class="search-bar">
+						<input hidden="hidden"><input type="text" class="search-txt" placeholder="제목을 입력하세요." name="searchWord" id="searchWord">
+						<button type="button" class="search-bar" id="searchBtn">
 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 							  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 							</svg>
@@ -117,8 +163,8 @@ $(function() {
 				</div>
 				<!-- 오른쪽 -->
 				<div class="pm-bottom">
-					<select name="category" class="category-select">
-							<option value="">카테고리</option>
+					<select name="category" class="category-select" id="categorySelect">
+							<option value="0">전체</option>
 					<% for(int i = 0; i<catList.size(); i++){
 							 cVO = catList.get(i);  %>
 							<option value="<%= cVO.getCategory_idx()%>"><%= cVO.getCategory() %></option>
@@ -131,9 +177,10 @@ $(function() {
 						 <table class="table">
 						    <caption>표 제목</caption>
 						    <tr><th><input type="checkbox" name="checkbox" class="table-check"></th><th class="table-title">제목</th><th>작성자</th><th>상품카테고리</th><th>상태</th><th>등록일</th><th>신고수</th></tr>
-							<% for(int i = 0 ; i < proList.size() ; i++){ 
+							<% 
+								for(int i = 0 ; i < proList.size() ; i++){ 
 								pVO = proList.get(i); %>
-						    	<tr><td><input type="checkbox" name="checkbox" class="table-check"></td><td class="table-title "><%= pVO.getTitle() %></td><td><%= pVO.getId() %></td><td><%= pVO.getCategory() %></td><td><%= pVO.getSold_check() %></td><td><%= pVO.getPosted_date() %></td><td><%= pVO.getReport_cnt() %></td></tr>
+						    	<tr><td><input type="checkbox" name="checkbox" class="table-check" value="<%= pVO.getProduct_idx() %>"></td><td class="table-title "><%= pVO.getTitle() %></td><td><%= pVO.getId() %></td><td><%= pVO.getCategory() %></td><td><%= pVO.getSold_check() %></td><td><%= pVO.getPosted_date() %></td><td><%= pVO.getReport_cnt() %></td></tr>
 						    <% } %>
 						  </table>  
 					</div>

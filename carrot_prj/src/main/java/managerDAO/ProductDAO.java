@@ -80,13 +80,13 @@ public class ProductDAO {
 			sb.append(" select product_idx, title, id, (select category from product_category where category_idx = p.category_idx ) category, decode(sold_check,'Y','거래완료','N','판매중') sold_check, posted_date, report_cnt ")
 			  .append(" from product p ")
 			  .append(" where 1=1 ");
-			if(psVO.getCategoryFlag() != -1) {
+			if(psVO.getCategoryFlag() != 0) {
 				sb.append(" and category_idx=? ");
 			} 
 			//////////////////////// order by 추후추가 혹은 js에서 처리//////////////////////////////////
 			//////////////////////// 신고수순, 등록일순///////////////////////////////////
 			pstmt = con.prepareStatement(sb.toString());
-			if(psVO.getCategoryFlag() != -1) {
+			if(psVO.getCategoryFlag() != 0) {
 				pstmt.setInt(1, psVO.getCategoryFlag());
 			}
 			rs = pstmt.executeQuery();
@@ -127,13 +127,13 @@ public class ProductDAO {
 			  .append(" from product p ")
 			  .append(" where 1=1 ")
 			  .append(" and sold_check = 'N' ");
-			if(psVO.getCategoryFlag() != -1) {
+			if(psVO.getCategoryFlag() != 0) {
 				sb.append(" and category_idx=? ");
 			} 
 			//////////////////////// order by 추후추가 혹은 js에서 처리//////////////////////////////////
 			//////////////////////// 신고수순, 등록일순///////////////////////////////////
 			pstmt = con.prepareStatement(sb.toString());
-			if(psVO.getCategoryFlag() != -1) {
+			if(psVO.getCategoryFlag() != 0) {
 				pstmt.setInt(1, psVO.getCategoryFlag());
 			}
 			rs = pstmt.executeQuery();
@@ -176,13 +176,13 @@ public class ProductDAO {
 			  .append(" from product p ")
 			  .append(" where 1=1 ")
 			  .append(" and sold_check = 'Y' ");
-			if(psVO.getCategoryFlag() != -1) {
+			if(psVO.getCategoryFlag() != 0) {
 				sb.append(" and category_idx=? ");
 			} 
 			//////////////////////// order by 추후추가 혹은 js에서 처리//////////////////////////////////
 			//////////////////////// 신고수순, 등록일순///////////////////////////////////
 			pstmt = con.prepareStatement(sb.toString());
-			if(psVO.getCategoryFlag() != -1) {
+			if(psVO.getCategoryFlag() != 0) {
 				pstmt.setInt(1, psVO.getCategoryFlag());
 			}
 			rs = pstmt.executeQuery();
