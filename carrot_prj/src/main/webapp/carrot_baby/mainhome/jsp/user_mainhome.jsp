@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>user Main Home</title>
 <link rel="stylesheet" type="text/css" href="../../common/css/reset.css"/> 
 <link rel="stylesheet" type="text/css" href="../../common/css/user_wrap_container.css"/>
 <link rel="stylesheet" type="text/css" href="../css/user_mainhome.css"/>
@@ -136,7 +136,9 @@ $(function() {
 <!-- main middle -->
 	<div class="main-middle-wrap">
 		<div class="main-middle-content">
-			<h1 class="main-middle-title">중고거래 인기매물</h1>
+			<h1 class="main-middle-title">중고거래</h1>
+	   <!--  -->
+			<jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"></jsp:useBean><!-- 추가한 부분 덜덜 -->
 				<div class="card-wrap">
 					<!-- 매물 목록 --><!-- 매물은 공개되도 되기 때문에 get 방식 가능 !-->
 					<div class="card">
