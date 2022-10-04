@@ -1,20 +1,90 @@
+<%@ page import="userVO.JoinVO" %>
+<%@ page import="userDAO.JoinDAO" %>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입 화면</title>
+<title>회원가입</title>
 <link rel="stylesheet" type="text/css" href="../../common/css/reset.css"/> 
 <link rel="stylesheet" type="text/css" href="../css/user_wrap_container.css"/>
-<link rel="stylesheet" type="text/css" href="../css/user_signup_form.css"/> 
-
+<link rel="stylesheet" type="text/css" href="../css/user_join_form.css"/> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-
 <!-- 다음우편번호API -->
 <script src="https://spi.maps.daum.net/imap/map_js_init/postcode.v2.js"></script>
-
+<!--  -->
 <script type="text/javascript">
+//가입하기 버튼을 클릭했을 때
+$(function () {
+    $("#btn").click(function () {
+		//null 검사
+    	chkNull(); 
+    });
+});
+
+//필수 입력에 대한 체크 수행
+function chkNull(){
+	//이름 필수 입력	
+	if($("#name").val().trim()=="") {
+		alert("이름을 입력하세요");
+		$("#name").focus();
+		return;
+	}
+	//별명 필수 입력	
+	if($("#nick").val().trim()=="") {
+		alert("별명을 입력하세요");
+		$("#nick").focus();
+		return;
+	}
+	//아이디 필수 입력	
+	if($("#id").val().trim()=="") {
+		alert("아이디를 입력하세요");
+		$("#id").focus();
+		return;
+	}
+	//비밀번호 필수 입력	
+	if($("#password").val().trim()=="") {
+		alert("비밀번호를 입력하세요");
+		$("#password").focus();
+		return;
+	}
+	//비밀번호확인 필수 입력	
+	if($("#passwordChk").val().trim()=="") {
+		alert("비밀번호 확인을 입력하세요");
+		$("#passwordChk").focus();
+		return;
+	}
+	//생년월일 필수 입력	
+	if($("#birth").val().trim()=="") {
+		alert("생년월일을 입력하세요");
+		$("#birth").focus();
+		return;
+	}
+	//이메일 필수 입력	
+	if($("#email").val().trim()=="") {
+		alert("이메일을 입력하세요");
+		$("#email").focus();
+		return;
+	}
+	//주소 필수 입력	
+	if($("#zipcode").val().trim()=="") {
+		alert("주소를 입력하세요");
+		$("#zipcode").focus();
+		return;
+	}
+	//상세주소 필수 입력	
+	if($("#addr2").val().trim()=="") {
+		alert("상세주소를 입력하세요");
+		$("#addr2").focus();
+		return;
+	}//end if
+	
+	$("#memberFrm").submit();
+} 
+
 //아이디 중복확인 팝업창 열기
 $(function() {
 	$("#idbtn").click(function() {
@@ -22,9 +92,6 @@ $(function() {
 			"width=520,height=370,top=220,left=700");
 	});
 });
-/* $(function() {
-	$("#idBtn").click(function(){
-}); */
 
 //이메일 입력방식 선택
 function selectEmail(ele){
@@ -80,6 +147,7 @@ function zipcodeapi() {
 
 </script>
 </head>
+<% session.invalidate(); %>
 <body>
 
 <!-- header -->
@@ -97,6 +165,7 @@ function zipcodeapi() {
 	<div class="title">회원가입</div>
 
 <!--회원가입 박스-->
+<form name="memberFrm" id="memberFrm" method="post" action="user_join_form_process.jsp" >
 <div class="writeForm">
 			<table>
 				<tr>
@@ -155,7 +224,7 @@ function zipcodeapi() {
 					<th><span style="color:red">*</span>휴대폰</th>
 					<td>
 						<input type="text" name="phone_num" id="phone_num" placeholder="휴대폰번호 입력" />
-						<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk" />
+						<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk"  value="Y"  />
 						<label>SMS 수신동의</label></span>
 					</td>
 				</tr>
@@ -173,7 +242,7 @@ function zipcodeapi() {
 							<option value='gmail.com' >gmail.com</option>
 							<option value='nate.com' >nate.com</option>
 						</select>
-						<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" /><label>이메일 수신동의</label></span>
+						<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" value="Y" /><label>이메일 수신동의</label></span>
 					</td>
 				</tr>
 				<tr>
@@ -188,9 +257,10 @@ function zipcodeapi() {
 			</table>
 
 		</div>
+		</form>
 
 		<div style="text-align: center; margin: 50px; padding-bottom: 50px;">
-			<a href="user_signup_comp.jsp"><input type="button" value="가입하기" class="oBtn" id="btn"></a>
+			<input type="button" id="btn" value="가입하기" class="oBtn" >
 			<a href="user_login.jsp" ><input type="button" value="처음으로" class="gBtn" ></a>
 		</div>
 		
