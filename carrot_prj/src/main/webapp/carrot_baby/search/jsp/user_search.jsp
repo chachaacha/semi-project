@@ -51,6 +51,7 @@ $(function(){
 		var catTxt=$(this).text();
 		//보기창에 반영
 		$(".content-list-top-left").text(catTxt+" 검색 결과");
+		$("#searchInputBar").submit();
 	})
 	
 	//지역의 정보를 가져와서 메인 텍스트에 적용
@@ -59,6 +60,7 @@ $(function(){
 		var loc=$(".hot-articles-nav-select option:checked").text();
 		//보기창에 반영
 		$(".content-head-title").text(loc+" 중고거래 인기 매물");
+		$("#searchInputBar").submit();
 	})
 });
 </script>
@@ -95,7 +97,7 @@ mDAO.insetKeyword(searchTxt);
 List<LocVO> lVOList=mDAO.selectGu();
 
 %>
-
+<form action="../../search/jsp/user_search.jsp" method="get" id="searchProduct">
 <!-- container -->
 <div class="container">
 	<div class="test">
@@ -286,7 +288,7 @@ List<LocVO> lVOList=mDAO.selectGu();
 					
 					<div class="content-list-top-right">
 						<div class="content-list-top-right-text">서울특별시</div>
-						<select name="region" class="hot-articles-nav-select">
+						<select name="guFlag" class="hot-articles-nav-select">
 							<option value="">동네를 선택하세요</option>
 								<% 
 									for(LocVO lVO : lVOList) { %>
@@ -297,9 +299,12 @@ List<LocVO> lVOList=mDAO.selectGu();
 				</div>
 				
 				<!-- 오른쪽 매물 가운데 -->
+
 <%
 Integer catFlag=mfVO.getCategoryFlag();
-
+Integer guFlag=mfVO.getGuFlag();
+System.out.print(catFlag);
+System.out.print(guFlag);
 
 //상품 리스트 조회
 /* List<HomeVO> hVOList=mDAO.selectProduct(mfVO); */
@@ -412,6 +417,7 @@ Integer catFlag=mfVO.getCategoryFlag();
 	</div>
 	</div>
 </div>
+</form>
 <!-- container end -->
 
 <!-- footer -->
