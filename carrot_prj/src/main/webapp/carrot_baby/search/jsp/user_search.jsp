@@ -51,7 +51,6 @@ $(function(){
 		var catTxt=$(this).text();
 		//보기창에 반영
 		$(".content-list-top-left").text(catTxt+" 검색 결과");
-		$("#searchInputBar").submit();
 	})
 	
 	//지역의 정보를 가져와서 메인 텍스트에 적용
@@ -60,8 +59,8 @@ $(function(){
 		var loc=$(".hot-articles-nav-select option:checked").text();
 		//보기창에 반영
 		$(".content-head-title").text(loc+" 중고거래 인기 매물");
-		$("#searchInputBar").submit();
 	})
+	
 });
 </script>
 </head>
@@ -76,8 +75,12 @@ $(function(){
 <!-- 검색창에서 입력된 값을 불러오기 -->
 <jsp:useBean id="sVO" class="userVO.SearchVO" scope="page"/>
 <jsp:useBean id="mfVO" class="userVO.MainFlagVO" scope="page"/>
+<jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"/>
+<%-- <jsp:useBean id="fVO" class="" scope="page"/> --%>
 <jsp:setProperty property="*" name="sVO"/>
 <jsp:setProperty property="*" name="mfVO"/>
+<jsp:setProperty property="*" name="hVO"/>
+
 <% 
 
 //MainDAO 생성
@@ -95,9 +98,35 @@ mDAO.insetKeyword(searchTxt);
 
 //지역 카테고리 조회
 List<LocVO> lVOList=mDAO.selectGu();
+%>
+
+<%
+/* Integer test=Integer.parseInt(request.getParameter("categoryFlag"));
+System.out.println("catFlag: "+catFlag);
+System.out.println("guFlag: "+guFlag); */
+
+/* Integer catFlag=mfVO.getCategoryFlag();
+Integer guFlag=mfVO.getGuFlag();
+Integer orderFlag=mfVO.getOrderByFlag();
+Integer priceFlag=mfVO.getPriceFlag();
+Integer minFlag=mfVO.getMinPrice();
+Integer maxFlag=mfVO.getMaxPrice();
+String freeFlag=mfVO.getFreeFlag();
+String keywordFlag=mfVO.getKeyword(); */
+mfVO.setCategoryFlag(0);
+mfVO.setGuFlag(0);
+mfVO.setOrderByFlag(0);
+mfVO.setPriceFlag(0);
+mfVO.setMinPrice(0);
+mfVO.setMaxPrice(0);
+mfVO.setFreeFlag("Y");
+mfVO.setKeyword("");
+
+//상품 리스트 조회
+List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
 
 %>
-<form action="../../search/jsp/user_search.jsp" method="get" id="searchProduct">
+
 <!-- container -->
 <div class="container">
 	<div class="test">
@@ -123,14 +152,14 @@ List<LocVO> lVOList=mDAO.selectGu();
 						<div class="category-list-wrap">
 							<div>
 								<div class="category-list">
-									<a href="#void">
+									<a href="user_search.jsp?categoryFlag=0">
 										<div class="category-list-text" value="0">전체</div>
 									</a>
 								</div>
 								<% 
 									for(CatVO cVO : catList) { %>
 									<div class="category-list">
-										<a href="#">
+										<a href="user_search.jsp?categoryFlag=<%=cVO.getCategory_idx()%>">
 											<div class="category-list-text" value="<%=cVO.getCategory_idx()%>" name="categoryFlag"><%=cVO.getCategory() %></div>
 										</a>
 									</div>
@@ -250,16 +279,16 @@ List<LocVO> lVOList=mDAO.selectGu();
 								<div class="price-list-input">
 									<label class="price-radio-wrap">
 										<span class="price-radio">
-											<input type="radio" name="price-radio" class="input-radio">
+											<input type="radio" name="price-radio" class="input-radio" value="7">
 										</span>
 										<span>직접입력</span>
 									</label>
 								</div>
 								<div class="ant-space-item">
 									<form><div class="ant-space-item-input">
-											<input type="tel" name="minPrice" placeholder="최저가" class="ant-input" value="7">
+											<input type="tel" name="minPrice" placeholder="최저가" class="ant-input">
 											<span>~</span>
-											<input type="tel" name="maxPrice" placeholder="최고가" class="ant-input" value="7">
+											<input type="tel" name="maxPrice" placeholder="최고가" class="ant-input">
 										</div>
 										<button type="submit" class="input-btn">적용</button>
 									</form>
@@ -300,85 +329,31 @@ List<LocVO> lVOList=mDAO.selectGu();
 				
 				<!-- 오른쪽 매물 가운데 -->
 
-<%
-Integer catFlag=mfVO.getCategoryFlag();
-Integer guFlag=mfVO.getGuFlag();
-System.out.print(catFlag);
-System.out.print(guFlag);
 
-//상품 리스트 조회
-/* List<HomeVO> hVOList=mDAO.selectProduct(mfVO); */
-
-%>
 				<div class="content-list-middle">
+					<% 
+						for(HomeVO hoVO: hVOList) { %>
+							
 					<div class="card">
 						<a class="card-link" href="../../product/jsp/user_buyer_product.jsp"><!-- 거래창 연결 링크 필요 -->
 							<div class="card-photo">
-								<img alt="이미지 자리" src="">
+								<img alt="이미지 자리" src="<%=hoVO.getThumbnail()%>">
 							</div>
 							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
+								<h2 class="card-title"><%=hoVO.getTitle()%></h2>
+								<div class="card-price"><%=hoVO.getPrice()%></div>
+								<div class="card-region-name"><%=hVO.getGu()%></div>
 							</div>
 							<div class="card-counts">
-								<span> 하트 0 </span>
+								<span> 하트 <%=hoVO.getLiked_cnt()%> </span>
 								ㆍ
-								<span> 채팅 0 </span>
+								<span> 댓글 <%=hoVO.getComment_cnt()%> </span>
 							</div>
 						</a>
 					</div>
-					<div class="card">
-						<a class="card-link" href="../../product/jsp/user_buyer_product.jsp"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="../../product/jsp/user_buyer_product.jsp"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 채팅 0 </span>
-							</div>
-						</a>
-					</div>
+					
+					<%	} %>
+
 				</div>
 				
 				<!-- 오른쪽 매물 하단 글쓰기 버튼 -->
@@ -417,7 +392,6 @@ System.out.print(guFlag);
 	</div>
 	</div>
 </div>
-</form>
 <!-- container end -->
 
 <!-- footer -->
