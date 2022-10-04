@@ -43,7 +43,7 @@ $(function() {
 <div class="wrap">
 
 <!-- header -->
-<%@ include file="user_login_header.jsp" %>
+<%@ include file="user_login_header.jsp" %><!-- 로그인부분은 나중에 하기 -->
 <!-- header end-->
 
 <!-- container -->
@@ -138,7 +138,7 @@ $(function() {
 		<div class="main-middle-content">
 			<h1 class="main-middle-title">중고거래 인기매물</h1>
 				<div class="card-wrap">
-					<!-- 매물 목록 --><!-- 매물은 공개되도 되기 때문에 get 방식 가능 -->
+					<!-- 매물 목록 --><!-- 매물은 공개되도 되기 때문에 get 방식 가능 !-->
 					<div class="card">
 						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
 							<div class="card-photo">
@@ -152,7 +152,7 @@ $(function() {
 							<div class="card-counts">
 								<span> 하트 0 </span>
 								ㆍ
-								<span> 채팅 0 </span>
+								<span> 댓글 0 </span>
 							</div>
 						</a>
 					</div>
@@ -169,7 +169,7 @@ $(function() {
 							<div class="card-counts">
 								<span> 하트 0 </span>
 								ㆍ
-								<span> 채팅 0 </span>
+								<span> 댓글 0 </span>
 							</div>
 						</a>
 					</div>
@@ -186,7 +186,7 @@ $(function() {
 							<div class="card-counts">
 								<span> 하트 0 </span>
 								ㆍ
-								<span> 채팅 0 </span>
+								<span> 댓글 0 </span>
 							</div>
 						</a>
 					</div>
@@ -203,7 +203,7 @@ $(function() {
 							<div class="card-counts">
 								<span> 하트 0 </span>
 								ㆍ
-								<span> 채팅 0 </span>
+								<span> 댓글 0 </span>
 							</div>
 						</a>
 					</div>
@@ -220,7 +220,7 @@ $(function() {
 							<div class="card-counts">
 								<span> 하트 0 </span>
 								ㆍ
-								<span> 채팅 0 </span>
+								<span> 댓글 0 </span>
 							</div>
 						</a>
 					</div>
@@ -237,7 +237,7 @@ $(function() {
 							<div class="card-counts">
 								<span> 하트 0 </span>
 								ㆍ
-								<span> 채팅 0 </span>
+								<span> 댓글 0 </span>
 							</div>
 						</a>
 					</div>
@@ -254,7 +254,7 @@ $(function() {
 							<div class="card-counts">
 								<span> 하트 0 </span>
 								ㆍ
-								<span> 채팅 0 </span>
+								<span> 댓글 0 </span>
 							</div>
 						</a>
 					</div>
@@ -271,7 +271,7 @@ $(function() {
 							<div class="card-counts">
 								<span> 하트 0 </span>
 								ㆍ
-								<span> 채팅 0 </span>
+								<span> 댓글 0 </span>
 							</div>
 						</a>
 					</div>
