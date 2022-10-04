@@ -13,14 +13,21 @@
 
 <script type="text/javascript">
 $(function(){
-	//비밀번호 입력 안했을 때
 	$("#chkBtn").click(function(){
-		if($("#pass").val().trim() == null){
+		//비밀번호 입력 안했을 때
+		if($("#password").val().trim() == ""){
 			alert("비밀번호를 입력해주세요.");
 			return;
-		}
-	});
-});
+		}// if
+		
+		//비밀번호가 틀렸을 때
+		if($("#password").val()!=){
+			alert("비밀번호가 틀립니다.")
+		}//if
+	
+	
+	});//click
+});//ready
 
 //비밀번호 맞는지 확인
 function checkPass(){
@@ -53,7 +60,7 @@ function checkPass(){
 
 			<!-- 비밀번호 입력  -->
 			<div style="text-align: center; margin: 50px; display: flex; align-items: center; justify-content: center;">
-				<input type="password" name="pass" placeholder="비밀번호 입력" size="30" class="textBox">
+				<input type="password" name="password" id="password" placeholder="비밀번호 입력" size="30" class="textBox">
 				<a href="user_myinfo_edit.jsp">
 					<input type="button" value="확인" class="gBtn" id="chkBtn"/>
 				</a>

@@ -14,9 +14,14 @@
 <script type="text/javascript">
 $(function(){
 $("#btn").click(function(){
-	alert("비밀번호가 변경되었습니다.")
+	
+	//비밀번호 유효성 검사
+	if($("#password").val()==""){
+		alert("비밀번호를 입력해주세요");
+		return;
+	}
 });
-});
+});//ready
 </script>
 
 </head>
