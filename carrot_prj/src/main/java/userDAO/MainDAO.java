@@ -126,10 +126,9 @@ public class MainDAO {
 			con=db.getConn();
 			StringBuffer sb = new StringBuffer();
 			//항시실행
-			sb.append("select tumbnail,title, price, gu, comment_cnt, liked_cnt ")
-			  .append("from (select tumbnail,title, price, posted_date, free, gu_idx, category_idx,(select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank from product p) ")
-			  .append("where 1=1 ")
-			  .append("and rank between 1 and 16 ");
+			sb.append("select thumbnail,title, price, gu, comment_cnt, liked_cnt ")
+			  .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx,(select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank from product p) ")
+			  .append("where 1=1 ");
 			
 			if(mfVO.getKeyword() != "") {
 				sb.append(" and title like '%'||?||'%' ");
@@ -178,7 +177,7 @@ public class MainDAO {
 					sb.append(" order by posted_date desc ");
 					break;
 				case 1:
-					sb.append(" order by posetd_date ");
+					sb.append(" order by posted_date ");
 					break;
 				case 2: 
 					sb.append(" order by liked_cnt desc ");
@@ -235,7 +234,7 @@ public class MainDAO {
 			HomeVO hVO = null;
 			while(rs.next()) {
 				hVO = new HomeVO();
-				hVO.setThumbnail(rs.getString("thunbnail"));
+				hVO.setThumbnail(rs.getString("thumbnail"));
 				hVO.setTitle(rs.getString("title"));
 				hVO.setPrice(rs.getInt("price"));
 				hVO.setGu(rs.getString("gu"));

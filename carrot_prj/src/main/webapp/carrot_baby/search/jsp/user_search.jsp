@@ -7,6 +7,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8"); %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- 형식 지정 -->
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!-- 사이즈 -->
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<jsp:useBean id="sVO" class="userVO.SearchVO" scope="page"/>
+<jsp:useBean id="mfVO" class="userVO.MainFlagVO" scope="page"/>
+<jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"/>
+<jsp:setProperty property="*" name="sVO"/>
+<jsp:setProperty property="*" name="mfVO"/>
+<jsp:setProperty property="*" name="hVO"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,24 +55,33 @@ $(function(){
 		$(".ant-space-item").hide();
 	})
 	
-	
-	//카테고리의 정보를 가져와서 보기창 텍스트에 적용
+	//카테고리 flag 전달
 	$(".category-list-text").click(function() {
-		//카테고리의 값 변수에 저장
-		var catTxt=$(this).text();
-		//보기창에 반영
-		$(".content-list-top-left").text(catTxt+" 검색 결과");
+		var catVal=$(this).attr("value");
+		$("#categoryFlag").val(catVal);
+		$("#searchFrm").submit();
 	})
 	
-	//지역의 정보를 가져와서 메인 텍스트에 적용
+	//지역 flag 전달
 	$(".hot-articles-nav-select").change(function() {
-		//지역의 값 변수에 저장
+		var locVal=$(this).val();
+		$("#guFlag").val(locVal);
+		$("#searchFrm").submit();
+/* 		//지역의 값 변수에 저장
 		var loc=$(".hot-articles-nav-select option:checked").text();
 		//보기창에 반영
-		$(".content-head-title").text(loc+" 중고거래 인기 매물");
+		$(".content-head-title").text(loc+" 중고거래 인기 매물"); */
 	})
 	
 });
+
+	//정렬 flag 전달
+	function orderRadio() {
+		var orderVal=$('input:radio[name="sort-radio"]:checked').val();
+		$("#orderByFlag").val(orderVal);
+		$("#searchFrm").submit();
+	}
+	
 </script>
 </head>
 <body>
@@ -72,15 +92,6 @@ $(function(){
 <%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
 <!-- header end-->
 
-<!-- 검색창에서 입력된 값을 불러오기 -->
-<jsp:useBean id="sVO" class="userVO.SearchVO" scope="page"/>
-<jsp:useBean id="mfVO" class="userVO.MainFlagVO" scope="page"/>
-<jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"/>
-<%-- <jsp:useBean id="fVO" class="" scope="page"/> --%>
-<jsp:setProperty property="*" name="sVO"/>
-<jsp:setProperty property="*" name="mfVO"/>
-<jsp:setProperty property="*" name="hVO"/>
-
 <% 
 
 //MainDAO 생성
@@ -88,43 +99,23 @@ MainDAO mDAO=MainDAO.getInstance();
 
 //상품 카테고리 조회
 List<CatVO> catList=mDAO.selectCat();
+pageContext.setAttribute("catList", catList);
 
 //검색어 db저장
 String searchTxt=sVO.getWord();
+pageContext.setAttribute("searchTxt", searchTxt);
+
 //검색어가 null이 아닐 경우에만 값 저장
 if(searchTxt != null && !"".equals(searchTxt)) {
 mDAO.insetKeyword(searchTxt);
 }
-
 //지역 카테고리 조회
 List<LocVO> lVOList=mDAO.selectGu();
-%>
-
-<%
-/* Integer test=Integer.parseInt(request.getParameter("categoryFlag"));
-System.out.println("catFlag: "+catFlag);
-System.out.println("guFlag: "+guFlag); */
-
-/* Integer catFlag=mfVO.getCategoryFlag();
-Integer guFlag=mfVO.getGuFlag();
-Integer orderFlag=mfVO.getOrderByFlag();
-Integer priceFlag=mfVO.getPriceFlag();
-Integer minFlag=mfVO.getMinPrice();
-Integer maxFlag=mfVO.getMaxPrice();
-String freeFlag=mfVO.getFreeFlag();
-String keywordFlag=mfVO.getKeyword(); */
-mfVO.setCategoryFlag(0);
-mfVO.setGuFlag(0);
-mfVO.setOrderByFlag(0);
-mfVO.setPriceFlag(0);
-mfVO.setMinPrice(0);
-mfVO.setMaxPrice(0);
-mfVO.setFreeFlag("Y");
-mfVO.setKeyword("");
+pageContext.setAttribute("lVOList", lVOList);
 
 //상품 리스트 조회
 List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
-
+pageContext.setAttribute("hVOList", hVOList);
 %>
 
 <!-- container -->
@@ -152,18 +143,18 @@ List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
 						<div class="category-list-wrap">
 							<div>
 								<div class="category-list">
-									<a href="user_search.jsp?categoryFlag=0">
+									<a href="javascript:void(0);">
 										<div class="category-list-text" value="0">전체</div>
 									</a>
 								</div>
-								<% 
-									for(CatVO cVO : catList) { %>
+								<!-- 상품 카테고리 목록 불러오기  -->
+								<c:forEach var="cVO" items="${catList}">
 									<div class="category-list">
-										<a href="user_search.jsp?categoryFlag=<%=cVO.getCategory_idx()%>">
-											<div class="category-list-text" value="<%=cVO.getCategory_idx()%>" name="categoryFlag"><%=cVO.getCategory() %></div>
+										<a href="javascript:void(0);">
+											<div class="category-list-text" value="${cVO.category_idx}">${cVO.category}</div>
 										</a>
 									</div>
-								<%	} %>
+								</c:forEach>
 							</div>
 						</div> 
 					</div>
@@ -183,7 +174,7 @@ List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
 								<div class="sort-list">
 									<label class="sort-radio-wrap">
 										<span class="sort-radio">
-											<input type="radio" name="sort-radio" class="input-radio" checked="checked" value="0">
+											<input type="radio" name="sort-radio" id="sort-radio"  <c:if test="${0 eq param.orderFlag }"> checked="checked" </c:if> onchange="orderRadio(this)" class="input-radio"  value="0">
 										</span>
 										<span>최신순</span>
 									</label>
@@ -191,7 +182,7 @@ List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
 								<div class="sort-list">
 									<label class="sort-radio-wrap">
 										<span class="sort-radio">
-											<input type="radio"  name="sort-radio" class="input-radio" value="1">
+											<input type="radio"  name="sort-radio" id="sort-radio" <c:if test="${1 eq param.orderFlag }"> checked="checked" </c:if> onchange="orderRadio(this)" class="input-radio" value="1">
 										</span>
 										<span>과거순</span>
 									</label>
@@ -199,7 +190,7 @@ List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
 								<div class="sort-list">
 									<label class="sort-radio-wrap">
 										<span class="sort-radio">
-											<input type="radio" name="sort-radio" class="input-radio" value="2">
+											<input type="radio" name="sort-radio" id="sort-radio" <c:if test="${2 eq param.orderFlag }"> checked="checked" </c:if> onchange="orderRadio(this)" class="input-radio" value="2">
 										</span>
 										<span>인기순</span>
 									</label>
@@ -305,24 +296,24 @@ List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
 				<!-- 오른쪽 매물 위 -->
 				<div class="content-list-top">
 					<div class="content-list-top-left">
-					<%
-						/* 검색어 입력 또는 카테고리 선택시 보기창 텍스트 변화 */
-						if(searchTxt==null) {
-							out.print("전체 카테고리");
-						}else {
-							out.print(searchTxt+" 검색 결과");	
-						}
-					%>
-					(수치)</div>
+					<c:choose>
+						<c:when test="${not empty searchTxt}">
+							${searchTxt} 검색 결과
+						</c:when>
+						<c:otherwise>
+							전체 카테고리
+						</c:otherwise>
+					</c:choose>
+					(${fn:length(hVOList)})</div>
 					
 					<div class="content-list-top-right">
 						<div class="content-list-top-right-text">서울특별시</div>
 						<select name="guFlag" class="hot-articles-nav-select">
-							<option value="">동네를 선택하세요</option>
-								<% 
-									for(LocVO lVO : lVOList) { %>
-									<option value="<%=lVO.getGu_idx() %>"><%=lVO.getGu() %></option>
-								<%	} %>
+							<option value="0">동네를 선택하세요</option>
+								<!-- 구 데이터 불러오기  -->
+								<c:forEach var="lVO" items="${lVOList}">
+									<option value="${lVO.gu_idx}" <c:if test="${lVO.gu_idx eq param.guFlag }"> selected="selected" </c:if>>${lVO.gu}</option>
+								</c:forEach>
 							</select>
 					</div>
 				</div>
@@ -331,29 +322,39 @@ List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
 
 
 				<div class="content-list-middle">
-					<% 
-						for(HomeVO hoVO: hVOList) { %>
-							
+					<!-- 상품이 없을 시 -->
+					<c:if test="${empty hVOList }">
+						조회결과가 없습니다.
+					</c:if>
+					<!-- 상품 불러오기 -->
+					<c:forEach var="hoVO" items="${hVOList}">
 					<div class="card">
 						<a class="card-link" href="../../product/jsp/user_buyer_product.jsp"><!-- 거래창 연결 링크 필요 -->
 							<div class="card-photo">
-								<img alt="이미지 자리" src="<%=hoVO.getThumbnail()%>">
+								<img alt="이미지 자리" src="${hoVO.thumbnail}">
 							</div>
 							<div class="card-desc">
-								<h2 class="card-title"><%=hoVO.getTitle()%></h2>
-								<div class="card-price"><%=hoVO.getPrice()%></div>
-								<div class="card-region-name"><%=hVO.getGu()%></div>
+								<h2 class="card-title">${hoVO.title}</h2>
+								<div class="card-price">
+									<!-- 가격이 0일때 나눔 -->
+									<c:if test="${hoVO.price eq 0}">
+										나눔
+									</c:if>
+									<!-- 가격이 0이 아닐때 #,### 형식으로 출력 -->
+									<c:if test="${hoVO.price ne 0}">
+										<fmt:formatNumber value="${hoVO.price}" pattern="#,###"/>
+									</c:if>
+									</div>
+								<div class="card-region-name">${hoVO.gu}</div>
 							</div>
 							<div class="card-counts">
-								<span> 하트 <%=hoVO.getLiked_cnt()%> </span>
+								<span> 하트 ${hoVO.liked_cnt} </span>
 								ㆍ
-								<span> 댓글 <%=hoVO.getComment_cnt()%> </span>
+								<span> 댓글 ${hoVO.comment_cnt} </span>
 							</div>
 						</a>
 					</div>
-					
-					<%	} %>
-
+					</c:forEach>
 				</div>
 				
 				<!-- 오른쪽 매물 하단 글쓰기 버튼 -->
@@ -393,6 +394,16 @@ List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
 	</div>
 </div>
 <!-- container end -->
+
+<form id="searchFrm">
+	<input type="hidden" name="word" id="word" value="${param.word }">
+	<input type="hidden" name="guFlag" id="guFlag" value="${param.guFlag}">
+	<input type="hidden" name="categoryFlag" id="categoryFlag" value="${param.categoryFlag}">
+	<input type="hidden" name="orderByFlag" id="orderByFlag" value="${param.orderByFlag }">
+	<input type="hidden" name="priceFlag" id="priceFlag" value="${param.priceFlag }">
+	<input type="hidden" name="minPrice" id="minPrice" value="${param.minPrice }">
+	<input type="hidden" name="maxPrice" id="maxPrice" value="${param.maxPrice }">
+</form>
 
 <!-- footer -->
 <%@ include file="../../common/jsp/footer.jsp" %>
