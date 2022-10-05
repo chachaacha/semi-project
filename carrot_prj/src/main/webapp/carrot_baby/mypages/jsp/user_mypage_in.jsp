@@ -14,25 +14,16 @@
 <script type="text/javascript">
 $(function(){
 	$("#chkBtn").click(function(){
-		//비밀번호 입력 안했을 때
+		//비밀번호 유효성 검사
 		if($("#password").val().trim() == ""){
 			alert("비밀번호를 입력해주세요.");
 			return;
-		}// if
-		
-		//비밀번호가 틀렸을 때
-		if($("#password").val()!=){
-			alert("비밀번호가 틀립니다.")
-		}//if
+		}
 	
-	
+		$("#passChkFrm").submit();
 	});//click
 });//ready
 
-//비밀번호 맞는지 확인
-function checkPass(){
-	var pass
-}
 </script>
 </head>
 <body>
@@ -59,12 +50,12 @@ function checkPass(){
 			</div>
 
 			<!-- 비밀번호 입력  -->
+			<form action="user_mypage_in_process.jsp" method="post" id="passChkFrm">
 			<div style="text-align: center; margin: 50px; display: flex; align-items: center; justify-content: center;">
 				<input type="password" name="password" id="password" placeholder="비밀번호 입력" size="30" class="textBox">
-				<a href="user_myinfo_edit.jsp">
 					<input type="button" value="확인" class="gBtn" id="chkBtn"/>
-				</a>
 			</div>
+			</form>
 
 			<!-- 메인으로 돌아가기 이동 -->
 			<div style="display: block; margin: 0px auto; width: 150px">

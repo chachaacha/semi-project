@@ -14,12 +14,32 @@
 <script type="text/javascript">
 $(function(){
 $("#btn").click(function(){
-	
-	//비밀번호 유효성 검사
-	if($("#password").val()==""){
-		alert("비밀번호를 입력해주세요");
+	//비밀번호 입력 유효성 검사
+	if($("#password").val().trim()==""){
+		alert("비밀번호를 입력해주세요.");
 		return;
 	}
+	
+	//신규 비밀번호 입력 유효성 검사
+	if($("#password1").val().trim()==""){
+		alert("신규 비밀번호를 입력해주세요.");
+		return;
+	}
+	
+	//신규 비밀번호 확인 입력 유효성 검사 
+	if($("#password2").val().trim()==""){
+		alert("신규 비밀번호 확인을 다시 입력해주세요");
+		return
+	}
+	
+	//신규 비밀번호와 신규 비밀번호 확인이 일치하지 않을 때
+	if($("#password1").val()!=$("#password2").val()){
+		alert("신규 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+		$("#password").focus();
+		return;
+	}
+		
+	$("#passEditFrm").submit();
 });
 });//ready
 </script>
@@ -42,6 +62,7 @@ $("#btn").click(function(){
 	<div class="title">비밀번호 수정</div>
 	
 		<!-- 정보 작성 폼 -->
+		<form action="user_password_edit_pro.jsp" method="post" id="passEditFrm">
 		<div class="writeForm">
 			<table>
 				<tr>
@@ -65,12 +86,11 @@ $("#btn").click(function(){
 				</tr>
 				</table>
 		</div> 
+		</form>
 <!-- 내정보수정 끝 -->
 	<div class="writeForm_btn">
-					<a href="javascript:;" class="oBtn" id="btn"
-						onclick="goSave($('#wform'))">확인</a> <a href="#" class="gBtn"
-						onClick="reset();">취소</a>
-				</div>
+	<input type="button" value="확인" id ="btn" class="oBtn">
+	</div>
 </div> <!-- content  -->
 
 

@@ -92,6 +92,7 @@ function zipcodeapi() {
 				<div class="title">내 정보 수정</div>
 
 				<!-- 정보 작성 폼 -->
+				<form action="user_myinfo_edit_process.jsp" method="post" name="editFrm">
 				<div class="writeForm">
 					<table>
 						<tr>
@@ -162,6 +163,7 @@ function zipcodeapi() {
 				<div class="writeForm_btn">
 					<button type="button" class="oBtn">확인</button>
 				</div>
+				</form>
 			</div>
 			<!-- 내정보수정 끝 -->
 			<!-- content  -->

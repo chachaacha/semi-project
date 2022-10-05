@@ -21,7 +21,7 @@
 </script>
 </head>
 <body>
-<%
+<% //POST 방식 요청 한글 처리
 request.setCharacterEncoding("UTF-8");
 %>
 
@@ -30,18 +30,17 @@ request.setCharacterEncoding("UTF-8");
 <!-- 2.VO에 setter method(property) 호출 -->
 <jsp:setProperty property="*" name="miVO"/>
 
-<jsp:getProperty property="img" name="miVO"/>
-<jsp:getProperty property="name" name="miVO"/>
-<jsp:getProperty property="nick" name="miVO"/>
-<jsp:getProperty property="id" name="miVO"/>
-<jsp:getProperty property="birth" name="miVO"/>
-<jsp:getProperty property="phone_num" name="miVO"/>
-<jsp:getProperty property="sms_chk" name="miVO"/>
-<jsp:getProperty property="email" name="miVO"/>
-<jsp:getProperty property="email_chk" name="miVO"/>
-<jsp:getProperty property="zipcode" name="miVO"/>
-<jsp:getProperty property="addr1" name="miVO"/>
-<jsp:getProperty property="addr2" name="miVO"/>
-
+이미지 : ${miVO.img };
+이름 : ${miVO.name }; 
+닉네임 : ${miVO.nick };
+아이디 : ${miVO.id };
+생년월일 : ${miVO.birth };
+전화번호 : ${miVO.phone_num};
+sms 수신여부 : ${miVO.sms_chk };
+이메일 : ${miVO.email};
+이메일 수신여부 : ${miVO.email_chk };
+우편번호 : ${miVO.zipcode };
+주소 : ${miVO.addr1 };
+상세주소 :  ${miVO.addr2 };
 </body>
 </html>
