@@ -29,7 +29,7 @@ jDAO.insertJoin(jVO);
 비번 : ${ param.password }<br/>
 비번확인 : ${ param.password }<br/>
 생년월일 : ${ param.birth }<br/>
-이메일 : ${ param.email } @ ${ param.email2 }<br/>
+이메일 : ${ param.email }@${ param.email2 }<br/>
 
 </body>
 </html>

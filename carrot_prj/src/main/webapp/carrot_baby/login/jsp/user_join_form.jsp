@@ -51,9 +51,17 @@ function chkNull(){
 		$("#password").focus();
 		return;
 	}
+	//8~12자의 영문, 숫자, 특수문자 3가지를 조합하여 입력
+	var passChk= /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,12}$/;
+	
+	if(!passChk.test($("#password").val().trim())){
+		alert("8~12자의 영문, 숫자, 특수문자 3가지를 조합하여 입력해야 합니다.");
+		$("#password").focus();
+		return;
+	} 
 	//비밀번호확인 필수 입력	
-	if($("#passwordChk").val().trim()=="") {
-		alert("비밀번호 확인을 입력하세요");
+	if($("#passwordChk").val().trim() !== $("#password").val().trim()) {
+		alert("비밀번호가 일치하지 않습니다.");
 		$("#passwordChk").focus();
 		return;
 	}
@@ -63,10 +71,22 @@ function chkNull(){
 		$("#birth").focus();
 		return;
 	}
+	//번호 필수 입력	
+	if($("#phone_num").val().trim()=="") {
+		alert("휴대폰번호를 입력하세요");
+		$("#phone_num").focus();
+		return;
+	}
 	//이메일 필수 입력	
 	if($("#email").val().trim()=="") {
 		alert("이메일을 입력하세요");
 		$("#email").focus();
+		return;
+	}
+	//이메일도메인 필수 입력	
+	if($("#email1").val().trim()=="") {
+		alert("이메일을 확인하세요");
+		$("#email1").focus();
 		return;
 	}
 	//주소 필수 입력	
@@ -223,7 +243,7 @@ function zipcodeapi() {
 				<tr>
 					<th><span style="color:red">*</span>휴대폰</th>
 					<td>
-						<input type="text" name="phone_num" id="phone_num" placeholder="휴대폰번호 입력" />
+						<input type="text" name="phone_num" id="phone_num" placeholder="예) 010-1234-5678" />
 						<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk"  value="Y"  />
 						<label>SMS 수신동의</label></span>
 					</td>
@@ -235,7 +255,7 @@ function zipcodeapi() {
 						<span class="email_txt">@</span>
 						<input type="text" name="email1" id="email1" class="inputEmail" maxlength="100" />
 						<select class="selectEmail" name="email2" id="email2" onchange="selectEmail(this)">
-							<option value="">선택해주세요</option>
+							<option value="선택" >선택해주세요</option>
 							<option value='1' >직접 입력</option>
 							<option value='naver.com' >naver.com</option>
 							<option value='daum.net' >daum.net</option>

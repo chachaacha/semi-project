@@ -24,7 +24,7 @@ $(function () {
 });
 //필수 입력에 대한 체크 수행
 	function chkNull(){
-		//아이디 필수 입력
+		//아이디에 입력한 값을 얻는다.
 		var id=$("#id").val();
 		if( id.trim() == ""){
 			alert("아이디 필수 입력");
@@ -33,7 +33,7 @@ $(function () {
 			return;
 		}//end if
 		
-		//비밀번호 필수 입력
+		//비밀번호에 입력한 값을 얻는다.
 		if($("#pass").val().trim() == ""){
 			alert("비밀번호 필수 입력");
 			$("#pass").val("");
@@ -43,10 +43,17 @@ $(function () {
 		
 		$("#loginFrm").submit();
 	} 
-	
 </script>
+
+<script type="text/javascript">
+/* ID가 존재하는 경우를 확인하기 위해 ID값을 세션에서 가져오는 부분 */
+var user_id="<%=(String)session.getAttribute("user_id") %>";
+function logout(){
+	window.location.href="logout.php";
+}
+</script>
+
 </head>
-<% session.invalidate(); %>
 <body>
  	<div class="wrap" style="margin-top: 150px;">
 <!-- header -->
@@ -60,8 +67,8 @@ $(function () {
 				<a href="../../mainhome/jsp/user_mainhome.jsp"><img src="../../images/logo.png" width="160" height="50" class="img"></a>
 			</div>
 
-			<!-- 로그인 박스 -->
 			<form name="loginFrm" id="loginFrm" method="post" action="user_login_process.jsp">
+			<!-- 로그인 박스 -->
 			<div class="loginbox_wrap">
 				<!-- 주황색박스 -->
 				<div class="loginbox_top">LOGIN</div>
@@ -71,19 +78,24 @@ $(function () {
 					<input type="password" placeholder="비밀번호" size=60 class="pass" name="pass" id="pass">
 					<input type="button" id="btn" value="로그인" class="loginBtn">
 				<div>
-						<div class="logpass">
-							<img src="../../images/locklogin.png" style="height: 20px">
-							<a href="user_find_id.jsp" style="text-decoration-line: none; color: #000;">아이디 
-							</a> ㆍ <a href="user_find_pass.jsp" style="text-decoration-line: none; color: #000;">비밀번호찾기</a>
-						</div>
-						<div class="signup">
-							<img src="../../images/userlogin.png" style="height: 20px;"> <a href="user_signup.jsp" style="text-decoration-line: none; color: #000;">회원가입</a>
-						</div>
+					<div class="logpass">
+						<img src="../../images/locklogin.png" style="height: 20px">
+						<a href="user_find_id.jsp" style="text-decoration-line: none; color: #000;">아이디 
+						</a> ㆍ <a href="user_find_pass.jsp" style="text-decoration-line: none; color: #000;">비밀번호찾기</a>
+					</div>
+					<div class="signup">
+						<img src="../../images/userlogin.png" style="height: 20px;">
+						<a href="user_join.jsp" style="text-decoration-line: none; color: #000;">회원가입</a>
+					</div>
 					</div>
 				</div>
 			</div>
 			</form>
 			<!-- 로그인 박스 끝 -->
+<!-- 아이디,비밀번호가 틀릴경우 로그인 처리 결과 출력 -->
+<%
+%>	
+			
 		</div>
 <!-- container end -->
 

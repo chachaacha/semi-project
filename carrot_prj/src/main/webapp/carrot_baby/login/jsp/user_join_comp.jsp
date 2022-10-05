@@ -7,7 +7,7 @@
 <title>회원가입 완료</title>
 <link rel="stylesheet" type="text/css" href="../../common/css/reset.css"/> 
 <link rel="stylesheet" type="text/css" href="../../common/css/user_wrap_container.css"/>
-<link rel="stylesheet" type="text/css" href="../css/user_signup_comp.css" />
+<link rel="stylesheet" type="text/css" href="../css/user_join_comp.css" />
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
