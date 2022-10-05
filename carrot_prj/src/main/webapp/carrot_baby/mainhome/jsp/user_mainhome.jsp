@@ -1,10 +1,14 @@
+<%@page import="userVO.HomeVO"%>
+<%@page import="java.util.List"%>
+<%@page import="userDAO.HomeDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>user Main Home</title>
+<title>user main home</title>
 <link rel="stylesheet" type="text/css" href="../../common/css/reset.css"/> 
 <link rel="stylesheet" type="text/css" href="../../common/css/user_wrap_container.css"/>
 <link rel="stylesheet" type="text/css" href="../css/user_mainhome.css"/>
@@ -137,148 +141,42 @@ $(function() {
 	<div class="main-middle-wrap">
 		<div class="main-middle-content">
 			<h1 class="main-middle-title">중고거래</h1>
-	   <!--  -->
-			<jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"></jsp:useBean><!-- 추가한 부분 덜덜 -->
+	   		<!-- 1. parameter 받을 VO 생성-->
+			<jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"></jsp:useBean>
+			<!-- 2. VO에 setter method(property)호출 -->
+			<jsp:setProperty property="*" name="hVO"/>
+			<!-- DB연결 -->
+			<%
+			HomeDAO hDao=HomeDAO.getInstance();
+			List<HomeVO> mainList=hDao.selectProduct();
+			//스콥 객체에 할당
+			pageContext.setAttribute("mainList", mainList );
+			%>
 				<div class="card-wrap">
 					<!-- 매물 목록 --><!-- 매물은 공개되도 되기 때문에 get 방식 가능 !-->
-					<div class="card">
+					<c:forEach varStatus="m" var="main"  items="${mainList}">
+				
+					<div class="card"><!-- 1번 -->
 						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="http://localhost/html_prj/day0825/images/cimg.png">
-							</div>
+							<div class="card-photo"><c:out value="${thumbnail}"/></div><!-- card-photo -->
+							
+							
 							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
+								<h2 class="card-title"><c:out value="${main.title }"/></h2>
+								<div class="card-price"><c:out value="${main.price }"/></div>
+								<div class="card-region-name" ><c:out value="${main.gu }"/></div>
+							</div><!-- card-desc -->
 							<div class="card-counts">
-								<span> 하트 0 </span>
+								<span>하트&nbsp;<c:out value="${main.liked_cnt }"/></span>
 								ㆍ
-								<span> 댓글 0 </span>
-							</div>
+								<span> 댓글&nbsp;<c:out value="${main.comment_cnt }"/></span>
+							</div><!-- card-counts -->
 						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 댓글 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 댓글 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 댓글 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 댓글 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 댓글 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 댓글 0 </span>
-							</div>
-						</a>
-					</div>
-					<div class="card">
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo">
-								<img alt="이미지 자리" src="#void">
-							</div>
-							<div class="card-desc">
-								<h2 class="card-title">글제목</h2>
-								<div class="card-price">가격</div>
-								<div class="card-region-name">지역(시 구까지만 동 x)</div>
-							</div>
-							<div class="card-counts">
-								<span> 하트 0 </span>
-								ㆍ
-								<span> 댓글 0 </span>
-							</div>
-						</a>
-					</div>
-				</div>
-		</div>
+					</div><!-- card -->
+			</c:forEach>
+
+	</div><!-- card-wrap -->
+	</div><!-- main-middle-content -->
 	</div>
 <!-- main middle end -->
 
@@ -318,9 +216,10 @@ $(function() {
 				<a class="top-keywords-link" href="#void">검색어</a>
 			</li>
 		</ul>
-	</div>
+	</div><!-- main-bottom -->
 
 <!-- main bottom end -->
+
 
 </div>
 <!-- container end -->

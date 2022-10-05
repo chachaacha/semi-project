@@ -43,9 +43,9 @@ public class HomeDAO {
 		HomeVO hVO = null;
 		try {
 			con = db.getConn();
-			String sql="select tumbnail,title, price, gu, comment_cnt, liked_cnt ";
+			String sql="select product_idx, thumbnail,title, price, gu, comment_cnt, liked_cnt ";
 				   sql+="from ";
-				   sql+="(select tumbnail,title, price, (select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank ";
+				   sql+="(select product_idx, thumbnail,title, price, (select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank ";
 				   sql+="from product p) ";
 				   sql+="where rank between 1 and 8";
 			pstmt = con.prepareStatement(sql);

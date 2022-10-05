@@ -6,21 +6,27 @@ package userVO;
  *
  */
 public class HomeVO {
-	private String thumbnail, title, gu;
+	private String thumbnail, title, gu, product_idx;
 	private int price, comment_cnt, liked_cnt;
 	
 	public HomeVO() {
 		
 	}
 
-	public HomeVO(String thumbnail, String title, String gu, int price, int comment_cnt, int liked_cnt) {
+	
+	public HomeVO(String thumbnail, String title, String gu, String product_idx, int price, int comment_cnt,
+			int liked_cnt) {
+		super();
 		this.thumbnail = thumbnail;
 		this.title = title;
 		this.gu = gu;
+		this.product_idx = product_idx;
 		this.price = price;
 		this.comment_cnt = comment_cnt;
 		this.liked_cnt = liked_cnt;
 	}
+
+
 
 	public String getThumbnail() {
 		return thumbnail;
@@ -44,6 +50,14 @@ public class HomeVO {
 
 	public void setGu(String gu) {
 		this.gu = gu;
+	}
+
+	public String getProduct_idx() {
+		return product_idx;
+	}
+
+	public void setProduct_idx(String product_idx) {
+		this.product_idx = product_idx;
 	}
 
 	public int getPrice() {
@@ -72,9 +86,11 @@ public class HomeVO {
 
 	@Override
 	public String toString() {
-		return "HomeVO [thumbnail=" + thumbnail + ", title=" + title + ", gu=" + gu + ", price=" + price
-				+ ", comment_cnt=" + comment_cnt + ", liked_cnt=" + liked_cnt + "]";
+		return "HomeVO [thumbnail=" + thumbnail + ", title=" + title + ", gu=" + gu + ", product_idx=" + product_idx
+				+ ", price=" + price + ", comment_cnt=" + comment_cnt + ", liked_cnt=" + liked_cnt + "]";
 	}
+
+	
 	
 	
 	
