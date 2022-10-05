@@ -1,6 +1,7 @@
 <%@page import="managerDAO.HomeDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,28 +36,23 @@
 		</div>
 <!-- 현재 메뉴 -->
 <!-- 대시보드 -->
-<%-- --------------------------------------------------------jsp코드 영역------------------------------------------------------------------- --%>
 <jsp:useBean id="hdVO1" class="managerVO.HomeDealVO"></jsp:useBean>
 <jsp:useBean id="hdVO2" class="managerVO.HomeDealVO"></jsp:useBean>
 <jsp:useBean id="hdVO3" class="managerVO.HomeDealVO"></jsp:useBean>
 
+<c:if test="${ empty manager_id }"> 
+<% response.sendRedirect("../../login/jsp/manager_login.jsp");%>
+</c:if>
+
 <% 
-	// 세션만료시 로그인화면으로 복귀
-	if(session.getAttribute("manager_id")==null) {
-		response.sendRedirect("../../login/jsp/manager_login.jsp");
-	}
-	
 	HomeDAO hDAO = HomeDAO.getInstance();
 	hdVO1= hDAO.selectDeal1();
 	hdVO2= hDAO.selectDeal2();
 	hdVO3= hDAO.selectDeal3();
-	
 	int newMem = hDAO.selectMember1();
 	int quitMem = hDAO.selectMember2();
 	int totalMem = hDAO.selectMember3();
 %>
-<%-- --------------------------------------------------------jsp코드 영역------------------------------------------------------------------- --%>
-
 		<div class="title">■ 오늘의 거래 현황</div>
 
 		<div>

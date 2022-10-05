@@ -1,5 +1,10 @@
+<%@page import="managerVO.ManagerBlockVO"%>
+<%@page import="managerVO.MemberVO"%>
+<%@page import="java.util.List"%>
+<%@page import="managerDAO.MemberDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,6 +34,11 @@ $(function() {
 	
 })
 </script>
+<%-- 세션처리 --%>
+<c:if test="${ empty manager_id }">
+<% response.sendRedirect("../../login/jsp/manager_login.jsp"); %>
+</c:if>
+
 </head>
 <body>
 <div class="wrap">
@@ -55,8 +65,8 @@ $(function() {
 			<!-- 위 -->
 			<div class="mm-top">
 				<select name="category" class="category-select">
-							<option value="회원 리스트">회원 리스트</option>
-							<option value="차단 회원 리스트">차단 회원 리스트</option>
+							<option value="all">회원 리스트</option>
+							<option value="block">차단 회원 리스트</option>
 				</select>
 				<div class="search-wrap">
 						<input type="text" class="search-txt" placeholder="아이디를 입력하세요.">
@@ -67,44 +77,38 @@ $(function() {
 						</button>
 				</div>
 			</div>
+			<form id="hidFrm"> 
+			
+			</form>
 			
 			<div class="table-wrap table1">
 						 <table class="table">
+						 
+						 	<%
+						 		MemberDAO mDAO = MemberDAO.getInstance();
+						 		List<MemberVO> memList = mDAO.selectMember("");
+						 	%>
+						 	
+						 	<% pageContext.setAttribute("memList", memList); %>
 						    <caption>표 제목</caption>
 						    <tr><th>아이디명</th><th >회원명</th><th>가입날짜</th><th>생년월일</th><th>차단</th></tr>
-						    <tr><td>sist</td><td>쌍x용</td><td>2022-09-22</td><td>2010-01-01</td><td><button type="button" class="block-btn">차단</button></td></tr>
-						    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td><td></td></tr>
+						    <c:forEach var="memList" items="${ pageScope.memList }">
+						    <tr><td><c:out value="${ memList.id }"/></td><td><c:out value="${ memList.name }"/></td><td><c:out value="${ memList.joined_date }"/></td><td><c:out value="${ memList.birth }"/></td><td><button type="button" class="block-btn">차단</button></td></tr>
+						    </c:forEach>
 						  </table>  
 			</div>
 			
 			<div class="table-wrap table2">
 						 <table class="table">
+						 	<%
+						 		mDAO = MemberDAO.getInstance();
+						 		//List<ManagerBlockVO> bloList = mDAO
+						 	%>
+						 
 						    <caption>표 제목</caption>
 						    <tr><th>아이디명</th><th >회원명</th><th>차단 사유</th><th>차단 해제</th></tr>
 						    <tr><td>xxx</td><td>최xx</td><td>비매너 거래행위</td><td><button type="button" class="block-btn">해제</button></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
-						    <tr><td></td><td></td><td></td><td></td></tr>
+		
 						  </table>  
 			</div>
 		</div>

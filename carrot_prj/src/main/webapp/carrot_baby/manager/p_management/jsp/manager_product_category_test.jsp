@@ -1,4 +1,3 @@
-<%@page import="javax.print.attribute.standard.PagesPerMinuteColor"%>
 <%@page import="managerVO.ProductVO"%>
 <%@page import="managerVO.ProductSearchVO"%>
 <%@page import="managerDAO.ProductDAO"%>
@@ -64,31 +63,20 @@ $(function() {
 		$("#hidFrm").submit();
 	});
 	
-	//검색버튼 눌렀을 시
-	$("#searchBtn").click(function(){
-		var keyword = $("#titleSearch").val();
-		if(keyword.trim()<2) {
-			alert("두 글자 이상 입력하세요!");
-			return;
-		}
-		$("#searchFrm").submit();
-	})
-	
 });
-
-function check() {
-	if($("[name='chkFlag']").is(":checked")) {
-		$("[name='productChk']").prop("checked",true);
-	} else {
-		$("[name='productChk']").prop("checked",false);
-	}
-};
 </script>
 <%-- 세션만료시 로그인 창 --%>
 <c:if test="${ empty manager_id }"> 
 <% response.sendRedirect("../../login/jsp/manager_login.jsp");%>
 </c:if>
-
+<jsp:useBean id="cVO" class="managerVO.CatVO"></jsp:useBean>
+<jsp:useBean id="pVO" class="managerVO.ProductVO"></jsp:useBean>
+<jsp:useBean id="psVO" class="managerVO.ProductSearchVO"></jsp:useBean>
+<%
+//상품리스트 불러오기
+CatDAO cDAO = CatDAO.getInstance();  
+List<CatVO> catList = cDAO.selectCat();	
+%>
 </head>
 <body>
 <div class="wrap">
@@ -146,66 +134,57 @@ function check() {
 						</div>
 					</div>
 					<div class="search-wrap">
-					<!-- 검색을 위한 폼 -->
-					<form id="searchFrm">
-						<input hidden="hidden"><input type="text" class="search-txt" id="titleSearch" name="titleSearch" placeholder="제목을 입력하세요.">
-						<button type="button" class="search-bar" id="searchBtn">
+						<input type="text" class="search-txt" placeholder="제목을 입력하세요.">
+						<button type="button" class="search-bar">
 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 							  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 							</svg>
 						</button>
-					</form>	
 					</div>
 				</div>
 				<!-- 오른쪽 -->
 				<div class="pm-bottom">
-					<%
-					//상품리스트 불러오기
-					CatDAO cDAO = CatDAO.getInstance();  
-					List<CatVO> catList = cDAO.selectCat();
-					pageContext.setAttribute("catList", catList);
+					<% 
+					
+					
 					%>
 					<select id="category" name="category" class="category-select">
 							<option value="0">전체</option>
-							<c:forEach var="catList" items="${ catList }">
-							<option value="${ catList.category_idx }"${ catList.category_idx eq param.catStatus?" selected='selected'":""}><c:out value="${ catList.category }"/></option>
-							</c:forEach>
+							<% 
+							String catStatus = request.getParameter("catStatus");
+							if(request.getParameter("catStatus") ==null) {
+								catStatus = "0";
+							}
+							for(int i =0; i<catList.size();i++) {
+								 cVO = catList.get(i); %>
+								 <option value="<%= cVO.getCategory_idx()%>"<%= cVO.getCategory_idx()==Integer.parseInt(catStatus)?" selected='selected'":"" %>><%= cVO.getCategory() %></option>
+							<% } %>	
+							
 					</select>
 					<div class="table-wrap">
-					<jsp:useBean id="pVO" class="managerVO.ProductVO"></jsp:useBean>
-					<jsp:useBean id="psVO" class="managerVO.ProductSearchVO"></jsp:useBean>
-					<%
-					ProductDAO dDAO = ProductDAO.getInstance(); 
-				    List<ProductVO> proList = dDAO.selectProduct();
-					%>
-						<c:if test="${ not empty param.catStatus }">
-						<% psVO.setCategoryFlag(Integer.parseInt(request.getParameter("catStatus"))); %>
-						</c:if>
-						<c:choose>
-						<c:when test="${ param.selStatus eq 'all' }">
-						<% proList=dDAO.selectAllProduct(psVO); %>
-						</c:when>
-						<c:when test="${ param.selStatus eq 'onSale' }">
-						<% proList=dDAO.selectOnSaleProduct(psVO); %>
-						</c:when>
-						<c:when test="${ param.selStatus eq 'soldout' }">
-						<% proList=dDAO.selectSoldProduct(psVO); %>
-						</c:when>
-						</c:choose>
-						<c:if test="${ not empty param.titleSearch }">
-						<% proList=dDAO.selectKeywordProduct(request.getParameter("titleSearch")); %>
-						</c:if>
-						<% pageContext.setAttribute("proList", proList); %>
 						 <table class="table">
 						    <caption>표 제목</caption>
-						    <tr><th><input type="checkbox" name="chkFlag" class="table-check" onclick="check()"></th><th class="table-title">제목</th><th>작성자</th><th>상품카테고리</th><th>상태</th><th>등록일</th><th>신고수</th></tr>
-						    <c:if test="${ empty pageScope.proList }">
-						  	<tr><td colspan="7">조회된결과가 없습니다.</td></tr>
-						  	</c:if>
-						  	<c:forEach var="proList" items="${ pageScope.proList }">
-						    <tr><td><input type="checkbox" name="productChk" class="table-check" value="${ proList.product_idx }"></td><td class="table-title title-link"><c:out value="${ proList.title }"/></td><td><c:out value="${ proList.id }"/></td><td><c:out value="${ proList.category }"/></td><td><c:out value="${ proList.sold_check }"/></td><td><c:out value="${ proList.posted_date }"/></td><td><c:out value="${ proList.report_cnt }"/></td></tr>
-						  	</c:forEach>
-						 </table>  
+						    <tr><th><input type="checkbox" name="checkbox" class="table-check"></th><th class="table-title">제목</th><th>작성자</th><th>상품카테고리</th><th>상태</th><th>등록일</th><th>신고수</th></tr>
+						    <% 
+						    ProductDAO dDAO = ProductDAO.getInstance(); 
+						    List<ProductVO> proList = dDAO.selectProduct();
+						    if(request.getParameter("catStatus")!=null){
+						    	psVO.setCategoryFlag(Integer.parseInt(request.getParameter("catStatus")));
+						    }
+						    
+						    if(request.getParameter("selStatus") != null && request.getParameter("selStatus").equals("all")) {
+						    	proList=dDAO.selectAllProduct(psVO);
+						    } else if(request.getParameter("selStatus") != null && request.getParameter("selStatus").equals("onSale")){
+						    	proList=dDAO.selectOnSaleProduct(psVO);
+						    } else if(request.getParameter("selStatus") != null && request.getParameter("selStatus").equals("soldout")){
+						    	proList=dDAO.selectSoldProduct(psVO);
+						    }
+						    for(int i = 0; i<proList.size();i ++) {
+						    	pVO = proList.get(i);
+						    %>
+						    <tr><td><input type="checkbox" name="checkbox" class="table-check" value="<%=pVO.getProduct_idx() %>"></td><td class="table-title title-link"><%= pVO.getTitle() %></td><td><%= pVO.getId() %></td><td><%= pVO.getCategory() %></td><td><%= pVO.getSold_check() %></td><td><%= pVO.getPosted_date() %></td><td><%= pVO.getReport_cnt() %></td></tr>
+						    <% } %>
+						  </table>  
 					</div>
 				</div>
 			</div>

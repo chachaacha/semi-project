@@ -28,7 +28,10 @@ $(function() {
 });
 </script>
 </head>
-<% session.invalidate(); %>
+<% 
+//로그인 홈으로 오면 세션만료
+session.invalidate();
+%>
 <body>
 	<div class="wrap" style="margin-top: 150px;">
 

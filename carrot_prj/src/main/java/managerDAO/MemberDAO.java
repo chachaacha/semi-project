@@ -28,7 +28,7 @@ public class MemberDAO {
 	}//getInstance
 	
 	//전체 회원정보 가져오기
-	public List<MemberVO> selectMember() throws SQLException{
+	public List<MemberVO> selectMember(String id) throws SQLException{
 		List<MemberVO> list = new ArrayList<MemberVO>();
 		
 		Connection con=null;
@@ -43,9 +43,15 @@ public class MemberDAO {
 			StringBuilder sb = new StringBuilder();
 			sb
 			.append("	select id, name, birth, joined_date	")
-			.append("	from member		");
-			
+			.append("	from member		")
+			.append("   where 1=1  ");
+			if(id != "") {
+				sb.append(" and id like '%'||?||'%' ");
+			}
 			pstmt=con.prepareStatement(sb.toString());
+			if(id != "") {
+				pstmt.setString(1, id);
+			}
 			rs=pstmt.executeQuery();
 			
 			MemberVO mVO=null;
@@ -64,38 +70,36 @@ public class MemberDAO {
 		return list;
 	}//selectMember
 	
-	//차단 회원정보 가져오기 //이 부분 내일 다시 얘기하기...
-	public List<ManagerBlockVO> selectBlockedMember() throws SQLException{
+	
+	public List<ManagerBlockVO> selectBlockedMember(String id) throws SQLException{
 		List<ManagerBlockVO> list = new ArrayList<ManagerBlockVO>();
-		
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
-		
 		DbConnection db = DbConnection.getInstance();
-		
 		try {
 			con=db.getConn();
 			
 			StringBuilder sb = new StringBuilder();
 			sb
 			.append("	select id, (select name from member where id=mb.id) name, ")
-			.append("(select blocked_reason from blocked_reason where br_idx=mb.br_idx) blocked_reason	")
-			.append("	from manager_blocked	");
-			
+			.append("   from (select blocked_reason from blocked_reason where br_idx=mb.br_idx) blocked_reason	")
+			.append("   where 1=1  ");
+			if(id != "") {
+				sb.append(" and id like '%'||?||'%' ");
+			}
 			pstmt=con.prepareStatement(sb.toString());
+			if(id != "") {
+				pstmt.setString(1, id);
+			}
 			rs=pstmt.executeQuery();
 			
 			ManagerBlockVO mbVO=null;
 			while(rs.next()) {
-				//수정
-				//mVO=new MemberVO(rs.getString("id"),rs.getString("name"),
-						//rs.getString("blocked_reason"),null);
 				mbVO=new ManagerBlockVO();
 				mbVO.setId(rs.getString("id"));
 				mbVO.setName(rs.getString("name"));
 				mbVO.setBlocked_reason(rs.getString("blocked_reason"));
-				
 				list.add(mbVO);
 			}
 		
@@ -106,45 +110,6 @@ public class MemberDAO {
 		return list;
 	}//selectBlockedMember
 	
-	//아이디 검색으로 회원정보 가져오기
-	public List<MemberVO> selectMember(String id) throws SQLException{
-		List<MemberVO> list = new ArrayList<MemberVO>();
-		
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		ResultSet rs=null;
-		
-		DbConnection db = DbConnection.getInstance();
-		
-		try {
-			con=db.getConn();
-			
-			StringBuilder sb = new StringBuilder();
-			sb
-			.append("	select id, name, joined_date, birth	")
-			.append("	from member	")
-			.append("	where id like'%'||?||'%'	");
-			
-			pstmt=con.prepareStatement(sb.toString());
-			rs=pstmt.executeQuery();
-			pstmt.setString(1, id);
-			
-			MemberVO mVO=null;
-			while(rs.next()) {
-				mVO = new MemberVO();
-				mVO.setId(rs.getString("id"));
-				mVO.setName(rs.getString("name"));
-				mVO.setJoined_date(rs.getDate("joined_date"));
-				mVO.setBirth(rs.getString("birth"));
-				
-				list.add(mVO);
-			}
-		}finally {
-			db.dbClose(rs, pstmt, con);
-		}
-		
-		return list;
-	}//selectMember
 	
 	//차단사유 불러오기
 	public List<BlockReasonVO> selectBlockReason() throws SQLException{
