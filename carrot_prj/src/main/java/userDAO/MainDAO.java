@@ -43,8 +43,8 @@ public class MainDAO {
 			con=db.getConn();
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select * ")
-			  .append(" from loc_category ")
-			  .append(" order by gu");
+			  .append(" from loc_category ");
+			  /*.append(" order by gu");*/
 			pstmt= con.prepareStatement(sb.toString());
 			rs = pstmt.executeQuery();
 			
@@ -130,8 +130,9 @@ public class MainDAO {
 			  .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx,(select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank from product p) ")
 			  .append("where 1=1 ");
 			
-			if(mfVO.getKeyword() != "") {
-				sb.append(" and title like '%'||?||'%' ");
+			/* System.out.println("-----keyword-------"+ mfVO.getKeyword()); */
+			if(mfVO.getKeyword() != null &&  !"".equals(mfVO.getKeyword())) {
+				sb.append(" and title like '%'||trim(?)||'%' ");
 			}
 			
 			//구 카테고리 드롭박스 선택시
@@ -187,7 +188,7 @@ public class MainDAO {
 			pstmt = con.prepareStatement(sb.toString());
 			
 			//바인드 변수가 밀리는 현상?? 어떻게 처리? 모든 경우의 수에 맞게 처리~
-			if(mfVO.getKeyword() != "" ) { // 키워드만 검색
+			if(mfVO.getKeyword() != null && !"".equals(mfVO.getKeyword() )  ) { // 키워드만 검색
 				pstmt.setString(1, mfVO.getKeyword());
 				if(mfVO.getGuFlag() != 0) { // 키워드랑 구 선택
 					pstmt.setInt(2, mfVO.getGuFlag());
@@ -227,9 +228,20 @@ public class MainDAO {
 					pstmt.setInt(3, mfVO.getMaxPrice());
 				}
 			} else if(mfVO.getPriceFlag() == 7) { // 가격직접설정만 선택
+				System.out.println("--------------값 : "+mfVO );
 				pstmt.setInt(1, mfVO.getMinPrice());
 				pstmt.setInt(2, mfVO.getMaxPrice());
 			}
+			
+			if(mfVO.getPriceFlag() == 7) { // 가격직접설정만 선택
+				System.out.println("--------------값 : "+mfVO );
+				pstmt.setInt(1, mfVO.getMinPrice());
+				pstmt.setInt(2, mfVO.getMaxPrice());
+			}
+			
+			/* System.out.println("--query---"+ sb );
+			System.out.println("--value--- "+ mfVO );   */ 
+					
 			rs = pstmt.executeQuery();
 			HomeVO hVO = null;
 			while(rs.next()) {

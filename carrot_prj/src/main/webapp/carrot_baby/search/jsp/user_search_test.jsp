@@ -19,6 +19,35 @@
 <jsp:setProperty property="*" name="mfVO"/>
 <jsp:setProperty property="*" name="hVO"/>
 <!DOCTYPE html>
+<%
+
+/* int totalRecord=Integer.parseInt(request.getParameter("totalRecord")); */
+int totalRecord=19;
+int numPerPage=3;
+int pagePerBlock=1;
+int totalPage=0;
+int totalBlock=0;
+int nowPage=1;
+int nowBlock=1;
+
+int start=0;
+int end=3;
+
+int listSize=0;
+
+if(request.getParameter("nowPage") !=null ) {
+	nowPage=Integer.parseInt(request.getParameter("nowPage"));
+}
+
+start=(nowPage*numPerPage)-numPerPage;
+end=numPerPage;
+
+totalPage=(int)Math.ceil((double)totalRecord/numPerPage);
+nowPage=(int)Math.ceil((double)nowPage/pagePerBlock);
+
+totalBlock=(int)Math.ceil((double)totalPage/pagePerBlock);
+
+%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -97,6 +126,15 @@ $(function(){
 		$("#searchFrm").submit();
 	}
 	
+	function pageing(page) {
+		$("#nowPage").val(page);
+		$("#searchFrm").submit();
+	}
+	
+	function block(value) {
+		$("#nowPage").val(${param.pagePerBlock}+1);
+		$("#searchFrm").submit();
+	}
 </script>
 </head>
 <body>
@@ -134,6 +172,8 @@ pageContext.setAttribute("lVOList", lVOList);
 List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
 pageContext.setAttribute("hVOList", hVOList);
 %>
+
+
 
 <!-- container -->
 <div class="container">
@@ -391,7 +431,7 @@ pageContext.setAttribute("hVOList", hVOList);
 				
 				<!-- 오른쪽 매물 하단 페이지 버튼 -->
 				<div class="page-bottom">
-					<div class="page-bottom-icon-click">
+<!-- 					<div class="page-bottom-icon-click">
 						<a href="user_search.jsp">1</a>
 					</div>
 					<div class="page-bottom-icon">
@@ -403,7 +443,32 @@ pageContext.setAttribute("hVOList", hVOList);
 					<div class="page-bottom-icon">
 						<a href="#void">4</a>
 					</div>
-						<div class="page-bottom-next">&gt;</div>
+						<div class="page-bottom-next">&gt;</div> -->
+					<table>
+					<tr>
+					<td>
+					<%
+					int pageStart=(nowBlock-1)*pagePerBlock+1;
+					int pageEnd=((pageStart+pagePerBlock)<=totalPage) ? (pageStart+pagePerBlock): totalPage+1;
+					
+					if(totalPage !=0) {
+						if(nowBlock >1) { %>
+						
+					<a href="javascript:block('<%=nowBlock-1%>')"> prev ... </a> <%  } %> &nbsp;
+					
+					<%for(;pageStart<pageEnd;pageStart++) {%>
+					<a href="javascript:pageing('<%=pageStart%>)">
+					<%if(pageStart==nowPage) {%> <font color="blue"> <%} %>
+					[<%=pageStart %>]
+					<% if(pageStart==nowPage) { %> </font> <% } %> </a>
+					<% } %> &nbsp;
+					
+					<%if (totalBlock > nowBlock) {%>
+					<a href="javascript:block('<%=nowBlock+1%>')"> ... next </a> <%  } %> &nbsp;
+					<% } %>
+					</td>
+					</tr>
+					</table>	
 				</div>
 				
 			</div>
@@ -423,6 +488,9 @@ pageContext.setAttribute("hVOList", hVOList);
 	<input type="hidden" name="priceFlag" id="priceFlag" value="${param.priceFlag }">
 	<input type="hidden" name="minPrice" id="minPrice" value="${param.minPrice }">
 	<input type="hidden" name="maxPrice" id="maxPrice" value="${param.maxPrice }">
+	<input type="hidden" name="totalRecord" id="totalRecord" value="<%=totalRecord%>">
+	<input type="hidden" name="nowPage" id="nowPage" value="<%=nowPage%>">
+	
 </form>
 
 <!-- footer -->

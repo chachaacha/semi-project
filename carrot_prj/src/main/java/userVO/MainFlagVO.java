@@ -84,7 +84,13 @@ public class MainFlagVO {
 		this.keyword = keyword;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "MainFlagVO [categoryFlag=" + categoryFlag + ", guFlag=" + guFlag + ", orderByFlag=" + orderByFlag
+				+ ", priceFlag=" + priceFlag + ", minPrice=" + minPrice + ", maxPrice=" + maxPrice + ", freeFlag="
+				+ freeFlag + ", keyword=" + keyword + "]";
+	}
+
 	
 	
 	
