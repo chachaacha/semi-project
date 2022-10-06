@@ -16,6 +16,7 @@ request.setCharacterEncoding("UTF-8"); %>
 <jsp:useBean id="jVO" class="userVO.JoinVO" scope="session"/>
 <!-- 2. VO에 setter method(property) 호출 -->
 <jsp:setProperty property="*" name="jVO"/>
+<!-- 이메일 추출 -->
 <%
 //방법 2.
 String email1=request.getParameter("email1");
@@ -23,13 +24,23 @@ String email2=request.getParameter("email2");
 String email=email1+"@"+email2;
 %>
 <jsp:setProperty property="email" name="jVO" value="<%= email %>"/> 
+<!-- 주소 추출 -->
+<%
+String str=request.getParameter("addr1");
+String addr1=str.substring(0,str.lastIndexOf("구")+1);
+%>
+<jsp:setProperty property="addr1" name="jVO" value="<%= addr1 %>"/> 
 
 <!-- DB연결 -->
 <%
 JoinDAO jDAO=JoinDAO.getInstance();
 out.println ( jVO );
-jDAO.insertJoin(jVO);
-%>
+jDAO.insertJoin(jVO);%>
+
+<script type="text/javascript">
+	alert("정보작성이 완료되었습니다.");
+	location.href="user_join_comp.jsp";
+</script>
 
 <%-- 입력 값 : <%= lVO %> --%>
 <%-- 이름 : ${ param.name }<br/>

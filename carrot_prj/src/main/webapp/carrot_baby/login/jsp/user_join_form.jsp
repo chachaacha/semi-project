@@ -51,11 +51,11 @@ function chkNull(){
 		$("#password").focus();
 		return;
 	}
-	//8~12자의 영문, 숫자, 특수문자 3가지를 조합하여 입력
-	var passChk= /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,12}$/;
+	//8~25자의 영문, 숫자, 특수문자 3가지를 조합하여 입력
+	var passChk= /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,25}$/;
 	
 	if(!passChk.test($("#password").val().trim())){
-		alert("8~12자의 영문, 숫자, 특수문자 3가지를 조합하여 입력해야 합니다.");
+		alert("8~25자의 영문, 숫자, 특수문자 3가지를 조합하여 입력해야 합니다.");
 		$("#password").focus();
 		return;
 	}  
@@ -229,7 +229,7 @@ function zipcodeapi() {
 					<th><label><span style="color:red">*</span>비밀번호</label></th>
 					<td>
 						<input type="password" placeholder="비밀번호를 입력해주세요" name="password" id="password" class="inputPass size02" />
-						<span>*8~12자의 영문, 숫자, 특수문자 3가지를 조합하여 입력</span>
+						<span>*8~25자의 영문, 숫자, 특수문자 3가지를 조합하여 입력</span>
 					</td>
 				</tr>
 						<tr>
