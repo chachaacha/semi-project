@@ -52,6 +52,11 @@ $(function() {
 
 <!-- container -->
 <div class="container">
+	   		<!-- 1. parameter 받을 VO 생성-->
+			<jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"></jsp:useBean>
+			<!-- 2. VO에 setter method(property)호출 -->
+			<jsp:setProperty property="*" name="hVO"/>
+			<!-- DB연결 -->
 
 <!-- main top -->
 	<div class="swiper mySwiper">
@@ -134,35 +139,34 @@ $(function() {
      <div class="swiper-button-next"></div>
      <div class="swiper-button-prev"></div>
      <div class="swiper-pagination"></div>
-   </div>
+   </div><!-- swiper mySwiper -->
 <!-- main top end -->
    
 <!-- main middle -->
 	<div class="main-middle-wrap">
 		<div class="main-middle-content">
 			<h1 class="main-middle-title">중고거래</h1>
-	   		<!-- 1. parameter 받을 VO 생성-->
-			<jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"></jsp:useBean>
-			<!-- 2. VO에 setter method(property)호출 -->
-			<jsp:setProperty property="*" name="hVO"/>
-			<!-- DB연결 -->
 			<%
-			HomeDAO hDao=HomeDAO.getInstance();
+			HomeDAO hDao=HomeDAO.getInstance(); //연결을 한번 했기 때문에 밑에서 또 연결할 필요x
 			List<HomeVO> mainList=hDao.selectProduct();
 			//스콥 객체에 할당
 			pageContext.setAttribute("mainList", mainList );
 			%>
 				<div class="card-wrap">
-					<!-- 매물 목록 --><!-- 매물은 공개되도 되기 때문에 get 방식 가능 !-->
-					<c:forEach varStatus="m" var="main"  items="${mainList}">
+					<!-- 매물 목록 -->
+					<c:forEach varStatus="m" var="main"  items="${mainList}"><!-- forEach를 사용하여 반복 -->
 				
 					<div class="card"><!-- 1번 -->
-						<a class="card-link" href="#void"><!-- 거래창 연결 링크 필요 -->
-							<div class="card-photo"><c:out value="${thumbnail}"/></div><!-- card-photo -->
-							
-							
+						
+							<div class="card-photo">
+								<a class="card-link" href="#void"><!-- 이미지는 src에 걸기! -->
+									<img alt="이미지 위치" src="${main.thumbnail }">
+								</a>
+							</div><!-- card-photo -->
 							<div class="card-desc">
-								<h2 class="card-title"><c:out value="${main.title }"/></h2>
+								<a class="card-link" href="#void">
+									<h2 class="card-title"><c:out value="${main.title }"/></h2>
+								</a>
 								<div class="card-price"><c:out value="${main.price }"/></div>
 								<div class="card-region-name" ><c:out value="${main.gu }"/></div>
 							</div><!-- card-desc -->
@@ -171,55 +175,37 @@ $(function() {
 								ㆍ
 								<span> 댓글&nbsp;<c:out value="${main.comment_cnt }"/></span>
 							</div><!-- card-counts -->
-						</a>
+						
 					</div><!-- card -->
 			</c:forEach>
 
 	</div><!-- card-wrap -->
 	</div><!-- main-middle-content -->
-	</div>
+	</div><!-- main-middle-wrap -->
 <!-- main middle end -->
 
 <!-- main bottom -->
 
 	<div class="main-bottom">
 		<h3 class="main-bottom-title">중고거래 인기검색어</h3>
-		<ul class="top-keywords-list">
-			<li class="top-keywords-item">
-				<a class="top-keywords-link" href="#void">검색어</a>
-			</li>
-			<li class="top-keywords-item">
-				<a class="top-keywords-link" href="#void">검색어</a>
-			</li>
-			<li class="top-keywords-item">
-				<a class="top-keywords-link" href="#void">검색어</a>
-			</li>
-			<li class="top-keywords-item">
-				<a class="top-keywords-link" href="#void">검색어</a>
-			</li>
-			<li class="top-keywords-item">
-				<a class="top-keywords-link" href="#void">검색어</a>
-			</li>
-			<li class="top-keywords-item">
-				<a class="top-keywords-link" href="#void">검색어</a>
-			</li>
-			<li class="top-keywords-item">
-				<a class="top-keywords-link" href="#void">검색어</a>
-			</li>
-			<li class="top-keywords-item">
-				<a class="top-keywords-link" href="#void">검색어</a>
-			</li>
-			<li class="top-keywords-item">
-				<a class="top-keywords-link" href="#void">검색어</a>
-			</li>
-			<li class="top-keywords-item">
-				<a class="top-keywords-link" href="#void">검색어</a>
-			</li>
-		</ul>
+			<%
+			List<String> topKeyWord=hDao.selectSearch();
+			//스콥 객체에 할당
+			pageContext.setAttribute("topKeyWord", topKeyWord); 
+			%>
+			
+		<ul class="top-keywords-list"><!-- ul이 바깥에 있어야함 -->
+			<c:forEach varStatus="h" var="top"  items="${topKeyWord}"><!-- for:Each로 반복돌리기 -->
+				<li class="top-keywords-item">
+					<a class="top-keywords-link" href="#void">
+						<!--<c:out value="${top.word }"/>-->
+					</a>
+				</li>
+			</c:forEach>
+	</ul> 
 	</div><!-- main-bottom -->
 
 <!-- main bottom end -->
-
 
 </div>
 <!-- container end -->

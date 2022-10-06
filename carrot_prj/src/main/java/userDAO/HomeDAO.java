@@ -81,10 +81,12 @@ public class HomeDAO {
 		try {
 			con = db.getConn();
 			StringBuffer sb = new StringBuffer();
-			sb.append("select word")
-			  .append("from (select word, count(word) cnt, row_number() over(order by count(word)) rank from search) ")
-			  .append("where rank between 1 and 10 ")
-			  .append("group by word");
+			sb.append("select word, cnt")
+				.append("from (select word, cnt, row_number() over(order by cnt desc) r ")
+				.append("from(select word, count(word) cnt")
+				.append("from search")
+				.append("group by word)")
+				.append("where r between 1 and 10");
 			pstmt= con.prepareStatement(sb.toString());
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
