@@ -97,7 +97,7 @@ public class MyInfoDAO {
 			StringBuilder update = new StringBuilder();
 			update
 			.append("update	member																																")
-			.append("set			img = ?, nick = ?, phone_num = ?, sms_chk = ?, email = ?, email_chk = ?, zipcode = ?, addr1 = ?, addr2 =?	")
+			.append("set img = ?, nick = ?, phone_num = ?, sms_chk = ?, email = ?, email_chk = ?, zipcode = ?, addr1 = ?, addr2 =?	")
 			.append("where id = ?																																		");
 			
 			pstmt = con.prepareStatement(update.toString());

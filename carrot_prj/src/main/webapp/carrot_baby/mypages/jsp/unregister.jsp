@@ -11,12 +11,17 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(function() {
+	//비밀번호 입력 유효성 검사
 	$(".ok-btn").click(function() {
-		if(confirm("정말 탈퇴하시겠습니까?")) {
-			alert("탈퇴가 완료되었습니다.");
+		if($("#pass").val().trim()==""){
+			alert("비밀번호를 입력해주세요.")
+			$("#pass").focus();
+			return;
 		}
+		
+		$("#unregisterFrm").submit();
 	})
-})
+})//ready
 </script>
 </head>
 <body>
@@ -36,7 +41,10 @@ $(function() {
 	<div class="unregister_msg2">다시한번 비밀번호를 정확하게 기입하시고 탈퇴신청을 해주시기 바랍니다.<br><br>
 										  <p>그동안 애기당근을 이용해주셔서 진심으로 감사합니다.</p></div>
 	<div class="password_input"><img src="../../images/unregister_lock.png">
-			<input type="password" placeholder="비밀번호 입력" style="width: 200px; height: 25px;"></div>
+		<form action="unregister.pro.jsp" method="post" id="unregisterFrm">
+			<input type="password" id="pass" placeholder="비밀번호 입력" style="width: 200px; height: 25px;">
+		</form>
+			</div>
 	<button type="button" class="ok-btn">회원탈퇴</button>
 </div> <!-- container div -->
 <!-- container end -->

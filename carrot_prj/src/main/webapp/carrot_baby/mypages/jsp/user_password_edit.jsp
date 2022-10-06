@@ -35,7 +35,8 @@ $("#btn").click(function(){
 	//신규 비밀번호와 신규 비밀번호 확인이 일치하지 않을 때
 	if($("#password1").val()!=$("#password2").val()){
 		alert("신규 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-		$("#password").focus();
+		$("#password2").val("");
+		$("#password2").focus();
 		return;
 	}
 		

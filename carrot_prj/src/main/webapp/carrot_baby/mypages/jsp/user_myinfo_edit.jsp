@@ -1,3 +1,5 @@
+<%@page import="userVO.MyInfoVO"%>
+<%@page import="userDAO.MyInfoDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -71,12 +73,32 @@ function zipcodeapi() {
 	$(function() {
 		$(".oBtn").click(function() {
 			alert("개인정보가 수정되었습니다.")
-		});
-	});
+		}); 
+		
+		$("#infoEditFrm").submit();
+	});//ready
 </script>
 
 </head>
 <body>
+<!-- 저장된 내 정보 불러오기 -->
+<%
+//세션에 저장된 아이디 불러오기
+String id = (String)session.getAttribute("id");
+
+if(id==null){
+	response.sendRedirect("../../login/jsp/user_login.jsp");
+}
+
+MyInfoDAO miDAO = MyInfoDAO.getInstance();
+MyInfoVO info = miDAO.selectInfo(id);
+%>
+
+
+<jsp:useBean id="miVO" class="userVO.MyInfoVO"></jsp:useBean>
+
+<jsp:setProperty property="*" name="miVO"/>
+
 	<div class="wrap">
 
 <!-- header -->
@@ -90,9 +112,8 @@ function zipcodeapi() {
 
 				<!-- 내정보수정  -->
 				<div class="title">내 정보 수정</div>
-
 				<!-- 정보 작성 폼 -->
-				<form action="user_myinfo_edit_process.jsp" method="post" name="editFrm">
+				<form action="user_myinfo_edit_process.jsp" method="post" name="infoEditFrm">
 				<div class="writeForm">
 					<table>
 						<tr>
@@ -115,24 +136,24 @@ function zipcodeapi() {
 						</tr>
 						<tr>
 							<th><label>성명</label></th>
-							<td><input type="text" value="홍길동" id="name" class="inputTxt inputName" readonly="readonly" /></td>
+							<td><input type="text" value="<%=info.getName() %>" id="name" class="inputTxt inputName" readonly="readonly" /></td>
 						</tr>
 						<tr>
 							<th><label>별명</label></th>
-							<td><input type="text" value="당근맘"	id="nick" name="nick" class="inputTxt inputNickName" /></td>
+							<td><input type="text" value="<%=info.getNick() %>"	id="nick" name="nick" class="inputTxt inputNickName" /></td>
 						</tr>
 						<tr>
 							<th><label>아이디</label></th>
-							<td><input type="text" value="carrotbaby" name="id" id="id" class="inputTxt inputIdtype" maxlength="20" readonly="readonly" /></td>
+							<td><input type="text" value="<%=info.getId() %>" name="id" id="id" class="inputTxt inputIdtype" maxlength="20" readonly="readonly" /></td>
 						</tr>
 						<tr>
 							<th scope="row"><label>생년월일</label></th>
-							<td><input type="date" name="birth" id="birth" value="1998-01-03" readonly="readonly" /></td>
+							<td><input type="date" name="birth" id="birth" value="<%=info.getBirth() %>" readonly="readonly" /></td>
 						</tr>
 						<tr>
 							<th>휴대폰</th>
-							<td><input type="text" name="phone_num" id="phone_num" value="010-1234-5678" readonly="readonly" />
-								<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk" style="cursor: pointer;"/>
+							<td><input type="text" name="phone_num" id="phone_num" value="<%=info.getPhone_num() %>" readonly="readonly" />
+								<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk" value="<%=info.getSms_chk() %>" style="cursor: pointer;"/>
 								<label>SMS 수신동의</label></span></td>
 						</tr>
 						<tr>
@@ -153,10 +174,10 @@ function zipcodeapi() {
 						</tr>
 						<tr>
 							<th><label>주소</label></th>
-							<td class="addr_td"><input 	type="text" class="zipcode" id="zipcode" name="zipcode" value="06235" readonly="readonly" onclick="zipcodeapi();" />
+							<td class="addr_td"><input 	type="text" class="zipcode" id="zipcode" name="zipcode" value="<%=info.getZipcode() %>" readonly="readonly" onclick="zipcodeapi();" />
 								<a class="formBtn" href="javascript:zipcodeapi();">우편번호검색</a><br />
-								<input type="text" id="addr1" class="addr" name="addr1" value="서울 강남구 테헤란로 132 8층 쌍용교육센터" readonly="readonly" style="margin-top: 7px;" /><br />
-								<input type="text" id="addr2" class="addr" name="addr2" value="4강의실" style="margin-top: 7px;" /></td>
+								<input type="text" id="addr1" class="addr" name="addr1" value="<%=info.getAddr1() %>" readonly="readonly" style="margin-top: 7px;" /><br />
+								<input type="text" id="addr2" class="addr" name="addr2" value="<%=info.getAddr2() %>" style="margin-top: 7px;" /></td>
 						</tr>
 					</table>
 				</div>
