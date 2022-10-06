@@ -26,49 +26,7 @@ public class ProductDAO {
 		return pDAO;
 	}
 	
-	
-	public List<ProductVO> selectProduct() throws SQLException {
-		DbConnection db = DbConnection.getInstance();
-		Connection con = null;
-		PreparedStatement pstmt =null;
-		ResultSet rs = null;
-		List<ProductVO> list = new ArrayList<>();
-		try {
-			con = db.getConn();
-			StringBuffer sb = new StringBuffer();
-			sb.append(" select product_idx, title, id, (select category from product_category where category_idx = p.category_idx ) category, decode(sold_check,'Y','거래완료','N','판매중') sold_check, posted_date, report_cnt ")
-			  .append(" from product p ");
-
-			pstmt = con.prepareStatement(sb.toString());
-			rs = pstmt.executeQuery();
-			
-			ProductVO pVO = null;
-			while(rs.next()) {
-				pVO = new ProductVO();
-				pVO.setProduct_idx(rs.getString("product_idx"));
-				pVO.setTitle(rs.getString("title"));
-				pVO.setId(rs.getString("id"));
-				pVO.setCategory(rs.getString("category"));
-				pVO.setSold_check(rs.getString("sold_check"));
-				pVO.setPosted_date(rs.getDate("posted_date"));
-				pVO.setReport_cnt(rs.getInt("report_cnt"));
-				list.add(pVO);
-			}
-		} finally {
-			db.dbClose(rs, pstmt, con);
-		}
-		return list;
-	}
-	
-	
-	
-	/**
-	 * 전체상품리스트
-	 * @param psVO
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<ProductVO> selectAllProduct(ProductSearchVO psVO) throws SQLException {
+	public List<ProductVO> selectProduct(ProductSearchVO psVO) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
 		Connection con = null;
 		PreparedStatement pstmt =null;
@@ -80,6 +38,16 @@ public class ProductDAO {
 			sb.append(" select product_idx, title, id, (select category from product_category where category_idx = p.category_idx ) category, decode(sold_check,'Y','거래완료','N','판매중') sold_check, posted_date, report_cnt ")
 			  .append(" from product p ")
 			  .append(" where 1=1 ");
+			if(psVO.getSelStatus() != 0) {
+				switch(psVO.getSelStatus()) {
+				case 1:
+					sb.append(" and sold_check = 'N' ");
+					break;
+				case 2:
+					sb.append(" and sold_check = 'Y' ");
+					break;
+				}
+			}
 			if(psVO.getCategoryFlag() != 0) {
 				sb.append(" and category_idx=? ");
 			} 
@@ -109,100 +77,6 @@ public class ProductDAO {
 		return list;
 	}
 	
-	/**
-	 * 판매중 클릭시
-	 * @param psVO
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<ProductVO> selectOnSaleProduct(ProductSearchVO psVO) throws SQLException {
-		DbConnection db = DbConnection.getInstance();
-		Connection con = null;
-		PreparedStatement pstmt =null;
-		ResultSet rs = null;
-		try {
-			con = db.getConn();
-			StringBuffer sb = new StringBuffer();
-			sb.append(" select product_idx, title, id, (select category from product_category where category_idx = p.category_idx ) category, decode(sold_check,'Y','거래완료','N','판매중') sold_check, posted_date, report_cnt ")
-			  .append(" from product p ")
-			  .append(" where 1=1 ")
-			  .append(" and sold_check = 'N' ");
-			if(psVO.getCategoryFlag() != 0) {
-				sb.append(" and category_idx=? ");
-			} 
-			//////////////////////// order by 추후추가 혹은 js에서 처리//////////////////////////////////
-			//////////////////////// 신고수순, 등록일순///////////////////////////////////
-			pstmt = con.prepareStatement(sb.toString());
-			if(psVO.getCategoryFlag() != 0) {
-				pstmt.setInt(1, psVO.getCategoryFlag());
-			}
-			rs = pstmt.executeQuery();
-			List<ProductVO> list = new ArrayList<>();
-			ProductVO pVO = null;
-			while(rs.next()) {
-				pVO = new ProductVO();
-				pVO.setProduct_idx(rs.getString("product_idx"));
-				pVO.setTitle(rs.getString("title"));
-				pVO.setId(rs.getString("id"));
-				pVO.setCategory(rs.getString("category"));
-				pVO.setSold_check(rs.getString("sold_check"));
-				pVO.setPosted_date(rs.getDate("posted_date"));
-				pVO.setReport_cnt(rs.getInt("report_cnt"));
-				list.add(pVO);
-			}
-			return list;
-			
-		} finally {
-			db.dbClose(rs, pstmt, con);
-		}
-	}
-	
-	/**
-	 * 거래완료 선택시
-	 * @param psVO
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<ProductVO> selectSoldProduct(ProductSearchVO psVO) throws SQLException {
-		DbConnection db = DbConnection.getInstance();
-		Connection con = null;
-		PreparedStatement pstmt =null;
-		ResultSet rs = null;
-		List<ProductVO> list = new ArrayList<>();
-		try {
-			con = db.getConn();
-			StringBuffer sb = new StringBuffer();
-			sb.append(" select product_idx, title, id, (select category from product_category where category_idx = p.category_idx ) category, decode(sold_check,'Y','거래완료','N','판매중') sold_check, posted_date, report_cnt ")
-			  .append(" from product p ")
-			  .append(" where 1=1 ")
-			  .append(" and sold_check = 'Y' ");
-			if(psVO.getCategoryFlag() != 0) {
-				sb.append(" and category_idx=? ");
-			} 
-			//////////////////////// order by 추후추가 혹은 js에서 처리//////////////////////////////////
-			//////////////////////// 신고수순, 등록일순///////////////////////////////////
-			pstmt = con.prepareStatement(sb.toString());
-			if(psVO.getCategoryFlag() != 0) {
-				pstmt.setInt(1, psVO.getCategoryFlag());
-			}
-			rs = pstmt.executeQuery();
-			ProductVO pVO = null;
-			while(rs.next()) {
-				pVO = new ProductVO();
-				pVO.setProduct_idx(rs.getString("product_idx"));
-				pVO.setTitle(rs.getString("title"));
-				pVO.setId(rs.getString("id"));
-				pVO.setCategory(rs.getString("category"));
-				pVO.setSold_check(rs.getString("sold_check"));
-				pVO.setPosted_date(rs.getDate("posted_date"));
-				pVO.setReport_cnt(rs.getInt("report_cnt"));
-				list.add(pVO);
-			}
-		} finally {
-			db.dbClose(rs, pstmt, con);
-		}
-		return list;
-	}
 	
 	/**
 	 * 검색버튼 눌렀을 시

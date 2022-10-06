@@ -14,7 +14,7 @@
 </head>
 <body>
 <jsp:useBean id="lVO" class="managerVO.LoginVO"></jsp:useBean>
-<jsp:setProperty property="*" name="lVO"/>
+<jsp:setProperty property="*" name="lVO"/><!-- manager_login에서 form submit을 통해 넘어옴 웹 파라메터의 이름과 같은 setter메소드 모두에 값 적용 -->
 <%
 	LoginDAO lDAO = LoginDAO.getInstance();
 	if(lDAO.selectLogin(lVO)!=null) {

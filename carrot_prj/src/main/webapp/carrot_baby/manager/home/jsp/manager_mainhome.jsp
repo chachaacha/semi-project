@@ -41,7 +41,7 @@
 <jsp:useBean id="hdVO3" class="managerVO.HomeDealVO"></jsp:useBean>
 
 <c:if test="${ empty manager_id }"> 
-<% response.sendRedirect("../../login/jsp/manager_login.jsp");%>
+<c:redirect url="../../login/jsp/manager_login.jsp"/>
 </c:if>
 
 <% 

@@ -21,9 +21,7 @@ $(function() {
 	 
 	//셀렉트 선택시 다른 테이블을 보여준다.
 	$("#memberCat").change(function(){
-		$("#selectStau").val($("#memberCat").val());
-		$("#searchStau").val(null);
-		$("#hidFrm").submit();
+		$("#selectFrm").submit();
 	});
 	 
 	//검색버튼 눌렀을 시
@@ -33,8 +31,7 @@ $(function() {
 			alert("2자 이상 입력하세요!");
 			return;
 		}
-		$("#searchStau").val(word.trim());
-		$("#hidFrm").submit();
+		$("#searchFrm").submit();
 	});
 });
 </script>
@@ -68,23 +65,26 @@ $(function() {
 		<div class="member_management">
 			<!-- 위 -->
 			<div class="mm-top">
+			<form id="selectFrm"> 
 				<select id="memberCat" name="category" class="category-select">
-							<option value="all"${ 'all' eq param.selectStau?" selected='selected'":""  }>회원 리스트</option>
-							<option value="block"${ 'block' eq param.selectStau?" selected='selected'":""  }>차단 회원 리스트</option>
+							<option value="all"${ 'all' eq param.category?" selected='selected'":""  }>회원 리스트</option>
+							<option value="block"${ 'block' eq param.category?" selected='selected'":""  }>차단 회원 리스트</option>
 				</select>
+				</form> 
 				<div class="search-wrap">
-						<input hidden="hidden"><input type="text" id="idSearch" name="idSearch" value="${ param.searchStau }" class="search-txt" placeholder="아이디를 입력하세요.">
+						<form id="searchFrm">
+						<input hidden="hidden"><input type="text" id="idSearch" name="idSearch" value="${ param.idSearch }" class="search-txt" placeholder="아이디를 입력하세요.">
 						<button type="button" class="search-bar" id="searchBtn">
 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 							  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 							</svg>
 						</button>
+						</form>
 				</div>
 			</div>
 			
-			<form id ="hidFrm">
-				<input type="hidden" id="selectStau"name="selectStau" value="${ empty param.selectStau?'all':param.selectStau }"/>
-				<input type="hidden" id="searchStau"name="searchStau" value="${ param.searchStau }"/>
+			<form>
+				
 			</form>
 			
 			<div class="table-wrap table1">
@@ -92,47 +92,38 @@ $(function() {
 						 <caption>표 제목</caption>						 
 						 <% MemberDAO mDAO = MemberDAO.getInstance();%>
 						  <% 	
-						 List<MemberVO> memList = mDAO.selectMember(request.getParameter("searchStau"));
+						 List<MemberVO> memList = mDAO.selectMember(request.getParameter("idSearch"));
 						 pageContext.setAttribute("memList", memList);
 						 %>
 						 <c:choose>
-						 <c:when test="${ param.selectStau  eq 'all' }">
+						 <c:when test="${ param.category eq 'all' }">
 						 <tr><th>아이디명</th><th >회원명</th><th>가입날짜</th><th>생년월일</th><th>차단</th></tr>
-						 <c:if test="${ empty pageScope.memList }">
-						 <tr><td colspan="5">조회된결과가 없습니다.</td></tr>
-						 </c:if> 	
 						 <c:forEach var="memList" items="${ pageScope.memList }">
 						  	<tr><td><c:out value="${ memList.id }"/></td><td><c:out value="${ memList.name }"/></td><td><c:out value="${ memList.joined_date }"/></td><td><c:out value="${ memList.birth }"/></td><td><button type="button" class="block-btn">차단</button></td></tr>
 						 </c:forEach>
 						 </c:when>
-						 <c:when test="${ param.selectStau  eq 'block' }">
+						 <c:when test="${ param.category eq 'block' }">
 						 <% 
-						 List<ManagerBlockVO> bloList = mDAO.selectBlockedMember(request.getParameter("searchStau"));
+						 List<ManagerBlockVO> bloList = mDAO.selectBlockedMember(request.getParameter("idSearch"));
 						 pageContext.setAttribute("bloList", bloList);
 						 %>	
 						 <tr><th>아이디명</th><th >회원명</th><th>차단 사유</th><th>차단 해제</th></tr>
-						 <c:if test="${ empty pageScope.bloList }">
-						 <tr><td colspan="4">조회된결과가 없습니다.</td></tr>
-						 </c:if> 
 						 <c:forEach var="bloList" items="${ pageScope.bloList }">
 						    <tr><td><c:out value="${ bloList.id }"/></td><td><c:out value="${ bloList.name }"/></td><td><c:out value="${ bloList.blocked_reason }"/></td><td><button type="button" class="block-btn">해제</button></td></tr>
 						 </c:forEach>
 						 </c:when>
 						 <c:otherwise>
 						 <%	
-						 memList = mDAO.selectMember(request.getParameter("searchStau"));
+						 memList = mDAO.selectMember(request.getParameter("idSearch"));
 						 pageContext.setAttribute("memList", memList);
 						 %>
 						 <tr><th>아이디명</th><th >회원명</th><th>가입날짜</th><th>생년월일</th><th>차단</th></tr>
-						 <c:if test="${ empty pageScope.memList }">
-						 <tr><td colspan="5">조회된결과가 없습니다.</td></tr>
-						 </c:if> 
 						 <c:forEach var="memList" items="${ pageScope.memList }">
 						  	<tr><td><c:out value="${ memList.id }"/></td><td><c:out value="${ memList.name }"/></td><td><c:out value="${ memList.joined_date }"/></td><td><c:out value="${ memList.birth }"/></td><td><button type="button" class="block-btn">차단</button></td></tr>
 						 </c:forEach>
 						 </c:otherwise>
 						 </c:choose>	
-						 </table>  
+						 </table>   	
 			</div>
 		</div>
 	</div>

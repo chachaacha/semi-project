@@ -45,17 +45,16 @@ public class MemberDAO {
 			.append("	select id, name, birth, joined_date	")
 			.append("	from member		")
 			.append("   where 1=1  ");
-			if(id != "") {
+			if(id != null && !"".trim().equals(id)) {
 				sb.append(" and id like '%'||?||'%' ");
 			}
 			pstmt=con.prepareStatement(sb.toString());
-			if(id != "") {
+			if(id != null && !"".trim().equals(id)) {
 				pstmt.setString(1, id);
 			}
 			rs=pstmt.executeQuery();
 			
 			MemberVO mVO=null;
-			
 			while(rs.next()) {
 				mVO=new MemberVO();
 				mVO.setId(rs.getString("id"));
@@ -82,11 +81,11 @@ public class MemberDAO {
 			
 			StringBuilder sb = new StringBuilder();
 			sb
-			.append("	select id, (select name from member where id=mb.id) name, ")
-			.append("   from (select blocked_reason from blocked_reason where br_idx=mb.br_idx) blocked_reason	")
-			.append("   where 1=1  ");
+			.append("	select mb.id, m.name, br.blocked_reason ")
+			.append("   from member m, manager_blocked mb, blocked_reason br	")
+			.append("   where (mb.id = m.id and  mb.br_idx = br.br_idx)  ");
 			if(id != "") {
-				sb.append(" and id like '%'||?||'%' ");
+				sb.append(" and mb.id like '%'||?||'%' ");
 			}
 			pstmt=con.prepareStatement(sb.toString());
 			if(id != "") {

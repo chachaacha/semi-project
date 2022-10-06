@@ -1,17 +1,11 @@
 package managerVO;
 
 public class ProductSearchVO {
-	private int categoryFlag;
+	private int categoryFlag , selStatus;
 	private String dateOrderFlag, reportOrderFlag;
 	
 	public ProductSearchVO() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public ProductSearchVO(int categoryFlag, String dateOrderFlag, String reportOrderFlag) {
-		this.categoryFlag = categoryFlag;
-		this.dateOrderFlag = dateOrderFlag;
-		this.reportOrderFlag = reportOrderFlag;
 	}
 
 	public int getCategoryFlag() {
@@ -22,6 +16,13 @@ public class ProductSearchVO {
 		this.categoryFlag = categoryFlag;
 	}
 
+	public int getSelStatus() {
+		return selStatus;
+	}
+
+	public void setSelStatus(int selStatus) {
+		this.selStatus = selStatus;
+	}
 
 	public String getDateOrderFlag() {
 		return dateOrderFlag;
@@ -41,9 +42,10 @@ public class ProductSearchVO {
 
 	@Override
 	public String toString() {
-		return "ProductSearchVO [categoryFlag=" + categoryFlag + ", dateOrderFlag="
+		return "ProductSearchVO [categoryFlag=" + categoryFlag + ", selStatus=" + selStatus + ", dateOrderFlag="
 				+ dateOrderFlag + ", reportOrderFlag=" + reportOrderFlag + "]";
 	}
+
 	
 	
 	

@@ -39,35 +39,35 @@ $(function() {
 	
 	//카테고리가 선택되었을 시
 	$("#category").change(function(){
-		$("#catStatus").val($("#category").val());
+		$("#categoryFlag").val($("#category").val());
 		$("#hidFrm").submit();
 	});
 	
 	//전체 상품이 눌렸을 시 혹은 초기 집입 시
 	$("#allBtn").click(function(){
-		$("#selStatus").val("all");
-		$("#catStatus").val($("#category").val());
+		$("#selStatus").val(0);
+		$("#categoryFlag").val($("#category").val());
 		$("#hidFrm").submit();
 	});
 	
 	//판매중 눌렀을 시
 	$("#onSaleBtn").click(function(){
-		$("#selStatus").val("onSale");
-		$("#catStatus").val($("#category").val());
+		$("#selStatus").val(1);
+		$("#categoryFlag").val($("#category").val());
 		$("#hidFrm").submit();
 	});
 	
 	//거래완료 눌렀을 시
 	$("#soldoutBtn").click(function(){
-		$("#selStatus").val("soldout");
-		$("#catStatus").val($("#category").val());
+		$("#selStatus").val(2);
+		$("#categoryFlag").val($("#category").val());
 		$("#hidFrm").submit();
 	});
 	
 	//검색버튼 눌렀을 시
 	$("#searchBtn").click(function(){
 		var keyword = $("#titleSearch").val();
-		if(keyword.trim()<2) {
+		if(keyword.trim().length<2) {
 			alert("두 글자 이상 입력하세요!");
 			return;
 		}
@@ -122,8 +122,8 @@ function check() {
 			</div>
 			<!-- 파라메터를 묶기 위한 폼 -->
 			<form id="hidFrm" method="get">
-			<input type="hidden" id="selStatus" name="selStatus" value="${ empty param.selStatus?'all':param.selStatus }"/>
-			<input type="hidden" id="catStatus" name="catStatus" value="${ param.catStatus }"/>
+			<input type="hidden" id="selStatus" name="selStatus" value="${ empty param.selStatus?'0':param.selStatus }"/>
+			<input type="hidden" id="categoryFlag" name="categoryFlag" value="${ param.categoryFlag }"/>
 			</form>
 			
 			
@@ -148,7 +148,7 @@ function check() {
 					<div class="search-wrap">
 					<!-- 검색을 위한 폼 -->
 					<form id="searchFrm">
-						<input hidden="hidden"><input type="text" class="search-txt" id="titleSearch" name="titleSearch" placeholder="제목을 입력하세요.">
+						<input hidden="hidden"><input type="text" class="search-txt" id="titleSearch" name="titleSearch" value="${ param.titleSearch }" placeholder="제목을 입력하세요.">
 						<button type="button" class="search-bar" id="searchBtn">
 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 							  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -160,7 +160,7 @@ function check() {
 				<!-- 오른쪽 -->
 				<div class="pm-bottom">
 					<%
-					//상품리스트 불러오기
+					//카테고리 리스트 불러오기
 					CatDAO cDAO = CatDAO.getInstance();  
 					List<CatVO> catList = cDAO.selectCat();
 					pageContext.setAttribute("catList", catList);
@@ -168,35 +168,23 @@ function check() {
 					<select id="category" name="category" class="category-select">
 							<option value="0">전체</option>
 							<c:forEach var="catList" items="${ catList }">
-							<option value="${ catList.category_idx }"${ catList.category_idx eq param.catStatus?" selected='selected'":""}><c:out value="${ catList.category }"/></option>
+							<option value="${ catList.category_idx }"${ catList.category_idx eq param.categoryFlag?" selected='selected'":""}><c:out value="${ catList.category }"/></option>
 							</c:forEach>
 					</select>
 					<div class="table-wrap">
-					<jsp:useBean id="pVO" class="managerVO.ProductVO"></jsp:useBean>
-					<jsp:useBean id="psVO" class="managerVO.ProductSearchVO"></jsp:useBean>
-					<%
-					ProductDAO dDAO = ProductDAO.getInstance(); 
-				    List<ProductVO> proList = dDAO.selectProduct();
-					%>
-						<c:if test="${ not empty param.catStatus }">
-						<% psVO.setCategoryFlag(Integer.parseInt(request.getParameter("catStatus"))); %>
-						</c:if>
-						<c:choose>
-						<c:when test="${ param.selStatus eq 'all' }">
-						<% proList=dDAO.selectAllProduct(psVO); %>
-						</c:when>
-						<c:when test="${ param.selStatus eq 'onSale' }">
-						<% proList=dDAO.selectOnSaleProduct(psVO); %>
-						</c:when>
-						<c:when test="${ param.selStatus eq 'soldout' }">
-						<% proList=dDAO.selectSoldProduct(psVO); %>
-						</c:when>
-						</c:choose>
-						<c:if test="${ not empty param.titleSearch }">
-						<% proList=dDAO.selectKeywordProduct(request.getParameter("titleSearch")); %>
-						</c:if>
-						<% pageContext.setAttribute("proList", proList); %>
-						 <table class="table">
+							<%-- 메서드 매개변수VO 값설정 --%>
+							<jsp:useBean id="psVO" class="managerVO.ProductSearchVO"></jsp:useBean><%-- VO생성 --%>
+							<jsp:setProperty property="*" name="psVO"/><%-- hidFrm 서브밋시 form name과 변수명이 같은 같 자동 setter --%>
+							<%
+							//상품불러오기
+							ProductDAO dDAO = ProductDAO.getInstance(); 
+				    		List<ProductVO> proList = dDAO.selectProduct(psVO);
+							%>
+							<c:if test="${ not empty param.titleSearch }">
+							<% proList=dDAO.selectKeywordProduct(request.getParameter("titleSearch").trim()); %>
+							</c:if>
+							<% pageContext.setAttribute("proList", proList); %>
+						 	<table class="table">
 						    <caption>표 제목</caption>
 						    <tr><th><input type="checkbox" name="chkFlag" class="table-check" onclick="check()"></th><th class="table-title">제목</th><th>작성자</th><th>상품카테고리</th><th>상태</th><th>등록일</th><th>신고수</th></tr>
 						    <c:if test="${ empty pageScope.proList }">
@@ -210,8 +198,6 @@ function check() {
 				</div>
 			</div>
 		</div>
-		
-		
 	</div>
 </div>
 <!-- container end -->

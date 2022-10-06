@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,12 +15,21 @@
 <script type="text/javascript">
 $(function(){
 $("#btn").click(function(){
+	
+	
+	
+	
 	alert("비밀번호가 변경되었습니다.")
 });
 });
 </script>
 
 </head>
+<c:if test="${ empty manager_id }">
+	<c:redirect url="../../login/jsp/manager_login.jsp"/>
+</c:if>
+
+
 <body>
 <div class="wrap">
 
@@ -43,11 +53,12 @@ $("#btn").click(function(){
 <!-- 현재 메뉴 -->
 <!-- 대시보드 -->
 				<div class="writeForm">
+				<form method="post" id="changeFrm">
 			<table>
 				<tr>
 					<th><label for="managerId">관리자 아이디</label></th>
 					<td>
-						<input name="managerId" id="managerId" class="inputBox" type="text" value="babycarrot@babycarrot.co.kr"  readonly="readonly" />
+						<input name="manager_id" id="manager_id" class="inputBox" type="text" value="admin"  readonly="readonly" />
 					</td>
 				</tr>
 				<tr>
@@ -59,18 +70,20 @@ $("#btn").click(function(){
 				<tr>
 					<th><label for="password">신규 비밀번호</label></th>
 					<td>
-						<input placeholder="비밀번호를 입력해주세요" name="password1" id="password1" class="inputBox" type="password"  />
+						<input placeholder="비밀번호를 입력해주세요" name="newPw" id="newPw" class="inputBox" type="password"  />
 						<span>*8~12자의 영문, 숫자, 특수문자 3가지를 조합하여 입력</span>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="password">신규 비밀번호 확인</label></th>
 					<td>
-						<input placeholder="비밀번호를 입력해주세요" name="password2" id="password2" class="inputBox" type="password"  />
+						<input placeholder="비밀번호를 입력해주세요"  id="newPwChk" class="inputBox" type="password"  />
 					</td>
 				</tr>
 				</table>
+				</form>
 		</div>
+		
 		
 		<div>
 		<input type="button" value="저장" class="btn" id="btn">
@@ -86,4 +99,10 @@ $("#btn").click(function(){
 </div><!-- wrap  -->
 
 </body>
+<jsp:useBean id="lVO" class="managerVO.LoginVO" scope="page"></jsp:useBean>
+<jsp:setProperty property="*" name="lVO"/>
+<% 
+
+%>
+
 </html>
