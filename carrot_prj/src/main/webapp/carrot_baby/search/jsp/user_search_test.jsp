@@ -346,6 +346,7 @@ pageContext.setAttribute("hVOList", hVOList);
 					</div>
 					
 				</div>
+				수정
 			
 			<!-- 오른쪽 매물 리스트 영역 -->
 			<div class="content-list-wrap">
