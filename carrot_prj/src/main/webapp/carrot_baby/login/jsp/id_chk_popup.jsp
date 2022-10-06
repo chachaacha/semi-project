@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>아이디 중복 확인</title>
-<link rel="stylesheet" type="text/css" href="../css/id_duplicate_popup.css"/>
+<link rel="stylesheet" type="text/css" href="../css/id_chk_popup.css"/>
 <style type="text/css">
 html {
 	overflow: hidden;
@@ -17,12 +17,15 @@ html {
 $(function() {
 	$(".chkBtn").click(function(){
 	 	alert("사용 가능한 아이디입니다.")
-	})
+	});
 	
 	$(".idBtn").click(function(){
 		self.close();
-	})
-})
+	});
+});
+
+
+
 </script>
 </head>
 <body>
@@ -38,9 +41,11 @@ $(function() {
 	</div>
 	</div>
 	<!-- 2 -->
+	<form method="post" action="id_chk_popup_process.jsp">  
 	<div class="contents">
 		<input type="text" size="30" class="idText"><input type="button" value="중복확인" class="chkBtn">
 	</div>
+	</form>
 	<!-- 3 -->
 	<div class="msg">
 		<span>공백 또는 특수문자가 포함된 아이디는 사용할 수 없습니다.</span><br>

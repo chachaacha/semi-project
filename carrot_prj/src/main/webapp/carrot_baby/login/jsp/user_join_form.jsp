@@ -58,7 +58,7 @@ function chkNull(){
 		alert("8~12자의 영문, 숫자, 특수문자 3가지를 조합하여 입력해야 합니다.");
 		$("#password").focus();
 		return;
-	} 
+	}  
 	//비밀번호확인 필수 입력	
 	if($("#passwordChk").val().trim() !== $("#password").val().trim()) {
 		alert("비밀번호가 일치하지 않습니다.");
@@ -78,17 +78,21 @@ function chkNull(){
 		return;
 	}
 	//이메일 필수 입력	
-	if($("#email").val().trim()=="") {
+ 	if($("#email1").val().trim()=="") {
 		alert("이메일을 입력하세요");
-		$("#email").focus();
-		return;
-	}
-	//이메일도메인 필수 입력	
-	if($("#email1").val().trim()=="") {
-		alert("이메일을 확인하세요");
 		$("#email1").focus();
 		return;
 	}
+	//이메일도메인 필수 입력	
+	if($("#email2").val().trim()=="") {
+		alert("이메일을 확인하세요");
+		$("#email2").focus();
+		return;
+	} 
+	
+/* 	//방법1 email1과 email2를 email에 설정한다. 
+	$("#email").val( $("#email1").val()+"@"+$("#email2").val() );// 끗!!!! */
+
 	//주소 필수 입력	
 	if($("#zipcode").val().trim()=="") {
 		alert("주소를 입력하세요");
@@ -108,7 +112,7 @@ function chkNull(){
 //아이디 중복확인 팝업창 열기
 $(function() {
 	$("#idbtn").click(function() {
-		window.open("id_duplicate_popup.jsp"," ",
+		window.open("id_chk_popup.jsp"," ",
 			"width=520,height=370,top=220,left=700");
 	});
 });
@@ -116,7 +120,7 @@ $(function() {
 //이메일 입력방식 선택
 function selectEmail(ele){
     var $ele = $(ele);
-    var $email1 = $('input[name=email1]');
+    var $email1 = $('input[name=email2]');
 
     // '1'인 경우 직접입력
     if($ele.val() == "1"){
@@ -243,26 +247,28 @@ function zipcodeapi() {
 				<tr>
 					<th><span style="color:red">*</span>휴대폰</th>
 					<td>
-						<input type="text" name="phone_num" id="phone_num" placeholder="예) 010-1234-5678" />
-						<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk"  value="Y"  />
+						<input type="tel" name="phone_num" id="phone_num" placeholder="예) 010-1234-5678" />
+						<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk"  value="Y"  checked />
 						<label>SMS 수신동의</label></span>
 					</td>
 				</tr>
 				<tr>
 					<th><label><span style="color:red">*</span>이메일</label></th>
 					<td class="mail_type">
-						<input type="text" placeholder="이메일 입력" name="email" id="email" class="inputEmail" maxlength="100"  />
+					<!--  방법 1-->
+						<input type="hidden"  name="email" id="email" />
+						<input type=text placeholder="이메일 입력" name="email1" id="email1" class="inputEmail" maxlength="100" />
 						<span class="email_txt">@</span>
-						<input type="text" name="email1" id="email1" class="inputEmail" maxlength="100" />
-						<select class="selectEmail" name="email2" id="email2" onchange="selectEmail(this)">
-							<option value="선택" >선택해주세요</option>
+						<input type="text" name="email2" id="email2" class="inputEmail" maxlength="100" />
+						<select class="selectEmail" name="email3" id="email3" onchange="selectEmail(this)">
 							<option value='1' >직접 입력</option>
 							<option value='naver.com' >naver.com</option>
 							<option value='daum.net' >daum.net</option>
 							<option value='gmail.com' >gmail.com</option>
 							<option value='nate.com' >nate.com</option>
+							<option value='nate.com' >hotmail.com</option>
 						</select>
-						<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" value="Y" /><label>이메일 수신동의</label></span>
+						<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" value="Y" checked /><label>이메일 수신동의</label></span>
 					</td>
 				</tr>
 				<tr>
