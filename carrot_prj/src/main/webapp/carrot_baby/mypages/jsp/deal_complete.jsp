@@ -20,6 +20,7 @@ $(function() {
 
 </head>
 <body>
+<jsp:useBean id="blVO" class="userVO.BuyListVO"></jsp:useBean>
 <div class="wrap">
 
 <!-- header -->
