@@ -247,8 +247,8 @@ public void insertPost(PostVO pVO) throws SQLException{
 		//3. 쿼리문 생성 객체 얻기
 			StringBuilder insert = new StringBuilder();
 			insert
-			.append("	insert into product(gu_idx, category_idx, free, price, title, thumbnail, contents)		")
-			.append("	value(?, ?, ?, ?, ?, ?, ?)																				");
+			.append("	insert into product(product_idx, gu_idx, category_idx, free, price, title, thumbnail, contents,id)			")
+			.append("	values( (to_char(sysdate, 'yymmdd') || round(dbms_random.value(1000,10000))) , ?, ?, ?, ?, ?, ?, ?, ?)	");
 		
 			pstmt = con.prepareStatement(insert.toString());
 		//4. 바인드 변수에 값 설정
@@ -259,6 +259,7 @@ public void insertPost(PostVO pVO) throws SQLException{
 			pstmt.setString(5, pVO.getTitle());
 			pstmt.setString(6, pVO.getThumbnail());
 			pstmt.setString(7, pVO.getContents());
+			pstmt.setString(8, pVO.getId());
 		//5. 쿼리문 수행 후 결과 얻기
 			pstmt.executeUpdate();
 		} finally {

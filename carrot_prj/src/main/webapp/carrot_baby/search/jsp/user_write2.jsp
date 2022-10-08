@@ -4,6 +4,12 @@
 <%@page import="userDAO.PostDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<% request.setCharacterEncoding("UTF-8"); %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- 형식 지정 -->
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!-- 사이즈 -->
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,13 +22,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(function() {	
-	
 	$("#pushBtn").click(function() {
-		
 		//유효성 검사.
 		chkNull();
 	});//click
-	
 	
 	/* div 선택시 파일 열기  */
 	const imgUpload=document.querySelector(".imgs-upload");
@@ -275,8 +278,28 @@ function chkNull(){
 </script>
 </head>
 <body>
-<div class="wrap">
+<%
+String user_id =(String)session.getAttribute("user_id");
+if(user_id==null){
+user_id = "test10";
+session.setAttribute("user_id", user_id);
 
+}
+%>
+<%
+		//PostDAO와 연결
+		PostDAO pDAO = PostDAO.getInstance();
+		//VO 리스트로 받기
+		List<LocVO> locCatList = pDAO.selectLoc();
+		List<CatVO> pCatList = pDAO.selectCat();
+		//scope 객체 설정
+		request.setAttribute("loc_cat", locCatList);
+		request.setAttribute("p_cat", pCatList);
+		
+		List<LocVO> listLoc = (List<LocVO>)request.getAttribute("loc_cat");
+		List<CatVO> listCat = (List<CatVO>)request.getAttribute("p_cat");
+%>
+<div class="wrap">
 <!-- header -->
 <%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
 <!-- header end-->
@@ -287,46 +310,20 @@ function chkNull(){
 		<h1 class="write-title">중고거래 글쓰기</h1>
 		<div class="write">
 		<form name="writePost" id="writePost" method="get" action="user_write_process.jsp">
-		<%
-		//PostDAO와 연결
-		PostDAO pDAO = PostDAO.getInstance();
-		%>
 			<div class="write-sel-wrap">
-			<% 
-			//LocVO 리스트로 받기
-			List<LocVO> locCatList = pDAO.selectLoc();
-			//뷰페이지로 보내기 위해 scope 객체에 설정
-			request.setAttribute("loc_cat", locCatList);
-			%>
 						<div class="write-sel-wrap-text">서울특별시</div>
 						<select id="category_loc"name="category_loc" class="write-select" >
 							<option value="0">동네를 선택하세요</option>
-							<%
-						//scope 객체 받기.
-						List<LocVO> listLoc = (List<LocVO>)request.getAttribute("loc_cat");
-						%>
 						<%for(LocVO lVO : listLoc ) { %><!-- 향상된 for문으로 listLoc 출력 -->
 							<option value = "<%=lVO.getGu_idx() %>"><%=lVO.getGu() %></option>
 						<%}//end for %>
 						</select>
 			</div>
 			<div class="write-sel-wrap">
-			<%
-			//CatVO 리스트로 받기
-			List<CatVO> pCatList = pDAO.selectCat();
-			//scope 객체에 설정
-			request.setAttribute("p_cat", pCatList);
-			%>
 						<div class="write-sel-wrap-text">카테고리</div>
 						<select id ="category_pd" name="category_pd" class="write-select">
 							<option value="0">카테고리를 선택하세요</option>
-							<%
-							//scope 객체 받기
-							List<CatVO> listCat = (List<CatVO>)request.getAttribute("p_cat");
-							%>
-							<%
-							//향상된 for문으로 listCat 출력
-							for(CatVO cVO : listCat) {%>
+							<%for(CatVO cVO : listCat) {%><!-- 향상된 for문으로 listCat 출력 -->
 								<option value = "<%= cVO.getCategory_idx()%>"><%= cVO.getCategory() %></option>
 							<%}//end for %>
 						</select>
@@ -334,17 +331,17 @@ function chkNull(){
 			<div class="write-sel-wrap">
 						<div class="write-sel-wrap-text">판매가격</div>
 						<div class="write-sel-wrap-right">
+						<c:if test=""></c:if>
 							<div class="checkbox-share-wrap">
 								<input type="checkbox" name="free" id= "free" value="Y"class="checkbox-share">
 								<span class="checkbox-share-txt">나눔</span>
 							</div>
 							<div class="checkbox-price-wrap">
 								<input type="text" name="price"  id = "price" class="checkbox-price-input" style= "text-align:right" 
-											oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+											oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="8">
 								<span class="checkbox-price-txt">원</span>
 							</div>
 						</div>
-						
 			</div>
 			<div class="write-center-wrap">
 				<input type="text" name="title" id="title" class="write-title-input" placeholder="제목을 입력해주세요">
@@ -357,7 +354,6 @@ function chkNull(){
 							  <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
 							  <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
 							</svg>
-
 						</label>
 					</div>
 					<div id = "att_zone"></div>				
