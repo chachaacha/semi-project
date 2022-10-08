@@ -3,7 +3,14 @@
 <%@page import="userDAO.HomeDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
+    
+<!-- 1. parameter 받을 VO 생성-->
+<jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"/>
+<!-- 2. VO에 setter method(property)호출 -->
+<jsp:setProperty property="*" name="hVO"/>
+		
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,11 +59,7 @@ $(function() {
 
 <!-- container -->
 <div class="container">
-	   		<!-- 1. parameter 받을 VO 생성-->
-			<jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"></jsp:useBean>
-			<!-- 2. VO에 setter method(property)호출 -->
-			<jsp:setProperty property="*" name="hVO"/>
-			<!-- DB연결 -->
+	   		
 
 <!-- main top -->
 	<div class="swiper mySwiper">
@@ -156,18 +159,18 @@ $(function() {
 					<!-- 매물 목록 -->
 					<c:forEach varStatus="m" var="main"  items="${mainList}"><!-- forEach를 사용하여 반복 -->
 				
-					<div class="card"><!-- 1번 -->
-						
+					<div class="card">
 							<div class="card-photo">
-								<a class="card-link" href="#void"><!-- 이미지는 src에 걸기! -->
-									<img alt="이미지 위치" src="${main.thumbnail }">
+								<a class="card-link" 
+									href="../../product/jsp/user_buyer_product.jsp?">
+									<img alt="이미지 위치" src="${main.thumbnail }"><!-- 이미지는 src에 걸기! -->
 								</a>
 							</div><!-- card-photo -->
 							<div class="card-desc">
-								<a class="card-link" href="#void">
+								<a class="card-link" href="../../product/jsp/user_buyer_product.jsp?<c:out value="${main.price }"/>">
 									<h2 class="card-title"><c:out value="${main.title }"/></h2>
 								</a>
-								<div class="card-price"><c:out value="${main.price }"/></div>
+								<div class="card-price"><c:out value="${main.price }"/>원</div>
 								<div class="card-region-name" ><c:out value="${main.gu }"/></div>
 							</div><!-- card-desc -->
 							<div class="card-counts">
@@ -189,20 +192,20 @@ $(function() {
 	<div class="main-bottom">
 		<h3 class="main-bottom-title">중고거래 인기검색어</h3>
 			<%
-			List<String> topKeyWord=hDao.selectSearch();
+			//List<String> topKeyWord=hDao.selectSearch();
 			//스콥 객체에 할당
-			pageContext.setAttribute("topKeyWord", topKeyWord); 
+			//pageContext.setAttribute("topKeyWord", topKeyWord); 
 			%>
 			
 		<ul class="top-keywords-list"><!-- ul이 바깥에 있어야함 -->
-			<c:forEach varStatus="h" var="top"  items="${topKeyWord}"><!-- for:Each로 반복돌리기 -->
+			<!--<c:forEach varStatus="h" var="top"  items="${topKeyWord}"> <!-- for:Each로 반복돌리기 -->
 				<li class="top-keywords-item">
 					<a class="top-keywords-link" href="#void">
-						<!--<c:out value="${top.word }"/>-->
+						<!--  	<c:out value=" ${top.word }"/>-->
 					</a>
 				</li>
-			</c:forEach>
-	</ul> 
+			<!--</c:forEach>-->
+		</ul> 
 	</div><!-- main-bottom -->
 
 <!-- main bottom end -->
