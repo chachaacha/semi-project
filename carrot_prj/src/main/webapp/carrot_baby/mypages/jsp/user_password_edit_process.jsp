@@ -48,7 +48,7 @@ int result = puDAO.updatePw(puVO);
 if(result==0){
 	%>
 	<script type="text/javascript">
-		alert("비밀번호를 잘못입력하셨습니다.")
+		alert("비밀번호를 잘못 입력하셨습니다.")
 		location.href="user_password_edit.jsp";
 	</script>
 <%} else{ //result == 1, 비밀번호가 변경되었을 때

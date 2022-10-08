@@ -1,3 +1,4 @@
+<%@page import="userDAO.QuitDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" info=""%>
 <!DOCTYPE html>
@@ -26,8 +27,32 @@
 request.setCharacterEncoding("UTF-8");
 //세션에 있는 아이디
 String id=(String)session.getAttribute("id");
-//입력받은 비밀번호
-String pass=request.getParameter("password");
 %>
+
+<!-- VO객체 생성 -->
+<jsp:useBean id="qVO" class="userVO.QuitVO"></jsp:useBean>
+<jsp:setProperty property="*" name="qVO"/>
+<!-- id는 세션에서 받아와서 따로 값 설정 -->
+<jsp:setProperty property="id" name="qVO" value="<%= id %>"/>
+
+<%
+QuitDAO qDAO = QuitDAO.getInstance();
+int result = qDAO.updateQuit(qVO);
+
+if(result==0){ //비밀번호 잘못 입력
+	%>
+		<script type="text/javascript">
+		alert("비밀번호를 잘못 입력하셨습니다.")
+		location.href="unregister.jsp";
+	</script>
+<%} else { //비밀번호를 제대로 입력했을 때
+	//세션 무효화
+	session.invalidate();
+	%>
+	<script type="text/javascript">
+		alert("회원 탈퇴가 완료되었습니다.")
+		location.href="../../mainhome/jsp/user_mainhome.jsp";
+	</script>
+<%}%>
 </body>
 </html>

@@ -63,7 +63,7 @@ $("#btn").click(function(){
 	<div class="title">비밀번호 수정</div>
 	
 		<!-- 정보 작성 폼 -->
-		<form action="user_password_edit_pro.jsp" method="post" id="passEditFrm">
+		<form action="user_password_edit_process.jsp" method="post" id="passEditFrm">
 		<div class="writeForm">
 			<table>
 				<tr>
