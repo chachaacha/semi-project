@@ -2,6 +2,7 @@
 <%@page import="userDAO.MyInfoDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,22 +88,17 @@ function zipcodeapi() {
 String id = (String)session.getAttribute("id");
 
 if(id==null){
-	response.sendRedirect("../../login/jsp/user_login.jsp");
+   response.sendRedirect("../../login/jsp/user_login.jsp");
 }
 
 MyInfoDAO miDAO = MyInfoDAO.getInstance();
 MyInfoVO info = miDAO.selectInfo(id);
 %>
 
-
-<jsp:useBean id="miVO" class="userVO.MyInfoVO"></jsp:useBean>
-
-<jsp:setProperty property="*" name="miVO"/>
-
 	<div class="wrap">
 
 <!-- header -->
-<%@ include file="../../mainhome/jsp/user_logout_header.jsp" %>
+<%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
 <!-- header end-->
 
 		<!-- container -->
@@ -144,7 +140,7 @@ MyInfoVO info = miDAO.selectInfo(id);
 						</tr>
 						<tr>
 							<th><label>아이디</label></th>
-							<td><input type="text" value="<%=info.getId() %>" name="id" id="id" class="inputTxt inputIdtype" maxlength="20" readonly="readonly" /></td>
+							<td><input type="text" value="<%= info.getId() %>" name="id" id="id" class="inputTxt inputIdtype" maxlength="20" readonly="readonly" /></td>
 						</tr>
 						<tr>
 							<th scope="row"><label>생년월일</label></th>
@@ -159,9 +155,9 @@ MyInfoVO info = miDAO.selectInfo(id);
 						<tr>
 							<th><label>이메일</label></th>
 							<td class="mail_type">
-							<input type="text" value="babycarrot" name="email" id="email" class="inputEmail" maxlength="100" />
+							<input type="text" value="<%=info.getEmail() %>" name="email" id="email" class="inputEmail" maxlength="100" />
 							<span class="email_txt">@</span>
-							<input type="text" value="babycarrot.co.kr" name="email1" id="email1" class="inputEmail" maxlength="100" />
+							<input type="text" value="" name="email1" id="email1" class="inputEmail" maxlength="100" />
 							<select class="selectEmail" name="email2" id="email2" onchange="selectEmail(this)">
 									<option value='1'>직접 입력</option>
 									<option value='babycarrot.co.kr' selected>babycarrot.co.kr</option>

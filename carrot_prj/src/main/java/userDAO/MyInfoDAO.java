@@ -48,8 +48,8 @@ public class MyInfoDAO {
 			StringBuilder selectid = new StringBuilder();
 			selectid
 			.append("select img, name, nick, birth, phone_num, sms_chk, email, email_chk, zipcode, addr1, addr2	")
-			.append("from member																										")
-			.append("where id = ?																											");
+			.append("from member			")
+			.append("where id = ?			");
 			
 			pstmt = con.prepareStatement(selectid.toString());
 		//4. 바인드 변수에 값 설정.

@@ -30,17 +30,6 @@ request.setCharacterEncoding("UTF-8");
 <!-- 2.VO에 setter method(property) 호출 -->
 <jsp:setProperty property="*" name="miVO"/>
 
-이미지 : ${miVO.img };
-이름 : ${miVO.name }; 
-닉네임 : ${miVO.nick };
-아이디 : ${miVO.id };
-생년월일 : ${miVO.birth };
-전화번호 : ${miVO.phone_num};
-sms 수신여부 : ${miVO.sms_chk };
-이메일 : ${miVO.email};
-이메일 수신여부 : ${miVO.email_chk };
-우편번호 : ${miVO.zipcode };
-주소 : ${miVO.addr1 };
-상세주소 :  ${miVO.addr2 };
+
 </body>
 </html>
