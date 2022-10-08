@@ -21,7 +21,12 @@ html {
 $(function() {
 	//신고하기를 누르면 서브밋
 	$("#reportBtn").click(function(){
+		var idx= $("[name='br_idx']:checked").val();
+		if(idx==null){
+			alert("차단사유를 선택하세요!");
+		};
 		$("#blockFrm").submit();
+		
 	})
 });
 </script>
@@ -47,7 +52,10 @@ $(function() {
 	</div>
 	<button type="button" class="report-wc-btn" id="reportBtn" name="reportBtn">신고하기</button>
 	
-	<%-- 신고하기 프로세스 --%>
+	
+</div>
+</form>
+ 	<%-- 신고하기 프로세스 --%>
 	<c:if test="${ not empty param.br_idx }"> <%-- 처음에는 진입시에는 submit하지 않았기 때문에 웹파라메터가 없고 신고하기 버튼이 눌러어 웹 파마메터가 있을 때만 동작하게 한다. --%>
 	<jsp:useBean id="mbVO" class="managerVO.ManagerBlockVO"></jsp:useBean>
 	<jsp:setProperty property="*" name="mbVO"/>
@@ -67,7 +75,5 @@ $(function() {
 	self.close();
 	</script>
 	</c:if>
-</div>
-</form>
 </body>
 </html>

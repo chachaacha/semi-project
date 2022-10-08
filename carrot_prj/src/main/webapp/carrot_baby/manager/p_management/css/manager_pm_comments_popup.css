@@ -99,25 +99,27 @@ html {
 	font-size: 20px;
 	background-color: #495057;
 	color: #fff;
-	margin-left: 20px;
-	width: 150px;
-	height: 40px;
+	margin-right: 10px;
+	width: 100px;
+	height: 44px;
 	border-radius: 5px;
 }
 
 .search-wrap {
 	border: 1px solid #e9ecef;
 	font-size: 18px;
-	width: 800px;
+	width: 700px;
 	height: 45px;
-	border-radius: 5px;
+	border-radius: 7px;
 	display: flex;
 	flex-direction: row;
+	justify-content: space-around;
 }
 
 .search-txt {
-	width: 800px;
+	width: 600px;
 	font-size: 18px;
+	padding-left: 10px;
 	border-color: transparent;
 }
 

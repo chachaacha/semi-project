@@ -115,9 +115,9 @@ function openPopup(id) {
 						  	<tr><td><c:out value="${ memList.id }"/></td><td><c:out value="${ memList.name }"/></td><td><c:out value="${ memList.joined_date }"/></td><td><c:out value="${ memList.birth }"/></td><td><a href="javascript:openPopup('${ memList.id }')"><button type="button" class="block-btn">차단</button></a></td></tr>
 						 </c:forEach>
 						 </c:when>
-						 <c:when test="${ param.selectStau  eq 'block' }">
+						 <c:when test="${ param.selectStau  eq 'block'  }">
 						 <% 
-						 List<ManagerBlockVO> bloList = mDAO.selectBlockedMember(request.getParameter("searchStau").trim());
+						 List<ManagerBlockVO> bloList = mDAO.selectBlockedMember(request.getParameter("searchStau"));
 						 pageContext.setAttribute("bloList", bloList);
 						 %>	
 						 <tr><th>아이디명</th><th >회원명</th><th>차단 사유</th><th>차단 해제</th></tr>
@@ -125,11 +125,17 @@ function openPopup(id) {
 						 <tr><td colspan="4">조회된결과가 없습니다.</td></tr>
 						 </c:if> 
 						 <c:forEach var="bloList" items="${ pageScope.bloList }">
-						    <tr><td><c:out value="${ bloList.id }"/></td><td><c:out value="${ bloList.name }"/></td><td><c:out value="${ bloList.blocked_reason }"/></td><td><button type="button" class="block-btn">해제</button></td></tr>
+						    <tr><td><c:out value="${ bloList.id }"/></td><td><c:out value="${ bloList.name }"/></td><td><c:out value="${ bloList.blocked_reason }"/></td><td><a href="manager_member_management.jsp?selectStau=block&id=${ bloList.id }"><button type="button" class="block-btn">해제</button></a></td></tr>
 						 </c:forEach>
 						 </c:when>
 						 </c:choose>	
 						 </table>  
+						 
+						 <%-- 차단해제 --%>
+						 <c:if test="${ not empty param.id }">
+						 <% mDAO.deleteBlock(request.getParameter("id")); %>
+						 <c:redirect url="manager_member_management.jsp?selectStau=block"/>
+						 </c:if>
 			</div>
 		</div>
 	</div>

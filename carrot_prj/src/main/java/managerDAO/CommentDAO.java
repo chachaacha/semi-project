@@ -12,6 +12,7 @@ import java.util.List;
 
 import common.DbConnection;
 import managerVO.CommentVO;
+import managerVO.PopupVO;
 
 public class CommentDAO {
 	private static CommentDAO cDAO;
@@ -27,7 +28,7 @@ public class CommentDAO {
 		return cDAO;
 	}
 	
-	public List<CommentVO> selectComment() throws SQLException { 
+	public List<CommentVO> selectComment(PopupVO pVO) throws SQLException { 
 		DbConnection db = DbConnection.getInstance();
 		Connection con = null;
 		PreparedStatement pstmt =null;
@@ -38,10 +39,26 @@ public class CommentDAO {
 			StringBuffer sb = new StringBuffer();
 			sb.append(" select c.contents, c.id, p.title, c.posted_date, c.reported_cnt  ")
 			  .append(" from product_comment c, product p")
-			  .append(" where (c.product_idx = p.product_idx) and c.reported_cnt > 0 ")
-			  .append(" order by reported_cnt desc ");
+			  .append(" where (c.product_idx = p.product_idx) and c.reported_cnt > 0 ");
+			
+			if(pVO.getKeyword() != null && !"".trim().equals(pVO.getKeyword())) {
+				sb.append(" and c.contents like '%'||?||'%' ");
+			}
+			
+			switch(pVO.getOrderFlag()) {
+			case 1:
+				sb.append(" order by c.reported_cnt desc ");
+				break;
+			
+			case 2:
+				sb.append(" order by c.posted_date desc ");
+			}
 			
 			pstmt = con.prepareStatement(sb.toString());
+			if(pVO.getKeyword() != null && !"".trim().equals(pVO.getKeyword())) {
+				pstmt.setString(1, pVO.getKeyword());
+			}
+			
 			rs=pstmt.executeQuery();
 			
 			CommentVO cVO = null;
