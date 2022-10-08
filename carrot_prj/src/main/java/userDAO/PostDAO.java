@@ -45,9 +45,8 @@ public class PostDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
-			.append("	select	gu_idx, gu	")
-			.append("	from	loc_category	")
-			.append("	order by gu");
+			.append("	select	*	")
+			.append("	from	loc_category	");
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
 		//5. 쿼리문 생성 후 결과 얻기
@@ -86,7 +85,7 @@ public class PostDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
-			.append("	select	category_idx, category	")
+			.append("	select	*	")
 			.append("	from	product_category		");
 			
 			pstmt = con.prepareStatement(select.toString());
@@ -155,7 +154,7 @@ public class PostDAO {
 		return list;
 	}
 	
-	public List<PostVO> selectPost(PostVO pVO) throws SQLException {
+	public PostVO selectPost(PostVO pVO) throws SQLException {
 		List<PostVO> list = new ArrayList<PostVO>();
 		
 		DbConnection dc= DbConnection.getInstance();
@@ -171,9 +170,9 @@ public class PostDAO {
 		//3. 쿼리문 생성 객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
-			.append("	select pd.product_idx, lc.gu_idx, lc.gu, pc.category_idx, pc.categoly, pd.free, pd.price, pd.title, pd.contents	")
-			.append("	from	product pd,   loc_category lc, product_category pc																")
-			.append("	where (pd.gu_idx = lc.gu_idx and pd.categoly_idx = pc.categoly_idx ) and id = ? and product_idx = ?		");
+			.append("	select product_idx, gu_idx, category_idx, free, price, title, contents					")
+			.append("	from	product																					")
+			.append("	where id = ? and product_idx = ?													");
 		
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정.
@@ -185,21 +184,20 @@ public class PostDAO {
 			while( rs.next() ) {
 				pVO = new PostVO();
 				pVO.setProduct_idx(rs.getString("product_idx"));
-				pVO.setGu(rs.getString("gu"));
-				pVO.setCategory(rs.getString("category"));
+				pVO.setGu_idx(rs.getInt("gu_idx"));
+				pVO.setCategory_idx(rs.getInt("category_idx"));
 				pVO.setFree(rs.getString("free"));
 				pVO.setPrice(rs.getInt("price"));
 				pVO.setTitle(rs.getString("title"));
 				pVO.setContents(rs.getString("contents"));
 				
-				list.add(pVO);
 			}
 		} finally {
 		//6. 연결 끊기
 			dc.dbClose(rs, pstmt, con);
 		}//end finally
 		
-		return list;
+		return pVO;
 	}
 	
 	public void insertImg(ImgVO iVO) throws SQLException{

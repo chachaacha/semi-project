@@ -32,6 +32,7 @@ if(free == null){
 }
 %>
 <jsp:setProperty property="id" name="pVO" value="<%= user_id %>"/>
+<jsp:setProperty property="product_idx" name="pVO" value="<%= product_idx %>"/>
 <jsp:setProperty property="category_idx" name="pVO" value="<%= category_idx %>"/>
 <jsp:setProperty property="gu_idx" name="pVO" value="<%= gu_idx %>"/>
 <jsp:setProperty property="thumbnail" name="pVO" value="1234.png"/>

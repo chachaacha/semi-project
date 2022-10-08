@@ -358,7 +358,7 @@ session.setAttribute("user_id", user_id);
 					</div>
 					<div id = "att_zone"></div>				
 				</div>
-				<textarea rows="30" name="contents" id="contents" class="contents-txtarea" placeholder="내용을 입력해주세요"></textarea>
+				<textarea rows="30" name="contents" id="contents" class="contents-txtarea" placeholder="내용을 입력해주세요" ></textarea>
 			</div>
 		    </form>
 			<div class="register-write">
