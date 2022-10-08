@@ -1,3 +1,4 @@
+<%@page import="javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar"%>
 <%@page import="userVO.HomeVO"%>
 <%@page import="userVO.MainFlagVO"%>
 <%@page import="userVO.LocVO"%>
@@ -58,6 +59,7 @@ $(function(){
 	//카테고리 flag 전달
 	$(".category-list-text").click(function() {
 		var catVal=$(this).attr("value");
+		$("#pageFlag").val(1);
 		$("#categoryFlag").val(catVal);
 		$("#searchFrm").submit();
 	})
@@ -65,6 +67,7 @@ $(function(){
 	//지역 flag 전달
 	$(".hot-articles-nav-select").change(function() {
 		var locVal=$(this).val();
+		$("#pageFlag").val(1);
 		$("#guFlag").val(locVal);
 		$("#searchFrm").submit();
 	})
@@ -74,7 +77,8 @@ $(function(){
 		var priceVal=$('input:radio[name="price-radio"]:checked').val();
 		var min=$("#input-minPrice").val();
 		var max=$("#input-maxPrice").val();
-
+		
+		$("#pageFlag").val(1);
 		$("#priceFlag").val(priceVal);
 		$("#minPrice").val(min);
 		$("#maxPrice").val(max);
@@ -86,6 +90,7 @@ $(function(){
 	//정렬 flag 전달
 	function orderRadio() {
 		var orderVal=$('input:radio[name="sort-radio"]:checked').val();
+		$("#pageFlag").val(1);
 		$("#orderByFlag").val(orderVal);
 		$("#searchFrm").submit();
 	}
@@ -93,7 +98,13 @@ $(function(){
 	//가격 flag 전달
 	function priceRadio() {
 		var priceVal=$('input:radio[name="price-radio"]:checked').val();
+		$("#pageFlag").val(1);
 		$("#priceFlag").val(priceVal);
+		$("#searchFrm").submit();
+	}
+	
+	function pageMove(nowPage) {
+		$("#pageFlag").val(nowPage);
 		$("#searchFrm").submit();
 	}
 	
@@ -130,9 +141,20 @@ mDAO.insetKeyword(searchTxt.trim());
 List<LocVO> lVOList=mDAO.selectGu();
 pageContext.setAttribute("lVOList", lVOList);
 
+//상품의 총 개수 구함
+int total=mDAO.selectTotal(mfVO);
+System.out.println("총 게시물 수 : "+ total);
+pageContext.setAttribute("total", total);
+
 //상품 리스트 조회
+//처음 매물창에 들어왔을때 페이지 값이 0인지 확인하고 0일경우 1 설정
+if(mfVO.getPageFlag()==0) {
+mfVO.setPageFlag(1);
+}
 List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
 pageContext.setAttribute("hVOList", hVOList);
+System.out.println("필터 적용된 게시물의 수 : "+hVOList.size());
+
 %>
 
 <!-- container -->
@@ -140,7 +162,7 @@ pageContext.setAttribute("hVOList", hVOList);
 	<div class="test">
 	<div class="content">
 		<h1 class="content-head-title">
-		 ${lVOList[param.guFlag-1].gu} 중고거래 매물
+		 <c:out value="${lVOList[param.guFlag-1].gu}"/> 중고거래 매물
 		</h1>
 		<div class="content-wrap">
 		
@@ -169,7 +191,7 @@ pageContext.setAttribute("hVOList", hVOList);
 								<c:forEach var="cVO" items="${catList}">
 									<div class="category-list">
 										<a href="javascript:void(0);">
-											<div class="category-list-text" value="${cVO.category_idx}">${cVO.category}</div>
+											<div class="category-list-text" value="${cVO.category_idx}"><c:out value="${cVO.category}"/></div>
 										</a>
 									</div>
 								</c:forEach>
@@ -211,6 +233,14 @@ pageContext.setAttribute("hVOList", hVOList);
 											<input type="radio" name="sort-radio" id="sort-radio" <c:if test="${2 eq param.orderByFlag }"> checked="checked" </c:if> onchange="orderRadio(this)" class="input-radio" value="2">
 										</span>
 										<span>인기순</span>
+									</label>
+								</div>
+								<div class="sort-list">
+									<label class="sort-radio-wrap">
+										<span class="sort-radio">
+											<input type="radio" name="sort-radio" id="sort-radio" <c:if test="${3 eq param.orderByFlag }"> checked="checked" </c:if> onchange="orderRadio(this)" class="input-radio" value="3">
+										</span>
+										<span>댓글순</span>
 									</label>
 								</div>
 							</div>
@@ -310,21 +340,25 @@ pageContext.setAttribute("hVOList", hVOList);
 			<!-- 오른쪽 매물 리스트 영역 -->
 			<div class="content-list-wrap">
 			
+				<%-- <c:set var="filterTotal" value="${fn:length(hVOList)}"/> --%>
 				<!-- 오른쪽 매물 위 -->
 				<div class="content-list-top">
 					<div class="content-list-top-left">
 					<c:choose>
 						<c:when test="${not empty fn:trim(searchTxt)}">
-							${searchTxt} 검색 결과
+							<c:out value="${searchTxt}"/> 검색 결과 (<c:out value="${total}"/>)
+						</c:when>
+						<c:when test="${param.categoryFlag eq 0}">
+							전체 카테고리 (<c:out value="${total}"/>)
 						</c:when>
 						<c:when test="${not empty param.categoryFlag}">
-							${catList[param.categoryFlag].category} 검색 결과
+							<c:out value="${catList[param.categoryFlag-1].category}"/> 검색 결과 (<c:out value="${total}"/>)
 						</c:when>
 						<c:otherwise>
-							전체 카테고리
+							전체 카테고리 (<c:out value="${total}"/>)
 						</c:otherwise>
 					</c:choose>
-					(${fn:length(hVOList)})</div>
+					</div>
 					
 					<div class="content-list-top-right">
 						<div class="content-list-top-right-text">서울특별시</div>
@@ -332,7 +366,7 @@ pageContext.setAttribute("hVOList", hVOList);
 							<option value="0">동네를 선택하세요</option>
 								<!-- 구 데이터 불러오기  -->
 								<c:forEach var="lVO" items="${lVOList}">
-									<option value="${lVO.gu_idx}" <c:if test="${lVO.gu_idx eq param.guFlag }"> selected="selected" </c:if>>${lVO.gu}</option>
+									<option value="<c:out value="${lVO.gu_idx}"/>" <c:if test="${lVO.gu_idx eq param.guFlag }"> selected="selected" </c:if>><c:out value="${lVO.gu}"/></option>
 								</c:forEach>
 							</select>
 					</div>
@@ -349,12 +383,15 @@ pageContext.setAttribute("hVOList", hVOList);
 					<!-- 상품 불러오기 -->
 					<c:forEach var="hoVO" items="${hVOList}">
 					<div class="card">
-						<a class="card-link" href="../../product/jsp/user_buyer_product.jsp"><!-- 거래창 연결 링크 필요 -->
 							<div class="card-photo">
-								<img alt="이미지 자리" src="${hoVO.thumbnail}">
+							<a class="card-link" href="../../product/jsp/user_buyer_product.jsp?product_idx=${hoVO.product_idx}">
+								<img alt="이미지 자리" src="<c:out value="${hoVO.thumbnail}"/>">
+							</a>
 							</div>
 							<div class="card-desc">
-								<h2 class="card-title">${hoVO.title}</h2>
+							<a class="card-link" href="../../product/jsp/user_buyer_product.jsp?product_idx=${hoVO.product_idx}">
+								<h2 class="card-title"> <c:out value="${hoVO.title}"/> </h2>
+							</a>
 								<div class="card-price">
 									<!-- 가격이 0일때 나눔 -->
 									<c:if test="${hoVO.price eq 0}">
@@ -365,14 +402,14 @@ pageContext.setAttribute("hVOList", hVOList);
 										<fmt:formatNumber value="${hoVO.price}" pattern="#,###,###원"/>
 									</c:if>
 									</div>
-								<div class="card-region-name">${hoVO.gu}</div>
+								<div class="card-region-name"> <c:out value="${hoVO.gu}"/> </div>
 							</div>
 							<div class="card-counts">
-								<span> 하트 ${hoVO.liked_cnt} </span>
+								<span> 하트 <c:out value="${hoVO.liked_cnt}"/> </span>
 								ㆍ
-								<span> 댓글 ${hoVO.comment_cnt} </span>
+								<span> 댓글 <c:out value="${hoVO.comment_cnt}　"/> </span>
 							</div>
-						</a>
+						
 					</div>
 					</c:forEach>
 				</div>
@@ -389,21 +426,31 @@ pageContext.setAttribute("hVOList", hVOList);
             		</div>
 				</div>
 				
+				<c:set var="ceil"  value="${total/16}"/> <!-- 총 게시물 수 -->
+				<fmt:parseNumber var="lastpage" integerOnly="true" value="${ceil+(1-(ceil%1))%1 }"/> <!-- 페이지의 수  -->
+				<c:set var="curPage" value="${param.pageFlag }"/> <!--현재페이지  -->
+				<c:set var="startNum" value="${curPage - (curPage-1) % 4 }"/> <!-- 현재 페이지가 속한 처음 페이지의 수 -->
+				<c:set var="isLast" value="4"/>
+				
 				<!-- 오른쪽 매물 하단 페이지 버튼 -->
 				<div class="page-bottom">
-					<div class="page-bottom-icon-click">
-						<a href="user_search.jsp">1</a>
-					</div>
-					<div class="page-bottom-icon">
-						<a href="#void">2</a>
-					</div>
-					<div class="page-bottom-icon">
-						<a href="#void">3</a>
-					</div>
-					<div class="page-bottom-icon">
-						<a href="#void">4</a>
-					</div>
-						<div class="page-bottom-next">&gt;</div>
+					<c:if test="${curPage >= 6}">
+						<a href="javascript:pageMove(1);" class="page-bottom-next">&lt;&lt;</a>
+						<a href="javascript:pageMove(${curPage-5});" class="page-bottom-next">&lt;</a>
+					</c:if>					
+				
+					<c:if test="${startNum + 5 >= lastpage }">
+						<c:set var="isLast" value="${lastpage - startNum }"/>
+					</c:if>
+					
+					<c:forEach var="i" begin="0" end="${isLast }" step="1" >
+						<a href="javascript:pageMove(${startNum + i});" class="page-bottom-icon"><c:out value="&nbsp;${startNum+i}&nbsp;" escapeXml="false"/></a>
+					</c:forEach>
+					
+					<c:if test="${startNum + 5 < lastpage }">
+						<a href="javascript:pageMove(${startNum+5});" class="page-bottom-next">&gt;</a>
+						<a href="javascript:pageMove(${lastpage});" class="page-bottom-next">&gt;&gt;</a>
+					</c:if>
 				</div>
 				
 			</div>
@@ -416,6 +463,7 @@ pageContext.setAttribute("hVOList", hVOList);
 <!-- container end -->
 
 <form id="searchFrm">
+	<input type="hidden" name="pageFlag" id="pageFlag" value="${param.pageFlag }">
 	<input type="hidden" name="keyword" id="keyword" value="${param.keyword }">
 	<input type="hidden" name="guFlag" id="guFlag" value="${param.guFlag}">
 	<input type="hidden" name="categoryFlag" id="categoryFlag" value="${param.categoryFlag}">

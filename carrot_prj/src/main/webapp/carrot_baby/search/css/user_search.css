@@ -362,6 +362,7 @@ a {
 	border-radius: 50%;
 	border: 1px solid #E0E0E0;
 	background: #fff;
+	color: #000;
 	margin-right: 12px;
 	cursor: pointer;
 }
@@ -387,6 +388,7 @@ a {
 	background-color: #ff6900;
 	margin-right: 12px;
 	cursor: pointer;
+	color: #fff;
 }
 
 .page-bottom-next {
@@ -399,5 +401,7 @@ a {
 	border-radius: 50%;
 	border: 1px solid #E0E0E0;
 	background: #fff;
+	color: #000;
 	cursor: pointer;	
+	margin-right: 12px;
 }
