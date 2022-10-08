@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>아이디 중복 확인</title>
-<link rel="stylesheet" type="text/css" href="../css/id_chk_popup.css"/>
+<link rel="stylesheet" type="text/css" href="../css/id_dup_popup.css"/>
 <style type="text/css">
 html {
 	overflow: hidden;
@@ -15,16 +15,31 @@ html {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(function() {
-	$(".chkBtn").click(function(){
-	 	alert("사용 가능한 아이디입니다.")
+	$("#chkBtn").click(function(){
+		chkNull();
+		
+		/* //아이디가 있으면
+		alert("사용가능한 아이디입니다");
+		//아이디가 없으면
+		alert("사용 불가능한 아이디입니다"); */
+		
 	});
 	
-	$(".idBtn").click(function(){
+	$("#idbtn").click(function(){
+		opener.window.document.memberFrm.id.value=id;
 		self.close();
 	});
 });
 
-
+function chkNull(){
+	var id=$("#id").val();
+	if(id == ""){
+		alert("중복 검사할 아이디를 입력해 주세요.");
+		return;
+	}
+	
+	$("#frmDup").submit();
+}//chkNull
 
 </script>
 </head>
@@ -41,9 +56,11 @@ $(function() {
 	</div>
 	</div>
 	<!-- 2 -->
-	<form method="post" action="id_chk_popup_process.jsp">  
+	<form method="post" action="id_dup_popup_process.jsp">  
 	<div class="contents">
-		<input type="text" size="30" class="idText"><input type="button" value="중복확인" class="chkBtn">
+		<input type="text" size="30" class="idText" id="id">
+		<input type="text" style="display:none;">
+		<input type="button" value="중복확인" class="chkBtn" id="chkBtn">
 	</div>
 	</form>
 	<!-- 3 -->
@@ -53,7 +70,7 @@ $(function() {
 	</div>
 	
 	<!-- 끝 -->
-	<button type="button" class="idBtn">사용하기</button>
+	<button type="button" class="idBtn" id="idbtn">사용하기</button>
 </div>
 </body>
 </html>

@@ -16,14 +16,17 @@ $(function () {
     $("#chkBtn").click(function () {
 	/* 	//null 검사 
     	chkNull(); */
+    	
+    	$("#memberFrm").submit();
+    	
 		//본인 아이디확인 팝업창 열기
-		window.open("find_pass_popup.jsp","",
+		window.open("find_pass_popup.jsp","find_pass_popup",
 					"width=385,height=235,top=380,left=750");
     });
 });
 </script>
 
-</head>
+</head>-
 <body>
 	<div class="wrap">
 
@@ -53,6 +56,7 @@ $(function () {
 			</div>
 
 			<!--정보 입력 -->
+			<form id="memberFrm" action="user_find_pass_process.jsp" method="post">
 			<div class="infoBox">
 				<img src="../../images/check.png"
 					class="infoImg" style="vertical-align: middle;"> <span
@@ -60,10 +64,10 @@ $(function () {
 				<div style="margin: 30px">
 					<input type="text" placeholder="이름 입력" size="18" class="textBox" id="name">
 					<input type="text" placeholder="아이디 입력" size="18" class="textBox" id="id"><br>
-					<input type="text" placeholder="휴대폰번호 입력" size="46" class="textBox" id="tel" style="margin: 5px">
+					<input type="text" placeholder="예) 010-1234-5678" size="46" class="textBox" id="phone_num" style="margin: 5px">
 				</div>
 			</div>
-
+			</form>
 			<!-- 확인 취소 버튼  -->
 			<div style="text-align: center; margin: 30px;">
 				<input type="button" value="확인" class="oBtn" id="chkBtn">

@@ -13,10 +13,9 @@
 <link rel="stylesheet" type="text/css" href="../../common/css/user_wrap_container.css"/>
 <link rel="stylesheet" type="text/css" href="../css/user_login.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<!--  -->
 <script type="text/javascript">
-//로그인버튼을 클릭했을 때
 $(function () {
+	//로그인버튼을 클릭했을 때
     $("#btn").click(function () {
 		//null 검사
     	chkNull(); 
@@ -34,48 +33,41 @@ $(function () {
 		}//end if
 		
 		//비밀번호에 입력한 값을 얻는다.
-		if($("#pass").val().trim() == ""){
+		if($("#password").val().trim() == ""){
 			alert("비밀번호 필수 입력");
-			$("#pass").val("");
-			$("#pass").focus();
+			$("#password").val("");
+			$("#password").focus();
 			return;
 		}//end if
 		
 		$("#loginFrm").submit();
 	} 
 </script>
-
-<script type="text/javascript">
-/* ID가 존재하는 경우를 확인하기 위해 ID값을 세션에서 가져오는 부분 */
-var user_id="<%=(String)session.getAttribute("user_id") %>";
-function logout(){
-	window.location.href="logout.php";
-}
-</script>
-
 </head>
+<!-- 세션무효화 -->
+<% session.invalidate(); %>
 <body>
  	<div class="wrap" style="margin-top: 150px;">
-<!-- header -->
-<!-- header end-->
-
-<!-- container -->
+	<!-- header -->
+	<!-- header end-->
+	
+	<!-- container -->
 	<div class="container">
 
-			<!-- 상단 로고 -->
-			<div>
-				<a href="../../mainhome/jsp/user_mainhome.jsp"><img src="../../images/logo.png" width="160" height="50" class="img"></a>
-			</div>
+		<!-- 상단 로고 -->
+		<div>
+			<a href="../../mainhome/jsp/user_mainhome.jsp"><img src="../../images/logo.png" width="160" height="50" class="img"></a>
+		</div>
 
-			<form name="loginFrm" id="loginFrm" method="post" action="user_login_process.jsp">
-			<!-- 로그인 박스 -->
-			<div class="loginbox_wrap">
+		<form name="loginFrm" id="loginFrm" method="post" action="user_login_process.jsp">
+		<!-- 로그인 박스 -->
+		<div class="loginbox_wrap">
 				<!-- 주황색박스 -->
 				<div class="loginbox_top">LOGIN</div>
 				<!-- 흰색박스  -->
 				<div class="loginbox_main">
 					<input type="text" placeholder="아이디" size=60 class="id" name="id" id="id"> 
-					<input type="password" placeholder="비밀번호" size=60 class="pass" name="pass" id="pass">
+					<input type="password" placeholder="비밀번호" size=60 class="pass" name="password" id="password">
 					<input type="button" id="btn" value="로그인" class="loginBtn">
 				<div>
 					<div class="logpass">
@@ -87,17 +79,13 @@ function logout(){
 						<img src="../../images/userlogin.png" style="height: 20px;">
 						<a href="user_join.jsp" style="text-decoration-line: none; color: #000;">회원가입</a>
 					</div>
-					</div>
 				</div>
-			</div>
+				</div>
+		</div>
 			</form>
 			<!-- 로그인 박스 끝 -->
-<!-- 아이디,비밀번호가 틀릴경우 로그인 처리 결과 출력 -->
-<%
-%>	
-			
-		</div>
-<!-- container end -->
+	</div>
+	<!-- container end -->
 
 <!-- footer -->
 <!-- footer end -->

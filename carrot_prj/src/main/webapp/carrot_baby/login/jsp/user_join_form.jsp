@@ -1,5 +1,7 @@
 <%@ page import="userVO.JoinVO" %>
 <%@ page import="userDAO.JoinDAO" %>
+<%@page import="java.io.IOException"%>
+<%@page import="java.io.File"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -112,7 +114,7 @@ function chkNull(){
 //아이디 중복확인 팝업창 열기
 $(function() {
 	$("#idbtn").click(function() {
-		window.open("id_chk_popup.jsp"," ",
+		window.open("id_dup_popup.jsp","id_dup_popup",
 			"width=520,height=370,top=220,left=700");
 	});
 });
@@ -200,7 +202,8 @@ function zipcodeapi() {
 						<div>
 							<div class="upload-btn-wrapper">
 								<button class="formBtn">사진등록</button>
-								<input type="file" /> <input type="button" value="삭제" class="formBtn">
+								<input type="file" />
+								 <input type="button" value="삭제" class="formBtn">
 							</div>
 						</div>
 						</div>
@@ -221,7 +224,7 @@ function zipcodeapi() {
 				<tr>
 					<th><label><span style="color:red">*</span>아이디</label></th>
 					<td>
-						<input type="text" placeholder="아이디를 입력해주세요" name="id" id="id" class="inputTxt inputIdtype"  maxlength="20"  />
+						<input type="text" placeholder="아이디를 입력해주세요" name="id" id="id" class="inputTxt inputIdtype"  maxlength="20" readonly="readonly" />
 						<input type="button" value="아이디 중복 확인" class="idBtn" id="idbtn" />
 					</td>
 				</tr>

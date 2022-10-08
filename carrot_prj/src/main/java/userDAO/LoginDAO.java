@@ -37,17 +37,20 @@ public class LoginDAO {
 	 * @throws SQLException
 	 */
 	public String selectLogin(LoginVO lVO) throws SQLException {
+		String id=null;
 		DbConnection db = DbConnection.getInstance();
+		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String id="";
+		
 		try {
 			con = db.getConn();
 			StringBuffer sb = new StringBuffer();
 			sb.append("select id ")
 			  .append("from member ")
-			  .append("where id=?, password=?");
+			  .append("where id=? and password=? ");
+			
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setString(1, lVO.getId());
 			pstmt.setString(2, lVO.getPassword());

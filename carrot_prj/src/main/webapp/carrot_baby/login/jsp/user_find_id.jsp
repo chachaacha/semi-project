@@ -29,18 +29,18 @@ $(function () {
 		  $("#birth").val("");
 		  return;
 		 }
-	if ($("#tel").val().trim()=="") {
+	if ($("#phone_num").val().trim()=="") {
 		  alert("전화번호를 입력해주세요");
-		  $("#tel").focus();
-		  $("#tel").val("");
+		  $("#phone_num").focus();
+		  $("#phone_num").val("");
 		  return;
 		 }
     	
 	$("#findIdFrm").submit();
 	
-		//본인 아이디확인 팝업창 열기
+		/* //본인 아이디확인 팝업창 열기
 		window.open("find_id_popup.jsp","",
-		"width=385,height=235,top=380,left=750");
+		"width=385,height=235,top=380,left=750"); */
     });
 });
 </script>
@@ -79,7 +79,7 @@ $(function () {
 				<div style="margin: 30px">
 					<input type="text" placeholder="이름 입력" size="18" class="textBox" id="name">
 					<input type="text" placeholder="예) 2000-01-01" size="18" class="textBox" id="birth"><br>
-					<input type="text" placeholder="예) 010-1234-5678" size="46" class="textBox" id="tel" style="margin: 5px">
+					<input type="text" placeholder="예) 010-1234-5678" size="46" class="textBox" id="phone_num" style="margin: 5px">
 				</div>
 			</div>
 			</form>

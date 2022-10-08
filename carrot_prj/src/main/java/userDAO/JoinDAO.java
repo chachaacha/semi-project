@@ -1,8 +1,8 @@
 package userDAO;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import common.DbConnection;
@@ -56,8 +56,33 @@ public class JoinDAO {
 		}
 	}//end insert
 	
-	
-	
+	public boolean selectId(String paramId)throws SQLException{
+		boolean flag=false;
+		
+		DbConnection db = DbConnection.getInstance();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs=null;
+		
+		try {
+		//3.Connection 얻기
+			con=db.getConn();
+			String selectId="select id from member where id=?";
+			pstmt=con.prepareStatement(selectId);
+		//5.바인드 변수에 값 할당
+			pstmt.setString(1, paramId);
+		//6.쿼리문 수행 후 결과얻기
+			rs=pstmt.executeQuery();
+			flag=rs.next();//검색결과 있음 true, 없음 false
+				
+		}finally {
+		//7.연결끊기
+			if(rs !=null ) {rs.close();}
+			if(pstmt !=null ) {pstmt.close();}
+			if(con !=null ) {con.close();}
+		}
+		return flag;
+	}
 	
 	
 }
