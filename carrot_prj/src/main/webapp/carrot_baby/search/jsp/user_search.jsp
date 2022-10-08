@@ -30,7 +30,6 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
-
 $(function(){
 /* 필터 접고 펴는 기능 */
 	$(".category-button").click(function() {
@@ -85,7 +84,14 @@ $(function(){
 		$("#searchFrm").submit()
 	})
 	
-});
+	$(".resetBtn").click(function() {
+		location.href="../../search/jsp/user_search.jsp";
+	})
+	
+/* 	$(".page-bottom-icon").click(function() {
+		$(this).attr("class","page-bottom-icon-click");
+	}) */
+})
 
 	//정렬 flag 전달
 	function orderRadio() {
@@ -106,6 +112,15 @@ $(function(){
 	function pageMove(nowPage) {
 		$("#pageFlag").val(nowPage);
 		$("#searchFrm").submit();
+	}
+	
+	function enterWrite() {
+		var userID="<%=(String)session.getAttribute("id")%>";
+		if(userID=="null" ) {
+			alert("로그인을 해주세요.");
+		}else {
+			location.href="../../search/jsp/user_write.jsp";
+		}
 	}
 	
 </script>
@@ -170,12 +185,14 @@ System.out.println("필터 적용된 게시물의 수 : "+hVOList.size());
 			<div class="filter"> 
 				<div class="filter-text">
 					필터
-					<span class="resetBtn">초기화
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-						  <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-						  <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-						</svg>
-					</span>
+					<c:if test="${not empty param.pageFlag  || not empty param.keyword  || not empty param.guFlag  || not empty param.categoryFlag  || not empty param.orderByFlag || not empty param.priceFlag || not empty param.minPrice || not empty param.maxPrice}">
+						<span class="resetBtn">초기화
+							<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi-arrow-clockwise" viewBox="0 0 16 16">
+							  <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+							  <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+							</svg>
+						</span>
+					</c:if>
 				</div>
 					
 					<div class="category">
@@ -425,11 +442,11 @@ System.out.println("필터 적용된 게시물의 수 : "+hVOList.size());
 				<!-- 오른쪽 매물 하단 글쓰기 버튼 -->
 				<div class="write-bottom">
 					<div class="write-bottom-wrap">
-                   	 <a href="user_write.jsp" class="write-bottom-btn">
-                   	 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48" data-svg-content="true" fill="rgb(255, 255, 255)">
-                   	 <path d="M35.5 14L28 6.5l-20 20V34h7.5l20-20zm5.91-5.91c.78-.78.78-2.05 0-2.83L36.74.59c-.78-.78-2.05-.78-2.83 0L30 4.5l7.5 7.5 3.91-3.91z"></path>
-                   	 <path fill-opacity=".36" d="M0 40h48v8H0z">
-                   	 </path></svg>
+                   	 <a href="javascript:enterWrite();" class="write-bottom-btn">
+	                   	 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48" data-svg-content="true" fill="rgb(255, 255, 255)">
+	                   	 <path d="M35.5 14L28 6.5l-20 20V34h7.5l20-20zm5.91-5.91c.78-.78.78-2.05 0-2.83L36.74.59c-.78-.78-2.05-.78-2.83 0L30 4.5l7.5 7.5 3.91-3.91z"></path>
+	                   	 <path fill-opacity=".36" d="M0 40h48v8H0z">
+	                   	 </path></svg>
                    	 글쓰기</a>
             		</div>
 				</div>
@@ -438,28 +455,30 @@ System.out.println("필터 적용된 게시물의 수 : "+hVOList.size());
 				<fmt:parseNumber var="lastpage" integerOnly="true" value="${ceil+(1-(ceil%1))%1 }"/> <!-- 페이지의 수  -->
 				<c:set var="curPage" value="${param.pageFlag }"/> <!--현재페이지  -->
 				<c:set var="startNum" value="${curPage - (curPage-1) % 4 }"/> <!-- 현재 페이지가 속한 처음 페이지의 수 -->
-				<c:set var="isLast" value="4"/>
-				
+				<c:set var="isLast" value="3"/>
+			
 				<!-- 오른쪽 매물 하단 페이지 버튼 -->
-				<div class="page-bottom">
-					<c:if test="${curPage >= 6}">
-						<a href="javascript:pageMove(1);" class="page-bottom-next">&lt;&lt;</a>
-						<a href="javascript:pageMove(${curPage-5});" class="page-bottom-next">&lt;</a>
-					</c:if>					
-				
-					<c:if test="${startNum + 5 >= lastpage }">
-						<c:set var="isLast" value="${lastpage - startNum }"/>
-					</c:if>
+				<c:if test="${not empty hVOList }">	
+					<div class="page-bottom">
+						<c:if test="${curPage >= 6}">
+							<a href="javascript:pageMove(1);" class="page-bottom-next">&lt;&lt;</a>
+							<a href="javascript:pageMove(${curPage-5});" class="page-bottom-next">&lt;</a>
+						</c:if>					
 					
-					<c:forEach var="i" begin="0" end="${isLast }" step="1" >
-						<a href="javascript:pageMove(${startNum + i});" class="page-bottom-icon"><c:out value="&nbsp;${startNum+i}&nbsp;" escapeXml="false"/></a>
-					</c:forEach>
-					
-					<c:if test="${startNum + 5 < lastpage }">
-						<a href="javascript:pageMove(${startNum+5});" class="page-bottom-next">&gt;</a>
-						<a href="javascript:pageMove(${lastpage});" class="page-bottom-next">&gt;&gt;</a>
-					</c:if>
-				</div>
+						<c:if test="${startNum + 5 >= lastpage }">
+							<c:set var="isLast" value="${lastpage - startNum }"/>
+						</c:if>
+						
+						<c:forEach var="i" begin="0" end="${isLast }" step="1" >
+							<a href="javascript:pageMove(${startNum + i});" ${param.pageFlag eq startNum + i ? "class='page-bottom-icon-click'" : "class='page-bottom-icon'"} id="pageNum1"><c:out value="&nbsp;${startNum+i}&nbsp;" escapeXml="false"/></a>
+						</c:forEach>
+						
+						<c:if test="${startNum + 5 < lastpage }">
+							<a href="javascript:pageMove(${startNum+5});" class="page-bottom-next">&gt;</a>
+							<a href="javascript:pageMove(${lastpage});" class="page-bottom-next">&gt;&gt;</a>
+						</c:if>
+					</div>
+				</c:if>
 				
 			</div>
 			

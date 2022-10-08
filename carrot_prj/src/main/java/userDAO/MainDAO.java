@@ -407,7 +407,7 @@ public class MainDAO {
 			} else {
 				pstmt.setInt(1, mfVO.getPageFlag());
 			}
-				
+			
 			/*
 			 * if(mfVO.getPriceFlag() == 7) { // 가격직접설정만 선택
 			 * System.out.println("--------------값 : "+mfVO ); pstmt.setInt(2,

@@ -48,10 +48,18 @@ a {
 	padding: 47px 0px 34px;
 	border-bottom: 1px solid #E0E0E0;
 	flex: 1;
+	align-items: flex-end;
 }
 
 .resetBtn {
-	font-size: 15px;
+	display: flex;
+    font-size: 15px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.bi-arrow-clockwise {
+	margin-left: 5px;
 }
 
 .down-img {
@@ -371,7 +379,7 @@ a {
 	cursor: pointer;
 }
 
-.page-bottom-icon > a,  .page-bottom > div > div {
+/* .page-bottom-icon > a,  .page-bottom > div > div {
 	color: #0A0400;
 	padding: 12px 14px;
 }
@@ -379,6 +387,20 @@ a {
 .page-bottom-icon-click > a {
 	color: #fff;
 	padding: 12px 14px;
+} */
+
+a.page-bottom-icon:visited {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: #ff6900;
+	margin-right: 12px;
+	cursor: pointer;
+	color: #fff;
 }
 
 .page-bottom-icon-click {
