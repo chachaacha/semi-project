@@ -50,6 +50,10 @@ a {
 	flex: 1;
 }
 
+.resetBtn {
+	font-size: 15px;
+}
+
 .down-img {
 	transform: rotate(180deg);
 }
