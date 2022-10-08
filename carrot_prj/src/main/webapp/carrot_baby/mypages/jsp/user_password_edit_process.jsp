@@ -23,23 +23,14 @@
 
 </head>
 <body>
-<% request.setCharacterEncoding("UTF-8"); 
-//세션에 있는 아이디
-String id=(String)session.getAttribute("id");
-//입력받은 기존 비밀번호
-String pass = request.getParameter("password");
-//입력받은 신규 비밀번호
-String newPw = request.getParameter("password1");
-//입력받은 신규 비밀번호 확인
-String newPwChk = request.getParameter("password2"); 
-%>
+<% request.setCharacterEncoding("UTF-8"); %>
 
 <!-- VO객체 생성 -->
 <jsp:useBean id="puVO" class="userVO.PwUpVO"></jsp:useBean>
 <!-- 아이디와 입력받은 비밀번호, 새비밀번호를 VO에 저장  -->
-<jsp:setProperty property="id" name="puVO" value="<%= id %>"/>
-<jsp:setProperty property="password" name="puVO" value="<%= pass %>"/>
-<jsp:setProperty property="new_pw" name="puVO" value="<%= newPw %>"/>
+<jsp:setProperty property="id" name="puVO" value="${ id }"/>
+<jsp:setProperty property="password" name="puVO" value="${ param.password }"/>
+<jsp:setProperty property="new_pw" name="puVO" value="${ param.password1 }"/>
 
 <%
 PwUpDAO puDAO = PwUpDAO.getInstance();

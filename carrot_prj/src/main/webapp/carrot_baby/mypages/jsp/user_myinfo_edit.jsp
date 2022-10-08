@@ -70,14 +70,11 @@ function zipcodeapi() {
     }).open();
 }
 
-
-	$(function() {
-		$(".oBtn").click(function() {
-			alert("개인정보가 수정되었습니다.")
-		}); 
-		
+$(function(){
+	$("#btn").click(function(){
 		$("#infoEditFrm").submit();
-	});//ready
+	});
+});//ready
 </script>
 
 </head>
@@ -94,7 +91,6 @@ if(id==null){
 MyInfoDAO miDAO = MyInfoDAO.getInstance();
 MyInfoVO info = miDAO.selectInfo(id);
 %>
-
 	<div class="wrap">
 
 <!-- header -->
@@ -106,10 +102,10 @@ MyInfoVO info = miDAO.selectInfo(id);
 
 			<%@ include file="myinfo_navi.jsp" %>
 
+				<form action="user_myinfo_edit_process.jsp" method="post" id="infoEditFrm">
 				<!-- 내정보수정  -->
 				<div class="title">내 정보 수정</div>
 				<!-- 정보 작성 폼 -->
-				<form action="user_myinfo_edit_process.jsp" method="post" name="infoEditFrm">
 				<div class="writeForm">
 					<table>
 						<tr>
@@ -156,16 +152,7 @@ MyInfoVO info = miDAO.selectInfo(id);
 							<th><label>이메일</label></th>
 							<td class="mail_type">
 							<input type="text" value="<%=info.getEmail() %>" name="email" id="email" class="inputEmail" maxlength="100" />
-							<span class="email_txt">@</span>
-							<input type="text" value="" name="email1" id="email1" class="inputEmail" maxlength="100" />
-							<select class="selectEmail" name="email2" id="email2" onchange="selectEmail(this)">
-									<option value='1'>직접 입력</option>
-									<option value='babycarrot.co.kr' selected>babycarrot.co.kr</option>
-									<option value='naver.com'>naver.com</option>
-									<option value='daum.net'>daum.net</option>
-									<option value='gmail.com'>gmail.com</option>
-									<option value='nate.com'>nate.com</option>
-							</select> <span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" style="cursor: pointer;" />
+							<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" style="cursor: pointer;" />
 							<label>이메일 수신동의</label></span></td>
 						</tr>
 						<tr>
@@ -178,7 +165,7 @@ MyInfoVO info = miDAO.selectInfo(id);
 					</table>
 				</div>
 				<div class="writeForm_btn">
-					<button type="button" class="oBtn">확인</button>
+					<button type="button" class="oBtn" id="btn">확인</button>
 				</div>
 				</form>
 			</div>

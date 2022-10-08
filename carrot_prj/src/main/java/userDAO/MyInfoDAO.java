@@ -96,9 +96,9 @@ public class MyInfoDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder update = new StringBuilder();
 			update
-			.append("update	member																																")
+			.append("update	member ")
 			.append("set img = ?, nick = ?, phone_num = ?, sms_chk = ?, email = ?, email_chk = ?, zipcode = ?, addr1 = ?, addr2 =?	")
-			.append("where id = ?																																		");
+			.append("where id = ? ");
 			
 			pstmt = con.prepareStatement(update.toString());
 		//4. 바인드 변수에 값 설정
@@ -115,6 +115,7 @@ public class MyInfoDAO {
 			
 		//5. 쿼리문 수행 후 결과 얻기
 			updateCnt = pstmt.executeUpdate();
+			
 		} finally {
 		//6. 연결 끊기
 			dc.dbClose(null, pstmt, con);

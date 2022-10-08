@@ -46,13 +46,15 @@ public class PwUpDAO {
 			update
 			.append("update	member				")
 			.append("set			password	= ?		")
-			.append("where id = ?, password = ?	");
+			.append("where id = ? and password = ?	");
 			
 			pstmt = con.prepareStatement(update.toString());
 		//4. 바인드 변수에 값 설정
 			pstmt.setString(1, puVO.getNew_pw());
 			pstmt.setString(2, puVO.getId());
 			pstmt.setString(3, puVO.getPassword());
+			
+			updateCnt=pstmt.executeUpdate();
 			
 		//5. 쿼리문 수행 후 결과 얻기
 		} finally {

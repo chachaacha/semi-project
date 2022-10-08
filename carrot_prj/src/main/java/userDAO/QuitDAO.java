@@ -38,8 +38,8 @@ public class QuitDAO {
 			StringBuilder update = new StringBuilder();
 			update
 			.append("update	member								")
-			.append("set			quit = Y,	quit_date = sysdate	")
-			.append("where id = ?, password = ?					");
+			.append("set quit = 'Y',	quit_date = to_date(sysdate,'yy-mm-dd')	")
+			.append("where id = ? and password = ?					");
 			
 			pstmt = con.prepareStatement(update.toString());
 		//4. 바인드 변수에 값 설정

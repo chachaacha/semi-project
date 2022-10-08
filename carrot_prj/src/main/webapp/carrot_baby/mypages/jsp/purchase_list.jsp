@@ -1,5 +1,11 @@
+<%@page import="userDAO.BuyListDAO"%>
+<%@page import="userVO.BuyListVO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="userVO.BuyVO"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,6 +38,13 @@ $(function() {
 <div class="container">
 <%@ include file="myinfo_navi.jsp" %>
 
+<!-- 정보 불러오기 -->
+<jsp:useBean id="blVO" class="userVO.BuyListVO"></jsp:useBean>
+<jsp:setProperty property="*" name="name"/>
+<%
+BuyListDAO blDAO=BuyListDAO.getInstance();
+%>
+<c:forEach var="blVO" items="${ blVO }">
 <div class="purchase_list_title_wrap">
 	<div class="purchase_list_title">구매내역</div>
 	<div class="purchase_list_item">
@@ -56,6 +69,7 @@ $(function() {
 	</div><!-- purchase_list_item -->
 
 </div> <!-- 컨테이너 div -->
+</c:forEach>
 </div><!-- container end -->
 
 <!-- footer -->

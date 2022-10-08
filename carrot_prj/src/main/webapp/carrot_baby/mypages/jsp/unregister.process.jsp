@@ -25,15 +25,12 @@
 <body>
 <%
 request.setCharacterEncoding("UTF-8");
-//세션에 있는 아이디
-String id=(String)session.getAttribute("id");
 %>
 
 <!-- VO객체 생성 -->
 <jsp:useBean id="qVO" class="userVO.QuitVO"></jsp:useBean>
-<jsp:setProperty property="*" name="qVO"/>
-<!-- id는 세션에서 받아와서 따로 값 설정 -->
-<jsp:setProperty property="id" name="qVO" value="<%= id %>"/>
+<jsp:setProperty property="id" name="qVO" value="${ id }"/>
+<jsp:setProperty property="password" name="qVO" value="${ param.password }"/>
 
 <%
 QuitDAO qDAO = QuitDAO.getInstance();
