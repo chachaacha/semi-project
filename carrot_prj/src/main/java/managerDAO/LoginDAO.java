@@ -68,9 +68,9 @@ public class LoginDAO {
 			
 			StringBuilder sb = new StringBuilder();
 			sb
-			.append("update manager")
-			.append("set password=?")
-			.append("where password=?");
+			.append(" update manager ")
+			.append(" set password=? ")
+			.append(" where password=? ");
 			
 			pstmt=con.prepareStatement(sb.toString());
 			

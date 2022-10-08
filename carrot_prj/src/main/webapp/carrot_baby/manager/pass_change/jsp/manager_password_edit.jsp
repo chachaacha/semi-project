@@ -1,3 +1,4 @@
+<%@page import="managerDAO.LoginDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -9,22 +10,28 @@
 <link rel="stylesheet" type="text/css" href="../../../common/css/reset.css"/>
 <link rel="stylesheet" type="text/css" href="../../../common/css/manager_wrap_container.css"/>
 <link rel="stylesheet" type="text/css" href="../css/manager_password_edit.css"/>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-
 <script type="text/javascript">
 $(function(){
-$("#btn").click(function(){
-	
-	
-	
-	
-	alert("비밀번호가 변경되었습니다.")
-});
+	$("#btn").click(function(){
+		newPass1 = $("#newPw").val().trim();
+		newPass2 = $("#newPwChk").val().trim();
+		
+		if(newPass1.length < 3){
+			alert("4자리 이상 입력하세요");
+			return;
+		}
+		
+		if(newPass1 != newPass2){
+			alert("변경 비밀번호가 일치하지 않습니다.");
+			return;
+		}
+		$("#changeFrm").submit();
+	});
 });
 </script>
-
 </head>
+<%-- 세션말료시 로그인화면 복귀 --%>
 <c:if test="${ empty manager_id }">
 	<c:redirect url="../../login/jsp/manager_login.jsp"/>
 </c:if>
@@ -52,13 +59,13 @@ $("#btn").click(function(){
 		</div>
 <!-- 현재 메뉴 -->
 <!-- 대시보드 -->
+				<form method="post" id="changeFrm"> 
 				<div class="writeForm">
-				<form method="post" id="changeFrm">
 			<table>
 				<tr>
 					<th><label for="managerId">관리자 아이디</label></th>
 					<td>
-						<input name="manager_id" id="manager_id" class="inputBox" type="text" value="admin"  readonly="readonly" />
+						<input id="manager_id" name="manager_id" class="inputBox" type="text" value="admin"  readonly="readonly" />
 					</td>
 				</tr>
 				<tr>
@@ -81,9 +88,8 @@ $("#btn").click(function(){
 					</td>
 				</tr>
 				</table>
-				</form>
 		</div>
-		
+		</form> 
 		
 		<div>
 		<input type="button" value="저장" class="btn" id="btn">
@@ -102,7 +108,24 @@ $("#btn").click(function(){
 <jsp:useBean id="lVO" class="managerVO.LoginVO" scope="page"></jsp:useBean>
 <jsp:setProperty property="*" name="lVO"/>
 <% 
-
+LoginDAO lDAO = LoginDAO.getInstance();
+int result = lDAO.updatePW(lVO);
+pageContext.setAttribute("result", result);
 %>
+<c:choose>
+<c:when test="${ result eq 1 }">
+<script type="text/javascript">
+alert("비밀변호가 변경되었습니다.");
+alert("변경된 비밀번호로 재접속해 주세요.");
+location.href="../../login/jsp/manager_login.jsp";
+</script>
+</c:when>
+<c:when test="${ not empty param.manager_id && result eq 0 }"> <%-- 처음 진입시에는 실행되지 않게 웹 파라메터가 있을 경우에만 수행한다. --%>
+<script type="text/javascript">
+alert("현재 비밀번호가 올바르지 않습니다.");
+</script>
+</c:when>
+</c:choose>
+
 
 </html>

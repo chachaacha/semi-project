@@ -17,12 +17,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(function() {
-	
 	 
 	//셀렉트 선택시 다른 테이블을 보여준다.
 	$("#memberCat").change(function(){
 		$("#selectStau").val($("#memberCat").val());
-		$("#searchStau").val(null);
+		$("#searchStau").val(null);//검색 값은 초기화 시켜준다.
 		$("#hidFrm").submit();
 	});
 	 
@@ -36,7 +35,17 @@ $(function() {
 		$("#searchStau").val(word.trim());
 		$("#hidFrm").submit();
 	});
+	
+	
 });
+
+//신고 누를 시 팝업창열기
+//a 태그에 자바스크립트 영역을 열고 함수를 넣고 그 함수의 매개변수에 EL의 값을 받아온다. 
+function openPopup(id) {
+	window.open("manger_member_block_popup.jsp?id="+id,"manger_member_block_popup","width=520,height=620,top=203,left=1336");
+}
+
+
 </script>
 <%-- 세션처리 --%>
 <c:if test="${ empty manager_id }">
@@ -73,7 +82,7 @@ $(function() {
 							<option value="block"${ 'block' eq param.selectStau?" selected='selected'":""  }>차단 회원 리스트</option>
 				</select>
 				<div class="search-wrap">
-						<input hidden="hidden"><input type="text" id="idSearch" name="idSearch" value="${ param.searchStau }" class="search-txt" placeholder="아이디를 입력하세요.">
+						<input hidden="hidden"><input type="text" id="idSearch" name="idSearch" value="${ param.searchStau }" class="search-txt" placeholder="아이디를 입력하세요." autocomplete="off" >
 						<button type="button" class="search-bar" id="searchBtn">
 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 							  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -81,7 +90,7 @@ $(function() {
 						</button>
 				</div>
 			</div>
-			
+			<!-- form을 묶기위한 hidden -->
 			<form id ="hidFrm">
 				<input type="hidden" id="selectStau"name="selectStau" value="${ empty param.selectStau?'all':param.selectStau }"/>
 				<input type="hidden" id="searchStau"name="searchStau" value="${ param.searchStau }"/>
@@ -96,18 +105,19 @@ $(function() {
 						 pageContext.setAttribute("memList", memList);
 						 %>
 						 <c:choose>
-						 <c:when test="${ param.selectStau  eq 'all' }">
+						 <c:when test="${ param.selectStau  eq 'all' or empty param.selectStau and empty param.searchStau }"><%-- 전체가 선택되었거나 초기진입이어서 웹파라메터가 없을 경우 보여줄 테이블 --%>
 						 <tr><th>아이디명</th><th >회원명</th><th>가입날짜</th><th>생년월일</th><th>차단</th></tr>
 						 <c:if test="${ empty pageScope.memList }">
 						 <tr><td colspan="5">조회된결과가 없습니다.</td></tr>
 						 </c:if> 	
 						 <c:forEach var="memList" items="${ pageScope.memList }">
-						  	<tr><td><c:out value="${ memList.id }"/></td><td><c:out value="${ memList.name }"/></td><td><c:out value="${ memList.joined_date }"/></td><td><c:out value="${ memList.birth }"/></td><td><button type="button" class="block-btn">차단</button></td></tr>
+						    <%-- 신고하기를 눌렀을 때 이 부분을 form으로 처리하면 id가 중복되기 때문에 a 태그를 통해 javascript영역을 열고 EL을 넣어서 매개값으로 전달한다. --%>
+						  	<tr><td><c:out value="${ memList.id }"/></td><td><c:out value="${ memList.name }"/></td><td><c:out value="${ memList.joined_date }"/></td><td><c:out value="${ memList.birth }"/></td><td><a href="javascript:openPopup('${ memList.id }')"><button type="button" class="block-btn">차단</button></a></td></tr>
 						 </c:forEach>
 						 </c:when>
 						 <c:when test="${ param.selectStau  eq 'block' }">
 						 <% 
-						 List<ManagerBlockVO> bloList = mDAO.selectBlockedMember(request.getParameter("searchStau"));
+						 List<ManagerBlockVO> bloList = mDAO.selectBlockedMember(request.getParameter("searchStau").trim());
 						 pageContext.setAttribute("bloList", bloList);
 						 %>	
 						 <tr><th>아이디명</th><th >회원명</th><th>차단 사유</th><th>차단 해제</th></tr>
@@ -118,19 +128,6 @@ $(function() {
 						    <tr><td><c:out value="${ bloList.id }"/></td><td><c:out value="${ bloList.name }"/></td><td><c:out value="${ bloList.blocked_reason }"/></td><td><button type="button" class="block-btn">해제</button></td></tr>
 						 </c:forEach>
 						 </c:when>
-						 <c:otherwise>
-						 <%	
-						 memList = mDAO.selectMember(request.getParameter("searchStau"));
-						 pageContext.setAttribute("memList", memList);
-						 %>
-						 <tr><th>아이디명</th><th >회원명</th><th>가입날짜</th><th>생년월일</th><th>차단</th></tr>
-						 <c:if test="${ empty pageScope.memList }">
-						 <tr><td colspan="5">조회된결과가 없습니다.</td></tr>
-						 </c:if> 
-						 <c:forEach var="memList" items="${ pageScope.memList }">
-						  	<tr><td><c:out value="${ memList.id }"/></td><td><c:out value="${ memList.name }"/></td><td><c:out value="${ memList.joined_date }"/></td><td><c:out value="${ memList.birth }"/></td><td><button type="button" class="block-btn">차단</button></td></tr>
-						 </c:forEach>
-						 </c:otherwise>
 						 </c:choose>	
 						 </table>  
 			</div>

@@ -156,7 +156,7 @@ public class MemberDAO {
 		try {
 			con=db.getConn();
 			
-			String insertBlock="insert into manager_blocked (br_idx,id,blocked_date) values(?,?,sysdate);";
+			String insertBlock="insert into manager_blocked (br_idx,id) values(?,?)";
 			
 			pstmt=con.prepareStatement(insertBlock);
 			pstmt.setInt(1, mbVO.getBr_idx());
