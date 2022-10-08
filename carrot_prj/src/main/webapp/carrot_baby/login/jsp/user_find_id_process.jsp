@@ -15,9 +15,13 @@
 <% //POST요청방식의 한글 처리  
 request.setCharacterEncoding("UTF-8"); %>
 <!-- 1. parameter 받을 VO 생성 -->
-<jsp:useBean id="fVO" class="userVO.FindIdVO" />
+<jsp:useBean id="fVO" class="userVO.FindIdVO" ></jsp:useBean>
 <!-- 2. VO에 setter method(property) 호출 -->
 <jsp:setProperty property="*" name="fVO"/>
+
+이름 : ${param.name }<br>
+생년월일 : ${param.birth }<br>
+번호 : ${param.phone_num }<br>
 
 <%
 /* String name = request.getParameter("name");

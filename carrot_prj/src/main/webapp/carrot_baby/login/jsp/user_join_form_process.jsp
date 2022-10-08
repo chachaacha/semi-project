@@ -13,7 +13,7 @@
 <% //POST요청방식의 한글 처리  
 request.setCharacterEncoding("UTF-8"); %>
 <!-- 1. parameter 받을 VO 생성 -->
-<jsp:useBean id="jVO" class="userVO.JoinVO" scope="session"/>
+<jsp:useBean id="jVO" class="userVO.JoinVO" scope="session" />
 <!-- 2. VO에 setter method(property) 호출 -->
 <jsp:setProperty property="*" name="jVO"/>
 <!-- 이메일 추출 -->

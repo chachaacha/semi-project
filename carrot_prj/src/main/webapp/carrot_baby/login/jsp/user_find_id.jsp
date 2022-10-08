@@ -15,7 +15,7 @@
 <script type="text/javascript">
 $(function () {
     $("#chkBtn").click(function () {
-	 
+/* 	 
 	//필수 입력에 대한 체크 수행
 	if ($("#name").val().trim()=="") {
 		  alert("이름을 입력해주세요");
@@ -34,8 +34,8 @@ $(function () {
 		  $("#phone_num").focus();
 		  $("#phone_num").val("");
 		  return;
-		 }
-    	
+		 } */
+    	alert("tl");
 	$("#findIdFrm").submit();
 	
 		/* //본인 아이디확인 팝업창 열기
@@ -72,23 +72,23 @@ $(function () {
 			</div>
 
 			<!--정보 입력 -->
-			<form name="findIdFrm" id="findIdFrm" method="post" action="user_find_id_process.jsp" >
+			<form name="findIdFrm" id="findIdFrm" method="get" action="user_find_id_process.jsp" >
 			<div class="infoBox">
 				<img src="../../images/check.png" class="infoImg" style="vertical-align: middle;">
 				<span class="infoText">이름 / 생년월일/ 휴대폰으로 찾기</span>
 				<div style="margin: 30px">
-					<input type="text" placeholder="이름 입력" size="18" class="textBox" id="name">
-					<input type="text" placeholder="예) 2000-01-01" size="18" class="textBox" id="birth"><br>
-					<input type="text" placeholder="예) 010-1234-5678" size="46" class="textBox" id="phone_num" style="margin: 5px">
+					<input type="text" placeholder="이름 입력" size="18" class="textBox" name="name" id="name" >
+					<input type="text" placeholder="예) 2000-01-01" size="18" class="textBox" name="birth" id="birth" ><br>
+					<input type="text" placeholder="예) 010-1234-5678" size="46" class="textBox" name="phone_num" id="phone_num" style="margin: 5px">
 				</div>
 			</div>
-			</form>
 
 			<!-- 확인 취소 버튼  -->
 			<div style="text-align: center; margin: 30px;">
 				 <input type="button" value="확인" class="oBtn" id="chkBtn">
-				 <a href="../../mainhome/jsp/user_mainhome.jsp"><input type="button" value="취소" class="gBtn"></a>
+				 <!-- <a href="../../mainhome/jsp/user_mainhome.jsp"><input type="button" value="취소" class="gBtn"></a> -->
 			</div>
+			</form>
 
 		</div>
 		<!-- container end -->
