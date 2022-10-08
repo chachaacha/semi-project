@@ -169,7 +169,7 @@ public class MySalesDAO {
 			select
 			.append("	select p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.price	")
 			.append("	from product p, loc_category lc																")
-			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_chk = Y 							");
+			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'Y' 							");
 			
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정

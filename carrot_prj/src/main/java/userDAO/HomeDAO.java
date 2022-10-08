@@ -52,6 +52,7 @@ public class HomeDAO {
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				hVO = new HomeVO();
+				hVO.setProduct_idx(rs.getString("product_idx"));
 				hVO.setThumbnail(rs.getString("thumbnail"));
 				hVO.setTitle(rs.getString("title"));
 				hVO.setPrice(rs.getInt("price"));
@@ -81,13 +82,14 @@ public class HomeDAO {
 		try {
 			con = db.getConn();
 			StringBuffer sb = new StringBuffer();
-			sb.append("select word, cnt")
-				.append("from (select word, cnt, row_number() over(order by cnt desc) r ")
-				.append("from(select word, count(word) cnt")
-				.append("from search")
-				.append("group by word)")
-				.append("where r between 1 and 10");
+			sb.append("select word, cnt ")
+			   .append("from (select word, cnt, row_number() over(order by cnt desc) r ")
+			   .append("from (select word, count(word) cnt ")
+			   .append("from search ")
+			   .append("group by word ))")
+			   .append("where r between 1 and 10 ");
 			pstmt= con.prepareStatement(sb.toString());
+			 System.out.println(sb);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				list.add(rs.getString("word"));
