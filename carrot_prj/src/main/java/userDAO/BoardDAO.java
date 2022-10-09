@@ -31,7 +31,7 @@ public class BoardDAO {
 		return bDAO;
 	}
 	
-	public BoardVO selectB(int product_idx) throws SQLException {
+	public BoardVO selectB(String product_idx) throws SQLException {
 		BoardVO bVO=null;
 		DbConnection db=DbConnection.getInstance();
 		
@@ -45,18 +45,22 @@ public class BoardDAO {
 			
 			StringBuilder sb = new StringBuilder();
 			sb
-			.append("	select pd.id, mb.nick, lc.gu_idx, lc.gu, pd.title, pd.category_idx, pc.category, ")
-			.append("pd.contents, pd.price, pd.liked_cnt, pd.product_idx, pd.report_cnt, pd.post_date	")
+			.append("	select pd.id, mb.nick, mb.img, lc.gu_idx, lc.gu, pd.title, pd.category_idx, pc.category, pd.reserved, pd.sold_check, ")
+			.append("	pd.contents, pd.price, pd.liked_cnt, pd.product_idx, pd.report_cnt, pd.posted_date	")
 			.append("	from member mb, product pd, loc_category lc, product_category pc	")
 			.append("	where (pd.id=mb.id and pd.gu_idx=lc.gu_idx and pd.category_idx=pc.category_idx) and product_idx=?	");
 			
 			pstmt=con.prepareStatement(sb.toString());
-			pstmt.setInt(1, product_idx);
+			pstmt.setString(1, product_idx);
 			rs=pstmt.executeQuery();
+			
+			System.out.println("--query---"+ sb );
+			System.out.println("--value--- "+ product_idx );  
 			
 			if(rs.next()) {
 				bVO=new BoardVO();
 				bVO.setId(rs.getString("id"));
+				bVO.setImg(rs.getString("img"));
 				bVO.setNick(rs.getString("nick"));
 				bVO.setGu(rs.getString("gu"));
 				bVO.setTitle(rs.getString("title"));
@@ -66,7 +70,9 @@ public class BoardDAO {
 				bVO.setLiked_cnt(rs.getInt("liked_cnt"));
 				bVO.setProduct_idx(rs.getString("product_idx"));
 				bVO.setReport_cnt(rs.getInt("report_cnt"));
-				bVO.setPost_date(rs.getDate("post_date"));
+				bVO.setPosted_date(rs.getDate("posted_date"));
+				bVO.setReserved(rs.getString("reserved"));
+				bVO.setSold_check(rs.getString("sold_check"));
 			}//end if
 			
 		}finally {
@@ -77,7 +83,7 @@ public class BoardDAO {
 	}//selectB
 	
 	//게시글 이미지 가져오기
-	public List<String> selectImg(int product_idx) throws SQLException{
+	public List<String> selectImg(String product_idx) throws SQLException{
 		List<String> list = new ArrayList<String>();
 		Connection con=null;
 		PreparedStatement pstmt=null;
@@ -94,7 +100,7 @@ public class BoardDAO {
 			.append("	from product_img pi, product pd	")
 			.append("	where ( pi.product_idx = pd.product_idx) and pd.product_idx = ?  ");
 			pstmt=con.prepareStatement(sb.toString());
-			pstmt.setInt(1, product_idx);
+			pstmt.setString(1, product_idx);
 			rs= pstmt.executeQuery();
 			
 			while(rs.next()) {

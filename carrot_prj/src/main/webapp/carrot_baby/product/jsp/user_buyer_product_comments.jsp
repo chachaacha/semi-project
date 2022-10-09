@@ -1,5 +1,12 @@
+<%@page import="java.util.List"%>
+<%@page import="userVO.BoardVO"%>
+<%@page import="userDAO.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<% request.setCharacterEncoding("UTF-8"); %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +16,8 @@
 <link rel="stylesheet" type="text/css" href="../../common/css/swiper-bundle.min.css"/>
 <link rel="stylesheet" type="text/css" href="../../common/css/user_wrap_container.css"/>
 <link rel="stylesheet" type="text/css" href="../css/user_buyer_product_comments.css"/>
+<jsp:useBean id="bVO" class="userVO.BoardVO" scope="page"/>
+<jsp:setProperty property="*" name="bVO"/>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
@@ -44,12 +53,36 @@ $(function() {
 		
 		//하트 아이콘 효과
 		$(".heart-icon").click(function() {
-			$(".heart-icon svg").toggleClass("active");
+			var test=$(".heart-icon svg").attr("class");
+			if(test=="active") {
+				$(".heart-icon svg").removeClass("active");
+				test1();
+			}else {
+				$(".heart-icon svg").addClass("active");
+			}
+			/* $(".heart-icon svg").toggleClass("active"); */
 		})
 })
 </script>
 </head>
 <body>
+<%
+//조회하고 있는 거래창의 상품인덱스 얻기
+String pIdx=request.getParameter("product_idx");
+
+//BoardDAO 생성
+BoardDAO bDAO=BoardDAO.getInstance();
+
+//상품 조회
+BoardVO pInfo=bDAO.selectB(pIdx); 
+pageContext.setAttribute("pInfo", pInfo);
+
+//이미지 조회
+List<String> selImg=bDAO.selectImg(pIdx);
+pageContext.setAttribute("selImg", selImg);
+
+%>
+
 <div class="wrap">
 
 <!-- header -->
@@ -58,20 +91,18 @@ $(function() {
 
 <!-- container -->
 <div class="container">
+
 <!-- product-img -->
 	<div class="product-img">
 		<div class="swiper mySwiper">
 	     	<div class="swiper-wrapper">
-	       		<div class="swiper-slide">
-	       			<div class="main-top-img-wrap">
-		       			<img src="http://localhost/html_prj/day0825/images/cimg.png" alt="판매상품이미지1">
-	       			</div>
-	       		</div>
-	       		<div class="swiper-slide">
-	       			<div class="main-top-img-wrap">
-		       			<img src="" alt="판매상품이미지2">
-	       			</div>
-	       		</div>
+	     		<c:forEach var="pImg" items="${selImg }">
+		       		<div class="swiper-slide">
+		       			<div class="main-top-img-wrap">
+			       			<img src="${pImg }" alt="판매상품이미지1">
+		       			</div>
+		       		</div>
+	     		</c:forEach>
 	     	</div>
 	     <div class="swiper-button-next"></div>
 	     <div class="swiper-button-prev"></div>
@@ -83,29 +114,40 @@ $(function() {
 <!-- profile -->
 	<div class="profile-wrap">
 		<div class="profile">
-			<a class="profile-link" href="../../other_profiles/jsp/other_user_profile.jsp">
 				<div class="article-profile-image-wrap">
 		              <div class="article-profile-image">
-		                <img alt="프로필이미지" src="../../images/profileImg.png">
+						<a class="profile-link" href="../../other_profiles/jsp/other_user_profile.jsp">
+		                	<img alt="프로필이미지" src="${pInfo.img }">
+				    	</a>
 		              </div>
 		              <div class="article-profile-left">
-		                <div class="nickname">차승주주(juju****)</div>
+		                <div class="nickname">
+		                	${pInfo.nick }(${fn:substring(pInfo.id,0,4) }****)</div>
 		          	 </div>
 	    		</div>
-	    	</a>
 		</div>
 		<div class="profile-right">
 		 <div class="heart">
-		    <button class="heart-icon">
+		    <button class="heart-icon" ${sessionScope.id==null ? "disabled='disabled'" : ''} >
 		       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 32 32" fill="rgb(190, 190, 190)" data-svg-content="true">
 		          <g><path d="M 31.984,13.834C 31.9,8.926, 27.918,4.552, 23,4.552c-2.844,0-5.35,1.488-7,3.672 C 14.35,6.040, 11.844,4.552, 9,4.552c-4.918,0-8.9,4.374-8.984,9.282L0,13.834 c0,0.030, 0.006,0.058, 0.006,0.088 C 0.006,13.944,0,13.966,0,13.99c0,0.138, 0.034,0.242, 0.040,0.374C 0.48,26.872, 15.874,32, 15.874,32s 15.62-5.122, 16.082-17.616 C 31.964,14.244, 32,14.134, 32,13.99c0-0.024-0.006-0.046-0.006-0.068C 31.994,13.89, 32,13.864, 32,13.834L 31.984,13.834 z"></path></g></svg>
 		    </button>
 		<div class="heart-cnt">
-			 <div class="heart-cnt-txt">0</div>
+			 <div class="heart-cnt-txt" >${pInfo.liked_cnt }</div>
 		 </div>
 		</div>
 		 <div class="state">
-		 판매중
+		 	<c:choose>
+		 		<c:when test="${pInfo.reserved eq 'N' }">
+		 			판매중
+		 		</c:when>
+		 		<c:when test="${pInfo.reserved eq 'Y' }">
+		 			예약중
+		 		</c:when>
+		 		<c:when test="${pInfo.sold_check eq 'Y' }">
+		 			판매완료
+		 		</c:when>
+		 	</c:choose>
 		 </div>
 		</div>
 
@@ -115,7 +157,7 @@ $(function() {
 <!-- description -->
 	<div class="description-wrap">
 		<div class="description-title-wrap">
-			<h1 class="description-title">라멘 지식을 전수합니다</h1>
+			<h1 class="description-title">${pInfo.title }</h1>
 			<div class="report-wrap">
 				 	<button type="button" class="report-btn">
 					 	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-slash-circle" viewBox="0 0 16 16">
@@ -126,18 +168,20 @@ $(function() {
 				 	</button>
 		 </div>
 		</div>
-		<h1 class="region-name">서울시 강남구</h1>
-		<p class="description-category">출산/육아용품 ㆍ
-			<time>시간계산코드필요(ex며칠전)</time>
+		<h1 class="region-name">서울시 ${pInfo.gu }</h1>
+		<p class="description-category">${pInfo.category } ㆍ
+			<time>${pInfo.posted_date }</time>
 		</p>
-		<p class="description-price">150,000원
+		<p class="description-price">
+			<c:if test="${pInfo.price eq 0}">
+				나눔
+			</c:if>
+			<c:if test="${pInfo.price ne 0}">
+				<fmt:formatNumber value="${pInfo.price }" pattern="#,###,###원"/>
+			</c:if>
 		</p>
 		<div class="description-detail">
-			<p>
-				라멘을 사랑하는 이들이라면 연락주세요
-				<br>
-				모든 라멘 지식을 전수해드리겠습니다.
-			</p>
+			${pInfo.contents }
 		</div>
 	</div>
 <!-- description end -->
@@ -168,17 +212,17 @@ $(function() {
 		</div>
 		<div class="comments-sample-wrap">
 			<div class="comments-profile-wrap">
-				<a class="profile-link" href="#void">
 				 <div class="comments-profile-image-wrap">
 			             <div class="comments-profile-image">
-			               <img alt="프로필이미지" src="../../images/profileImg.png">
+							<a class="profile-link" href="#void">
+			               		<img alt="프로필이미지" src="../../images/profileImg.png">
+						   </a>
 			             </div>
 			             <div class="comments-profile-left">
 			               <div class="comments-nickname">사용자(user****)</div>
 			               <time class="comments-date">YYYY.MM.DD.hh:mm</time>
 			           </div>
 		    	 </div>
-			   </a>
 		   	</div>
 		   	<div class="comments-contents-wrap">
 			    <p class="comments-content">라멘맛집 알려주세요</p>
@@ -197,17 +241,17 @@ $(function() {
 		</div>
 		<div class="re-comments-sample-wrap">
 			<div class="comments-profile-wrap">
-				<a class="profile-link" href="#void">
 				 <div class="comments-profile-image-wrap">
-			             <div class="comments-profile-image">
+			         <div class="comments-profile-image">
+						<a class="profile-link" href="#void">
 			               <img alt="프로필이미지" src="../../images/profileImg.png">
+						 </a>
 			             </div>
 			             <div class="comments-profile-left">
 			               <div class="comments-nickname">차승주주(juju****)<div class="writer">작성자</div></div>
 			               <time class="comments-date">YYYY.MM.DD.hh:mm</time>
 			           </div>
 		    	 </div>
-			   </a>
 		   	</div>
 		   	<div class="comments-contents-wrap">
 			    <p class="comments-content">강남역 왓쇼이켄</p>

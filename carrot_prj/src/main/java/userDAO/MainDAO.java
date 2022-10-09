@@ -232,8 +232,8 @@ public class MainDAO {
 					pstmt.setInt(2, mfVO.getMaxPrice());
 				}
 				
-				System.out.println("--query---"+ sb );
-				System.out.println("--value--- "+ mfVO );   
+				//System.out.println("--query---"+ sb );
+				//System.out.println("--value--- "+ mfVO );   
 				
 			rs = pstmt.executeQuery();
 			
@@ -403,8 +403,8 @@ public class MainDAO {
 			
 
 			
-			System.out.println("--query---"+ sb );
-			System.out.println("--value--- "+ mfVO );    
+			//System.out.println("--query---"+ sb );
+			//System.out.println("--value--- "+ mfVO );  
 					
 			rs = pstmt.executeQuery();
 			HomeVO hVO = null;
@@ -419,7 +419,7 @@ public class MainDAO {
 				hVO.setProduct_idx(rs.getString("product_idx"));
 				list.add(hVO);
 			}
-			System.out.println( "--prd size--"+list.size() );
+			/* System.out.println( "--prd size--"+list.size() ); */
 		} finally {
 			db.dbClose(rs, pstmt, con);
 		}

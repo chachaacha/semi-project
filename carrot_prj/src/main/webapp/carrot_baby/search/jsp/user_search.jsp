@@ -155,7 +155,7 @@ pageContext.setAttribute("lVOList", lVOList);
 
 //상품의 총 개수 구함
 int total=mDAO.selectTotal(mfVO);
-System.out.println("총 게시물 수 : "+ total);
+//System.out.println("총 게시물 수 : "+ total);
 pageContext.setAttribute("total", total);
 
 //상품 리스트 조회
@@ -163,9 +163,10 @@ pageContext.setAttribute("total", total);
 if(mfVO.getPageFlag()==0) {
 mfVO.setPageFlag(1);
 }
+
 List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
 pageContext.setAttribute("hVOList", hVOList);
-System.out.println("필터 적용된 게시물의 수 : "+hVOList.size());
+//System.out.println("필터 적용된 게시물의 수 : "+hVOList.size());
 
 %>
 
@@ -406,12 +407,12 @@ System.out.println("필터 적용된 게시물의 수 : "+hVOList.size());
 					<c:forEach var="hoVO" items="${hVOList}">
 					<div class="card">
 							<div class="card-photo">
-							<a class="card-link" href="../../product/jsp/user_buyer_product.jsp?product_idx=${hoVO.product_idx}">
+							<a class="card-link" href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${hoVO.product_idx}">
 								<img alt="이미지 자리" src="<c:out value="${hoVO.thumbnail}"/>">
 							</a>
 							</div>
 							<div class="card-desc">
-							<a class="card-link" href="../../product/jsp/user_buyer_product.jsp?product_idx=${hoVO.product_idx}">
+							<a class="card-link" href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${hoVO.product_idx}">
 								<h2 class="card-title"> <c:out value="${hoVO.title}"/> </h2>
 							</a>
 								<div class="card-price">

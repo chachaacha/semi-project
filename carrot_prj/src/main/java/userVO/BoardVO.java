@@ -3,16 +3,18 @@ package userVO;
 import java.util.Date;
 
 public class BoardVO {
-	private String id, nick, gu, title,product_idx, category, contents;
+	private String id, nick, gu, title, product_idx, category, contents, img, reserved, sold_check;
 	private int price, liked_cnt,  report_cnt;
-	private Date post_date;
+	private Date posted_date;
 	
 	public BoardVO() {
 
 	}
 
 	public BoardVO(String id, String nick, String gu, String title, String product_idx, String category,
-			String contents, int price, int liked_cnt, int report_cnt, Date post_date) {
+			String contents, String img, String reserved, String sold_check, int price, int liked_cnt, int report_cnt,
+			Date posted_date) {
+		super();
 		this.id = id;
 		this.nick = nick;
 		this.gu = gu;
@@ -20,10 +22,13 @@ public class BoardVO {
 		this.product_idx = product_idx;
 		this.category = category;
 		this.contents = contents;
+		this.img = img;
+		this.reserved = reserved;
+		this.sold_check = sold_check;
 		this.price = price;
 		this.liked_cnt = liked_cnt;
 		this.report_cnt = report_cnt;
-		this.post_date = post_date;
+		this.posted_date = posted_date;
 	}
 
 	public String getId() {
@@ -82,6 +87,30 @@ public class BoardVO {
 		this.contents = contents;
 	}
 
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
+	public String getReserved() {
+		return reserved;
+	}
+
+	public void setReserved(String reserved) {
+		this.reserved = reserved;
+	}
+
+	public String getSold_check() {
+		return sold_check;
+	}
+
+	public void setSold_check(String sold_check) {
+		this.sold_check = sold_check;
+	}
+
 	public int getPrice() {
 		return price;
 	}
@@ -106,22 +135,20 @@ public class BoardVO {
 		this.report_cnt = report_cnt;
 	}
 
-	public Date getPost_date() {
-		return post_date;
+	public Date getPosted_date() {
+		return posted_date;
 	}
 
-	public void setPost_date(Date post_date) {
-		this.post_date = post_date;
+	public void setPosted_date(Date posted_date) {
+		this.posted_date = posted_date;
 	}
 
 	@Override
 	public String toString() {
 		return "BoardVO [id=" + id + ", nick=" + nick + ", gu=" + gu + ", title=" + title + ", product_idx="
-				+ product_idx + ", category=" + category + ", contents=" + contents + ", price=" + price
-				+ ", liked_cnt=" + liked_cnt + ", report_cnt=" + report_cnt + ", post_date=" + post_date + "]";
+				+ product_idx + ", category=" + category + ", contents=" + contents + ", img=" + img + ", reserved="
+				+ reserved + ", sold_check=" + sold_check + ", price=" + price + ", liked_cnt=" + liked_cnt
+				+ ", report_cnt=" + report_cnt + ", posted_date=" + posted_date + "]";
 	}
-
-	
-	
 	
 }
