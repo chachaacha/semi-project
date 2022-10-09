@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     
     
 <!-- 1. parameter 받을 VO 생성-->
@@ -162,19 +163,25 @@ $(function() {
 					<div class="card">
 							<div class="card-photo">
 								<a class="card-link" 
-									href="../../product/jsp/user_buyer_product.jsp?product_idx=${main.product_idx }">
+									href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${main.product_idx }">
 									<img alt="이미지 위치" src="${main.thumbnail }"><!-- 이미지는 src에 걸기! -->
 								</a>
 							</div><!-- card-photo -->
 							<div class="card-desc">
-								<a class="card-link" href="../../product/jsp/user_buyer_product.jsp?product_idx=${main.product_idx }">
+								<a class="card-link" href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${main.product_idx }">
 									<h2 class="card-title"><c:out value="${main.title }"/></h2>
 								</a>
-								<div class="card-price"><c:out value="${main.price }"/>원</div>
+								<div class="card-price">
+								<!-- 가격이 0원이라면 나눔으로 표시됨 -->
+								<c:if test="${main.price eq 0}">나눔</c:if>
+								<!-- 가격이 0원이 아니라면 가격이 #,###,###의 형식으로 표시됨 -->
+								<fmt:formatNumber pattern="#,###,###원" value="${main.price }"></fmt:formatNumber>
+								</div>
 								<div class="card-region-name" ><c:out value="${main.gu }"/></div>
 							</div><!-- card-desc -->
 							<div class="card-counts">
-								<span>하트&nbsp;<c:out value="${main.liked_cnt }"/></span>
+								<span>하트&nbsp; <c:out value="${main.liked_cnt }"/>
+								</span>
 								ㆍ
 								<span> 댓글&nbsp;<c:out value="${main.comment_cnt }"/></span>
 							</div><!-- card-counts -->

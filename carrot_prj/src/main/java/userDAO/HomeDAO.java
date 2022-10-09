@@ -89,7 +89,6 @@ public class HomeDAO {
 			   .append("group by word ))")
 			   .append("where r between 1 and 10 ");
 			pstmt= con.prepareStatement(sb.toString());
-			 System.out.println(sb);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				list.add(rs.getString("word"));

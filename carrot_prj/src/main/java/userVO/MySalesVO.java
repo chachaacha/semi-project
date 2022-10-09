@@ -3,7 +3,7 @@ package userVO;
 import java.sql.Date;
 
 public class MySalesVO {
-	private String id, product_idx, thumbnail, title, gu, reserved, sold_chk;
+	private String id, product_idx, thumbnail, title, gu, reserved, sold_check;
 	private Date post_date;
 	private int comment_cnt, like_cnt, price;
 	
@@ -11,14 +11,14 @@ public class MySalesVO {
 	}
 
 	public MySalesVO(String id, String product_idx, String thumbnail, String title, String gu, String reserved,
-			String sold_chk, Date post_date, int comment_cnt, int like_cnt, int price) {
+			String sold_check, Date post_date, int comment_cnt, int like_cnt, int price) {
 		this.id = id;
 		this.product_idx = product_idx;
 		this.thumbnail = thumbnail;
 		this.title = title;
 		this.gu = gu;
 		this.reserved = reserved;
-		this.sold_chk = sold_chk;
+		this.sold_check = sold_check;
 		this.post_date = post_date;
 		this.comment_cnt = comment_cnt;
 		this.like_cnt = like_cnt;
@@ -73,12 +73,12 @@ public class MySalesVO {
 		this.reserved = reserved;
 	}
 
-	public String getSold_chk() {
-		return sold_chk;
+	public String getSold_check() {
+		return sold_check;
 	}
 
-	public void setSold_chk(String sold_chk) {
-		this.sold_chk = sold_chk;
+	public void setSold_chk(String sold_check) {
+		this.sold_check = sold_check;
 	}
 
 	public Date getPost_date() {
@@ -116,7 +116,7 @@ public class MySalesVO {
 	@Override
 	public String toString() {
 		return "MySalesVO [id=" + id + ", product_idx=" + product_idx + ", thumbnail=" + thumbnail + ", title=" + title
-				+ ", gu=" + gu + ", reserved=" + reserved + ", sold_chk=" + sold_chk + ", post_date=" + post_date
+				+ ", gu=" + gu + ", reserved=" + reserved + ", sold_check=" + sold_check + ", post_date=" + post_date
 				+ ", comment_cnt=" + comment_cnt + ", like_cnt=" + like_cnt + ", price=" + price + "]";
 	}
 	

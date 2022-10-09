@@ -51,9 +51,9 @@ public class MySalesDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder selectAll = new StringBuilder();
 			selectAll
-			.append("	select	p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.post_date, p.reserv, p.sold_chk, p.price, p.comment_cnt, p.like_cnt	")
+			.append("	select	p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.post_date, p.reserved, p.sold_check, p.price, p.comment_cnt, p.like_cnt	")
 			.append("	from	product p, loc_category lc																													")
-			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_chk = N 																					");
+			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'N' 																					");
 			
 			pstmt = con.prepareStatement(selectAll.toString());
 		//4. 바인드 변수 설정
@@ -71,7 +71,7 @@ public class MySalesDAO {
 				mssVO.setGu(rs.getString("gu"));
 				mssVO.setPost_date(rs.getDate("post_date"));
 				mssVO.setReserved(rs.getString("reserved"));
-				mssVO.setSold_chk(rs.getString("sold_chk"));
+				mssVO.setSold_chk(rs.getString("sold_check"));
 				mssVO.setPrice(rs.getInt("price"));
 				mssVO.setComment_cnt(rs.getInt("comment_cnt"));
 				mssVO.setLike_cnt(rs.getInt("like_cnt"));
