@@ -30,6 +30,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
+
 $(function(){
 /* 필터 접고 펴는 기능 */
 	$(".category-button").click(function() {
@@ -87,10 +88,6 @@ $(function(){
 	$(".resetBtn").click(function() {
 		location.href="../../search/jsp/user_search.jsp";
 	})
-	
-/* 	$(".page-bottom-icon").click(function() {
-		$(this).attr("class","page-bottom-icon-click");
-	}) */
 })
 
 	//정렬 flag 전달
@@ -451,32 +448,41 @@ System.out.println("필터 적용된 게시물의 수 : "+hVOList.size());
             		</div>
 				</div>
 				
-				<c:set var="ceil"  value="${total/16}"/> <!-- 총 게시물 수 -->
-				<fmt:parseNumber var="lastpage" integerOnly="true" value="${ceil+(1-(ceil%1))%1 }"/> <!-- 페이지의 수  -->
-				<c:set var="curPage" value="${param.pageFlag }"/> <!--현재페이지  -->
-				<c:set var="startNum" value="${curPage - (curPage-1) % 4 }"/> <!-- 현재 페이지가 속한 처음 페이지의 수 -->
-				<c:set var="isLast" value="3"/>
-			
+				<c:set var="ceil"  value="${total/16}"/> <% //총 게시물 수/16(=한 페이지에 보이고 싶은 카드의 개수) %>
+				<fmt:parseNumber var="lastpage" integerOnly="true" value="${ceil+(1-(ceil%1))%1 }"/> <% // 총 페이지의 수 (올림처리. int형으로 소수점 버림) ex) 1.5일 경우 총 2페이지 2.3일 경우 총 3페이지 %>
+				<c:set var="curPage" value="${empty param.pageFlag ? 1 : param.pageFlag }"/> <% // 현재페이지  (pageFlag가 비어있을때는 1로 계산 : class 설정필요때문=처음 매물창 접속시 1페이지버튼이 주황색이어야해서) %>
+				<c:set var="startNum" value="${curPage - (curPage-1) % 4 }"/> <% // 현재 페이지가 속한 처음 페이지의 수 구하기 %4 (= 4는 한번에 노출시키고자하는 페이지블럭의 갯수를 설정해둔것) %>
+				<c:set var="isLast" value="3"/> <% // forEach 돌릴때 end의 기본값, 한번에 페이지 4개만 노출시키고 싶음 ex) 1,2,3,4 => begin이 0부터 시작하므로 end의 기본값은 3 %>
+				
 				<!-- 오른쪽 매물 하단 페이지 버튼 -->
-				<c:if test="${not empty hVOList }">	
+				<c:if test="${not empty hVOList }">	<% // 만약 게시글 수가 0일때 페이지생성을 못하도록 조건을 줌 (게시글이 있을 경우에만 페이지 생성) %>
 					<div class="page-bottom">
-						<c:if test="${curPage >= 6}">
-							<a href="javascript:pageMove(1);" class="page-bottom-next">&lt;&lt;</a>
-							<a href="javascript:pageMove(${curPage-5});" class="page-bottom-next">&lt;</a>
+						
+						<% // 이전 버튼 생성 (<<)(<) %>
+						<c:if test="${curPage >= 5}"> <% // 현재 페이지가 5이상일때부터 (<)버튼 생성 %>
+							<a href="javascript:pageMove(1);" class="page-bottom-next">&lt;&lt;</a> <% // 누르면 pageFlag 1로 이동시킴 %>
+							<a href="javascript:pageMove(${curPage-4});" class="page-bottom-next">&lt;</a> <% // (<) 누르면 pageFlag를 현재페이지에서-4로 이동시킴(이전 페이지 블럭) %>
 						</c:if>					
 					
-						<c:if test="${startNum + 5 >= lastpage }">
+						<% // 페이지블럭 구하기 (4개씩만=4개씩만 출력하기원해서 조건값을 줬기 때문)  %>
+						<c:if test="${startNum + 4 >= lastpage }"> 
+						<% // 만약 총페이지수보다 현재페이지가 속한 처음페이지 + 4가 더 크다면 총페이지수에서 - 처음페이지구함 = 마지막 페이지 블럭의 end값 구하기   %>
+						<% // 12 + 4 >= 13 (true) => 13 - 12 = 1 => begin=0 end=1 => 12, 13 까지만 페이지 생성 %>
 							<c:set var="isLast" value="${lastpage - startNum }"/>
 						</c:if>
 						
+						<% // 페이지블럭의 기본값은 3이기 때문에 총 4씩 출력, 마지막페이지 수를 구할땐 위의 if를 타고 구해진 isLast값이 새로 들어가서 마지막페이지블럭 출력 %>
 						<c:forEach var="i" begin="0" end="${isLast }" step="1" >
-							<a href="javascript:pageMove(${startNum + i});" ${param.pageFlag eq startNum + i ? "class='page-bottom-icon-click'" : "class='page-bottom-icon'"} id="pageNum1"><c:out value="&nbsp;${startNum+i}&nbsp;" escapeXml="false"/></a>
+							<a href="javascript:pageMove(${startNum + i});" ${curPage eq startNum + i ? "class='page-bottom-icon-click'" : "class='page-bottom-icon'"}><c:out value="&nbsp;${startNum+i}&nbsp;" escapeXml="false"/></a>
+																					<% // 현재페이지와 버튼의 출력값이 같을때 주황색으로 보이도록 설정 : 아닐경우 흰색 %>
 						</c:forEach>
 						
-						<c:if test="${startNum + 5 < lastpage }">
-							<a href="javascript:pageMove(${startNum+5});" class="page-bottom-next">&gt;</a>
-							<a href="javascript:pageMove(${lastpage});" class="page-bottom-next">&gt;&gt;</a>
+						<% // (>)(>>) 다음 버튼 생성  %>
+						<c:if test="${startNum + 4 < lastpage }"> <% // 마지막 페이지에는 생성이 안되도록 조건 %>
+							<a href="javascript:pageMove(${startNum+4});" class="page-bottom-next">&gt;</a> <% // (>)버튼을 누르면 pageFlag에서 + 4 로 이동시킴 %>
+							<a href="javascript:pageMove(${lastpage});" class="page-bottom-next">&gt;&gt;</a> <% // (>>)버튼을 누르면 마지막 페이지로 이동  %>
 						</c:if>
+					
 					</div>
 				</c:if>
 				

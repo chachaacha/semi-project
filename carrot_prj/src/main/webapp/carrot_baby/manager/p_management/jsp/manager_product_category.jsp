@@ -20,10 +20,46 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(function() {
+	
+	//정렬 버튼 클릭시 숨은 버튼 생성
 	$(".align-btn").click(function() {
 		$(".align-subbtn").toggle();
+		$("#date-asc").hide();
+		$("#report-asc").hide();
 		$(".align-icon").toggleClass("align-icon-change");
+		
+		var alignClass=$(".align-icon").attr("class");
+		if(alignClass=="align-icon") {
+			$("#date-desc").hide();
+			$("#date-asc").hide();
+			$("#report-desc").hide();
+			$("#report-asc").hide();
+		}
+		
 	});
+	
+	//등록일순 버튼 정렬변경
+	$("#date-desc").click(function() {
+		$("#date-asc").show();
+		$("#date-desc").hide();
+	});
+	
+	$("#date-asc").click(function() {
+		$("#date-desc").show();
+		$("#date-asc").hide();
+	});
+	
+	//신고순 버튼 정렬변경
+	$("#report-desc").click(function() {
+		$("#report-asc").show();
+		$("#report-desc").hide();
+	});
+	
+	$("#report-asc").click(function() {
+		$("#report-desc").show();
+		$("#report-asc").hide();
+	});
+	
 	
 	//댓글 신고 팝업창 열기
 	$(".rc_txt").click(function() {
@@ -73,6 +109,7 @@ $(function() {
 		}
 		$("#searchFrm").submit();
 	})
+
 	
 });
 
@@ -113,12 +150,12 @@ function check() {
 		
 		<!-- 본문 -->
 		<div class="product_management">
-		
+			<c:set var="selLine" value="${empty param.selStatus ? 0: param.selStatus}"/>
 			<!-- 상단 필터 -->
 			<div class="pm_btn-wrap">
-				<button type="button" class="pm_btn" id="allBtn">전체</button>
-				<button type="button" class="pm_btn" id="onSaleBtn">판매중</button>
-				<button type="button" class="pm_btn" id="soldoutBtn">거래완료</button>
+				<button type="button" ${selLine eq 0 ? "class='pm_btn-check'" : " class='pm_btn' "} id="allBtn">전체</button>
+				<button type="button" ${selLine eq 1 ? "class='pm_btn-check'" : " class='pm_btn' "} id="onSaleBtn">판매중</button>
+				<button type="button" ${selLine eq 2 ? "class='pm_btn-check'" : " class='pm_btn' "} id="soldoutBtn">거래완료</button>
 			</div>
 			<!-- 파라메터를 묶기 위한 폼 -->
 			<form id="hidFrm" method="get">
@@ -141,21 +178,63 @@ function check() {
 								  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
 								</svg>
 							</button>
-							<button type="button" class="align-subbtn">등록일순↑↓</button>
-							<button type="button" class="align-subbtn">신고수순↑↓</button>
+							<button type="button" class="align-subbtn" id="date-desc">
+								<span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-check" viewBox="0 0 16 16">
+									  <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+									</svg>
+								 등록일
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-arrow-down" viewBox="0 0 16 16">
+									  <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+									</svg>
+								</span>
+							</button>
+							<button type="button" class="align-subbtn" id="date-asc">
+								<span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-check" viewBox="0 0 16 16">
+									  <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+									</svg>
+								 등록일
+								 	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-arrow-up" viewBox="0 0 16 16">
+									  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+									</svg>
+							 	</span>
+							</button>
+							<button type="button" class="align-subbtn" id="report-desc">
+								<span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-check" viewBox="0 0 16 16">
+									  <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+									</svg>
+								 신고수
+								 	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-arrow-down" viewBox="0 0 16 16">
+									  <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+									</svg>								 
+								</span>
+							</button>
+							<button type="button" class="align-subbtn" id="report-asc">
+								<span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-check" viewBox="0 0 16 16">
+									  <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+									</svg>
+								 신고수
+								 	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-arrow-up" viewBox="0 0 16 16">
+									  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+									</svg>
+							 	</span>
+							</button>
 						</div>
 					</div>
-					<div class="search-wrap">
 					<!-- 검색을 위한 폼 -->
 					<form id="searchFrm">
+					<div class="search-wrap">
 						<input hidden="hidden"><input autocomplete="off" type="text" class="search-txt" id="titleSearch" name="titleSearch" value="${ param.titleSearch }" placeholder="제목을 입력하세요.">
 						<button type="button" class="search-bar" id="searchBtn">
 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 							  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 							</svg>
 						</button>
-					</form>	
 					</div>
+					</form>	
 				</div>
 				<!-- 오른쪽 -->
 				<div class="pm-bottom">

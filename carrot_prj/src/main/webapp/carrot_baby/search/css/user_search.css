@@ -262,6 +262,30 @@ a {
     transition-duration: 0.3s;
 }
 
+.card:hover {
+    border: 1px solid transparent;
+    width: 200px;
+    margin-bottom: 56px;
+    padding: 10px;
+    background-color: #FDF9F0;
+	box-shadow: -5px -5px 9px rgb(255 255 255), 5px 5px 9px rgb(238	218 185 / 30%);
+    border-radius: 17px;
+    transition-duration: 0.3s;
+}
+
+.card:active {
+    border: 1px solid transparent;
+    width: 200px;
+    margin-bottom: 56px;
+    padding: 10px;
+    background-color: #FDF9F0;
+    margin-left:1px;
+    margin-top:1px;
+	box-shadow: inset -5px -5px 9px rgb(255 255 255), inset 5px 5px 9px rgb(238 218 185 / 30%);
+    border-radius: 17px;
+    transition-duration: 0.3s;
+}
+
 .card-link {
 	text-decoration: none;
 	color: #212529;
@@ -379,30 +403,6 @@ a {
 	cursor: pointer;
 }
 
-/* .page-bottom-icon > a,  .page-bottom > div > div {
-	color: #0A0400;
-	padding: 12px 14px;
-}
-
-.page-bottom-icon-click > a {
-	color: #fff;
-	padding: 12px 14px;
-} */
-
-a.page-bottom-icon:visited {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	background-color: #ff6900;
-	margin-right: 12px;
-	cursor: pointer;
-	color: #fff;
-}
-
 .page-bottom-icon-click {
 	display: flex;
 	flex-direction: column;
@@ -426,8 +426,8 @@ a.page-bottom-icon:visited {
 	height: 40px;
 	border-radius: 50%;
 	border: 1px solid #E0E0E0;
-	background: #fff;
-	color: #000;
+	background: #84AA7C;
+	color: #fff;
 	cursor: pointer;	
 	margin-right: 12px;
 }

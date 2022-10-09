@@ -126,8 +126,8 @@ public class MainDAO {
 			con=db.getConn();
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select count(*) ")
-			  .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx,(select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank from product p ) ")
-			  .append("where 1=1 ");
+			  .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx,(select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank, sold_check from product p ) ")
+			  .append("where 1=1 and sold_check='N'");
 
 			  pstmt= con.prepareStatement(sb.toString());
 				if(mfVO.getKeyword() != null &&  !"".equals(mfVO.getKeyword())) {
@@ -261,8 +261,8 @@ public class MainDAO {
 			StringBuffer sb = new StringBuffer();
 			//항시실행
 			sb.append("select thumbnail,title, price, gu, comment_cnt, liked_cnt, product_idx ")
-			  .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx,(select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank, product_idx from product p ) ")
-			  .append("where 1=1 ");
+			  .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx,(select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank, product_idx, sold_check from product p ) ")
+			  .append("where 1=1 and sold_check='N' ");
 			  /*.append("and rank between ((?-1)*16)+(?-(?*1-1)) and ((?-1)*16)+16 ");*/
 			
 			/* System.out.println("-----keyword-------"+ mfVO.getKeyword()); */
@@ -322,9 +322,9 @@ public class MainDAO {
 					sb.append(" order by comment_cnt desc ");
 				}
 			}
-			
-			sb.append("offset  ((?-1)*16) rows ")
-			  .append("fetch next 16 rows only ");
+												// order by 필수, 같이 쓰임
+			sb.append("offset  ((?-1)*16) rows ") // ? (=(pageFlag-1)*16) 에서부터
+			  .append("fetch next 16 rows only "); // 16개의 데이터를 보고싶다 ex) 0 < 한페이지에 보여줄 카드의 수 <= 16 
 			
 			pstmt = con.prepareStatement(sb.toString());
 			
@@ -362,9 +362,6 @@ public class MainDAO {
 						pstmt.setInt(num, mfVO.getMaxPrice());
 					}
 				}
-				num++;
-				pstmt.setInt(num, mfVO.getPageFlag());
-				
 			} else if(mfVO.getGuFlag() != 0) { // 구만 선택
 				num++;
 				pstmt.setInt(num, mfVO.getGuFlag());
@@ -383,8 +380,6 @@ public class MainDAO {
 					num++;
 					pstmt.setInt(num, mfVO.getMaxPrice());
 				}
-				num++;
-				pstmt.setInt(num, mfVO.getPageFlag());
 			} else if(mfVO.getCategoryFlag() != 0) {// 카테고리만 선택
 				num++;
 				pstmt.setInt(num, mfVO.getCategoryFlag()); 
@@ -394,25 +389,19 @@ public class MainDAO {
 					num++;
 					pstmt.setInt(num, mfVO.getMaxPrice());
 				}
-				num++;
-				pstmt.setInt(num, mfVO.getPageFlag());
 			} else if(mfVO.getPriceFlag() == 7) { // 가격직접설정만 선택
 				System.out.println("--------------값 : "+mfVO );
 				num++;
 				pstmt.setInt(num, mfVO.getMinPrice());
 				num++;
 				pstmt.setInt(num, mfVO.getMaxPrice());
-				num++;
-				pstmt.setInt(num, mfVO.getPageFlag());
-			} else {
-				pstmt.setInt(1, mfVO.getPageFlag());
-			}
+			} 
 			
-			/*
-			 * if(mfVO.getPriceFlag() == 7) { // 가격직접설정만 선택
-			 * System.out.println("--------------값 : "+mfVO ); pstmt.setInt(2,
-			 * mfVO.getMinPrice()); pstmt.setInt(3, mfVO.getMaxPrice()); }
-			 */
+			//무조건 pagFlag는 기본값 1을 넣어줌, 경우에 따라(정렬이 추가될때마다) +1씩 증가
+			num++;
+			pstmt.setInt(num, mfVO.getPageFlag());
+			
+
 			
 			System.out.println("--query---"+ sb );
 			System.out.println("--value--- "+ mfVO );    

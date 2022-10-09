@@ -44,7 +44,12 @@
 	padding-bottom: 2px;
 }
 
-.pm_btn:hover {
+.pm_btn-check {
+	font-size: 17px;
+	background-color: #fff;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 2px;
 	border-bottom: 1px solid #BEBEBE;	
 }
 
@@ -86,8 +91,8 @@
 	background-color: #495057;
 	color: #fff;
 	margin-left: 20px;
-	width: 80px;
-	height: 30px;
+	width: 90px;
+	height: 35px;
 	border-radius: 5px;
 }
 
@@ -106,12 +111,26 @@
 	font-size: 13px;
 	background-color: #9EA6AD;
 	color: #fff;
-	width: 80px;
-	height: 30px;
+	width: 90px;
+	height: 35px;
 	border-radius: 5px;
 	margin-left: 20px;
 	margin-top: 2px;
 	display: none;
+}
+
+.bi-arrow-down, .bi-arrow-up {
+	margin: 0;
+}
+
+.bi-check {
+	margin-left: 2px;
+}
+
+.align-btn-wrap > button > span {
+	display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .align-icon-change {
@@ -165,7 +184,7 @@
 }
 
 .table-wrap {
-	width: 1020px;
+	width: 1030px;
 	height: 500px;
 	overflow: auto;
 }
