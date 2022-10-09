@@ -30,46 +30,50 @@ $(function() {
 <div class="wrap">
 
 <!-- header -->
-<%@ include file="../../mainhome/jsp/user_logout_header.jsp" %>
+<%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
 <!-- header end-->
 
 <!-- container -->
 <!-- 1 -->
 <div class="container">
 <%@ include file="myinfo_navi.jsp" %>
-
 <!-- 정보 불러오기 -->
 <jsp:useBean id="blVO" class="userVO.BuyListVO"></jsp:useBean>
-<jsp:setProperty property="*" name="name"/>
+<jsp:setProperty property="*" name="blVO"/>
+<jsp:setProperty property="buyer_id" name="${ id }"/>
 <%
+String id = (String)session.getAttribute("id");
 BuyListDAO blDAO=BuyListDAO.getInstance();
+List<BuyListVO> blList=blDAO.selectBL(id);
+
+//스콥객체에 할당
+pageContext.setAttribute("blList", blList);
 %>
-<c:forEach var="blVO" items="${ blVO }">
 <div class="purchase_list_title_wrap">
+<c:forEach var="blVO" items="${ blList }">
 	<div class="purchase_list_title">구매내역</div>
 	<div class="purchase_list_item">
 		<div class="purchase_list_img">
 			<img alt="이미지 자리" src="#void">
 				<div class="purchase_list_border">
-				<div class="pl_title">노시부(콧물 흡입기)팝니다~!
+				<div class="pl_title"><c:out value="${blList.title }"/>
 					<button class="edit_del_btn" type="button">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
   						<path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
   						<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg>
 					</button>
-					<div class="dong_date">연남동 ㆍ 1일전 </div><!-- dong_date -->
+					<div class="dong_date"><c:out value="${ blList.gu }"/> ㆍ <c:out value="${ blList.post_date }"/> </div><!-- dong_date -->
 							<div class="btn_price">
-								<button class="complete_btn" type="button">거래완료</button>
-								<div class="price">115,000원</div>
+								<button class="complete_btn" type="button"><c:if test="${ blList.sold_chk eq 'Y'? '거래완료' : '거래중' }"/> </button>
+								<div class="price"><c:out value="${ blList.price}"/>원</div>
 						</div><!-- "btn_price" -->
 	
 	</div><!-- pl_title -->
 	</div><!-- purchase_list_border-->
 	</div><!-- purchase_list_img -->
 	</div><!-- purchase_list_item -->
-
-</div> <!-- 컨테이너 div -->
 </c:forEach>
+</div> <!-- 컨테이너 div -->
 </div><!-- container end -->
 
 <!-- footer -->

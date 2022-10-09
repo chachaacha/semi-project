@@ -3,17 +3,18 @@ package userVO;
 import java.sql.Date;
 
 public class BuyListVO {
-	private String product_idx, buy_id, thumbnail, title, gu, sold_chk;
+	private String product_idx, buyer_id, thumbnail, title, gu, sold_chk;
 	private Date post_date;
 	private int comment_cnt, like_cnt,  price;
 	
 	public BuyListVO() {
 	}
 
-	public BuyListVO(String product_idx, String buy_id, String thumbnail, String title, String gu, String sold_chk,
+	public BuyListVO(String product_idx, String buyer_id, String thumbnail, String title, String gu, String sold_chk,
 			Date post_date, int comment_cnt, int like_cnt, int price) {
+		super();
 		this.product_idx = product_idx;
-		this.buy_id = buy_id;
+		this.buyer_id = buyer_id;
 		this.thumbnail = thumbnail;
 		this.title = title;
 		this.gu = gu;
@@ -32,12 +33,12 @@ public class BuyListVO {
 		this.product_idx = product_idx;
 	}
 
-	public String getBuy_id() {
-		return buy_id;
+	public String getBuyer_id() {
+		return buyer_id;
 	}
 
-	public void setBuy_id(String buy_id) {
-		this.buy_id = buy_id;
+	public void setBuyer_id(String buyer_id) {
+		this.buyer_id = buyer_id;
 	}
 
 	public String getThumbnail() {
@@ -106,13 +107,9 @@ public class BuyListVO {
 
 	@Override
 	public String toString() {
-		return "BuyListVO [product_idx=" + product_idx + ", buy_id=" + buy_id + ", thumbnail=" + thumbnail + ", title="
-				+ title + ", gu=" + gu + ", sold_chk=" + sold_chk + ", post_date=" + post_date + ", comment_cnt="
-				+ comment_cnt + ", like_cnt=" + like_cnt + ", price=" + price + "]";
+		return "BuyListVO [product_idx=" + product_idx + ", buyer_id=" + buyer_id + ", thumbnail=" + thumbnail
+				+ ", title=" + title + ", gu=" + gu + ", sold_chk=" + sold_chk + ", post_date=" + post_date
+				+ ", comment_cnt=" + comment_cnt + ", like_cnt=" + like_cnt + ", price=" + price + "]";
 	}
-	
-	
-
-	
 	
 }

@@ -26,7 +26,7 @@ $(function() {
 <div class="wrap">
 
 <!-- header -->
-<%@ include file="../../mainhome/jsp/user_logout_header.jsp" %>
+<%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
 <!-- header end-->
 
 <!-- container -->

@@ -25,7 +25,7 @@ public class BuyListDAO {
 		return blDAO;
 	}//getInstance
 	
-	public List<BuyListVO> selectBL(String buy_id) throws SQLException {
+	public List<BuyListVO> selectBL(String buyer_id) throws SQLException {
 		List<BuyListVO> list = new ArrayList<BuyListVO>();
 		
 		DbConnection dc = DbConnection.getInstance();
@@ -41,13 +41,13 @@ public class BuyListDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
-			.append("	select		buy_id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.post_date, pd.sold_chk, pd.price, pd.comment_cnt, pd.like_cnt	")
+			.append("	select		pd.buyer_id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.post_date, pd.sold_chk, pd.price, pd.comment_cnt, pd.like_cnt	")
 			.append("	from		product pd, loc_category lc																															")
-			.append("	where		(p.gu_idx = lc.gu_idx) and buy_id = ?																												");
+			.append("	where		(p.gu_idx = lc.gu_idx) and buyer_id = ?																												");
 		
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
-			pstmt.setString(1, buy_id);
+			pstmt.setString(1, buyer_id);
 		//5. 쿼리문 생성 후 결과 얻기
 			rs = pstmt.executeQuery();
 			
@@ -55,7 +55,7 @@ public class BuyListDAO {
 			
 			while( rs.next() ) {
 				blVO = new BuyListVO();
-				blVO.setBuy_id(rs.getString("buy_id"));
+				blVO.setBuyer_id(rs.getString("buyer_id"));
 				blVO.setProduct_idx(rs.getString("product_idx"));
 				blVO.setThumbnail(rs.getString("thumbnail"));
 				blVO.setTitle(rs.getString("title"));
