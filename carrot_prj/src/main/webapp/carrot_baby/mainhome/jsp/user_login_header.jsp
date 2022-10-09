@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="../../mainhome/css/user_login_header.css"/>
 <script>
 $(function() {
@@ -39,18 +40,22 @@ $(function() {
 			</button>
 		</div>
 		<div class="wrap-login">
+			<c:if test="${sessionScope.id==null }">
 			<a href="../../login/jsp/user_login.jsp">
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 32 32" fill="rgb(230, 126, 34)" data-svg-content="true"><g><path d="M 16,0C 10.478,0, 6,4.546, 6,10.154L 6,12 L 4,12 C 2.896,12, 2,12.896, 2,14l0,16 c0,1.104, 0.896,2, 2,2l 24,0 c 1.104,0, 2-0.896, 2-2L 30,14 c0-1.104-0.896-2-2-2l-2,0 L 26,10.154 C 26,4.546, 21.522,0, 16,0z M 8,10.154C 8,5.658, 11.588,2, 16,2s 8,3.658, 8,8.154L 24,12 L 8,12 L 8,10.154 z M 28,30L 4,30 L 4,14 l 24,0 L 28,30 z M 20,22c0-2.21-1.79-4-4-4s-4,1.79-4,4s 1.79,4, 4,4S 20,24.21, 20,22z M 16,24c-1.102,0-2-0.898-2-2 s 0.898-2, 2-2s 2,0.898, 2,2S 17.102,24, 16,24z"></path></g></svg>
 			로그인/회원가입</a>
+			</c:if>
 			
-			<a href="../../mainhome/jsp/user_mainhome.jsp">
+			<c:if test="${sessionScope.id!=null }">
+			<a href="../../mainhome/jsp/logout_process.jsp">
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 32 32" fill="rgb(230, 126, 34)" data-svg-content="true"><g><path d="M 30,30L 30,14 c0-1.104-0.896-2-2-2L 7.99,12 L 8,11.152C 8,5.764, 11.328,2, 16.096,2c 3.49,0, 6.6,2.006, 8.118,5.236 c 0.234,0.5, 0.828,0.714, 1.33,0.478c 0.5-0.234, 0.714-0.83, 0.478-1.33C 24.172,2.448, 20.37,0, 16.096,0C 10.246,0, 6,4.69, 6,11.14 L 5.99,12L 4,12 C 2.896,12, 2,12.896, 2,14l0,16 c0,1.104, 0.896,2, 2,2l 24,0 C 29.104,32, 30,31.104, 30,30z M 4,14l 24,0 l0,16 L 4,30 L 4,14 zM 16,18c-2.21,0-4,1.79-4,4s 1.79,4, 4,4s 4-1.79, 4-4S 18.21,18, 16,18z M 16,24c-1.102,0-2-0.898-2-2s 0.898-2, 2-2 s 2,0.898, 2,2S 17.102,24, 16,24z"></path></g></svg>
 			로그아웃</a>
 			<a href="../../mypages/jsp/user_mypage_in.jsp">
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 32 33.762001037597656" fill="rgb(230, 126, 34)" data-svg-content="true"><g><path d="M 22,6c0-3.212-2.788-6-6-6S 10,2.788, 10,6c0,3.212, 2.788,6, 6,6S 22,9.212, 22,6zM 16,14c-5.256,0-10,5.67-10,12.716s 20,7.046, 20,0S 21.256,14, 16,14z"></path></g></svg>
 			마이페이지</a>
+			</c:if>
 			
-			<a href="../../cs/jsp/cs_center_main.jsp"><!-- 고객센터 링크 연결 필요 -->
+			<a href="../../cs/jsp/cs_center_main.jsp">
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve" data-svg-content="true" fill="rgb(230, 126, 34)">
 			<g>
 				<path fill="rgb(230, 126, 34)" d="M16-0.034C7.159-0.034-0.035,7.158-0.035,16S7.159,32.034,16,32.034S32.035,24.842,32.035,16   S24.841-0.034,16-0.034z M16,30.966C7.748,30.966,1.035,24.252,1.035,16S7.748,1.034,16,1.034S30.965,7.748,30.965,16   S24.252,30.966,16,30.966z"></path>
