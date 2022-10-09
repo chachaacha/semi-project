@@ -25,14 +25,13 @@ private static BoardDAO bDAO;
 		return bDAO;
 	}
 	
-	
 	/**
 	 * 게시물 정보 띄우기
 	 * @param product_idx
 	 * @return
 	 * @throws SQLException
 	 */
-	public BoardVO selectB(int product_idx) throws SQLException {
+	public BoardVO selectB(String product_idx) throws SQLException {
 		BoardVO bVO=null;
 		DbConnection db=DbConnection.getInstance();
 		
@@ -40,40 +39,42 @@ private static BoardDAO bDAO;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
 		
-		
 		try {
 			con=db.getConn();
 			
 			StringBuilder sb = new StringBuilder();
 			sb
-			.append("	select pd.id, mb.nick, lc.gu_idx, lc.gu, pd.title, pd.category_idx, pc.category, ")
-			.append("pd.contents, pd.price, pd.liked_cnt, pd.product_idx, pd.report_cnt, pd.post_date	")
-			.append("	from member mb, product pd, loc_category lc, product_category pc	")
-			.append("	where (pd.id=mb.id and pd.gu_idx=lc.gu_idx and pd.category_idx=pc.category_idx) and product_idx=?	");
+			.append(" select m.img ,m.id, m.nick, p.thumbnail, p.price, p.title, p.contents, p.report_cnt, p.comment_cnt, p.free, p.reserved, p.liked_cnt, p.sold_check, p.posted_date, lc.gu, pc.category ")
+			.append(" from member m, product p, LOC_CATEGORY lc, PRODUCT_CATEGORY pc ")
+			.append(" where (p.id=m.id and p.gu_idx=lc.gu_idx and p.category_idx = pc.category_idx) and p.product_idx=? ");
 			
 			pstmt=con.prepareStatement(sb.toString());
-			pstmt.setInt(1, product_idx);
+			pstmt.setString(1, product_idx);
 			rs=pstmt.executeQuery();
 			
 			if(rs.next()) {
 				bVO=new BoardVO();
+				bVO.setImg(rs.getString("img"));
 				bVO.setId(rs.getString("id"));
 				bVO.setNick(rs.getString("nick"));
-				bVO.setGu(rs.getString("gu"));
-				bVO.setTitle(rs.getString("title"));
-				bVO.setCategory(rs.getString("category"));
-				bVO.setContents(rs.getString("contents"));
+				bVO.setTumbnail(rs.getString("thumbnail"));
 				bVO.setPrice(rs.getInt("price"));
-				bVO.setLiked_cnt(rs.getInt("liked_cnt"));
-				bVO.setProduct_idx(rs.getString("product_idx"));
+				bVO.setTitle(rs.getString("title"));
+				bVO.setContents(rs.getString("contents"));
 				bVO.setReport_cnt(rs.getInt("report_cnt"));
-				bVO.setPost_date(rs.getDate("post_date"));
+				bVO.setComment_cnt(rs.getInt("comment_cnt"));
+				bVO.setFree(rs.getString("free"));
+				bVO.setReserved(rs.getString("reserved"));
+				bVO.setLiked_cnt(rs.getInt("liked_cnt"));
+				bVO.setSold_check(rs.getString("sold_check"));
+				bVO.setPosted_date(rs.getDate("posted_date"));
+				bVO.setGu(rs.getString("gu"));
+				bVO.setCategory(rs.getString("category"));
 			}//end if
 			
 		}finally {
 			db.dbClose(rs, pstmt, con);
 		}
-		
 		return bVO;
 	}//selectB
 	
@@ -84,7 +85,7 @@ private static BoardDAO bDAO;
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<String> selectImg(int product_idx) throws SQLException{
+	public List<String> selectImg(String product_idx) throws SQLException{
 		List<String> list = new ArrayList<String>();
 		Connection con=null;
 		PreparedStatement pstmt=null;
@@ -101,7 +102,7 @@ private static BoardDAO bDAO;
 			.append("	from product_img pi, product pd	")
 			.append("	where ( pi.product_idx = pd.product_idx) and pd.product_idx = ?  ");
 			pstmt=con.prepareStatement(sb.toString());
-			pstmt.setInt(1, product_idx);
+			pstmt.setString(1, product_idx);
 			rs= pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -122,49 +123,43 @@ private static BoardDAO bDAO;
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<MangerCommentVO> selectComm(int product_idx) throws SQLException{
+	public List<MangerCommentVO> selectComm(String product_idx) throws SQLException{
 		List<MangerCommentVO> list = new ArrayList<>();
-		
 		DbConnection db=DbConnection.getInstance();
-		
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
 		
 		try {
 			con=db.getConn();
-			
 			StringBuilder sb = new StringBuilder();
 			sb
-			.append("	select pc.comment_idx, pc.reply_idx, pc.product_idx, pc.id, (select nick from member where id=pc.id) nick, pc.contents, pc.posted_date, pc.deleted	")
-			.append("	from product_comment pc	")
-			.append("	where product_idx = ? ")
-			.append("	order by pc.comment_idx, pc.reply_idx, pc.posted_date ");
+			.append(" select m.nick||'('||substr(m.id,0,4)||'****'||')' nick, m.id, m.img, pc.comment_idx, pc.reply_idx, pc.contents, pc.reported_cnt, pc.posted_date ")
+			.append(" from product_comment pc, member m ")
+			.append(" where (pc.id = m.id) and product_idx = ? ")
+			.append(" order by pc.comment_idx, pc.reply_idx, posted_date ");
 			
 			pstmt=con.prepareStatement(sb.toString());
-			pstmt.setInt(1, product_idx);
+			pstmt.setString(1, product_idx);
 			
 			rs=pstmt.executeQuery();
 			
-			MangerCommentVO mcmVO=null;
+			MangerCommentVO mcVO=null;
 			while(rs.next()) {
-				mcmVO=new MangerCommentVO();
-				mcmVO.setComment_idx(rs.getInt("comment_idx"));
-				mcmVO.setReply_idx(rs.getInt("reply_idx"));
-				mcmVO.setProduct_idx(rs.getString("product_idx"));
-				mcmVO.setId(rs.getString("id"));
-				mcmVO.setNick(rs.getString("nick"));
-				mcmVO.setContents(rs.getString("contents"));
-				mcmVO.setPosted_date(rs.getDate("posted_date"));
-				mcmVO.setDeleted(rs.getString("deleted"));
-				
-				list.add(mcmVO);
+				mcVO = new MangerCommentVO();
+				mcVO.setIdPlusNick(rs.getString("nick"));
+				mcVO.setId(rs.getString("id"));
+				mcVO.setImg(rs.getNString("img"));
+				mcVO.setComment_idx(rs.getInt("comment_idx"));
+				mcVO.setReply_idx(rs.getInt("reply_idx"));
+				mcVO.setContents(rs.getString("contents"));
+				mcVO.setReported_cnt(rs.getInt("reported_cnt"));
+				mcVO.setPosted_date(rs.getDate("posted_date"));
+				list.add(mcVO);
 			}
-			
 		}finally {
 			db.dbClose(rs, pstmt, con);
 		}
-		
 		return list;
 	}//selectComm
 	
@@ -194,7 +189,7 @@ private static BoardDAO bDAO;
 			pstmt=con.prepareStatement(updateDropC.toString());
 			pstmt.setInt(1, mcVO.getComment_idx());
 			pstmt.setInt(2, mcVO.getReply_idx());
-			pstmt.setString(3, mcVO.getProduct_idx());
+			/* pstmt.setString(3, mcVO.getProduct_idx()); */
 			
 			updateCnt=pstmt.executeUpdate();
 		}finally {
@@ -222,8 +217,10 @@ private static BoardDAO bDAO;
 			.append("	where product_idx=?	");
 			
 			pstmt=con.prepareStatement(updateReportC.toString());
-			pstmt.setString(1, mcVO.getProduct_idx());
-			pstmt.setString(2, mcVO.getProduct_idx());
+			/*
+			 * pstmt.setString(1, mcVO.getProduct_idx()); pstmt.setString(2,
+			 * mcVO.getProduct_idx());
+			 */
 			
 			updateCnt=pstmt.executeUpdate();
 		}finally {

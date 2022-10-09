@@ -22,10 +22,7 @@ html {
 <script type="text/javascript">
 $(function() {
 	//상품 팝업창 열기
-	$(".p-title-link").click(function() {
-		window.open("manager_pm_product_popup.jsp","product_popup",
-				"width=780,height=930,top=0,left=560");
-	});
+
 	
 	//초기화 눌렀을 때
 	$("#resetBtn").click(function(){
@@ -51,14 +48,20 @@ $(function() {
 		$("#keyword").val($("#searchBox").val());
 		$("#hidFrm").submit();
 	});
+});
+$(".p-title-link").click(function() {
 	
-	
-})
+});
+
+function openPopup(idx) {
+	window.open("manager_pm_product_popup.jsp?product_idx="+idx,"product_popup","width=780,height=930,top=0,left=560");
+};
+
 </script>
 </head>
 <body>
 
-<form id="hidFrm" method="get">
+<form id="hidFrm" method="post">
 <input type="hidden" id="orderFlag" name="orderFlag" value="${ param.orderFlag }"/>
 <input type="hidden" id= "keyword" name="keyword" value="${ param.keyword }">
 </form>
@@ -94,7 +97,7 @@ $(function() {
 						    <tr><td colspan="5">조회할 데이터가 없습니다.</td></tr>
 						    </c:if>
 						    <c:forEach var="comList" items="${ pageScope.comList }">
-						    <tr><td class="table-title"><c:out value="${ comList.contents }"/></td><td><c:out value="${ comList.id }"/></td><td class="p-title-link"><c:out value="${ comList.title }"/></td><td><c:out value="${ comList.posted_date }"/></td><td><c:out value="${ comList.reported_cnt }"/></td></tr>
+						    <tr><td class="table-title"><c:out value="${ comList.contents }"/></td><td><c:out value="${ comList.id }"/></td><td><a href="javascript:openPopup('${ comList.product_idx }')" style="color:black" ><c:out value="${ comList.title }"/></a></td><td><c:out value="${ comList.posted_date }"/></td><td><c:out value="${ comList.reported_cnt }"/></td></tr>
 						    </c:forEach>
 						  </table>  
 					</div>

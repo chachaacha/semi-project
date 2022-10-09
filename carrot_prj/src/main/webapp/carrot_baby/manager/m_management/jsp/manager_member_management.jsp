@@ -5,6 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,7 +94,7 @@ function openPopup(id) {
 			<!-- form을 묶기위한 hidden -->
 			<form id ="hidFrm">
 				<input type="hidden" id="selectStau"name="selectStau" value="${ empty param.selectStau?'all':param.selectStau }"/>
-				<input type="hidden" id="searchStau"name="searchStau" value="${ param.searchStau }"/>
+				<input type="hidden" id="searchStau"name="searchStau" value="${ fn:trim(param.searchStau) }"/>
 			</form>
 			
 			<div class="table-wrap table1">
@@ -134,6 +135,7 @@ function openPopup(id) {
 						 <%-- 차단해제 --%>
 						 <c:if test="${ not empty param.id }">
 						 <% mDAO.deleteBlock(request.getParameter("id")); %>
+						 <%-- 왜 쿼리스트링에 EL이나 출력식 쓰면 씹히는지 질문하기 --%>
 						 <c:redirect url="manager_member_management.jsp?selectStau=block"/>
 						 </c:if>
 			</div>

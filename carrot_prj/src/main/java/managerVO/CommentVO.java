@@ -3,22 +3,12 @@ package managerVO;
 import java.sql.Date;
 
 public class CommentVO {
-	private String contents, id, title, productTitle;
-	private Date  posted_date;
+	private String contents, id, title, productTitle, product_idx;
+	private Date posted_date;
 	private int reported_cnt;
 	
 	public CommentVO() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public CommentVO(String contents, String id, String title, String productTitle, Date posted_date,
-			int reported_cnt) {
-		this.contents = contents;
-		this.id = id;
-		this.title = title;
-		this.productTitle = productTitle;
-		this.posted_date = posted_date;
-		this.reported_cnt = reported_cnt;
 	}
 
 	public String getContents() {
@@ -53,6 +43,14 @@ public class CommentVO {
 		this.productTitle = productTitle;
 	}
 
+	public String getProduct_idx() {
+		return product_idx;
+	}
+
+	public void setProduct_idx(String product_idx) {
+		this.product_idx = product_idx;
+	}
+
 	public Date getPosted_date() {
 		return posted_date;
 	}
@@ -72,7 +70,10 @@ public class CommentVO {
 	@Override
 	public String toString() {
 		return "CommentVO [contents=" + contents + ", id=" + id + ", title=" + title + ", productTitle=" + productTitle
-				+ ", posted_date=" + posted_date + ", reported_cnt=" + reported_cnt + "]";
+				+ ", product_idx=" + product_idx + ", posted_date=" + posted_date + ", reported_cnt=" + reported_cnt
+				+ "]";
 	}
+
+	
 	
 }

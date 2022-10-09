@@ -3,20 +3,20 @@ package managerVO;
 import java.util.Date;
 
 public class BoardVO {
-	private String product_idx, id, nick, gu, title, category, contents;
-	private int price, liked_cnt, report_cnt;
-	private Date post_date;
+	private String img, id, nick, gu, title, category, contents, free, sold_check, tumbnail, reserved;
+	private int price, liked_cnt, report_cnt, comment_cnt;
+	private Date posted_date;
 	
 	public BoardVO() {
-
+		// TODO Auto-generated constructor stub
 	}
 
-	public String getProduct_idx() {
-		return product_idx;
+	public String getImg() {
+		return img;
 	}
 
-	public void setProduct_idx(String product_idx) {
-		this.product_idx = product_idx;
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 	public String getId() {
@@ -67,6 +67,38 @@ public class BoardVO {
 		this.contents = contents;
 	}
 
+	public String getFree() {
+		return free;
+	}
+
+	public void setFree(String free) {
+		this.free = free;
+	}
+
+	public String getSold_check() {
+		return sold_check;
+	}
+
+	public void setSold_check(String sold_check) {
+		this.sold_check = sold_check;
+	}
+
+	public String getTumbnail() {
+		return tumbnail;
+	}
+
+	public void setTumbnail(String tumbnail) {
+		this.tumbnail = tumbnail;
+	}
+
+	public String getReserved() {
+		return reserved;
+	}
+
+	public void setReserved(String reserved) {
+		this.reserved = reserved;
+	}
+
 	public int getPrice() {
 		return price;
 	}
@@ -90,22 +122,30 @@ public class BoardVO {
 	public void setReport_cnt(int report_cnt) {
 		this.report_cnt = report_cnt;
 	}
+	
 
-	public Date getPost_date() {
-		return post_date;
+	public int getComment_cnt() {
+		return comment_cnt;
 	}
 
-	public void setPost_date(Date post_date) {
-		this.post_date = post_date;
+	public void setComment_cnt(int comment_cnt) {
+		this.comment_cnt = comment_cnt;
+	}
+
+	public Date getPosted_date() {
+		return posted_date;
+	}
+
+	public void setPosted_date(Date posted_date) {
+		this.posted_date = posted_date;
 	}
 
 	@Override
 	public String toString() {
-		return "BoardVO [product_idx=" + product_idx + ", id=" + id + ", nick=" + nick + ", gu=" + gu + ", title="
-				+ title + ", category=" + category + ", contents=" + contents + ", price=" + price + ", liked_cnt="
-				+ liked_cnt + ", report_cnt=" + report_cnt + ", post_date=" + post_date + "]";
+		return "BoardVO [img=" + img + ", id=" + id + ", nick=" + nick + ", gu=" + gu + ", title=" + title
+				+ ", category=" + category + ", contents=" + contents + ", free=" + free + ", sold_check=" + sold_check
+				+ ", tumbnail=" + tumbnail + ", reserved=" + reserved + ", price=" + price + ", liked_cnt=" + liked_cnt
+				+ ", report_cnt=" + report_cnt + ", comment_cnt=" + comment_cnt + ", posted_date=" + posted_date + "]";
 	}
 	
-	
-
 }

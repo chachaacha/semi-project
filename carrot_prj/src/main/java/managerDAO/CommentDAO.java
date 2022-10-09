@@ -37,7 +37,7 @@ public class CommentDAO {
 		try {
 			con = db.getConn();
 			StringBuffer sb = new StringBuffer();
-			sb.append(" select c.contents, c.id, p.title, c.posted_date, c.reported_cnt  ")
+			sb.append(" select c.product_idx, c.contents, c.id, p.title, c.posted_date, c.reported_cnt  ")
 			  .append(" from product_comment c, product p")
 			  .append(" where (c.product_idx = p.product_idx) and c.reported_cnt > 0 ");
 			
@@ -64,6 +64,7 @@ public class CommentDAO {
 			CommentVO cVO = null;
 			while(rs.next()) {
 				cVO = new CommentVO();
+				cVO.setProduct_idx(rs.getString("product_idx"));
 				cVO.setContents(rs.getString("contents"));
 				cVO.setId(rs.getString("id"));
 				cVO.setTitle(rs.getString("title"));

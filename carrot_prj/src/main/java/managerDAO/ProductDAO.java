@@ -48,17 +48,40 @@ public class ProductDAO {
 					break;
 				}
 			}
+			
 			if(psVO.getCategoryFlag() != 0) {
 				sb.append(" and category_idx=? ");
 			} 
-			//////////////////////// order by 추후추가 혹은 js에서 처리//////////////////////////////////
-			//////////////////////// 신고수순, 등록일순///////////////////////////////////
+			
+			
+			if(psVO.getDateOrderFlag() != 0) {
+				switch(psVO.getDateOrderFlag()) {
+				case 1:
+					sb.append(" order by posted_date desc ");
+					break;
+					
+				case 2:
+					sb.append(" order by posted_date ");
+				}
+			}
+			
+			if(psVO.getReportOrderFlag() != 0) {
+				switch(psVO.getReportOrderFlag()) {
+				case 1:
+					sb.append(" order by report_cnt desc ");
+					break;
+					
+				case 2:
+					sb.append(" order by report_cnt ");
+				}
+			}
+			
+			
 			pstmt = con.prepareStatement(sb.toString());
 			if(psVO.getCategoryFlag() != 0) {
 				pstmt.setInt(1, psVO.getCategoryFlag());
 			}
 			rs = pstmt.executeQuery();
-			
 			ProductVO pVO = null;
 			while(rs.next()) {
 				pVO = new ProductVO();

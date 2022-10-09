@@ -8,6 +8,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,58 +22,69 @@
 <script type="text/javascript">
 $(function() {
 	
+	////////////////////////////////////  정렬버튼시작  ////////////////////////////////////////
 	//정렬 버튼 클릭시 숨은 버튼 생성
-	$(".align-btn").click(function() {
+ 	$(".align-btn").click(function() {
 		$(".align-subbtn").toggle();
-		$("#date-asc").hide();
-		$("#report-asc").hide();
+		/* $("#date-asc").hide(); */
+	    /* $("#report-asc").hide(); */
 		$(".align-icon").toggleClass("align-icon-change");
 		
-		var alignClass=$(".align-icon").attr("class");
+		/* var alignClass=$(".align-icon").attr("class");
 		if(alignClass=="align-icon") {
-			$("#date-desc").hide();
+		 	$("#date-desc").hide();
 			$("#date-asc").hide();
 			$("#report-desc").hide();
-			$("#report-asc").hide();
-		}
+			$("#report-asc").hide();  
+		} */
+	}); 
+	
+	//등록일순 버튼 정렬변경
+	//등록일순 내림차순 누를 시
+	$("#date-desc").click(function() {
+		$("#dateOrderFlag").val(1);
+		$("#reportOrderFlag").val(null);
+	/* 	$("#date-asc").show();
+		$("#date-desc").hide(); */
+		$("#hidFrm").submit();
 		
 	});
 	
-	//등록일순 버튼 정렬변경
-	$("#date-desc").click(function() {
-		$("#date-asc").show();
-		$("#date-desc").hide();
-	});
-	
+	//등록일순 오름차순 누를 시
 	$("#date-asc").click(function() {
-		$("#date-desc").show();
-		$("#date-asc").hide();
+		$("#dateOrderFlag").val(2);
+		$("#reportOrderFlag").val(null);
+	/* 	$("#date-desc").show();
+		$("#date-asc").hide(); */
+		$("#hidFrm").submit();
+		
 	});
 	
 	//신고순 버튼 정렬변경
+	//신고순 내림차순 누를 시
 	$("#report-desc").click(function() {
-		$("#report-asc").show();
-		$("#report-desc").hide();
+		$("#reportOrderFlag").val(1);
+		$("#dateOrderFlag").val(null);
+		/* $("#report-asc").show();
+		$("#report-desc").hide(); */
+		$("#hidFrm").submit();
+	
 	});
 	
+	//신고순 오름차순 누를 시
 	$("#report-asc").click(function() {
-		$("#report-desc").show();
-		$("#report-asc").hide();
+		$("#reportOrderFlag").val(2);
+		$("#dateOrderFlag").val(null);
+	/* 	$("#report-desc").show();
+		$("#report-asc").hide(); */
+		$("#hidFrm").submit();
+		
 	});
+	/////////////////////////////////////////// 정렬버튼 끝///////////////////////////////////////////////////
 	
 	
-	//댓글 신고 팝업창 열기
-	$(".rc_txt").click(function() {
-		window.open("manager_pm_comments_popup.jsp","comments_popup",
-				"width=1025,height=592,top=311,left=560");
-	});
 	
-	//상품 팝업창 열기
-	$(".title-link").click(function() {
-		window.open("manager_pm_product_popup.jsp","product_popup",
-				"width=780,height=930,top=0,left=560");
-	});
-	
+	////////////////////////////////////// 검색옵션 시작/////////////////////////////////////////////////////
 	//카테고리가 선택되었을 시
 	$("#category").change(function(){
 		$("#categoryFlag").val($("#category").val());
@@ -109,10 +121,22 @@ $(function() {
 		}
 		$("#searchFrm").submit();
 	})
-
+   /////////////////////////////////// 검색옵션 끝//////////////////////////////////////
+   
+   
+   	////////////////////////////////////////// 팝업창 시작 ////////////////////////////////////////////////////
+	//댓글 신고 팝업창 열기
+	$(".rc_txt").click(function() {
+		window.open("manager_pm_comments_popup.jsp","comments_popup",
+				"width=1025,height=592,top=311,left=560");
+	});
 	
-});
+	///////////////////////////////////////  팝업창 끝  //////////////////////////////////////////////////
+   
+	
+});// end document ready
 
+//일괄선택
 function check() {
 	if($("[name='chkFlag']").is(":checked")) {
 		$("[name='productChk']").prop("checked",true);
@@ -120,10 +144,17 @@ function check() {
 		$("[name='productChk']").prop("checked",false);
 	}
 };
+
+//게시글 팝업
+function openPopup(idx) {
+	window.open("manager_pm_product_popup.jsp?product_idx="+idx,"product_popup","width=780,height=930,top=0,left=560");
+};
+
 </script>
-<%-- 세션만료시 로그인 창 --%>
-<c:if test="${ empty manager_id }"> 
-<% response.sendRedirect("../../login/jsp/manager_login.jsp");%>
+
+<%-- 세션만료시 로그인 창 복귀 --%>
+<c:if test="${ empty manager_id }">
+<c:redirect url="../../login/jsp/manager_login.jsp"/> 
 </c:if>
 
 </head>
@@ -150,19 +181,22 @@ function check() {
 		
 		<!-- 본문 -->
 		<div class="product_management">
+			<%-- selline변수를 주고 값에 상품상태에 대한 값을 담는다. --%>
 			<c:set var="selLine" value="${empty param.selStatus ? 0: param.selStatus}"/>
 			<!-- 상단 필터 -->
 			<div class="pm_btn-wrap">
+				<%-- selline 변수가 설정되면 = 상품상태값이 선택되면, 클래스를 선택되게 바꾸고 아니면 기본 클래스 --%>
 				<button type="button" ${selLine eq 0 ? "class='pm_btn-check'" : " class='pm_btn' "} id="allBtn">전체</button>
 				<button type="button" ${selLine eq 1 ? "class='pm_btn-check'" : " class='pm_btn' "} id="onSaleBtn">판매중</button>
 				<button type="button" ${selLine eq 2 ? "class='pm_btn-check'" : " class='pm_btn' "} id="soldoutBtn">거래완료</button>
 			</div>
 			<!-- 파라메터를 묶기 위한 폼 -->
-			<form id="hidFrm" method="get">
-			<input type="hidden" id="selStatus" name="selStatus" value="${ empty param.selStatus?'0':param.selStatus }"/>
+			<form id="hidFrm" method="post">
+			<input type="hidden" id="selStatus" name="selStatus" value="${ param.selStatus }"/>
 			<input type="hidden" id="categoryFlag" name="categoryFlag" value="${ param.categoryFlag }"/>
+			<input type="hidden" id="dateOrderFlag" name="dateOrderFlag" value="${ param.dateOrderFlag }"/>
+			<input type="hidden" id="reportOrderFlag" name="reportOrderFlag" value="${ param.reportOrderFlag }"/>
 			</form>
-			
 			
 			<div class="pm">
 				<!-- 왼쪽 -->
@@ -173,59 +207,73 @@ function check() {
 					<div class="pm-btn-search">
 						<button type="button" class="all-delete-btn">일괄삭제</button>
 						<div class="align-btn-wrap">
+							<c:if test="${ empty param.titleSearch }"> 
 							<button type="button" class="align-btn">정렬
 								<svg class="align-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
 								  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
 								</svg>
 							</button>
+						    </c:if> 
+							<c:choose>
+							<c:when test="${ param.dateOrderFlag eq 2  }">
 							<button type="button" class="align-subbtn" id="date-desc">
 								<span>
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-check" viewBox="0 0 16 16">
 									  <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
 									</svg>
-								 등록일
+								<span${ not empty param.dateOrderFlag?" style='color:black;font-weight:bold'":"" }>등록일</span>
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-arrow-down" viewBox="0 0 16 16">
 									  <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
 									</svg>
 								</span>
 							</button>
+							</c:when>
+							<c:when test="${ param.dateOrderFlag eq 1 or empty  param.dateOrderFlag  }">
 							<button type="button" class="align-subbtn" id="date-asc">
 								<span>
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-check" viewBox="0 0 16 16">
 									  <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
 									</svg>
-								 등록일
+								<span${ not empty param.dateOrderFlag or empty param.reportOrderFlag?" style='color:black;font-weight:bold'":"" }>등록일</span>
 								 	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-arrow-up" viewBox="0 0 16 16">
 									  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
 									</svg>
 							 	</span>
 							</button>
+							</c:when>
+							</c:choose>
+							<c:choose>
+							<c:when test="${ param.reportOrderFlag eq 2 or empty param.reportOrderFlag }">
 							<button type="button" class="align-subbtn" id="report-desc">
 								<span>
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-check" viewBox="0 0 16 16">
 									  <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
 									</svg>
-								 신고수
+								 <span${ not empty  param.reportOrderFlag?" style='color:black;font-weight:bold'":"" }>신고수</span>
 								 	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-arrow-down" viewBox="0 0 16 16">
 									  <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
 									</svg>								 
 								</span>
 							</button>
+							</c:when>
+							<c:when test="${ param.reportOrderFlag eq 1 }">
 							<button type="button" class="align-subbtn" id="report-asc">
 								<span>
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-check" viewBox="0 0 16 16">
 									  <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
 									</svg>
-								 신고수
+								 <span${ not empty  param.reportOrderFlag?" style='color:black;font-weight:bold'":"" }>신고수</span>
 								 	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi-arrow-up" viewBox="0 0 16 16">
 									  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
 									</svg>
 							 	</span>
 							</button>
+							</c:when>
+							</c:choose>
 						</div>
 					</div>
 					<!-- 검색을 위한 폼 -->
-					<form id="searchFrm">
+					<form id="searchFrm" method="post">
 					<div class="search-wrap">
 						<input hidden="hidden"><input autocomplete="off" type="text" class="search-txt" id="titleSearch" name="titleSearch" value="${ param.titleSearch }" placeholder="제목을 입력하세요.">
 						<button type="button" class="search-bar" id="searchBtn">
@@ -254,6 +302,8 @@ function check() {
 							<%-- 메서드 매개변수VO 값설정 --%>
 							<jsp:useBean id="psVO" class="managerVO.ProductSearchVO"></jsp:useBean><%-- VO생성 --%>
 							<jsp:setProperty property="*" name="psVO"/><%-- hidFrm 서브밋시 form name과 변수명이 같은 같 자동 setter --%>
+							<%-- 기본적으로는 날짜 내림차순정렬로 보여준다. --%>
+							<jsp:setProperty property="dateOrderFlag" name="psVO" value="${ empty param.dateOrderFlag && empty param.reportOrderFlag ?1:param.dateOrderFlag }"/>
 							<%
 							//상품불러오기
 							ProductDAO dDAO = ProductDAO.getInstance(); 
@@ -270,7 +320,7 @@ function check() {
 						  	<tr><td colspan="7">조회된결과가 없습니다.</td></tr>
 						  	</c:if>
 						  	<c:forEach var="proList" items="${ pageScope.proList }">
-						    <tr><td><input type="checkbox" name="productChk" class="table-check" value="${ proList.product_idx }"></td><td class="table-title title-link"><c:out value="${ proList.title }"/></td><td><c:out value="${ proList.id }"/></td><td><c:out value="${ proList.category }"/></td><td><c:out value="${ proList.sold_check }"/></td><td><c:out value="${ proList.posted_date }"/></td><td><c:out value="${ proList.report_cnt }"/></td></tr>
+						    <tr><td><input type="checkbox" name="productChk" class="table-check" value="${ proList.product_idx }"></td><td><a href="javascript:openPopup('${ proList.product_idx }')" style="color:black"><c:out value="${ proList.title }"/></a></td><td><c:out value="${ proList.id }"/></td><td><c:out value="${ proList.category }"/></td><td><c:out value="${ proList.sold_check }"/></td><td><c:out value="${ proList.posted_date }"/></td><td><c:out value="${ proList.report_cnt }"/></td></tr>
 						  	</c:forEach>
 						 </table>  
 					</div>

@@ -3,101 +3,66 @@ package managerVO;
 import java.util.Date;
 
 public class MangerCommentVO {
-	private int comment_idx, reply_idx, reported_num;
-	private String id, product_idx, contents, new_contents, deleted, nick;
+	private String idPlusNick, id, contents, img; 
+	private int comment_idx, reply_idx, reported_cnt;
 	private Date posted_date;
-	
-	public MangerCommentVO() {
-		// TODO Auto-generated constructor stub
+	public String getIdPlusNick() {
+		return idPlusNick;
 	}
-
-	public int getComment_idx() {
-		return comment_idx;
+	public void setIdPlusNick(String idPlusNick) {
+		this.idPlusNick = idPlusNick;
 	}
-
-	public void setComment_idx(int comment_idx) {
-		this.comment_idx = comment_idx;
-	}
-
-	public int getReply_idx() {
-		return reply_idx;
-	}
-
-	public void setReply_idx(int reply_idx) {
-		this.reply_idx = reply_idx;
-	}
-
-	public int getReported_num() {
-		return reported_num;
-	}
-
-	public void setReported_num(int reported_num) {
-		this.reported_num = reported_num;
-	}
-
 	public String getId() {
 		return id;
 	}
-
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public String getProduct_idx() {
-		return product_idx;
-	}
-
-	public void setProduct_idx(String product_idx) {
-		this.product_idx = product_idx;
-	}
-
 	public String getContents() {
 		return contents;
 	}
-
 	public void setContents(String contents) {
 		this.contents = contents;
 	}
-
-	public String getNew_contents() {
-		return new_contents;
+	public String getImg() {
+		return img;
 	}
-
-	public void setNew_contents(String new_contents) {
-		this.new_contents = new_contents;
+	public void setImg(String img) {
+		this.img = img;
 	}
-
-	public String getDeleted() {
-		return deleted;
+	public int getComment_idx() {
+		return comment_idx;
 	}
-
-	public void setDeleted(String deleted) {
-		this.deleted = deleted;
+	public void setComment_idx(int comment_idx) {
+		this.comment_idx = comment_idx;
 	}
-
-	public String getNick() {
-		return nick;
+	public int getReply_idx() {
+		return reply_idx;
 	}
-
-	public void setNick(String nick) {
-		this.nick = nick;
+	public void setReply_idx(int reply_idx) {
+		this.reply_idx = reply_idx;
 	}
-
+	public int getReported_cnt() {
+		return reported_cnt;
+	}
+	public void setReported_cnt(int reported_cnt) {
+		this.reported_cnt = reported_cnt;
+	}
 	public Date getPosted_date() {
 		return posted_date;
 	}
-
 	public void setPosted_date(Date posted_date) {
 		this.posted_date = posted_date;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "MangerCommentVO [comment_idx=" + comment_idx + ", reply_idx=" + reply_idx + ", reported_num="
-				+ reported_num + ", id=" + id + ", product_idx=" + product_idx + ", contents=" + contents
-				+ ", new_contents=" + new_contents + ", deleted=" + deleted + ", nick=" + nick + ", posted_date="
-				+ posted_date + "]";
+		return "MangerCommentVO [idPlusNick=" + idPlusNick + ", id=" + id + ", contents=" + contents + ", img=" + img
+				+ ", comment_idx=" + comment_idx + ", reply_idx=" + reply_idx + ", reported_cnt=" + reported_cnt
+				+ ", posted_date=" + posted_date + "]";
 	}
-	 
+	
+
+	
 	
 }
