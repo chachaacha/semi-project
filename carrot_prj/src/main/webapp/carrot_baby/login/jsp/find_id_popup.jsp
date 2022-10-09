@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>아이디</title>
+<title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="../css/find_id_popup.css"/>
 <style type="text/css">
 html {	overflow: hidden; }

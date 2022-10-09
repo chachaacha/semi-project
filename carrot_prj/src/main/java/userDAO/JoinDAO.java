@@ -56,30 +56,38 @@ public class JoinDAO {
 		}
 	}//end insert
 	
+	/**
+	 * 아이디 중복확인
+	 * @param paramId
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean selectId(String paramId)throws SQLException{
 		boolean flag=false;
 		
-		DbConnection db = DbConnection.getInstance();
+		DbConnection dc = DbConnection.getInstance();
+		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs=null;
 		
+		//1. 드라비어 로딩
 		try {
-		//3.Connection 얻기
-			con=db.getConn();
-			String selectId="select id from member where id=?";
-			pstmt=con.prepareStatement(selectId);
-		//5.바인드 변수에 값 할당
+		//2. Connection 얻기
+			con=dc.getConn();
+		//3. 쿼리문 생성객체 얻기
+			StringBuilder sb = new StringBuilder();
+			sb.append("select id from member where id=?");
+			pstmt=con.prepareStatement(sb.toString());
+		//4. 바인드 변수에 값 설정
 			pstmt.setString(1, paramId);
-		//6.쿼리문 수행 후 결과얻기
+		//5. 쿼리문 수행 후 결과 얻기
 			rs=pstmt.executeQuery();
 			flag=rs.next();//검색결과 있음 true, 없음 false
 				
 		}finally {
-		//7.연결끊기
-			if(rs !=null ) {rs.close();}
-			if(pstmt !=null ) {pstmt.close();}
-			if(con !=null ) {con.close();}
+			//6. 연결 끊기
+			dc.dbClose(rs, pstmt, con);
 		}
 		return flag;
 	}

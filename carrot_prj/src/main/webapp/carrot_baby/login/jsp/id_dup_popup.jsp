@@ -1,5 +1,7 @@
+<%@page import="userDAO.JoinDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,17 +17,18 @@ html {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(function() {
+	//중복확인 버튼 클릭시
 	$("#chkBtn").click(function(){
 		chkNull();
-		
-		/* //아이디가 있으면
-		alert("사용가능한 아이디입니다");
-		//아이디가 없으면
-		alert("사용 불가능한 아이디입니다"); */
-		
 	});
 	
-	$("#idbtn").click(function(){
+	$("#id").keydown(function( evt ){
+		if(evt.which == 13){
+			chkNull();
+		}//end if
+	});//keydown
+		
+	$("#idbtn").click(function(id){
 		opener.window.document.memberFrm.id.value=id;
 		self.close();
 	});
@@ -34,19 +37,24 @@ $(function() {
 function chkNull(){
 	var id=$("#id").val();
 	if(id == ""){
-		alert("중복 검사할 아이디를 입력해 주세요.");
+		alert("아이디를 입력해 주세요.");
 		return;
 	}
 	
 	$("#frmDup").submit();
 }//chkNull
 
+function useId( id ){
+	opener.window.document.memberFrm.id.value=id;
+	self.close();
+}//useId
+
 </script>
 </head>
 <body>
 <div class="wrap">
+	<form method="get" id="frmDup" action="id_dup_popup.jsp">  
 	<h1 class="title">아이디 중복확인</h1>
-	<!-- 1 -->
 	<div style="padding: 30px 20px; ">
 	<div>
 		<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
@@ -55,22 +63,38 @@ function chkNull(){
 		<span>아이디는 영문(소문자), 숫자로 4~16자 이내로 입력해주세요.</span><br>
 	</div>
 	</div>
-	<!-- 2 -->
-	<form method="post" action="id_dup_popup_process.jsp">  
+	<!-- 1 -->
 	<div class="contents">
-		<input type="text" size="30" class="idText" id="id">
-		<input type="text" style="display:none;">
-		<input type="button" value="중복확인" class="chkBtn" id="chkBtn">
+		<input type="text" class="idText" id="id" size="30" autocomplete="off" />
+		<input type="text" style="display:none;"/>
+		<input type="button" value="중복확인" class="chkBtn" id="chkBtn" />
 	</div>
-	</form>
-	<!-- 3 -->
 	<div class="msg">
 		<span>공백 또는 특수문자가 포함된 아이디는 사용할 수 없습니다.</span><br>
 		<span>숫자로 시작하거나, 숫자로만 이루어진 아이디는 사용할 수 없습니다.</span><br>
 	</div>
+	<!--  -->
+	<c:if test="${ not empty param.id }">
+	<% //DBMS 연동
+	JoinDAO jDAO=JoinDAO.getInstance();
 	
-	<!-- 끝 -->
-	<button type="button" class="idBtn" id="idbtn">사용하기</button>
+	boolean flag=jDAO.selectId(request.getParameter("id"));
+	pageContext.setAttribute("flag",flag);//true면 사용중, false면 미사용
+	%>
+	<div id="view">입력하신 <strong><c:out value="${param.id}"/></strong>는
+	<c:choose>
+	<c:when test="${flag }">
+	<span style="color: #FF0000">사용중</span>입니다.
+	</c:when>
+	<c:otherwise>
+	<span style="color: #FF0000">사용가능</span>합니다.<br/>
+	</c:otherwise>
+	</c:choose>
+	</div>
+	</c:if>
+	<!-- 버튼 -->
+	<button type="button" class="idBtn" id="idbtn" onclick="useId('${param.id }')">사용하기</button>
+	</form>
 </div>
 </body>
 </html>
