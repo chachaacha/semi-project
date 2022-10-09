@@ -41,10 +41,10 @@ public class BuyListDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
-			.append("	select		pd.buyer_id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.post_date, pd.sold_chk, pd.price, pd.comment_cnt, pd.like_cnt	")
-			.append("	from		product pd, loc_category lc																															")
-			.append("	where		(p.gu_idx = lc.gu_idx) and buyer_id = ?																												");
-		
+			.append("	select		pd.buyer_id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.posted_date, pd.sold_check, pd.price, pd.comment_cnt, pd.liked_cnt	")
+			.append("	from		product pd, loc_category lc		")
+			.append("	where		(pd.gu_idx = lc.gu_idx) and buyer_id = ?		");
+	
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
 			pstmt.setString(1, buyer_id);
@@ -60,11 +60,11 @@ public class BuyListDAO {
 				blVO.setThumbnail(rs.getString("thumbnail"));
 				blVO.setTitle(rs.getString("title"));
 				blVO.setGu(rs.getString("gu"));
-				blVO.setPost_date(rs.getDate("post_date"));
-				blVO.setSold_chk(rs.getString("sold_chk"));
+				blVO.setPosted_date(rs.getDate("posted_date"));
+				blVO.setSold_check(rs.getString("sold_check"));
 				blVO.setPrice(rs.getInt("price"));
 				blVO.setComment_cnt(rs.getInt("comment_cnt"));
-				blVO.setLike_cnt(rs.getInt("like_cnt"));
+				blVO.setLiked_cnt(rs.getInt("liked_cnt"));
 				
 				list.add(blVO);
 			}//end while
@@ -93,7 +93,7 @@ public class BuyListDAO {
 		StringBuilder update = new StringBuilder();
 		update
 		.append(" update	product				")
-		.append(" set		buy_id = null		")
+		.append(" set		buyer_id = null		")
 		.append(" where  product_idx	=	?	");
 		
 		pstmt = con.prepareStatement(update.toString());

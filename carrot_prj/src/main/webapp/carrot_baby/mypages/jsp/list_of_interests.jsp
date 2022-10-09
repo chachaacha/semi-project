@@ -11,6 +11,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
 </head>
+<% 
+// 세션 만료시 로그인화면으로 이동
+	if(session.getAttribute("id")==null) {
+		response.sendRedirect("../../login/jsp/user_login.jsp");
+	}
+%>
 <body>
 <div class="wrap">
 

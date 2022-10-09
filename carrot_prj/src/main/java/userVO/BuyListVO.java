@@ -3,25 +3,25 @@ package userVO;
 import java.sql.Date;
 
 public class BuyListVO {
-	private String product_idx, buyer_id, thumbnail, title, gu, sold_chk;
-	private Date post_date;
-	private int comment_cnt, like_cnt,  price;
+	private String product_idx, buyer_id, thumbnail, title, gu, sold_check;
+	private Date posted_date;
+	private int comment_cnt, liked_cnt,  price;
 	
 	public BuyListVO() {
 	}
 
-	public BuyListVO(String product_idx, String buyer_id, String thumbnail, String title, String gu, String sold_chk,
-			Date post_date, int comment_cnt, int like_cnt, int price) {
+	public BuyListVO(String product_idx, String buyer_id, String thumbnail, String title, String gu, String sold_check,
+			Date posted_date, int comment_cnt, int liked_cnt, int price) {
 		super();
 		this.product_idx = product_idx;
 		this.buyer_id = buyer_id;
 		this.thumbnail = thumbnail;
 		this.title = title;
 		this.gu = gu;
-		this.sold_chk = sold_chk;
-		this.post_date = post_date;
+		this.sold_check = sold_check;
+		this.posted_date = posted_date;
 		this.comment_cnt = comment_cnt;
-		this.like_cnt = like_cnt;
+		this.liked_cnt = liked_cnt;
 		this.price = price;
 	}
 
@@ -65,20 +65,20 @@ public class BuyListVO {
 		this.gu = gu;
 	}
 
-	public String getSold_chk() {
-		return sold_chk;
+	public String getSold_check() {
+		return sold_check;
 	}
 
-	public void setSold_chk(String sold_chk) {
-		this.sold_chk = sold_chk;
+	public void setSold_check(String sold_check) {
+		this.sold_check = sold_check;
 	}
 
-	public Date getPost_date() {
-		return post_date;
+	public Date getPosted_date() {
+		return posted_date;
 	}
 
-	public void setPost_date(Date post_date) {
-		this.post_date = post_date;
+	public void setPosted_date(Date posted_date) {
+		this.posted_date = posted_date;
 	}
 
 	public int getComment_cnt() {
@@ -89,12 +89,12 @@ public class BuyListVO {
 		this.comment_cnt = comment_cnt;
 	}
 
-	public int getLike_cnt() {
-		return like_cnt;
+	public int getLiked_cnt() {
+		return liked_cnt;
 	}
 
-	public void setLike_cnt(int like_cnt) {
-		this.like_cnt = like_cnt;
+	public void setLiked_cnt(int liked_cnt) {
+		this.liked_cnt = liked_cnt;
 	}
 
 	public int getPrice() {
@@ -108,8 +108,8 @@ public class BuyListVO {
 	@Override
 	public String toString() {
 		return "BuyListVO [product_idx=" + product_idx + ", buyer_id=" + buyer_id + ", thumbnail=" + thumbnail
-				+ ", title=" + title + ", gu=" + gu + ", sold_chk=" + sold_chk + ", post_date=" + post_date
-				+ ", comment_cnt=" + comment_cnt + ", like_cnt=" + like_cnt + ", price=" + price + "]";
+				+ ", title=" + title + ", gu=" + gu + ", sold_check=" + sold_check + ", posted_date=" + posted_date
+				+ ", comment_cnt=" + comment_cnt + ", liked_cnt=" + liked_cnt + ", price=" + price + "]";
 	}
-	
+
 }

@@ -78,6 +78,12 @@ $(function(){
 </script>
 
 </head>
+<% 
+// 세션 만료시 로그인화면으로 이동
+	if(session.getAttribute("id")==null) {
+		response.sendRedirect("../../login/jsp/user_login.jsp");
+	}
+%>
 <body>
 <!-- 저장된 내 정보 불러오기 -->
 <%

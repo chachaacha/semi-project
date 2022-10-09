@@ -25,8 +25,27 @@ $(function() {
 </script>
 
 </head>
-
+<% 
+// 세션 만료시 로그인화면으로 이동
+	if(session.getAttribute("id")==null) {
+		response.sendRedirect("../../login/jsp/user_login.jsp");
+	}
+%>
 <body>
+<!-- VO객체 생성 -->
+<jsp:useBean id="blVO" class="userVO.BuyListVO"></jsp:useBean>
+<!-- session에 저장된 아이디를 구매자 아이디로 설정 -->
+<jsp:setProperty property="buyer_id" name="blVO" value="${ id }"/>
+<jsp:setProperty property="product_idx" name="blVO"/>
+<jsp:setProperty property="thumbnail" name="blVO"/>
+<jsp:setProperty property="title" name="blVO"/>
+<jsp:setProperty property="gu" name="blVO"/>
+<jsp:setProperty property="sold_check" name="blVO"/>
+<jsp:setProperty property="posted_date" name="blVO"/>
+<jsp:setProperty property="comment_cnt" name="blVO"/>
+<jsp:setProperty property="liked_cnt" name="blVO"/>
+<jsp:setProperty property="price" name="blVO"/>
+
 <div class="wrap">
 
 <!-- header -->
@@ -37,19 +56,7 @@ $(function() {
 <!-- 1 -->
 <div class="container">
 <%@ include file="myinfo_navi.jsp" %>
-<!-- 정보 불러오기 -->
-<jsp:useBean id="blVO" class="userVO.BuyListVO"></jsp:useBean>
-<!-- session에 저장된 아이디를 구매자 아이디로 설정 -->
-<jsp:setProperty property="buyer_id" name="${ id }"/>
-<jsp:setProperty property="product_idx" name="blVO"/>
-<jsp:setProperty property="thumbnail" name="blVO"/>
-<jsp:setProperty property="title" name="blVO"/>
-<jsp:setProperty property="gu" name="blVO"/>
-<jsp:setProperty property="sold_chk" name="blVO"/>
-<jsp:setProperty property="sold_chk" name="post_date"/>
-<jsp:setProperty property="sold_chk" name="comment_cnt"/>
-<jsp:setProperty property="sold_chk" name="like_cnt"/>
-<jsp:setProperty property="sold_chk" name="price"/>
+
 <%
 String id = (String)session.getAttribute("id");
 BuyListDAO blDAO=BuyListDAO.getInstance();
@@ -58,23 +65,33 @@ List<BuyListVO> blList=blDAO.selectBL(id);
 //스콥객체에 할당
 pageContext.setAttribute("blList", blList);
 %>
+
 <div class="purchase_list_title_wrap">
-<c:forEach var="blVO" items="${ blList }">
+<c:forEach var="bl" items="${ blList }">
 	<div class="purchase_list_title">구매내역</div>
 	<div class="purchase_list_item">
 		<div class="purchase_list_img">
-			<img alt="이미지 자리" src="#void">
+			<img alt="이미지 자리" src="${bl.thumbnail}">
 				<div class="purchase_list_border">
-				<div class="pl_title"><c:out value="${ blList.title }"/>
+				<div class="pl_title"><c:out value="${ bl.title }"/>
 					<button class="edit_del_btn" type="button">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
   						<path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
   						<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg>
 					</button>
-					<div class="dong_date"><c:out value="${ blList.gu }"/> ㆍ <c:out value="${ blList.post_date }"/> </div><!-- dong_date -->
+					<div class="dong_date"><c:out value="${ bl.gu }"/> ㆍ <c:out value="${ bl.posted_date }"/> </div><!-- dong_date -->
 							<div class="btn_price">
-								<button class="complete_btn" type="button"><c:if test="${ blList.sold_chk eq 'Y'? '거래완료' : '거래중' }"/> </button>
-								<div class="price"><c:out value="${ blList.price }"/>원</div>
+								<button class="complete_btn" type="button">
+								<c:choose>
+								<c:when test="${bl.sold_check eq 'Y' }">
+										판매완료
+								</c:when>
+								<c:when test="${bl.sold_check eq 'N' }">
+										판매중
+								</c:when>
+								</c:choose>
+								</button>
+								<div class="price"><c:out value="${ bl.price }"/>원</div>
 						</div><!-- "btn_price" -->
 	
 	</div><!-- pl_title -->
