@@ -39,8 +39,17 @@ $(function() {
 <%@ include file="myinfo_navi.jsp" %>
 <!-- 정보 불러오기 -->
 <jsp:useBean id="blVO" class="userVO.BuyListVO"></jsp:useBean>
-<jsp:setProperty property="*" name="blVO"/>
+<!-- session에 저장된 아이디를 구매자 아이디로 설정 -->
 <jsp:setProperty property="buyer_id" name="${ id }"/>
+<jsp:setProperty property="product_idx" name="blVO"/>
+<jsp:setProperty property="thumbnail" name="blVO"/>
+<jsp:setProperty property="title" name="blVO"/>
+<jsp:setProperty property="gu" name="blVO"/>
+<jsp:setProperty property="sold_chk" name="blVO"/>
+<jsp:setProperty property="sold_chk" name="post_date"/>
+<jsp:setProperty property="sold_chk" name="comment_cnt"/>
+<jsp:setProperty property="sold_chk" name="like_cnt"/>
+<jsp:setProperty property="sold_chk" name="price"/>
 <%
 String id = (String)session.getAttribute("id");
 BuyListDAO blDAO=BuyListDAO.getInstance();
@@ -56,7 +65,7 @@ pageContext.setAttribute("blList", blList);
 		<div class="purchase_list_img">
 			<img alt="이미지 자리" src="#void">
 				<div class="purchase_list_border">
-				<div class="pl_title"><c:out value="${blList.title }"/>
+				<div class="pl_title"><c:out value="${ blList.title }"/>
 					<button class="edit_del_btn" type="button">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
   						<path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
@@ -65,7 +74,7 @@ pageContext.setAttribute("blList", blList);
 					<div class="dong_date"><c:out value="${ blList.gu }"/> ㆍ <c:out value="${ blList.post_date }"/> </div><!-- dong_date -->
 							<div class="btn_price">
 								<button class="complete_btn" type="button"><c:if test="${ blList.sold_chk eq 'Y'? '거래완료' : '거래중' }"/> </button>
-								<div class="price"><c:out value="${ blList.price}"/>원</div>
+								<div class="price"><c:out value="${ blList.price }"/>원</div>
 						</div><!-- "btn_price" -->
 	
 	</div><!-- pl_title -->
