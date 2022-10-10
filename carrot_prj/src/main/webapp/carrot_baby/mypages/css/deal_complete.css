@@ -64,6 +64,7 @@
 						float: right;
 			   		    }
 .btn_price{display: inline-flex;
+			font-size: 16px;
 	
 }
 .cmt_n_heart{display: flex;

@@ -39,8 +39,6 @@ $(function() {
 	}
 %>
 <body>
-
-
 <div class="wrap">
 
 <!-- header -->
@@ -58,6 +56,7 @@ $(function() {
 	String id = (String)session.getAttribute("id");
 	 MySalesDAO msDAO=MySalesDAO.getInstance();
 	List<MySalesVO> onSale=msDAO.selectSale(id);
+	//System.out.println("----"+onSale); //값이 들어가는지 확인용
 	//스콥 객체에 할당
 	pageContext.setAttribute("onSale", onSale);
 	%>
@@ -65,10 +64,14 @@ $(function() {
 <c:forEach var="os" items="${onSale}">
 	<div class="on_sale_item">
 		<div class="on_sale_item_img">
+			<a href="">
 			<img alt="이미지 자리" src="${os.thumbnail}">
+			</a>
 			<div class="on_sale_item_border">
 				<div class="olcl_title">
+					<a href="" style="text-decoration: none; color: black; ">
 					<c:out value="${os.title }"/>
+					</a>
 					<button class="edit_del_btn" type="button">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
   						<path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
@@ -81,19 +84,18 @@ $(function() {
 						</div><!-- dong_date --><!-- 구와 올린날짜. 디자인할 때랑 이름이 달라짐 ^~^ -->
 							<div class="price_ch">
 									<div class="btn_price">
-										<%-- <button class="reserved_btn" type="button">예약중
-												<c:if test="${reserved eq 'Y'}">
-												</c:if>
-										</button> --%>
+										<c:if test="${reserved eq 'Y'}"> <!-- c:if 안에 넣었는데 왜 안되죠..? -->
+											 <button class="reserved_btn" type="button">예약중</button>
+										</c:if> 
 										<fmt:formatNumber pattern="#,###,###원" value="${os.price }"></fmt:formatNumber>
 									</div><!-- "btn_price" -->
 									 	<div class="cmt_n_heart">
-											<div class="heart">하트
+											<div class="heart">하트&nbsp;
 													<span class="heart_cnt">
 														<c:out value="${os.liked_cnt}"/>
 													</span><!-- 하트 카운트 -->
 											</div><!-- 하트 -->
-											<div class="cmt">댓글
+											<div class="cmt">댓글&nbsp;
 													<span>
 														<c:out value="${os.comment_cnt }"/>
 													</span><!-- 댓글 카운트 -->

@@ -53,7 +53,7 @@ public class MySalesDAO {
 			selectAll
 			.append("	select p.id, p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.reserved, p.sold_check, p.price, p.comment_cnt, p.liked_cnt	")
 			.append("	from	product p, loc_category lc																													")
-			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'N' 																					");
+			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'N' 	or reserved = 'Y'																				");
 			
 			pstmt = con.prepareStatement(selectAll.toString());
 		//4. 바인드 변수 설정
@@ -220,6 +220,12 @@ public class MySalesDAO {
 		return updateCnt;
 	}
 	
+	/*거래완료 만들려고 임시로 만들었어요~^~^ - 아람*/
+	/**
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<MySalesVO> selectDealComplete(String id) throws SQLException{
 		List<MySalesVO> list = new ArrayList<MySalesVO>();
 		
@@ -236,10 +242,10 @@ public class MySalesDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder selectDC = new StringBuilder();
 			selectDC
-			.append("	select p.id, p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.reserved, p.sold_check, p.price, p.comment_cnt, p.liked_cnt	")
+			.append("	select p.id, p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.reserved, p.sold_check, p.price, p.comment_cnt, p.liked_cnt, p.buyer_id, p.purchased_date	")
 			.append("	from	product p, loc_category lc																													")
-			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'Y' 																					");
-			
+			.append("	where	(p.gu_idx = lc.gu_idx) and id = ? 	and sold_check = 'Y' 																			");
+			//예약
 			pstmt = con.prepareStatement(selectDC.toString());
 		//4. 바인드 변수 설정
 			pstmt.setString(1, id);
@@ -250,7 +256,7 @@ public class MySalesDAO {
 			
 			while( rs.next() ) {
 				msdcVO = new MySalesVO();
-				msdcVO.setId(rs.getString("id"));
+				msdcVO.setId(rs.getString("id")); //추가
 				msdcVO.setProduct_idx(rs.getString("product_idx"));
 				msdcVO.setThumbnail(rs.getString("thumbnail"));
 				msdcVO.setTitle(rs.getString("title"));
@@ -261,6 +267,8 @@ public class MySalesDAO {
 				msdcVO.setPrice(rs.getInt("price"));
 				msdcVO.setComment_cnt(rs.getInt("comment_cnt"));
 				msdcVO.setLiked_cnt(rs.getInt("liked_cnt"));
+				msdcVO.setBuyer_id(rs.getString("buyer_id")); //추가
+				msdcVO.setPurchased_date(rs.getDate("purchased_date")); //추가
 				
 				list.add(msdcVO);
 			}//end while

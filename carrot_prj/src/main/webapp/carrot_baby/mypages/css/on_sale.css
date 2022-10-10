@@ -97,9 +97,9 @@
 	   			  display: flex;
 	   			  justify-content: center;
     			  align-items: center;
-    			  margin-top: 5px;
     			  margin-right: 10px;
 }
 			    
 .btn_price{display: inline-flex;
+			font-size: 16px;
 }
