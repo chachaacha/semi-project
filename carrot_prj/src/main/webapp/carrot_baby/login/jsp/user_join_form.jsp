@@ -4,6 +4,7 @@
 <%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -175,6 +176,7 @@ function zipcodeapi() {
 
 <!-- container -->
 <div class="container">
+	<form name="memberFrm" id="memberFrm" enctype="multipart/form-data" method="post" action="user_join_form_process.jsp" >
 
 	<!-- 상단 로고 -->
 	<div>
@@ -185,7 +187,6 @@ function zipcodeapi() {
 	<div class="title">회원가입</div>
 
 	<!--회원가입 박스-->
-	<form name="memberFrm" id="memberFrm"  enctype="multipart/form-data"  method="get" action="user_join_form_process.jsp" >
 	<div class="writeForm">
 				<table>
 					<tr>
@@ -245,7 +246,7 @@ function zipcodeapi() {
 						<th><span style="color:red">*</span>휴대폰</th>
 						<td>
 							<input type="tel" name="phone_num" id="phone_num" placeholder="예) 010-1234-5678" />
-							<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk"  value="Y"  checked />
+							<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk"  value="Y"  />
 							<label>SMS 수신동의</label></span>
 						</td>
 					</tr>
@@ -265,7 +266,7 @@ function zipcodeapi() {
 								<option value='nate.com' >nate.com</option>
 								<option value='nate.com' >hotmail.com</option>
 							</select>
-							<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" value="Y" checked /><label>이메일 수신동의</label></span>
+							<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" value="Y" /><label>이메일 수신동의</label></span>
 						</td>
 					</tr>
 					<tr>
@@ -280,13 +281,13 @@ function zipcodeapi() {
 				</table>
 	
 			</div>
-			</form>
 	
 			<div style="text-align: center; margin: 50px; padding-bottom: 50px;">
 				<input type="button" id="btn" value="가입" class="oBtn" >
 				<input type="reset" value="취소" class="gBtn" >
 			</div>
 			<!-- 내정보수정 끝 -->
+			</form>
 </div>
 <!-- container end -->
 
