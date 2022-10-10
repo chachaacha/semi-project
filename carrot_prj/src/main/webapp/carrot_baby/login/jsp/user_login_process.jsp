@@ -22,7 +22,7 @@ String password=request.getParameter("password"); */
 	LoginDAO lDAO = LoginDAO.getInstance();
 	/* DBMS 세션 조건 검색하자 */
 	if(lDAO.selectLogin(lVO)!=null) {
-		session.setMaxInactiveInterval(60*1);
+		session.setMaxInactiveInterval(60*60);
 		/* 세션에 아이디 넣자 */
 		session.setAttribute("id", lVO.getId());
 		response.sendRedirect("../../mainhome/jsp/user_mainhome.jsp");
