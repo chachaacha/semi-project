@@ -4,22 +4,23 @@ import java.sql.Date;
 
 public class ProfilPVO {
 	private int  price;
-	private String id, product_idx,thumbnail, title, gu, reserv, sold_chk;
+	private String id, product_idx,thumbnail, title, gu, reserved, sold_check;
 	private Date posted_date;
 	
 	public ProfilPVO() {
 	}
 
-	public ProfilPVO(int price, String id, String product_idx, String thumbnail, String title, String gu, String reserv,
-			String sold_chk, Date posted_date) {
+	public ProfilPVO(int price, String id, String product_idx, String thumbnail, String title, String gu,
+			String reserved, String sold_check, Date posted_date) {
+		super();
 		this.price = price;
 		this.id = id;
 		this.product_idx = product_idx;
 		this.thumbnail = thumbnail;
 		this.title = title;
 		this.gu = gu;
-		this.reserv = reserv;
-		this.sold_chk = sold_chk;
+		this.reserved = reserved;
+		this.sold_check = sold_check;
 		this.posted_date = posted_date;
 	}
 
@@ -71,20 +72,20 @@ public class ProfilPVO {
 		this.gu = gu;
 	}
 
-	public String getReserv() {
-		return reserv;
+	public String getReserved() {
+		return reserved;
 	}
 
-	public void setReserv(String reserv) {
-		this.reserv = reserv;
+	public void setReserved(String reserved) {
+		this.reserved = reserved;
 	}
 
-	public String getSold_chk() {
-		return sold_chk;
+	public String getSold_check() {
+		return sold_check;
 	}
 
-	public void setSold_chk(String sold_chk) {
-		this.sold_chk = sold_chk;
+	public void setSold_check(String sold_check) {
+		this.sold_check = sold_check;
 	}
 
 	public Date getPosted_date() {
@@ -98,10 +99,9 @@ public class ProfilPVO {
 	@Override
 	public String toString() {
 		return "ProfilPVO [price=" + price + ", id=" + id + ", product_idx=" + product_idx + ", thumbnail=" + thumbnail
-				+ ", title=" + title + ", gu=" + gu + ", reserv=" + reserv + ", sold_chk=" + sold_chk + ", posted_date="
-				+ posted_date + "]";
+				+ ", title=" + title + ", gu=" + gu + ", reserved=" + reserved + ", sold_check=" + sold_check
+				+ ", posted_date=" + posted_date + "]";
 	}
 
-	
 	
 }

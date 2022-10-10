@@ -3,13 +3,14 @@ package userVO;
 public class WishListVO {
 	
 	private String product_idx, thumbnail, title, gu, id;
-	private int  price, comment_cnt, like_cnt;
+	private int  price, comment_cnt, liked_cnt, gu_idx;
 	
 	public WishListVO() {
 	}
 
 	public WishListVO(String product_idx, String thumbnail, String title, String gu, String id, int price,
-			int comment_cnt, int like_cnt) {
+			int comment_cnt, int liked_cnt, int gu_idx) {
+		super();
 		this.product_idx = product_idx;
 		this.thumbnail = thumbnail;
 		this.title = title;
@@ -17,7 +18,8 @@ public class WishListVO {
 		this.id = id;
 		this.price = price;
 		this.comment_cnt = comment_cnt;
-		this.like_cnt = like_cnt;
+		this.liked_cnt = liked_cnt;
+		this.gu_idx = gu_idx;
 	}
 
 	public String getProduct_idx() {
@@ -76,21 +78,27 @@ public class WishListVO {
 		this.comment_cnt = comment_cnt;
 	}
 
-	public int getLike_cnt() {
-		return like_cnt;
+	public int getLiked_cnt() {
+		return liked_cnt;
 	}
 
-	public void setLike_cnt(int like_cnt) {
-		this.like_cnt = like_cnt;
+	public void setLiked_cnt(int liked_cnt) {
+		this.liked_cnt = liked_cnt;
+	}
+
+	public int getGu_idx() {
+		return gu_idx;
+	}
+
+	public void setGu_idx(int gu_idx) {
+		this.gu_idx = gu_idx;
 	}
 
 	@Override
 	public String toString() {
 		return "WishListVO [product_idx=" + product_idx + ", thumbnail=" + thumbnail + ", title=" + title + ", gu=" + gu
-				+ ", id=" + id + ", price=" + price + ", comment_cnt=" + comment_cnt + ", like_cnt=" + like_cnt + "]";
+				+ ", id=" + id + ", price=" + price + ", comment_cnt=" + comment_cnt + ", liked_cnt=" + liked_cnt
+				+ ", gu_idx=" + gu_idx + "]";
 	}
-	 
-	
-	
 
 }

@@ -42,7 +42,7 @@ public class WishListDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
-			.append("	select	pd.product_idx pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.price, pd.comment_cnt, pd.like_cnt	")
+			.append("	select	pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.price, pd.comment_cnt, pd.liked_cnt	")
 			.append("	from	product pd, wish_list wl, loc_category lc																	")
 			.append("	where	( wl.product_idx = pd.product_idx and pd.gu_idx = lc.gu_idx ) and wl.id = ?						");
 			
@@ -62,7 +62,7 @@ public class WishListDAO {
 				wlVO.setGu(rs.getString("gu"));
 				wlVO.setPrice(rs.getInt("price"));
 				wlVO.setComment_cnt(rs.getInt("comment_cnt"));
-				wlVO.setLike_cnt(rs.getInt("like_cnt"));
+				wlVO.setLiked_cnt(rs.getInt("liked_cnt"));
 				
 				list.add(wlVO);
 			}//end while;

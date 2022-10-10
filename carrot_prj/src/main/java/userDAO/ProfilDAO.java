@@ -30,6 +30,8 @@ public class ProfilDAO {
 		return pDAO;
 	}//getInstance
 	
+	
+	//사용자 기본 정보 가져오기
 	public List<ProfilVO> selectPp(String id) throws SQLException {
 		List<ProfilVO> list = new ArrayList<ProfilVO>();
 		
@@ -46,7 +48,7 @@ public class ProfilDAO {
 				//3. 쿼리문 생성객체 얻기
 					StringBuilder selectCpEmp = new StringBuilder();
 					selectCpEmp
-					.append("	select id, img, nick, reported_cnt	")
+					.append("	select rpad(substr(id,1,4),8,'*') id, img, nick, reported_cnt	")
 					.append("	from	member							")
 					.append("	where id =?								");
 					
@@ -73,6 +75,7 @@ public class ProfilDAO {
 		return list;
 	}//selectPp
 	
+	//상품 전체조회
 	public List<ProfilPVO> selectPdAll(String id) throws SQLException {
 		List<ProfilPVO> list = new ArrayList<ProfilPVO>();
 		
@@ -89,7 +92,7 @@ public class ProfilDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
-			.append("	select	pd.id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.posted_date, pd.reserv, pd.sold_chk, pd.price	 	")
+			.append("	select	pd.id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.posted_date, pd.reserved, pd.sold_check, pd.price	 	")
 			.append("	from	product pd, loc_category lc																											")
 			.append("	where	( pd.gu_idx = lc.gu_idx ) and id	=	?																																	");
 			
@@ -110,8 +113,8 @@ public class ProfilDAO {
 				ppVO.setTitle(rs.getString("title"));
 				ppVO.setGu(rs.getString("gu"));
 				ppVO.setPosted_date(rs.getDate("posted_date"));
-				ppVO.setReserv(rs.getString("reserv"));
-				ppVO.setSold_chk(rs.getString("sold_chk"));
+				ppVO.setReserved(rs.getString("reserved"));
+				ppVO.setSold_check(rs.getString("sold_check"));
 				ppVO.setPrice(rs.getInt("price"));
 				
 				list.add(ppVO);
@@ -125,6 +128,7 @@ public class ProfilDAO {
 		return list;
 	}//selectPdAll
 	
+	//판매상품보기
 	public List<ProfilPVO> selectSO(String id) throws SQLException {
 		List<ProfilPVO> list = new ArrayList<ProfilPVO>();
 		
@@ -141,9 +145,9 @@ public class ProfilDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
-			.append("	select	pd.id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.posted_date, pd.reserv, pd.sold_chk, pd.price	 	")
+			.append("	select	pd.id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.posted_date, pd.reserved, pd.sold_check, pd.price	 	")
 			.append("	from	product pd, loc_category lc																											")
-			.append("	where	( pd.gu_idx = lc.gu_idx ) and id	=	?, 	sold_chk = N																			");
+			.append("	where	( pd.gu_idx = lc.gu_idx ) and id	=	? and 	sold_check = 'N'																			");
 			
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
@@ -162,8 +166,8 @@ public class ProfilDAO {
 				pVO.setTitle(rs.getString("title"));
 				pVO.setGu(rs.getString("gu"));
 				pVO.setPosted_date(rs.getDate("posted_date"));
-				pVO.setReserv(rs.getString("reserv"));
-				pVO.setSold_chk(rs.getString("sold_chk"));
+				pVO.setReserved(rs.getString("reserved"));
+				pVO.setSold_check(rs.getString("sold_check"));
 				pVO.setPrice(rs.getInt("price"));
 				
 				list.add(pVO);
@@ -177,6 +181,7 @@ public class ProfilDAO {
 		return list;
 	}//selectSO
 	
+	//거래완료 상품보기
 	public List<ProfilPVO> selectPS(String id) throws SQLException {
 		List<ProfilPVO> list = new ArrayList<ProfilPVO>();
 		
@@ -193,9 +198,9 @@ public class ProfilDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
-			.append("	select	pd.id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.posted_date, pd.reserv, pd.sold_chk, pd.price	 	")
+			.append("	select	pd.id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.posted_date, pd.reserved, pd.sold_check, pd.price	 	")
 			.append("	from	product pd, loc_category lc																											")
-			.append("	where	( pd.gu_idx = lc.gu_idx ) and id	=	?, 	sold_chk = Y																			");
+			.append("	where	( pd.gu_idx = lc.gu_idx ) and id	=	? and 	sold_check = 'Y'																			");
 			
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
@@ -214,8 +219,8 @@ public class ProfilDAO {
 				pVO.setTitle(rs.getString("title"));
 				pVO.setGu(rs.getString("gu"));
 				pVO.setPosted_date(rs.getDate("posted_date"));
-				pVO.setReserv(rs.getString("reserv"));
-				pVO.setSold_chk(rs.getString("sold_chk"));
+				pVO.setReserved(rs.getString("reserved"));
+				pVO.setSold_check(rs.getString("sold_check"));
 				pVO.setPrice(rs.getInt("price"));
 				
 				list.add(pVO);
@@ -229,6 +234,7 @@ public class ProfilDAO {
 		return list;
 	}//selectSO
 	
+	//신고사유 불러오기
 	public List<ReportVO> selectReport() throws SQLException{
 		List<ReportVO> list = new ArrayList<ReportVO>();
 		
@@ -247,7 +253,7 @@ public class ProfilDAO {
 			selectCpEmp
 			.append("	select	rr_idx, report_type, contents	")
 			.append("	from	report								")
-			.append("	where	report_type =	B				");
+			.append("	where	report_type =	'B'				");
 			
 			pstmt = con.prepareStatement(selectCpEmp.toString());
 		//4. 바인드 변수에 값 설정
@@ -274,6 +280,7 @@ public class ProfilDAO {
 		return list;
 	}//selectReport
 	
+	//차단하기
 	public void insertReportM(ReportMVO pmVO) throws SQLException {
 		
 		DbConnection dc = DbConnection.getInstance();
@@ -301,6 +308,7 @@ public class ProfilDAO {
 		
 	}//insertReportM
 	
+	//차단 수 업데이트
 	public int updateRU(String id) throws SQLException {
 		int updateCnt = 0;
 		
@@ -332,7 +340,8 @@ public class ProfilDAO {
 		
 		return updateCnt;
 	}//updateRU
-	
+
+//차단하기
 public void insertBlock(BlockUVO buVO) throws SQLException {
 		
 		DbConnection dc = DbConnection.getInstance();
@@ -349,7 +358,7 @@ public void insertBlock(BlockUVO buVO) throws SQLException {
 			pstmt=con.prepareStatement(insert); // 쿼리문을 넣어 쿼리문 실행객체를 얻는다.
 		//4. 바인드변수에 값 설정
 			pstmt.setString(1, buVO.getId());
-			pstmt.setString(3, buVO.getBlock_id());
+			pstmt.setString(2, buVO.getBlock_id());
 		//5. 쿼리문 수행 후 결과 얻기
 			pstmt.executeUpdate();
 		} finally {

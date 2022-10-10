@@ -142,7 +142,7 @@ MyInfoVO info = miDAO.selectInfo(id);
 						</tr>
 						<tr>
 							<th><label>아이디</label></th>
-							<td><input type="text" value="<%= info.getId() %>" name="id" id="id" class="inputTxt inputIdtype" maxlength="20" readonly="readonly" /></td>
+							<td><input type="text" value="${ id }" name="id" id="id" class="inputTxt inputIdtype" maxlength="20" readonly="readonly" /></td>
 						</tr>
 						<tr>
 							<th scope="row"><label>생년월일</label></th>

@@ -1,5 +1,10 @@
+<%@page import="userVO.WishListVO"%>
+<%@page import="java.util.List"%>
+<%@page import="userDAO.WishListDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +23,19 @@
 	}
 %>
 <body>
+<!--VO객체 생성 -->
+<jsp:useBean id="wlVO" class="userVO.WishListVO"></jsp:useBean>
+<!-- session에 저장된 아이디를 구매자 아이디로 설정 -->
+<jsp:setProperty property="id" name="wlVO" value="${ id }"/>
+<jsp:setProperty property="product_idx" name="wlVO"/>
+<jsp:setProperty property="thumbnail" name="wlVO"/>
+<jsp:setProperty property="title" name="wlVO"/>
+<jsp:setProperty property="gu_idx" name="wlVO"/>
+<jsp:setProperty property="gu" name="wlVO"/>
+<jsp:setProperty property="price" name="wlVO"/>
+<jsp:setProperty property="comment_cnt" name="wlVO"/>
+<jsp:setProperty property="liked_cnt" name="wlVO"/>
+
 <div class="wrap">
 
 <!-- header -->
@@ -29,23 +47,33 @@
 <div class="container">
 <%@ include file="myinfo_navi.jsp" %>
 
+<%
+String id = (String)session.getAttribute("id");
+WishListDAO wlDAO = WishListDAO.getInstance();
+List<WishListVO> wlList = wlDAO.selectWL(id);
+
+//스콥객체에 할당
+pageContext.setAttribute("wlList", wlList);
+%>
+
 <div class="list_of_interests_wrap">
 	<div class="list_of_interests">관심목록</div>
+	<c:forEach var="wl" items="${ wlList }">
 	<div class="list_of_interests_item">
 		<div class="list_of_interests_item_img">
 			<img alt="이미지 자리" src="#void">
 				<div class="list_of_interests_item_border">
-					<div class="loi_title">오가닉 수유쿠션 팝니다~! <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="heart_btn" viewBox="0 0 16 16">
+					<div class="loi_title"><c:out value="${ wl.title }"/> <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="heart_btn" viewBox="0 0 16 16">
   						<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>
-							<div class="dong_date">연남동</div><!-- dong_date -->
+							<div class="dong_date"><c:out value="${ wl.gu }"/> </div><!-- dong_date -->
 								<div class="price_ch">
-									<div class="price">35,000원</div>
+									<div class="price"><fmt:formatNumber pattern="#,###,###" value="${ wl.price }"/>원</div>
 									 	<div class="cmt_n_heart">
 											<div class="heart">하트
-												<div clss="heart_cnt">2</div><!-- 하트 카운트 -->
+												<div clss="heart_cnt"><c:out value="${ wl.liked_cnt }"/> </div><!-- 하트 카운트 -->
 													</div><!-- 하트 -->
 											<div class="cmt">댓글
-													<div>7</div><!-- 댓글 카운트 -->
+													<div><c:out value="${ wl.comment_cnt }"/> </div><!-- 댓글 카운트 -->
 												</div><!-- 댓글 -->
 										</div><!-- cmt_n_heart -->
 									</div><!-- price_ch -->
@@ -53,56 +81,7 @@
 	</div><!-- loi_border-->
 	</div><!-- loi_img -->
 	</div><!-- loi 전체를 담는 div -->
-<!-- 2 -->
-	<div class="list_of_interests_item">
-		<div class="list_of_interests_item_img">
-			<img alt="이미지 자리" src="#void">
-				<div class="list_of_interests_item_border">
-					<div class="loi_title">판매글 제목 <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="heart_btn" viewBox="0 0 16 16">
-  						<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>
-						<div class="dong_date">서울 어디어디
-							<div class="price_ch">
-									<div class="price">55,000원</div>
-									 	<div class="cmt_n_heart">
-											<div class="heart">하트
-												<div clss="heart_cnt">1</div><!-- 하트 카운트 -->
-													</div><!-- 하트 -->
-											<div class="cmt">댓글
-													<div>5</div><!-- 댓글 카운트 -->
-												</div><!-- 댓글 -->
-										</div><!-- cmt_n_heart -->
-									</div><!-- price_ch -->
-											
-	</div><!-- dong_date -->
-	</div><!-- loi_title -->
-	</div><!-- loi_border-->
-	</div><!-- loi_img -->
-	</div><!-- loi 전체를 담는 div -->	
-<!-- 3 -->
-	<div class="list_of_interests_item">
-		<div class="list_of_interests_item_img">
-			<img alt="이미지 자리" src="#void">
-			<div class="list_of_interests_item_border">
-				<div class="loi_title">판매글 제목 <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="heart_btn" viewBox="0 0 16 16">
-  						<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>
-					<div class="dong_date">서울 어디어디
-						<div class="price_ch">
-									<div class="price">18,000원</div>
-									 	<div class="cmt_n_heart">
-											<div class="heart">하트
-												<div clss="heart_cnt">6</div><!-- 하트 카운트 -->
-													</div><!-- 하트 -->
-											<div class="cmt">댓글
-													<div>9</div><!-- 댓글 카운트 -->
-												</div><!-- 댓글 -->
-										</div><!-- cmt_n_heart -->
-									</div><!-- price_ch -->
-							
-	 </div><!-- dong_date -->								
-	</div><!-- loi_title -->
-	</div><!-- loi_border-->
-	</div><!-- loi_img -->
-	</div><!-- loi 전체를 담는 div -->
+	</c:forEach>
 </div>
 </div>
 <!-- container end -->
