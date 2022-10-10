@@ -154,6 +154,7 @@ public class PostDAO {
 		return list;
 	}
 	
+	
 	public PostVO selectPost(PostVO pVO) throws SQLException {
 		List<PostVO> list = new ArrayList<PostVO>();
 		
@@ -246,18 +247,19 @@ public void insertPost(PostVO pVO) throws SQLException{
 			StringBuilder insert = new StringBuilder();
 			insert
 			.append("	insert into product(product_idx, gu_idx, category_idx, free, price, title, thumbnail, contents,id)			")
-			.append("	values( (to_char(sysdate, 'yymmdd') || round(dbms_random.value(1000,10000))) , ?, ?, ?, ?, ?, ?, ?, ?)	");
+			.append("	values( ?, ?, ?, ?, ?, ?, ?, ?, ?)	");
 		
 			pstmt = con.prepareStatement(insert.toString());
 		//4. 바인드 변수에 값 설정
-			pstmt.setInt(1, pVO.getGu_idx());
-			pstmt.setInt(2, pVO.getCategory_idx());
-			pstmt.setString(3, pVO.getFree());
-			pstmt.setInt(4, pVO.getPrice());
-			pstmt.setString(5, pVO.getTitle());
-			pstmt.setString(6, pVO.getThumbnail());
-			pstmt.setString(7, pVO.getContents());
-			pstmt.setString(8, pVO.getId());
+			pstmt.setString(1, pVO.getProduct_idx());
+			pstmt.setInt(2, pVO.getGu_idx());
+			pstmt.setInt(3, pVO.getCategory_idx());
+			pstmt.setString(4, pVO.getFree());
+			pstmt.setInt(5, pVO.getPrice());
+			pstmt.setString(6, pVO.getTitle());
+			pstmt.setString(7, pVO.getThumbnail());
+			pstmt.setString(8, pVO.getContents());
+			pstmt.setString(9, pVO.getId());
 		//5. 쿼리문 수행 후 결과 얻기
 			pstmt.executeUpdate();
 		} finally {

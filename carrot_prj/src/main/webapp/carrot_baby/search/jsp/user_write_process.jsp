@@ -23,10 +23,11 @@ request.setCharacterEncoding("UTF-8");
 <!-- 1. parameter 받을 VO 생성 -->
 <%-- <jsp:useBean id="객체명" class="객체화할 클래스" scope=""/> --%>
 <jsp:useBean id="pVO" class="userVO.PostVO"/>
+<jsp:useBean id="iVO" class="userVO.ImgVO"/>
 
 <%
 	//1. 업로드 경로 얻기
-	File uploadDir=new File("C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/search/jsp");
+	File uploadDir=new File("C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/search/image");
 	//2. 업로드할 파일 크기를 연산
 	int maxSize=1024*1024*5;
 	//3. 업로드
@@ -46,6 +47,11 @@ request.setCharacterEncoding("UTF-8");
 	
 	boolean flag=false;
 	File temp = new File(uploadDir.getAbsolutePath()+"/"+reName[i]);
+	if(i > 0){
+%>
+<jsp:setProperty property="product_img" name="iVO" value="<%= reName[i] %>"/>
+<%
+	}
 	int checkSize=1024*1024*5;
 	if( temp.length() >= checkSize) {
 		flag=true;
@@ -61,9 +67,9 @@ request.setCharacterEncoding("UTF-8");
 업로드 파일은 5MByte까지만 가능합니다.
 <%}//end else %>
 <%} %>
+<%
 
-
-
+%>
 <%
 String title = mr.getParameter("title");
 String contents = mr.getParameter("contents");
@@ -83,13 +89,14 @@ if(free == null){
 <!-- 2. VO에 setter method(property) 호출 -->
 <%-- <jsp:setProperty name="객체명" property="*"/> --%>
 <jsp:setProperty property="id" name="pVO" value="<%= user_id %>"/>
+<jsp:setProperty property="product_idx" name="pVO" value="<%= product_idx %>"/>
 <jsp:setProperty property="category_idx" name="pVO" value="<%= category_idx %>"/>
 <jsp:setProperty property="gu_idx" name="pVO" value="<%= gu_idx %>"/>
-<jsp:setProperty property="thumbnail" name="pVO" value="1234.png"/>
+<jsp:setProperty property="thumbnail" name="pVO" value="<%= reName[0] %>"/>
 <jsp:setProperty property="price" name="pVO" value="<%= price %>"/>
 <jsp:setProperty property="free" name="pVO" value="<%= free %>"/>
 <jsp:setProperty property="title" name="pVO" value="<%= title %>"/>
-<jsp:setProperty property="contents" name="pVO" <%= contents %>/>
+<jsp:setProperty property="contents" name="pVO" value="<%= contents %>"/>
 <%
 PostDAO pDAO = PostDAO.getInstance();
 out.println(pVO);

@@ -168,6 +168,7 @@ session.setAttribute("user_id", user_id);
 		<h1 class="write-title">중고거래 글쓰기</h1>
 		<div class="write">
 		<form name="writePost" id="writePost"  action="user_write_process.jsp" enctype="multipart/form-data" method="post">
+		<input type="hidden" name="product_idx" id="product_idx" value=""/>
 			<div class="write-sel-wrap">
 						<div class="write-sel-wrap-text">서울특별시</div>
 						<select id="category_loc"name="category_loc" class="write-select" >
