@@ -51,8 +51,6 @@ $(function() {
 		</ul>
 	</div>
 	<button type="button" class="report-wc-btn" id="reportBtn" name="reportBtn">신고하기</button>
-	
-	
 </div>
 </form>
  	<%-- 신고하기 프로세스 --%>

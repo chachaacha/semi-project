@@ -12,48 +12,49 @@ import managerVO.BoardVO;
 import managerVO.MangerCommentVO;
 
 public class BoardDAO {
-private static BoardDAO bDAO;
-	
+	private static BoardDAO bDAO;
+
 	private BoardDAO() {
-	
+
 	}
-	
+
 	public static BoardDAO getInstance() {
-		if(bDAO==null){
-			bDAO=new BoardDAO();
+		if (bDAO == null) {
+			bDAO = new BoardDAO();
 		}
 		return bDAO;
 	}
-	
+
 	/**
 	 * 게시물 정보 띄우기
+	 * 
 	 * @param product_idx
 	 * @return
 	 * @throws SQLException
 	 */
 	public BoardVO selectB(String product_idx) throws SQLException {
-		BoardVO bVO=null;
-		DbConnection db=DbConnection.getInstance();
-		
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		ResultSet rs=null;
-		
+		BoardVO bVO = null;
+		DbConnection db = DbConnection.getInstance();
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
 		try {
-			con=db.getConn();
-			
+			con = db.getConn();
+
 			StringBuilder sb = new StringBuilder();
-			sb
-			.append(" select m.img ,m.id, m.nick, p.thumbnail, p.price, p.title, p.contents, p.report_cnt, p.comment_cnt, p.free, p.reserved, p.liked_cnt, p.sold_check, p.posted_date, lc.gu, pc.category ")
-			.append(" from member m, product p, LOC_CATEGORY lc, PRODUCT_CATEGORY pc ")
-			.append(" where (p.id=m.id and p.gu_idx=lc.gu_idx and p.category_idx = pc.category_idx) and p.product_idx=? ");
-			
-			pstmt=con.prepareStatement(sb.toString());
+			sb.append(
+					" select m.img ,m.id, m.nick, p.thumbnail, p.price, p.title, p.contents, p.report_cnt, p.comment_cnt, p.free, p.reserved, p.liked_cnt, p.sold_check, p.posted_date, lc.gu, pc.category ")
+					.append(" from member m, product p, LOC_CATEGORY lc, PRODUCT_CATEGORY pc ")
+					.append(" where (p.id=m.id and p.gu_idx=lc.gu_idx and p.category_idx = pc.category_idx) and p.product_idx=? ");
+
+			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setString(1, product_idx);
-			rs=pstmt.executeQuery();
-			
-			if(rs.next()) {
-				bVO=new BoardVO();
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				bVO = new BoardVO();
 				bVO.setImg(rs.getString("img"));
 				bVO.setId(rs.getString("id"));
 				bVO.setNick(rs.getString("nick"));
@@ -70,82 +71,79 @@ private static BoardDAO bDAO;
 				bVO.setPosted_date(rs.getDate("posted_date"));
 				bVO.setGu(rs.getString("gu"));
 				bVO.setCategory(rs.getString("category"));
-			}//end if
-			
-		}finally {
+			} // end if
+
+		} finally {
 			db.dbClose(rs, pstmt, con);
 		}
 		return bVO;
-	}//selectB
-	
-	
+	}// selectB
+
 	/**
 	 * 게시글 이미지 가져오기
+	 * 
 	 * @param product_idx
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<String> selectImg(String product_idx) throws SQLException{
+	public List<String> selectImg(String product_idx) throws SQLException {
 		List<String> list = new ArrayList<String>();
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		ResultSet rs=null;
-		
-		DbConnection db=DbConnection.getInstance();
-		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		DbConnection db = DbConnection.getInstance();
+
 		try {
-			con=db.getConn();
-			
-			StringBuilder sb=new StringBuilder();
-			sb
-			.append("	select pi.product_img	")
-			.append("	from product_img pi, product pd	")
-			.append("	where ( pi.product_idx = pd.product_idx) and pd.product_idx = ?  ");
-			pstmt=con.prepareStatement(sb.toString());
+			con = db.getConn();
+
+			StringBuilder sb = new StringBuilder();
+			sb.append("	select pi.product_img	").append("	from product_img pi, product pd	")
+					.append("	where ( pi.product_idx = pd.product_idx) and pd.product_idx = ?  ");
+			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setString(1, product_idx);
-			rs= pstmt.executeQuery();
-			
-			while(rs.next()) {
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
 				list.add(rs.getString("product_img"));
 			}
-			
-		}finally {
+
+		} finally {
 			db.dbClose(rs, pstmt, con);
 		}
 		return list;
-	}//selectImg
-	
-	
-	
+	}// selectImg
+
 	/**
 	 * 댓글불러오기
+	 * 
 	 * @param product_idx
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<MangerCommentVO> selectComm(String product_idx) throws SQLException{
+	public List<MangerCommentVO> selectComm(String product_idx) throws SQLException {
 		List<MangerCommentVO> list = new ArrayList<>();
-		DbConnection db=DbConnection.getInstance();
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		ResultSet rs=null;
-		
+		DbConnection db = DbConnection.getInstance();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
 		try {
-			con=db.getConn();
+			con = db.getConn();
 			StringBuilder sb = new StringBuilder();
 			sb
-			.append(" select m.nick||'('||substr(m.id,0,4)||'****'||')' nick, m.id, m.img, pc.comment_idx, pc.reply_idx, pc.contents, pc.reported_cnt, pc.posted_date ")
+			.append(" select m.nick||'('||substr(m.id,0,4)||'****'||')' nick, m.id, m.img, pc.comment_idx, pc.reply_idx, pc.contents, pc.reported_cnt, pc.posted_date, pc.deleted ")
 			.append(" from product_comment pc, member m ")
 			.append(" where (pc.id = m.id) and product_idx = ? ")
 			.append(" order by pc.comment_idx, pc.reply_idx, posted_date ");
-			
-			pstmt=con.prepareStatement(sb.toString());
+
+			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setString(1, product_idx);
-			
-			rs=pstmt.executeQuery();
-			
-			MangerCommentVO mcVO=null;
-			while(rs.next()) {
+
+			rs = pstmt.executeQuery();
+
+			MangerCommentVO mcVO = null;
+			while (rs.next()) {
 				mcVO = new MangerCommentVO();
 				mcVO.setIdPlusNick(rs.getString("nick"));
 				mcVO.setId(rs.getString("id"));
@@ -155,78 +153,75 @@ private static BoardDAO bDAO;
 				mcVO.setContents(rs.getString("contents"));
 				mcVO.setReported_cnt(rs.getInt("reported_cnt"));
 				mcVO.setPosted_date(rs.getDate("posted_date"));
+				mcVO.setDeleted(rs.getString("deleted"));
 				list.add(mcVO);
 			}
-		}finally {
+		} finally {
 			db.dbClose(rs, pstmt, con);
 		}
 		return list;
-	}//selectComm
-	
+	}// selectComm
+
 	/**
-	 * 댓글삭제
+	 * 댓글삭제(실제로는 업데이트)
 	 * @param mcVO
 	 * @return
 	 * @throws SQLException
 	 */
 	public int updateDropC(MangerCommentVO mcVO) throws SQLException {
-		int updateCnt=0;
-		
+		int resultCnt = 0;
+
 		DbConnection db = DbConnection.getInstance();
-		
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
 		try {
-			con=db.getConn();
-			
-			StringBuilder updateDropC = new StringBuilder();
-			updateDropC
+			con = db.getConn();
+
+			StringBuilder sb = new StringBuilder();
+			sb
 			.append("	update product_comment	")
-			.append("	set deleted= 'Y'	")
-			.append("	where comment_idx=? and reply_idx=? and product_idx=?	");
+			.append("	set deleted='Y', contents='관리자에 의해 삭제된 댓글입니다.' ")
+			.append("	where product_idx=? and comment_idx=? and reply_idx=? ");
+
+			pstmt = con.prepareStatement(sb.toString());
 			
-			pstmt=con.prepareStatement(updateDropC.toString());
-			pstmt.setInt(1, mcVO.getComment_idx());
-			pstmt.setInt(2, mcVO.getReply_idx());
-			/* pstmt.setString(3, mcVO.getProduct_idx()); */
-			
-			updateCnt=pstmt.executeUpdate();
-		}finally {
+			pstmt.setString(1, mcVO.getProduct_idx());
+			pstmt.setInt(2, mcVO.getComment_idx());
+			pstmt.setInt(3, mcVO.getReply_idx());
+
+			resultCnt = pstmt.executeUpdate();
+		} finally {
 			db.dbClose(null, pstmt, con);
 		}
-				
-		return updateCnt;
-	}//updateDropC
+		return resultCnt;
+	}// updateDropC
+
 	
-	public int updateReportC(MangerCommentVO mcVO) throws SQLException {
-		int updateCnt=0;
-		
-		DbConnection db = DbConnection.getInstance();
-		
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		
-		try {
-			con=db.getConn();
-			
-			StringBuilder updateReportC = new StringBuilder();
-			updateReportC
-			.append("	update product	")
-			.append("	set comment_cnt = (select count(product_idx) from product_comment where product_idx=?)	")
-			.append("	where product_idx=?	");
-			
-			pstmt=con.prepareStatement(updateReportC.toString());
-			/*
-			 * pstmt.setString(1, mcVO.getProduct_idx()); pstmt.setString(2,
-			 * mcVO.getProduct_idx());
-			 */
-			
-			updateCnt=pstmt.executeUpdate();
-		}finally {
-			db.dbClose(null, pstmt, con);
-		}
-		
-		return updateCnt;
-	}//updateReportC
+	/*
+	 * public int updateReportC(MangerCommentVO mcVO) throws SQLException { int
+	 * updateCnt=0;
+	 * 
+	 * DbConnection db = DbConnection.getInstance();
+	 * 
+	 * Connection con=null; PreparedStatement pstmt=null;
+	 * 
+	 * try { con=db.getConn();
+	 * 
+	 * StringBuilder updateReportC = new StringBuilder(); updateReportC
+	 * .append("	update product	")
+	 * .append("	set comment_cnt = (select count(product_idx) from product_comment where product_idx=?)	"
+	 * ) .append("	where product_idx=?	");
+	 * 
+	 * pstmt=con.prepareStatement(updateReportC.toString());
+	 * 
+	 * pstmt.setString(1, mcVO.getProduct_idx()); pstmt.setString(2,
+	 * mcVO.getProduct_idx());
+	 * 
+	 * 
+	 * updateCnt=pstmt.executeUpdate(); }finally { db.dbClose(null, pstmt, con); }
+	 * 
+	 * return updateCnt; }//updateReportC
+	 */
 }

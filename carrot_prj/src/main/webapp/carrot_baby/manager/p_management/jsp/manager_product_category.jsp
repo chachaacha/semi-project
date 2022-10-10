@@ -1,3 +1,5 @@
+<%@page import="java.util.Arrays"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="javax.print.attribute.standard.PagesPerMinuteColor"%>
 <%@page import="managerVO.ProductVO"%>
 <%@page import="managerVO.ProductSearchVO"%>
@@ -133,12 +135,22 @@ $(function() {
 	
 	///////////////////////////////////////  팝업창 끝  //////////////////////////////////////////////////
    
+	//일괄삭제
+	$("#deleteBtn").click(function(){
+		if($("[name='productChk']:checked").val()==null){
+			alert("삭제할 상품을 선택하세요.");
+		} else {
+			if(confirm("정말로 삭제하시겠습니까?")){
+				$("#deleteFrm").submit();
+			}
+		}
+	});
 	
 });// end document ready
 
 //일괄선택
 function check() {
-	if($("[name='chkFlag']").is(":checked")) {
+	if($("#chkFlag").is(":checked")) {
 		$("[name='productChk']").prop("checked",true);
 	} else {
 		$("[name='productChk']").prop("checked",false);
@@ -205,7 +217,7 @@ function openPopup(idx) {
 						<div class="rc_txt">신고받은 댓글</div>
 					</a>
 					<div class="pm-btn-search">
-						<button type="button" class="all-delete-btn">일괄삭제</button>
+						<button type="button" class="all-delete-btn" id="deleteBtn">일괄삭제</button>
 						<div class="align-btn-wrap">
 							<c:if test="${ empty param.titleSearch }"> 
 							<button type="button" class="align-btn">정렬
@@ -303,19 +315,20 @@ function openPopup(idx) {
 							<jsp:useBean id="psVO" class="managerVO.ProductSearchVO"></jsp:useBean><%-- VO생성 --%>
 							<jsp:setProperty property="*" name="psVO"/><%-- hidFrm 서브밋시 form name과 변수명이 같은 같 자동 setter --%>
 							<%-- 기본적으로는 날짜 내림차순정렬로 보여준다. --%>
-							<jsp:setProperty property="dateOrderFlag" name="psVO" value="${ empty param.dateOrderFlag && empty param.reportOrderFlag ?1:param.dateOrderFlag }"/>
+							<jsp:setProperty property="dateOrderFlag" name="psVO" value="${ empty param.dateOrderFlag and empty param.reportOrderFlag ?1:param.dateOrderFlag }"/>
 							<%
 							//상품불러오기
-							ProductDAO dDAO = ProductDAO.getInstance(); 
-				    		List<ProductVO> proList = dDAO.selectProduct(psVO);
+							ProductDAO pDAO = ProductDAO.getInstance(); 
+				    		List<ProductVO> proList = pDAO.selectProduct(psVO);
 							%>
 							<c:if test="${ not empty param.titleSearch }">
-							<% proList=dDAO.selectKeywordProduct(request.getParameter("titleSearch").trim()); %>
+							<% proList=pDAO.selectKeywordProduct(request.getParameter("titleSearch").trim()); %>
 							</c:if>
 							<% pageContext.setAttribute("proList", proList); %>
-						 	<table class="table">
+						 <form id="deleteFrm">
+						 <table class="table">
 						    <caption>표 제목</caption>
-						    <tr><th><input type="checkbox" name="chkFlag" class="table-check" onclick="check()"></th><th class="table-title">제목</th><th>작성자</th><th>상품카테고리</th><th>상태</th><th>등록일</th><th>신고수</th></tr>
+						    <tr><th><input type="checkbox" id="chkFlag" class="table-check" onclick="check()"></th><th class="table-title">제목</th><th>작성자</th><th>상품카테고리</th><th>상태</th><th>등록일</th><th>신고수</th></tr>
 						    <c:if test="${ empty pageScope.proList }">
 						  	<tr><td colspan="7">조회된결과가 없습니다.</td></tr>
 						  	</c:if>
@@ -323,6 +336,30 @@ function openPopup(idx) {
 						    <tr><td><input type="checkbox" name="productChk" class="table-check" value="${ proList.product_idx }"></td><td><a href="javascript:openPopup('${ proList.product_idx }')" style="color:black"><c:out value="${ proList.title }"/></a></td><td><c:out value="${ proList.id }"/></td><td><c:out value="${ proList.category }"/></td><td><c:out value="${ proList.sold_check }"/></td><td><c:out value="${ proList.posted_date }"/></td><td><c:out value="${ proList.report_cnt }"/></td></tr>
 						  	</c:forEach>
 						 </table>  
+						 </form>
+						 
+						 <%-- 일괄삭제 처리 --%>
+						 <c:if test="${ not empty paramValues.productChk or not empty param.productChk }">
+						 <c:catch var="ex">
+						 <% 
+						 	String[] proArr = request.getParameterValues("productChk");
+						 	List<String> list = new ArrayList<String>(Arrays.asList(proArr));
+						 	int resultCnt = pDAO.deleteProduct(list);
+						 	pageContext.setAttribute("resultCnt", resultCnt);
+						 %>
+						 </c:catch>
+						 <c:if test="${ not empty ex }">
+						 <%-- 향휴 테이블에 on cascade 설정하기 --%>
+						 <script type="text/javascript">
+						 alert("무결성 예외발생!!");
+						 location.href="manager_product_category.jsp";
+						 </script>
+						 </c:if>
+						 <script type="text/javascript">
+						 alert("${ pageScope.resultCnt }개의 게시물이 삭제되었습니다.");
+						 location.href="manager_product_category.jsp";
+						 </script>
+						 </c:if>
 					</div>
 				</div>
 			</div>

@@ -36,8 +36,6 @@ $(function() {
 		$("#searchStau").val(word.trim());
 		$("#hidFrm").submit();
 	});
-	
-	
 });
 
 //신고 누를 시 팝업창열기

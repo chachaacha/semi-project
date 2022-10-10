@@ -41,7 +41,17 @@ $(function() {
 	   $(".delete-btn").click(function() {
 			self.close();
 	   })
-})
+});
+
+function deleteComm(proIdx, commIdx, repIdx, del) {
+	if(confirm("정말로 삭제하시겠습니까?")){
+		location.href="manager_pm_product_popup.jsp?product_idx="+proIdx+"&comment_idx="+commIdx+"&reply_idx="+repIdx+"&deleted="+del;
+	} else {
+		location.href="manager_pm_product_popup.jsp?product_idx=${ param.product_idx }";
+	}
+		
+};
+
 </script>
 </head>
 <body>
@@ -170,11 +180,14 @@ pageContext.setAttribute("commList", commList);
 			               <time class="comments-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${ commList.posted_date }"/></time>
 			           </div>
 		    	 </div>
+		       <%-- <a href="manager_pm_product_popup.jsp?product_idx=${ param.product_idx }&comment_idx=${ commList.comment_idx }&reply_idx=${ commList.reply_idx }"> --%>
+		       <a href="javascript:deleteComm('${ param.product_idx }','${ commList.comment_idx }','${ commList.reply_idx  }','${ commList.deleted }')">
 			   <button type="button" class="delete-icon-btn">
 				   <svg  class="delete-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
 						<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
 					</svg>
 				</button>
+				</a>
 		   	</div>
 		   	<div class="comments-contents-wrap">
 			    <p class="comments-content"><c:out value="${ commList.contents }"/></p>
@@ -195,11 +208,13 @@ pageContext.setAttribute("commList", commList);
 			               <time class="comments-date"><fmt:formatDate pattern="yyyy-MM-dd" value="${ commList.posted_date }"/></time>
 			           </div>
 		    	 </div>
+		       <a href="javascript:deleteComm('${ param.product_idx }','${ commList.comment_idx }','${ commList.reply_idx  }','${ commList.deleted }')">
 			   <button type="button" class="delete-icon-btn">
 				   <svg  class="delete-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
 						<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
 					</svg>
 				</button>
+				</a>
 		   	</div>
 		   	<div class="comments-contents-wrap">
 			    <p class="comments-content"><c:out value="${ commList.contents }"/></p>
@@ -208,6 +223,28 @@ pageContext.setAttribute("commList", commList);
 		</c:otherwise>
 		</c:choose>
 		</c:forEach>
+		
+		<%-- 댓글삭제처리 --%>
+		<%-- 삭제여부도 가져와서 삭제누르면 삭제된 것은 삭제하지 못하게 처리해주는 것 추가하기 --%>
+		<c:choose>
+		<c:when test="${ not empty param.comment_idx and not empty param.reply_idx and param.deleted eq 'Y' }">
+		<script type="text/javascript">
+		alert("이미 삭제된 댓글입니다.");
+		location.href="manager_pm_product_popup.jsp?product_idx=${ param.product_idx }";
+		</script>
+		</c:when>
+		<c:when test="${ not empty param.comment_idx and not empty param.reply_idx }">
+		<jsp:useBean id="mcdVO" class="managerVO.MangerCommentVO"></jsp:useBean>
+		<jsp:setProperty property="product_idx" name="mcdVO" value="${ param.product_idx }"/>
+		<jsp:setProperty property="comment_idx" name="mcdVO" value="${ param.comment_idx }"/>
+		<jsp:setProperty property="reply_idx" name="mcdVO" value="${ param.reply_idx }"/>
+		<% bDAO.updateDropC(mcdVO); %>
+		<script type="text/javascript">
+		location.href="manager_pm_product_popup.jsp?product_idx=${ param.product_idx }";
+		alert("삭제되었습니다.");
+		</script>
+		</c:when>
+		</c:choose>
 	</div>
 <!-- comments end -->
 

@@ -147,7 +147,7 @@ public class ProductDAO {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public int deleteProduct(List<Integer> list) throws SQLException { 
+	public int deleteProduct(List<String> list) throws SQLException { 
 		int rowCnt=0;
 		DbConnection db = DbConnection.getInstance();
 		Connection con = null;
@@ -162,9 +162,10 @@ public class ProductDAO {
 		    }
 		    pstmt = con.prepareStatement(sb.toString());
 		    for(int i = 0; i< list.size();i++) {
-		    	pstmt.setInt(i+1, list.get(i));
+		    	pstmt.setString(i+1, list.get(i));
 		    }
 		    rowCnt = pstmt.executeUpdate();
+		    System.out.println(sb);
 		} finally {
 			db.dbClose(null, pstmt, con);
 		}
