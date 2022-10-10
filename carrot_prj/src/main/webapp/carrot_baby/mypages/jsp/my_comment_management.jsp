@@ -1,5 +1,11 @@
+<%@page import="userDAO.MyCommDAO"%>
+<%@page import="userVO.MyCommVO"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,17 +18,44 @@
 <script type="text/javascript">
 //선택 삭제와 댓글 삭제 버튼을 눌렀을 때 나오는 confirm창
 $(function() {
-	$(".mcl_button").click(function() { //선택 삭제 버튼
-		confirm("선택한 댓글을 정말 삭제하시겠어요?")
-	})
+	
 	$(".cmt_delete").click(function() {//댓글 삭제 버튼
 		confirm("선택한 댓글을 정말 삭제하시겠어요?")
 	})
-})
-</script>
+});
 
+function allChk() {
+	if($("#allChk").is(":checked")){
+		$("[name='commChk']").prop("checked",true);
+	} else {
+		$("[name='commChk']").prop("checked",false);
+	}
+}
+
+function oneCommDelete(pIdx, cIdx, rIdx) {
+	if(confirm("선택한 댓글을 정말 삭제하시겠어요?")){
+		location.href="";
+	} else {
+		
+	}
+	
+}
+
+</script>
 </head>
 <body>
+<c:if test="${ empty sessionScope.id }">
+<c:redirect url="../../login/jsp/user_login.jsp" />
+</c:if>
+
+<% 
+request.setCharacterEncoding("UTF-8");
+MyCommDAO mcDAO = MyCommDAO.getInstance();
+List<MyCommVO> mcList = mcDAO.selectMC((String)session.getAttribute("id"));
+pageContext.setAttribute("mcList", mcList);
+%>
+
+
 <div class="wrap">
 
 <!-- header -->
@@ -39,7 +72,7 @@ $(function() {
 		<div class="my_comment_list">
 			<div class="mcl_title">
 				<div class="mcl_title_align"><!-- mcl_title_align 시작 -->
-					<div><input type="checkbox" class="mcl_check">번호</div><!-- mcl_num -->	
+					<div><input type="checkbox" id="allChk" class="mcl_check" onclick="allChk()">번호</div><!-- mcl_num -->	
 					<div>내용</div><!-- mcl_content -->
 					<div>
 						<button class="mcl_button" type="button">선택삭제</button>
@@ -48,66 +81,27 @@ $(function() {
 		    </div><!-- mcl_title -->			
 				<!-- 댓글 내용들 -->
 				<div> <!-- mcl_content_wrap -->
+					<!-- 반복시작 -->
+					<c:set var="sizeChk" value="${ pageScope.mcList }"/>
+					<c:forEach var="mcList" items="${ pageScope.mcList }" varStatus="i">
 					<div class="mcl_content">
 						 <div><!-- chk_wrap -->
-						 	<input type="checkbox" class="mcl_check"/>1 
+						 	<input type="checkbox" name="commChk" class="mcl_check"/>${ i.count } 
 						 </div>
 					  <div class="content_wrap"><!-- content_wrap 시작 -->
-						<div class="post_style">[글] 국민체육관 팝니다.</div><!-- mcl_content의 제목 --><!-- 폰트크기 댓글이랑 날짜랑 차이나게 키워야함 -->
-						<div class="cmt_style">그럼 돈은 어디다 입금하죠</div> <!-- mcl_comment의 댓글 --><!-- 폰트 색 : gray -->
-						<div class="cmt_style">날짜</div><!-- mcl_content의 날짜 -->
+						<div class="post_style">[글]&nbsp;<c:out value="${ mcList.title }"/></div><!-- mcl_content의 제목 --><!-- 폰트크기 댓글이랑 날짜랑 차이나게 키워야함 -->
+						<div class="cmt_style"><c:out value="${ mcList.contents }" /></div> <!-- mcl_comment의 댓글 --><!-- 폰트 색 : gray -->
+						<div class="cmt_style"><fmt:formatDate pattern="yyyy-MM-dd" value="${ mcList.posted_date }"/></div><!-- mcl_content의 날짜 -->
 					</div><!-- content_wrap 끝 -->
 					
 						<div><!-- button_wrap 시작-->
-							<button class="cmt_delete" type="button">댓글삭제</button>
+							<a href="javascript:oneCommDelete('${ mcList.product_idx }','${ mcList.comment_idx }','${ mcList.reply_idx }')"><button class="cmt_delete" type="button">댓글삭제</button></a>
 						</div><!-- button_wrap 끝-->
 					</div><!-- mcl_content 1 -->
-				<hr>
-					<div class="mcl_content">
-						 <div><!-- chk_wrap -->
-						 	<input type="checkbox" class="mcl_check"/>2 
-						 </div>
-					  <div class="content_wrap"><!-- content_wrap 시작 -->
-						<div class="post_style">[글] 국민체육관 팝니다.</div><!-- mcl_content의 제목 --><!-- 폰트크기 댓글이랑 날짜랑 차이나게 키워야함 -->
-						<div class="cmt_style">판매자님 계좌번호 알려주세요</div> <!-- mcl_comment의 댓글 --><!-- 폰트 색 : gray -->
-						<div class="cmt_style">날짜</div><!-- mcl_content의 날짜 -->
-					</div><!-- content_wrap 끝 -->
-					
-						<div class="button_wrap"><!-- button_wrap 시작-->
-							<button class="cmt_delete" type="button">댓글삭제</button>
-						</div><!-- button_wrap 끝-->
-					</div><!-- mcl_content 2 -->
-				<hr>
-					<div class="mcl_content">
-						 <div><!-- chk_wrap -->
-						 	<input type="checkbox" class="mcl_check"/>3
-						 </div>
-					  <div class="content_wrap"><!-- content_wrap 시작 -->
-						<div class="post_style">[글] 국민체육관 팝니다.</div><!-- mcl_content의 제목 --><!-- 폰트크기 댓글이랑 날짜랑 차이나게 키워야함 -->
-						<div class="cmt_style">판매자님 계좌번호 알려주세요</div> <!-- mcl_comment의 댓글 --><!-- 폰트 색 : gray -->
-						<div class="cmt_style">날짜</div><!-- mcl_content의 날짜 -->
-					</div><!-- content_wrap 끝 -->
-					
-						<div class="button_wrap" ><!-- button_wrap 시작-->
-							<button class="cmt_delete" type="button">댓글삭제</button>
-						</div><!-- button_wrap 끝-->
-					</div><!-- mcl_content 3 -->
-				<hr>
-					<div class="mcl_content">
-						 <div><!-- chk_wrap -->
-						 	<input type="checkbox" class="mcl_check"/>4
-						 </div>
-					  <div class="content_wrap"><!-- content_wrap 시작 -->
-						<div class="post_style">[글] 국민체육관 팝니다.</div><!-- mcl_content의 제목 --><!-- 폰트크기 댓글이랑 날짜랑 차이나게 키워야함 -->
-						<div class="cmt_style">판매자님 계좌번호 알려주세요</div> <!-- mcl_comment의 댓글 --><!-- 폰트 색 : gray -->
-						<div class="cmt_style">날짜</div><!-- mcl_content의 날짜 -->
-					</div><!-- content_wrap 끝 -->
-					
-						<div class="button_wrap"><!-- button_wrap 시작-->
-							<button class="cmt_delete" type="button">댓글삭제</button>
-						</div><!-- button_wrap 끝-->
-					</div><!-- mcl_content 4 -->
-					
+					<c:if test="${ fn:length( sizeChk ) ne i.count }">
+					<hr>
+					</c:if>
+					</c:forEach>
 				
 </div><!-- mcl_content_wrap-->
 </div><!-- 댓글관리 리스트 전체-->

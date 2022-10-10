@@ -12,19 +12,17 @@ import userVO.MyCommVO;
 import common.DbConnection;
 
 public class MyCommDAO {
-	
 	private static MyCommDAO mcDAO;
 	
 	private MyCommDAO() {
-		
-	}//MyCommDAO
+	}
 
 	public static MyCommDAO getInstance() {
 		if( mcDAO == null ) {
 			mcDAO = new MyCommDAO();
-		}//end if
+		}
 		return mcDAO;
-	}//getInstance
+	}
 	
 	public List<MyCommVO> selectMC(String id) throws SQLException {
 		List<MyCommVO> list = new ArrayList<MyCommVO>();
@@ -42,9 +40,10 @@ public class MyCommDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
-			.append("	select	pc.id, pd.product_idx, pc.comment_idx, pc.reply_idx, pd.title, pc.contents, pc.posted_date	")
-			.append("	from	product_comment pc, product pd																		")
-			.append("	where	( pc.product_idx = pd.product_idx ) and id = ? and deleted = N									");
+			.append(" select pd.product_idx, pc.comment_idx, pc.reply_idx, pd.title, pc.contents, pc.posted_date ")
+			.append(" from product_comment pc, product pd ")
+			.append(" where ( pc.product_idx = pd.product_idx ) and pc.deleted = 'N' and pc.id = ? ")
+			.append(" order by pc.posted_date desc ");
 		
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
@@ -56,7 +55,6 @@ public class MyCommDAO {
 			
 			while( rs.next() ) {
 				mcVO = new MyCommVO();
-				mcVO.setId(rs.getString("id"));
 				mcVO.setProduct_idx(rs.getString("product_idx"));
 				mcVO.setComment_idx(rs.getInt("comment_idx"));
 				mcVO.setReply_idx(rs.getInt("reply_idx"));
@@ -70,44 +68,30 @@ public class MyCommDAO {
 		//6. 연결 끊기.
 			dc.dbClose(rs, pstmt, con);
 		}//finally
-		
 		return list;
 	}//selectMC
 	
-	public int updateMC(MyCommVO mcVO) throws SQLException {
-		int updateCnt = 0;
-		
+	public int updateDropMc(MyCommVO mcVO) throws SQLException {
+		int resultCnt = 0;
 		DbConnection dc = DbConnection.getInstance();
-		
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		
-		//1. 드라이버로딩
-				try {
-				//2. Connection 얻기
-					con = dc.getConn();
-				//3. 쿼리문 생성객체 얻기
-					StringBuilder updateCpEmp = new StringBuilder();
-					updateCpEmp
-					.append("	update	product_comment														")
-					.append("	set			contents = ?, deleted = Y												")
-					.append("	where		id = ?, product_idx = ?, comment_idx = ?, reply_idx = ?		");
+		try {
+			con = dc.getConn();
+			StringBuilder sb = new StringBuilder();
+			sb
+			.append("	update	product_comment	")
+			.append("	set		contents = '댓글 작성자에 의해 삭제된 댓글입니다.', deleted = 'Y' ")
+			.append("	where	product_idx = ?, comment_idx = ?, reply_idx = ? ");
 					
-					pstmt=con.prepareStatement(updateCpEmp.toString());
-				//4. 바인드 변수에 값 설정
-					pstmt.setString(1, mcVO.getRe_contents());
-					pstmt.setString(2, mcVO.getId());
-					pstmt.setString(3, mcVO.getProduct_idx());
-					pstmt.setInt(4, mcVO.getComment_idx());
-					pstmt.setInt(5, mcVO.getReply_idx());
-				//5. 쿼리문 수행 후 결과 얻기
-					updateCnt =pstmt.executeUpdate();
-				}finally {
-				//6. 연결 끊기
-					dc.dbClose(null, pstmt, con);
-				}
-				
-				return updateCnt;
-	}//updateMC
-	
-}//MyCommDAO
+			pstmt=con.prepareStatement(sb.toString());
+			pstmt.setString(1, mcVO.getProduct_idx());
+			pstmt.setInt(2, mcVO.getComment_idx());
+			pstmt.setInt(3, mcVO.getReply_idx());
+			resultCnt =pstmt.executeUpdate();
+			}finally {
+				dc.dbClose(null, pstmt, con);
+			}
+			return resultCnt;
+	}
+}

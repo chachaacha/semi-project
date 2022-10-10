@@ -5,23 +5,10 @@ import java.sql.Date;
 public class MyCommVO {
 	
 	private int  comment_idx, reply_idx;
-	private String id, contents, product_idx, title, re_contents, deleted;
+	private String contents, product_idx, title, deleted;
 	private Date posted_date;
 	
 	public MyCommVO() {
-	}
-
-	public MyCommVO(int comment_idx, int reply_idx, String id, String contents, String product_idx, String title,
-			String re_contents, String deleted, Date posted_date) {
-		this.comment_idx = comment_idx;
-		this.reply_idx = reply_idx;
-		this.id = id;
-		this.contents = contents;
-		this.product_idx = product_idx;
-		this.title = title;
-		this.re_contents = re_contents;
-		this.deleted = deleted;
-		this.posted_date = posted_date;
 	}
 
 	public int getComment_idx() {
@@ -38,14 +25,6 @@ public class MyCommVO {
 
 	public void setReply_idx(int reply_idx) {
 		this.reply_idx = reply_idx;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getContents() {
@@ -72,14 +51,6 @@ public class MyCommVO {
 		this.title = title;
 	}
 
-	public String getRe_contents() {
-		return re_contents;
-	}
-
-	public void setRe_contents(String re_contents) {
-		this.re_contents = re_contents;
-	}
-
 	public String getDeleted() {
 		return deleted;
 	}
@@ -98,11 +69,14 @@ public class MyCommVO {
 
 	@Override
 	public String toString() {
-		return "MyCommVO [comment_idx=" + comment_idx + ", reply_idx=" + reply_idx + ", id=" + id + ", contents="
-				+ contents + ", product_idx=" + product_idx + ", title=" + title + ", re_contents=" + re_contents
-				+ ", deleted=" + deleted + ", posted_date=" + posted_date + "]";
+		return "MyCommVO [comment_idx=" + comment_idx + ", reply_idx=" + reply_idx + ", contents=" + contents
+				+ ", product_idx=" + product_idx + ", title=" + title + ", deleted=" + deleted + ", posted_date="
+				+ posted_date + "]";
 	}
 
+	
+
+	
 	
 	
 }

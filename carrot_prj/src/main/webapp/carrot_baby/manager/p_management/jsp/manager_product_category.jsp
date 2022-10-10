@@ -325,7 +325,7 @@ function openPopup(idx) {
 							<% proList=pDAO.selectKeywordProduct(request.getParameter("titleSearch").trim()); %>
 							</c:if>
 							<% pageContext.setAttribute("proList", proList); %>
-						 <form id="deleteFrm">
+						 <form id="deleteFrm" method="post" >
 						 <table class="table">
 						    <caption>표 제목</caption>
 						    <tr><th><input type="checkbox" id="chkFlag" class="table-check" onclick="check()"></th><th class="table-title">제목</th><th>작성자</th><th>상품카테고리</th><th>상태</th><th>등록일</th><th>신고수</th></tr>

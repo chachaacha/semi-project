@@ -134,7 +134,11 @@ function openPopup(id) {
 						 <c:if test="${ not empty param.id }">
 						 <% mDAO.deleteBlock(request.getParameter("id")); %>
 						 <%-- 왜 쿼리스트링에 EL이나 출력식 쓰면 씹히는지 질문하기 --%>
-						 <c:redirect url="manager_member_management.jsp?selectStau=block"/>
+						 <c:set var="key" value="${ param.searchStau }"/>
+						 <c:redirect url="manager_member_management.jsp">
+						 	<c:param name="searchStau" value="${ key }"/>
+						 	<c:param name="selectStau" value="${ param.selectStau }"/> 
+						 </c:redirect> 
 						 </c:if>
 			</div>
 		</div>

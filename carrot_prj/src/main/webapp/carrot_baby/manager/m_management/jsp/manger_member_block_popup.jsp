@@ -35,7 +35,7 @@ $(function() {
 <form method="get" id = "blockFrm">
 <input type="hidden" name="id" value="${ param.id }"/> <!-- 회원관리에서 웹파라메터로 받은 아이디를 다시 히든에 넣어 submit한다.  -->
 <div class="wrap">
-	<h1 class="title">신고하기</h1>
+	<h1 class="title">차단하기</h1>
 	<div class="sub-title">사유선택</div>
 	<div class="contents">
 	<% 
@@ -50,10 +50,10 @@ $(function() {
 			</c:forEach>
 		</ul>
 	</div>
-	<button type="button" class="report-wc-btn" id="reportBtn" name="reportBtn">신고하기</button>
+	<button type="button" class="report-wc-btn" id="reportBtn" name="reportBtn">차단하기</button>
 </div>
 </form>
- 	<%-- 신고하기 프로세스 --%>
+ 	<%-- 차단하기 프로세스 --%>
 	<c:if test="${ not empty param.br_idx }"> <%-- 처음에는 진입시에는 submit하지 않았기 때문에 웹파라메터가 없고 신고하기 버튼이 눌러어 웹 파마메터가 있을 때만 동작하게 한다. --%>
 	<jsp:useBean id="mbVO" class="managerVO.ManagerBlockVO"></jsp:useBean>
 	<jsp:setProperty property="*" name="mbVO"/>
@@ -69,7 +69,7 @@ $(function() {
 	</c:if>
 	<script type="text/javascript">
 	//예외가 발생하지 않을 경우 아직 차단되지 않은 회원이기 때문에 차단을 실행한다.
-	alert("신고가 접수되었습니다.");
+	alert("차단처리 했습니다.");
 	self.close();
 	</script>
 	</c:if>
