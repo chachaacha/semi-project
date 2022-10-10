@@ -427,22 +427,49 @@ public class BoardDAO {
 	////////////////////////관심목록///////////////////////
 	
 	//관심목록에 추가
-	public void insertWish(WishVO wVO) throws SQLException {
+	public int selectWish(WishVO wVO) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
-		
 		Connection con=null;
+		ResultSet rs=null;
 		PreparedStatement pstmt=null;
+		int count=0;
 		
 		try {
 			con=db.getConn();
-			
-			String insertWish = "insert into wishlist (id, product_idx) values (?, ?)";
-			
-			pstmt=con.prepareStatement(insertWish);
+			String insertWish = "select count(*) from wish_list where id=? and product_idx=? ";
+			pstmt=con.prepareStatement(insertWish.toString());
 			pstmt.setString(1, wVO.getId());
 			pstmt.setString(2, wVO.getProduct_idx());
-			
 			pstmt.executeUpdate();
+			System.out.println("------조회:"+insertWish);
+			System.out.println("------조회:"+wVO);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+			
+		}finally {
+			db.dbClose(rs, pstmt, con);
+		}
+		return count;
+	}//selectWish
+	
+	public void insertWish(WishVO wVO) throws SQLException {
+		DbConnection db = DbConnection.getInstance();
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		try {
+			con=db.getConn();
+			String insertWish = "insert into wish_list (id, product_idx) values (?, ?)";
+			pstmt=con.prepareStatement(insertWish.toString());
+			pstmt.setString(1, wVO.getId());
+			pstmt.setString(2, wVO.getProduct_idx());
+			pstmt.executeUpdate();
+			System.out.println("------좋아요:"+insertWish);
+			System.out.println("------좋아요:"+wVO);
+			
 		}finally {
 			db.dbClose(null, pstmt, con);
 		}
@@ -460,12 +487,16 @@ public class BoardDAO {
 		try {
 			con=db.getConn();
 			
-			String deleteWish = "delete from wishlist where id=? and product_idx=?";
+			String deleteWish = "delete from wish_list where id=? and product_idx=?";
 			pstmt=con.prepareStatement(deleteWish);
 			pstmt.setString(1, wVO.getId());
 			pstmt.setString(2, wVO.getProduct_idx());
 			
 			deleteCnt=pstmt.executeUpdate();
+			System.out.println("------취소:"+deleteWish);
+			System.out.println("------취소:"+wVO);
+
+			
 		}finally {
 			db.dbClose(null, pstmt, con);
 		}
@@ -474,8 +505,8 @@ public class BoardDAO {
  	}//deleteWish
 	
 	//관심 수 수정
-	public int updateWishCnt(int product_idx) throws SQLException {
-		int updateCnt=0;
+	public String updateWishCnt(String product_idx) throws SQLException {
+		String updateCnt="";
 		DbConnection db=DbConnection.getInstance();
 		
 		Connection con=null;
@@ -487,14 +518,14 @@ public class BoardDAO {
 			StringBuilder updateWishCnt = new StringBuilder();
 			updateWishCnt
 			.append("	update product	")
-			.append("	set liked_cnt = (select count(product_idx) from wishlist where product_idx=?)	")
+			.append("	set liked_cnt = (select count(product_idx) from wish_list where product_idx=?)	")
 			.append("	where product_idx=?	");
 			
 			pstmt=con.prepareStatement(updateWishCnt.toString());
-			pstmt.setInt(1, product_idx);
-			pstmt.setInt(2, product_idx);
+			pstmt.setString(1, product_idx);
+			pstmt.setString(2, product_idx);
 			
-			updateCnt=pstmt.executeUpdate();
+			updateCnt=String.valueOf(pstmt.executeUpdate());
 		}finally {
 			db.dbClose(null, pstmt, con);
 		}

@@ -17,12 +17,79 @@
 <link rel="stylesheet" type="text/css" href="../../common/css/user_wrap_container.css"/>
 <link rel="stylesheet" type="text/css" href="../css/user_buyer_product_comments.css"/>
 <jsp:useBean id="bVO" class="userVO.BoardVO" scope="page"/>
+<jsp:useBean id="wVO" class="userVO.WishVO" scope="page"/>
 <jsp:setProperty property="*" name="bVO"/>
+<jsp:setProperty property="*" name="wVO"/>
 
+<%
+//세션 아이디 얻기
+String sessionId=(String)session.getAttribute("id");
+pageContext.setAttribute("sessionId", sessionId);
+
+//조회하고 있는 거래창의 상품인덱스 얻기
+String pIdx=request.getParameter("product_idx");
+pageContext.setAttribute("pIdx", pIdx);
+
+//BoardDAO 생성
+BoardDAO bDAO=BoardDAO.getInstance();
+
+//상품 조회
+BoardVO pInfo=bDAO.selectB(pIdx); 
+pageContext.setAttribute("pInfo", pInfo);
+
+//이미지 조회
+List<String> selImg=bDAO.selectImg(pIdx);
+pageContext.setAttribute("selImg", selImg);
+
+//하트 조회
+wVO.setId(sessionId);
+wVO.setProduct_idx(pIdx);
+Integer test=bDAO.selectWish(wVO);
+/* System.out.println(test); */
+
+%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 <script type="text/javascript">
 $(function() {
+	
+	var test1=<%=test%>;
+	if(test1==1) {
+		$(".heart-icon svg").addClass("active");
+	}
+	
+	//하트 아이콘 효과
+	$(".heart-icon").click(function() {
+		
+		var sessionId="<%=(String)session.getAttribute("id") %>";
+		
+		if(sessionId=="null") { //비회원일 경우 작동금지
+			alert("로그인이 필요한 동작입니다.")
+		}else{
+			
+			var test=$(".heart-icon svg").attr("class");
+			
+			if(test=="active") {
+				$(".heart-icon svg").removeClass("active");
+				
+				$("#product_idx").val(${pIdx});
+				$("#userId").val(sessionId);
+				$("#flag").val(false);
+				$("#heartFrm").submit();
+			}else {
+				$(".heart-icon svg").addClass("active");
+				
+				$("#product_idx").val(${pIdx});
+				$("#userId").val(sessionId);
+				$("#flag").val(true);
+				$("#heartFrm").submit();
+			}
+			
+		}
+		
+	})
+	
+	
 	 <!-- main top Swiper JS -->
 	 <!-- Initialize Swiper -->
 	   var swiper = new Swiper(".mySwiper", {
@@ -51,38 +118,11 @@ $(function() {
 					"width=520,height=620,top=203,left=1336");
 		})
 		
-		//하트 아이콘 효과
-		$(".heart-icon").click(function() {
-			var test=$(".heart-icon svg").attr("class");
-			if(test=="active") {
-				$(".heart-icon svg").removeClass("active");
-				test1();
-			}else {
-				$(".heart-icon svg").addClass("active");
-			}
-			/* $(".heart-icon svg").toggleClass("active"); */
-		})
+		
 })
 </script>
 </head>
 <body>
-<%
-//조회하고 있는 거래창의 상품인덱스 얻기
-String pIdx=request.getParameter("product_idx");
-
-//BoardDAO 생성
-BoardDAO bDAO=BoardDAO.getInstance();
-
-//상품 조회
-BoardVO pInfo=bDAO.selectB(pIdx); 
-pageContext.setAttribute("pInfo", pInfo);
-
-//이미지 조회
-List<String> selImg=bDAO.selectImg(pIdx);
-pageContext.setAttribute("selImg", selImg);
-
-%>
-
 <div class="wrap">
 
 <!-- header -->
@@ -127,15 +167,20 @@ pageContext.setAttribute("selImg", selImg);
 	    		</div>
 		</div>
 		<div class="profile-right">
-		 <div class="heart">
-		    <button class="heart-icon" ${sessionScope.id==null ? "disabled='disabled'" : ''} >
-		       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 32 32" fill="rgb(190, 190, 190)" data-svg-content="true">
-		          <g><path d="M 31.984,13.834C 31.9,8.926, 27.918,4.552, 23,4.552c-2.844,0-5.35,1.488-7,3.672 C 14.35,6.040, 11.844,4.552, 9,4.552c-4.918,0-8.9,4.374-8.984,9.282L0,13.834 c0,0.030, 0.006,0.058, 0.006,0.088 C 0.006,13.944,0,13.966,0,13.99c0,0.138, 0.034,0.242, 0.040,0.374C 0.48,26.872, 15.874,32, 15.874,32s 15.62-5.122, 16.082-17.616 C 31.964,14.244, 32,14.134, 32,13.99c0-0.024-0.006-0.046-0.006-0.068C 31.994,13.89, 32,13.864, 32,13.834L 31.984,13.834 z"></path></g></svg>
-		    </button>
-		<div class="heart-cnt">
-			 <div class="heart-cnt-txt" >${pInfo.liked_cnt }</div>
-		 </div>
-		</div>
+		<form method="post" action="../../product/jsp/heart_process.jsp" id="heartFrm">
+			 <div class="heart">
+			    <button class="heart-icon">
+			       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 32 32" fill="rgb(190, 190, 190)" data-svg-content="true">
+			          <g><path d="M 31.984,13.834C 31.9,8.926, 27.918,4.552, 23,4.552c-2.844,0-5.35,1.488-7,3.672 C 14.35,6.040, 11.844,4.552, 9,4.552c-4.918,0-8.9,4.374-8.984,9.282L0,13.834 c0,0.030, 0.006,0.058, 0.006,0.088 C 0.006,13.944,0,13.966,0,13.99c0,0.138, 0.034,0.242, 0.040,0.374C 0.48,26.872, 15.874,32, 15.874,32s 15.62-5.122, 16.082-17.616 C 31.964,14.244, 32,14.134, 32,13.99c0-0.024-0.006-0.046-0.006-0.068C 31.994,13.89, 32,13.864, 32,13.834L 31.984,13.834 z"></path></g></svg>
+			    </button>
+			<div class="heart-cnt">
+				 <div class="heart-cnt-txt" >${pInfo.liked_cnt }</div>
+			 </div>
+			</div>
+			<input type="hidden" name="product_idx" id="product_idx" value="${param.product_idx }">
+			<input type="hidden" name="userId" id="userId" value="${param.userId }">
+			<input type="hidden" name="flag" id="flag" value="${param.flag }">
+		</form>
 		 <div class="state">
 		 	<c:choose>
 		 		<c:when test="${pInfo.reserved eq 'N' }">
@@ -166,7 +211,7 @@ pageContext.setAttribute("selImg", selImg);
 						</svg>
 				 	신고하기
 				 	</button>
-		 </div>
+		 	</div>
 		</div>
 		<h1 class="region-name">서울시 ${pInfo.gu }</h1>
 		<p class="description-category">${pInfo.category } ㆍ
