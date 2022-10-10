@@ -1,3 +1,6 @@
+<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
+<%@page import="com.oreilly.servlet.MultipartRequest"%>
+<%@page import="java.io.File"%>
 <%@page import="userDAO.PostDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8" info = "글쓰기 저장하기" isELIgnored="false" %>
@@ -22,15 +25,57 @@ request.setCharacterEncoding("UTF-8");
 <jsp:useBean id="pVO" class="userVO.PostVO"/>
 
 <%
-String product_idx = request.getParameter("product_idx");
+	//1. 업로드 경로 얻기
+	File uploadDir=new File("C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/search/jsp");
+	//2. 업로드할 파일 크기를 연산
+	int maxSize=1024*1024*5;
+	//3. 업로드
+	MultipartRequest mr = new MultipartRequest(request, uploadDir.getAbsolutePath(), 
+			maxSize, "UTF-8", new DefaultFileRenamePolicy() );
+	//4. 웹 파라메터 처리
+	//5. file control 처리
+	int cnt=Integer.parseInt(mr.getParameter("count"));
+	//원본 파일명
+	String[] reName = new String[cnt];
+	String[] originalName = new String[cnt];
+	
+	for(int i=0; i< cnt; i++){
+	originalName[i]=mr.getOriginalFileName("post_img"+(i+1));
+	//변경된 파일명
+	reName[i]=mr.getFilesystemName("post_img"+(i+1));
+	
+	boolean flag=false;
+	File temp = new File(uploadDir.getAbsolutePath()+"/"+reName[i]);
+	int checkSize=1024*1024*5;
+	if( temp.length() >= checkSize) {
+		flag=true;
+		temp.delete(); //파일 삭제
+	}//end if
+	
+	if( !flag ){
+%>
+	파일이 업로드 되었습니다.<br/>
+	파일명 : <%= originalName[i] %>(<%= reName[i] %>)
+	나이 : <%= cnt %><br/>
+<%} else {%>
+업로드 파일은 5MByte까지만 가능합니다.
+<%}//end else %>
+<%} %>
+
+
+
+<%
+String title = mr.getParameter("title");
+String contents = mr.getParameter("contents");
+String product_idx = mr.getParameter("product_idx");
 String user_id=(String)session.getAttribute("user_id");
-String category_loc=request.getParameter("category_loc");
+String category_loc=mr.getParameter("category_loc");
 int gu_idx = Integer.parseInt(category_loc);
-String category_pd=request.getParameter("category_pd");
+String category_pd=mr.getParameter("category_pd");
 int category_idx = Integer.parseInt(category_pd);
-String priceS = request.getParameter("price");
+String priceS = mr.getParameter("price");
 int price = Integer.parseInt(priceS);
-String free = request.getParameter("free");
+String free = mr.getParameter("free");
 if(free == null){
 	free = "N";
 }
@@ -43,8 +88,8 @@ if(free == null){
 <jsp:setProperty property="thumbnail" name="pVO" value="1234.png"/>
 <jsp:setProperty property="price" name="pVO" value="<%= price %>"/>
 <jsp:setProperty property="free" name="pVO" value="<%= free %>"/>
-<jsp:setProperty property="title" name="pVO"/>
-<jsp:setProperty property="contents" name="pVO"/>
+<jsp:setProperty property="title" name="pVO" value="<%= title %>"/>
+<jsp:setProperty property="contents" name="pVO" <%= contents %>/>
 <%
 PostDAO pDAO = PostDAO.getInstance();
 out.println(pVO);
