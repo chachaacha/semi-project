@@ -51,7 +51,7 @@ public class MySalesDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder selectAll = new StringBuilder();
 			selectAll
-			.append("	select	p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.post_date, p.reserved, p.sold_check, p.price, p.comment_cnt, p.like_cnt	")
+			.append("	select p.id, p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.reserved, p.sold_check, p.price, p.comment_cnt, p.liked_cnt	")
 			.append("	from	product p, loc_category lc																													")
 			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'N' 																					");
 			
@@ -65,16 +65,17 @@ public class MySalesDAO {
 			
 			while( rs.next() ) {
 				mssVO = new MySalesVO();
+				mssVO.setId(rs.getString("id"));
 				mssVO.setProduct_idx(rs.getString("product_idx"));
 				mssVO.setThumbnail(rs.getString("thumbnail"));
 				mssVO.setTitle(rs.getString("title"));
 				mssVO.setGu(rs.getString("gu"));
-				mssVO.setPost_date(rs.getDate("post_date"));
+				mssVO.setPosted_date(rs.getDate("posted_date"));
 				mssVO.setReserved(rs.getString("reserved"));
-				mssVO.setSold_chk(rs.getString("sold_check"));
+				mssVO.setSold_check(rs.getString("sold_check"));
 				mssVO.setPrice(rs.getInt("price"));
 				mssVO.setComment_cnt(rs.getInt("comment_cnt"));
-				mssVO.setLike_cnt(rs.getInt("like_cnt"));
+				mssVO.setLiked_cnt(rs.getInt("liked_cnt"));
 				
 				list.add(mssVO);
 			}//end while
@@ -151,53 +152,44 @@ public class MySalesDAO {
 		return updateCnt;
 	}//updateResev
 	
-	public List<MySalesVO> selectTrader(String id) throws SQLException {
-		List<MySalesVO> list = new ArrayList<MySalesVO>();
-		
-		DbConnection dc = DbConnection.getInstance();
-		
-		Connection con =null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		//1. 드라이버 로딩
-		try {
-		//2. Connection 얻기
-			con = dc.getConn();
-		//3. 쿼리문 생성객체 얻기
-			StringBuilder select = new StringBuilder();
-			select
-			.append("	select p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.price	")
-			.append("	from product p, loc_category lc																")
-			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'Y' 							");
-			
-			pstmt = con.prepareStatement(select.toString());
-		//4. 바인드 변수에 값 설정
-			pstmt.setString(1, id);
-		//5. 쿼리문 생성 후 결과 얻기
-			rs = pstmt.executeQuery();
-			
-			MySalesVO msVO = null;
-			
-			while( rs.next() ) {
-				msVO = new MySalesVO();
-				msVO.setProduct_idx(rs.getString("product_idx"));
-				msVO.setThumbnail(rs.getString("thumbnail"));
-				msVO.setTitle(rs.getString("title"));
-				msVO.setGu(rs.getString("gu"));
-				msVO.setPost_date(rs.getDate("post_date"));
-				msVO.setPrice(rs.getInt("price"));
-				list.add(msVO);
-			}//end while
-			
-		} finally {
-		//6. 연결끊기
-			dc.dbClose(rs, pstmt, con);
-		}//end finally
-		
-		return list;
-	}//selectTrader
+	/*혹시 몰라서 남겨둠^~^*/
 	
+	/*
+	 * public List<MySalesVO> selectTrader(String id) throws SQLException {
+	 * List<MySalesVO> list = new ArrayList<MySalesVO>();
+	 * 
+	 * DbConnection dc = DbConnection.getInstance();
+	 * 
+	 * Connection con =null; PreparedStatement pstmt = null; ResultSet rs = null;
+	 * 
+	 * //1. 드라이버 로딩 try { //2. Connection 얻기 con = dc.getConn(); //3. 쿼리문 생성객체 얻기
+	 * StringBuilder select = new StringBuilder(); select
+	 * .append("	select p.id, p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.sold_check, p.price	, p.comment_cnt, p.liked_cnt "
+	 * )
+	 * .append("	from product p, loc_category lc																                                                        "
+	 * )
+	 * .append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'Y' 																				"
+	 * );
+	 * 
+	 * pstmt = con.prepareStatement(select.toString()); //4. 바인드 변수에 값 설정
+	 * pstmt.setString(1, id); //5. 쿼리문 생성 후 결과 얻기 rs = pstmt.executeQuery();
+	 * 
+	 * MySalesVO msVO = null;
+	 * 
+	 * while( rs.next() ) { msVO = new MySalesVO(); msVO.setId(rs.getString("id"));
+	 * msVO.setProduct_idx(rs.getString("product_idx"));
+	 * msVO.setThumbnail(rs.getString("thumbnail"));
+	 * msVO.setTitle(rs.getString("title")); msVO.setGu(rs.getString("gu"));
+	 * msVO.setPosted_date(rs.getDate("posted_date"));
+	 * msVO.setSold_check(rs.getString("sold_check"));
+	 * msVO.setComment_cnt(rs.getInt("comment_cnt"));
+	 * msVO.setLiked_cnt(rs.getInt("liked_cnt")); msVO.setPrice(rs.getInt("price"));
+	 * list.add(msVO); }//end while
+	 * 
+	 * } finally { //6. 연결끊기 dc.dbClose(rs, pstmt, con); }//end finally
+	 * 
+	 * return list; }//selectTrader
+	 */	
 	public int updateTrader(BuyVO bVO) throws SQLException {
 		int updateCnt = 0;
 		
@@ -227,5 +219,57 @@ public class MySalesDAO {
 		}
 		return updateCnt;
 	}
+	
+	public List<MySalesVO> selectDealComplete(String id) throws SQLException{
+		List<MySalesVO> list = new ArrayList<MySalesVO>();
+		
+		DbConnection dc = DbConnection.getInstance();
+		
+		Connection con = null;
+		PreparedStatement pstmt =null;
+		ResultSet rs = null;
+		
+		//1. 드라이버 로딩
+		try {
+		//2. Connection 얻기
+			con = dc.getConn();
+		//3. 쿼리문 생성객체 얻기
+			StringBuilder selectDC = new StringBuilder();
+			selectDC
+			.append("	select p.id, p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.reserved, p.sold_check, p.price, p.comment_cnt, p.liked_cnt	")
+			.append("	from	product p, loc_category lc																													")
+			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'Y' 																					");
+			
+			pstmt = con.prepareStatement(selectDC.toString());
+		//4. 바인드 변수 설정
+			pstmt.setString(1, id);
+		//5. 쿼리문 생성 후 결과 얻기
+			rs = pstmt.executeQuery();
+			
+			MySalesVO msdcVO = null;
+			
+			while( rs.next() ) {
+				msdcVO = new MySalesVO();
+				msdcVO.setId(rs.getString("id"));
+				msdcVO.setProduct_idx(rs.getString("product_idx"));
+				msdcVO.setThumbnail(rs.getString("thumbnail"));
+				msdcVO.setTitle(rs.getString("title"));
+				msdcVO.setGu(rs.getString("gu"));
+				msdcVO.setPosted_date(rs.getDate("posted_date"));
+				msdcVO.setReserved(rs.getString("reserved"));
+				msdcVO.setSold_check(rs.getString("sold_check"));
+				msdcVO.setPrice(rs.getInt("price"));
+				msdcVO.setComment_cnt(rs.getInt("comment_cnt"));
+				msdcVO.setLiked_cnt(rs.getInt("liked_cnt"));
+				
+				list.add(msdcVO);
+			}//end while
+		} finally {
+		//6. 연결 끊기
+			dc.dbClose(rs, pstmt, con);
+		}//end finally
+		
+		return list;
+	}//selectDealComplete
 	
 }//MySalesDAO

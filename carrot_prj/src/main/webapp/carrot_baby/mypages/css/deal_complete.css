@@ -66,4 +66,15 @@
 .btn_price{display: inline-flex;
 	
 }
-	
+.cmt_n_heart{display: flex;
+				 font-size: 13px;
+				 color: #8E8E8E;
+				 margin-top: 20px;
+}	
+.heart{display: flex;
+		margin-right: 5px;
+}
+.heart_cnt{margin-right: 5px;
+}
+.cmt{display: flex;
+}
