@@ -54,8 +54,8 @@ public class BoardDAO {
 			pstmt.setString(1, product_idx);
 			rs=pstmt.executeQuery();
 			
-			System.out.println("--query---"+ sb );
-			System.out.println("--value--- "+ product_idx );  
+			//System.out.println("--query---"+ sb );
+			//System.out.println("--value--- "+ product_idx );  
 			
 			if(rs.next()) {
 				bVO=new BoardVO();
@@ -81,6 +81,38 @@ public class BoardDAO {
 		
 		return bVO;
 	}//selectB
+	
+	//게시글 작성자 확인
+	public int selectP(BoardVO bVO) throws SQLException {
+		DbConnection db = DbConnection.getInstance();
+		Connection con=null;
+		ResultSet rs=null;
+		PreparedStatement pstmt=null;
+		int count=0;
+		
+		try {
+			con=db.getConn();
+			String insertWish = "select count(*) from product where id=? and product_idx=? ";
+			pstmt=con.prepareStatement(insertWish.toString());
+			
+			pstmt.setString(1, bVO.getId());
+			pstmt.setString(2, bVO.getProduct_idx());
+			pstmt.executeUpdate();
+			
+			//System.out.println("------조회:"+insertWish);
+			//System.out.println("------조회:"+wVO);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+			
+		}finally {
+			db.dbClose(rs, pstmt, con);
+		}
+		return count;
+	}//selectWish
 	
 	//게시글 이미지 가져오기
 	public List<String> selectImg(String product_idx) throws SQLException{
@@ -205,12 +237,13 @@ public class BoardDAO {
 	
 	////////////////////////////////// 댓글 ////////////////////////////////
 	
-	//댓글 조회 
-	public List<UserCommentVO> selectComm(int product_idx) throws SQLException{
+	//댓글 총 개수 
+	public int selCountComm(String product_idx) throws SQLException{
 		List<UserCommentVO> list = new ArrayList<UserCommentVO>();
 		
 		DbConnection db=DbConnection.getInstance();
 		
+		int count=0;
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
@@ -220,13 +253,59 @@ public class BoardDAO {
 			
 			StringBuilder sb = new StringBuilder();
 			sb
-			.append("	select pc.comment_idx, pc.reply_idx, pc.product_idx, pc.id, (select nick from member where id=pc.id) nick, pc.contents, pc.posted_date, pc.deleted	")
-			.append("	from product_comment pc	")
-			.append("	where product_idx = ? ")
-			.append("	order by pc.comment_idx, pc.reply_idx, pc.posted_date ");
+			.append("	select count(*) ")
+			.append("	from product_comment ")
+			.append("	where product_idx = ? ");
 			
 			pstmt=con.prepareStatement(sb.toString());
-			pstmt.setInt(1, product_idx);
+			pstmt.setString(1, product_idx);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+			
+		}finally {
+			db.dbClose(rs, pstmt, con);
+		}
+		
+		return count;
+	}//selectComm
+	
+	//댓글 조회 
+	public List<UserCommentVO> selectComm(UserCommentVO ucVO) throws SQLException{
+		List<UserCommentVO> list = new ArrayList<UserCommentVO>();
+		DbConnection db=DbConnection.getInstance();
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		try {
+			con=db.getConn();
+			
+			StringBuilder sb = new StringBuilder();
+			sb
+			.append("	select pc.comment_idx, pc.reply_idx, pc.product_idx, pc.id, m.nick, m.img, pc.contents, pc.posted_date, pc.deleted	")
+			.append("	from product_comment pc, member m	")
+			.append("	where  m.id=pc.id and product_idx = ? ");
+			
+			//정렬 라디오 선택시
+			if(ucVO.getComment_idx() != -1) {
+				switch(ucVO.getComment_idx()) {
+				case 0:
+					sb.append(" order by pc.comment_idx desc, pc.reply_idx, pc.posted_date ");
+					break;
+				case 1:
+					sb.append(" order by pc.comment_idx asc, pc.reply_idx, pc.posted_date ");
+				}
+			}
+			
+			pstmt=con.prepareStatement(sb.toString());
+			pstmt.setString(1, ucVO.getProduct_idx());
+			
+			System.out.println("------취소:"+sb);
+			System.out.println("------취소:"+ucVO);
 			
 			rs=pstmt.executeQuery();
 			
@@ -238,6 +317,7 @@ public class BoardDAO {
 				cmVO.setProduct_idx(rs.getString("product_idx"));
 				cmVO.setId(rs.getString("id"));
 				cmVO.setNick(rs.getString("nick"));
+				cmVO.setImg(rs.getString("img"));
 				cmVO.setContents(rs.getString("contents"));
 				cmVO.setPosted_date(rs.getDate("posted_date"));
 				cmVO.setDeleted(rs.getString("deleted"));
@@ -250,6 +330,7 @@ public class BoardDAO {
 		}
 		
 		return list;
+	
 	}//selectComm
 	
 	//댓글 달기
@@ -426,7 +507,7 @@ public class BoardDAO {
 
 	////////////////////////관심목록///////////////////////
 	
-	//관심목록에 추가
+	//관심목록 수 조회
 	public int selectWish(WishVO wVO) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
 		Connection con=null;
@@ -441,8 +522,10 @@ public class BoardDAO {
 			pstmt.setString(1, wVO.getId());
 			pstmt.setString(2, wVO.getProduct_idx());
 			pstmt.executeUpdate();
-			System.out.println("------조회:"+insertWish);
-			System.out.println("------조회:"+wVO);
+			
+			
+			//System.out.println("------조회:"+insertWish);
+			//System.out.println("------조회:"+wVO);
 			
 			rs=pstmt.executeQuery();
 			
@@ -456,6 +539,7 @@ public class BoardDAO {
 		return count;
 	}//selectWish
 	
+	//관심목록에 추가
 	public void insertWish(WishVO wVO) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
 		Connection con=null;
@@ -493,8 +577,8 @@ public class BoardDAO {
 			pstmt.setString(2, wVO.getProduct_idx());
 			
 			deleteCnt=pstmt.executeUpdate();
-			System.out.println("------취소:"+deleteWish);
-			System.out.println("------취소:"+wVO);
+			//System.out.println("------취소:"+deleteWish);
+			//System.out.println("------취소:"+wVO);
 
 			
 		}finally {

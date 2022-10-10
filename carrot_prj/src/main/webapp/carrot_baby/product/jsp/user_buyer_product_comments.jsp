@@ -1,3 +1,4 @@
+<%@page import="userVO.UserCommentVO"%>
 <%@page import="java.util.List"%>
 <%@page import="userVO.BoardVO"%>
 <%@page import="userDAO.BoardDAO"%>
@@ -18,8 +19,10 @@
 <link rel="stylesheet" type="text/css" href="../css/user_buyer_product_comments.css"/>
 <jsp:useBean id="bVO" class="userVO.BoardVO" scope="page"/>
 <jsp:useBean id="wVO" class="userVO.WishVO" scope="page"/>
+<jsp:useBean id="ucVO" class="userVO.UserCommentVO" scope="page"/>
 <jsp:setProperty property="*" name="bVO"/>
 <jsp:setProperty property="*" name="wVO"/>
+<jsp:setProperty property="*" name="ucVO"/>
 
 <%
 //세션 아이디 얻기
@@ -33,6 +36,13 @@ pageContext.setAttribute("pIdx", pIdx);
 //BoardDAO 생성
 BoardDAO bDAO=BoardDAO.getInstance();
 
+//게시글 작성자 판단
+bVO.setId(sessionId);
+bVO.setProduct_idx(pIdx);
+Integer wriCheck=bDAO.selectP(bVO);
+pageContext.setAttribute("wriCheck", wriCheck);
+/* System.out.println("게시글:"+wriCheck); */
+
 //상품 조회
 BoardVO pInfo=bDAO.selectB(pIdx); 
 pageContext.setAttribute("pInfo", pInfo);
@@ -44,51 +54,21 @@ pageContext.setAttribute("selImg", selImg);
 //하트 조회
 wVO.setId(sessionId);
 wVO.setProduct_idx(pIdx);
-Integer test=bDAO.selectWish(wVO);
-/* System.out.println(test); */
+Integer heartTotal=bDAO.selectWish(wVO);
+
+//댓글 수 조회
+Integer commCnt=bDAO.selCountComm(pIdx);
+pageContext.setAttribute("commCnt", commCnt);
+
+//댓글 정렬
+List<UserCommentVO> setCom=bDAO.selectComm(ucVO);
+pageContext.setAttribute("setCom", setCom);
 
 %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 <script type="text/javascript">
 $(function() {
-	
-	var test1=<%=test%>;
-	if(test1==1) {
-		$(".heart-icon svg").addClass("active");
-	}
-	
-	//하트 아이콘 효과
-	$(".heart-icon").click(function() {
-		
-		var sessionId="<%=(String)session.getAttribute("id") %>";
-		
-		if(sessionId=="null") { //비회원일 경우 작동금지
-			alert("로그인이 필요한 동작입니다.")
-		}else{
-			
-			var test=$(".heart-icon svg").attr("class");
-			
-			if(test=="active") {
-				$(".heart-icon svg").removeClass("active");
-				
-				$("#product_idx").val(${pIdx});
-				$("#userId").val(sessionId);
-				$("#flag").val(false);
-				$("#heartFrm").submit();
-			}else {
-				$(".heart-icon svg").addClass("active");
-				
-				$("#product_idx").val(${pIdx});
-				$("#userId").val(sessionId);
-				$("#flag").val(true);
-				$("#heartFrm").submit();
-			}
-			
-		}
-		
-	})
-	
 	
 	 <!-- main top Swiper JS -->
 	 <!-- Initialize Swiper -->
@@ -105,8 +85,45 @@ $(function() {
 	       prevEl: ".swiper-button-prev ",
 	     },
 	   });
+	
+	//상품 조회 처음 들어왔을 때 하트 체크 판단
+	var heartCnt=<%=heartTotal%>;
+	if(heartCnt==1) {
+		$(".heart-icon svg").addClass("active");
+	}
+	
+	//하트 아이콘 효과
+	$(".heart-icon").click(function() {
+		
+		var sessionId="<%=(String)session.getAttribute("id") %>";
+		
+		if(sessionId=="null") { //비회원일 경우 작동금지
+			alert("로그인이 필요한 동작입니다.")
+		}else{
+			
+			var test=$(".heart-icon svg").attr("class");
+			
+			if(test=="active") { //하트 취소
+				$(".heart-icon svg").removeClass("active");
+				
+				$("#product_idx").val(${pIdx});
+				$("#userId").val(sessionId);
+				$("#flag").val(false);
+				$("#heartFrm").submit();
+			}else { //하트 등록
+				$(".heart-icon svg").addClass("active");
+				
+				$("#product_idx").val(${pIdx});
+				$("#userId").val(sessionId);
+				$("#flag").val(true);
+				$("#heartFrm").submit();
+			}
+			
+		}
+		
+	})
 	   
-	 //댓글 신고 팝업창 열기
+	 //게시글 신고 팝업창 열기
 		$(".report-btn").click(function() {
 			window.open("report_write_comments_popup.jsp","report_comments_popup",
 					"width=520,height=620,top=203,left=1336");
@@ -117,6 +134,66 @@ $(function() {
 			window.open("report_write_comments_popup.jsp","report_comments_popup",
 					"width=520,height=620,top=203,left=1336");
 		})
+		
+	//구매자 선택 팝업창 열기
+		$(".state-select").change(function() {
+			var buyer=$(".state-select").val();
+			if(buyer=="판매완료"){
+				window.open("choice_popup.jsp","popup_select",
+						"width=520,height=490,top=203,left=1336");
+			}
+		})
+		
+	// 댓글 조회 필터
+		$(".comments-old").click(function() {
+			var comFlag=$(this).attr("value");
+			
+			$("#product_idx").val(${pIdx});
+			$("#comment_idx").val(comFlag);
+			$("#commFrm").submit();
+		})
+		
+	// 댓글 조회 필터
+		$(".comments-new").click(function() {
+			var comFlag=$(this).attr("value");
+			
+			$("#product_idx").val(${pIdx});
+			$("#comment_idx").val(comFlag);
+			$("#commFrm").submit();
+		})
+		
+		$(".add-comments-btn").click(function() {
+			var reCommSearch=$(this).parent().parent().parent().parent().next();
+			alert(reCommSearch);
+			
+			reCommSearch.append(".re-comments-input-wrap");
+			
+			/* var reComChk=false;
+			if(reCommSearch.attr("class")==undefined){
+				alert("대댓글1 없음");
+				reCommSearch.after(".re-comments-input-wrap");
+			}else{
+				while(reCommSearch.attr("class")=="re-comments-sample-wrap"){
+					reCommSearch=reCommSearch.next();
+				}
+				if(reCommSearch.attr("class")==undefined) {
+					reComChk=true;
+					alert("대댓글2 없음");
+				}else{
+					reCommSearch=reCommSearch.prev();
+				}
+			}
+			
+			if(reComChk) {
+				reCommSearch.after(".re-comments-input-wrap");
+			}else{
+				reCommSearch.after(".re-comments-input-wrap");
+			} */
+			
+			
+		})
+		
+		
 		
 		
 })
@@ -162,7 +239,7 @@ $(function() {
 		              </div>
 		              <div class="article-profile-left">
 		                <div class="nickname">
-		                	${pInfo.nick }(${fn:substring(pInfo.id,0,4) }****)</div>
+		                	<c:out value="${pInfo.nick }"/>(<c:out value="${fn:substring(pInfo.id,0,4) }****"/>)</div>
 		          	 </div>
 	    		</div>
 		</div>
@@ -174,26 +251,34 @@ $(function() {
 			          <g><path d="M 31.984,13.834C 31.9,8.926, 27.918,4.552, 23,4.552c-2.844,0-5.35,1.488-7,3.672 C 14.35,6.040, 11.844,4.552, 9,4.552c-4.918,0-8.9,4.374-8.984,9.282L0,13.834 c0,0.030, 0.006,0.058, 0.006,0.088 C 0.006,13.944,0,13.966,0,13.99c0,0.138, 0.034,0.242, 0.040,0.374C 0.48,26.872, 15.874,32, 15.874,32s 15.62-5.122, 16.082-17.616 C 31.964,14.244, 32,14.134, 32,13.99c0-0.024-0.006-0.046-0.006-0.068C 31.994,13.89, 32,13.864, 32,13.834L 31.984,13.834 z"></path></g></svg>
 			    </button>
 			<div class="heart-cnt">
-				 <div class="heart-cnt-txt" >${pInfo.liked_cnt }</div>
+				 <div class="heart-cnt-txt" ><c:out value="${pInfo.liked_cnt }"/></div>
 			 </div>
 			</div>
 			<input type="hidden" name="product_idx" id="product_idx" value="${param.product_idx }">
 			<input type="hidden" name="userId" id="userId" value="${param.userId }">
 			<input type="hidden" name="flag" id="flag" value="${param.flag }">
 		</form>
-		 <div class="state">
-		 	<c:choose>
-		 		<c:when test="${pInfo.reserved eq 'N' }">
-		 			판매중
-		 		</c:when>
-		 		<c:when test="${pInfo.reserved eq 'Y' }">
-		 			예약중
-		 		</c:when>
-		 		<c:when test="${pInfo.sold_check eq 'Y' }">
-		 			판매완료
-		 		</c:when>
-		 	</c:choose>
-		 </div>
+		 	<c:if test="${wriCheck eq 0 }">
+		 		<c:choose>
+				 	<c:when test="${pInfo.reserved eq 'N' }">
+				 		<div class="state">판매중</div>
+				 	</c:when>
+				 	<c:when test="${pInfo.reserved eq 'Y' }">
+				 		<div class="state">예약중</div>예약중
+				 	</c:when>
+				 	<c:when test="${pInfo.sold_check eq 'Y' }">
+				 		<div class="state">판매완료</div>판매완료
+				 	</c:when>
+		 		</c:choose>
+			</c:if>
+		 	
+		 	<c:if test="${wriCheck eq 1 }">
+			 	<select name="state" class="state-select">
+					<option value="판매중">판매중</option>
+					<option value="예약중">예약중</option>
+					<option value="판매완료" class="soldout">판매완료</option>
+				</select>
+			</c:if>
 		</div>
 
 	</div>
@@ -202,8 +287,9 @@ $(function() {
 <!-- description -->
 	<div class="description-wrap">
 		<div class="description-title-wrap">
-			<h1 class="description-title">${pInfo.title }</h1>
+			<h1 class="description-title"><c:out value="${pInfo.title }"/></h1>
 			<div class="report-wrap">
+				<c:if test="${wriCheck eq 1 }">
 				 	<button type="button" class="report-btn">
 					 	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-slash-circle" viewBox="0 0 16 16">
 						  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -211,11 +297,12 @@ $(function() {
 						</svg>
 				 	신고하기
 				 	</button>
+				 </c:if>
 		 	</div>
 		</div>
-		<h1 class="region-name">서울시 ${pInfo.gu }</h1>
-		<p class="description-category">${pInfo.category } ㆍ
-			<time>${pInfo.posted_date }</time>
+		<h1 class="region-name">서울시 <c:out value="${pInfo.gu }"/></h1>
+		<p class="description-category"><c:out value="${pInfo.category }"/> ㆍ
+			<time><c:out value="${pInfo.posted_date }"/></time>
 		</p>
 		<p class="description-price">
 			<c:if test="${pInfo.price eq 0}">
@@ -226,7 +313,7 @@ $(function() {
 			</c:if>
 		</p>
 		<div class="description-detail">
-			${pInfo.contents }
+			<c:out value="${pInfo.contents }"/>
 		</div>
 	</div>
 <!-- description end -->
@@ -235,17 +322,20 @@ $(function() {
 	<div class="comments-wrap">
 		<div class="comments-txt-wrap">
 			<p class="comments-txt">댓글</p>
-			<p class="comments-cnt">2개</p>
-			<div class="comments-align-wrap">
-				<ul class="comments-align">
-					<li>
-						<a class="comments-new" href="#void">최신순</a>
-					</li>
-					<li>
-						<a class="comments-old" href="#void">과거순</a>
-					</li>
-				</ul>
-			</div>
+			<p class="comments-cnt">${commCnt }개</p>
+			<c:if test="${commCnt ne 0}">
+				<div class="comments-align-wrap">
+					<c:set var="comIndx" value="${empty param.comment_idx ? 0 : param.comment_idx }"/> 
+					<ul class="comments-align">
+						<li>
+							<a ${comIndx eq 0 ? "class='comments-old'" : "class='comments-new'"} href="javascript:void(0);" value="0">등록순</a>
+						</li>
+						<li>
+							<a ${comIndx eq 1 ? "class='comments-old'" : "class='comments-new'"} href="javascript:void(0);" value="1">최신순</a>
+						</li>
+					</ul>
+				</div>
+			</c:if>
 		</div>
 		<div class="comments-input-wrap">
 			<div class="comments-input">
@@ -255,70 +345,137 @@ $(function() {
 				<span>클릭</span>
 			</button>
 		</div>
-		<div class="comments-sample-wrap">
-			<div class="comments-profile-wrap">
-				 <div class="comments-profile-image-wrap">
-			             <div class="comments-profile-image">
-							<a class="profile-link" href="#void">
-			               		<img alt="프로필이미지" src="../../images/profileImg.png">
-						   </a>
-			             </div>
-			             <div class="comments-profile-left">
-			               <div class="comments-nickname">사용자(user****)</div>
-			               <time class="comments-date">YYYY.MM.DD.hh:mm</time>
-			           </div>
-		    	 </div>
-		   	</div>
-		   	<div class="comments-contents-wrap">
-			    <p class="comments-content">라멘맛집 알려주세요</p>
-			    <div class="comments-bottom">
-			    	<a class="add-comments" href="#void">
-			    		<button type="button"class="add-comments-btn">답글쓰기</button>
-			    	</a>
-			    	<a class="modify-comments" href="#void">
-			    		<button type="button" class="modify-comments-btn">수정하기</button>
-			    	</a>
-			    	<a class="delete-comments" href="#void">
-			    		<button type="button"class="delete-comments-btn">삭제하기</button>
-			    	</a>
-			    </div>
-		   	</div>
-		</div>
-		<div class="re-comments-sample-wrap">
-			<div class="comments-profile-wrap">
-				 <div class="comments-profile-image-wrap">
-			         <div class="comments-profile-image">
-						<a class="profile-link" href="#void">
-			               <img alt="프로필이미지" src="../../images/profileImg.png">
-						 </a>
-			             </div>
-			             <div class="comments-profile-left">
-			               <div class="comments-nickname">차승주주(juju****)<div class="writer">작성자</div></div>
-			               <time class="comments-date">YYYY.MM.DD.hh:mm</time>
-			           </div>
-		    	 </div>
-		   	</div>
-		   	<div class="comments-contents-wrap">
-			    <p class="comments-content">강남역 왓쇼이켄</p>
-			    <div class="comments-bottom">
-			    		<button type="button"class="report-comments-btn">신고하기</button>
-			    </div>
-		   	</div>
-		</div>
-		<div class="re-comments-input-wrap">
-			<div class="comments-input">
-				<textarea rows="3" class="comments-txtarea" placeholder="답글을 남겨보세요."></textarea>
+
+		<c:if test="${commCnt eq 0}">
+			<div class="comments-basic">
+				<svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+					 <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+				</svg>
 			</div>
-			<button type="button"type="button" class="comments-btn">
-				<span>클릭</span>
-			</button>
-		</div>
+		</c:if>
+
+		<c:forEach var="setCom" items="${setCom }" varStatus="i">
+		<c:choose>
+			<c:when test="${setCom.reply_idx eq 0 }">
+				<div class="comments-sample-wrap">
+					<div class="comments-profile-wrap">
+						 <div class="comments-profile-image-wrap">
+					             <div class="comments-profile-image">
+									<a class="profile-link" href="#void">
+					               		<img alt="프로필이미지" src="${setCom.img }">
+								   </a>
+					             </div>
+					             <div class="comments-profile-left">
+					               <div class="comments-nickname"><c:out value="${setCom.nick }(${fn:substring(setCom.id,0,4) }****)"/>
+					               <c:if test="${pInfo.id eq setCom.id }"><div class="writer">작성자</div></c:if></div>
+					               <time class="comments-date"><c:out value="${setCom.posted_date }"/></time>
+					           </div>
+				    	 </div>
+				   	</div>
+		  
+		   	
+				   	<div class="comments-contents-wrap">
+					    <p class="comments-content"><c:out value="${setCom.contents }"/></p>
+					    <div class="comments-bottom">
+					    	
+					    	<c:choose>
+						    	<c:when test="${sessionId eq setCom.id }"> <%-- 본인이 쓴 댓글 일 경우 --%>
+							    		<button type="button"class="add-comments-btn">답글쓰기</button>
+							    	<a class="modify-comments" href="#void">
+							    		<button type="button" class="modify-comments-btn">수정하기</button>
+							    	</a>
+							    	<a class="delete-comments" href="#void">
+							    		<button type="button"class="delete-comments-btn">삭제하기</button>
+							    	</a>						    		
+						    	</c:when>
+						    	<c:when test="${sessionId ne setCom.id }"> <%-- 타인이 쓴 댓글 일 경우 --%>
+							    		<button type="button"class="add-comments-btn">답글쓰기</button>
+							    		<button type="button"class="report-comments-btn">신고하기</button>
+						    	</c:when>
+					   		</c:choose>
+					   		
+					    </div>
+				   	</div>
+				</div>
+				
+				<div class="re-comments-input-wrap">
+					<div class="comments-input">
+						<textarea rows="3" class="comments-txtarea" placeholder="답글을 남겨보세요."></textarea>
+					</div>
+					<button type="button"type="button" class="comments-btn">
+						<span>클릭</span>
+					</button>
+				</div>
+		 	</c:when>
+		 	
+		<c:otherwise>
+			<div class="re-comments-sample-wrap">
+				<div class="comments-profile-wrap">
+					 <div class="comments-profile-image-wrap">
+				         <div class="comments-profile-image">
+							<a class="profile-link" href="#void">
+				               <img alt="프로필이미지" src="${setCom.img }">
+							 </a>
+				             </div>
+				             <div class="comments-profile-left">
+				               <div class="comments-nickname"><c:out value="${setCom.nick }"/>(<c:out value="${fn:substring(setCom.id,0,4) }****)"/>
+				               <c:if test="${pInfo.id eq setCom.id }"><div class="writer">작성자</div></c:if></div>
+				               <time class="comments-date">${setCom.posted_date }</time>
+				           </div>
+			    	 </div>
+			   	</div>
+			   	<div class="comments-contents-wrap">
+				    <p class="comments-content"><c:out value="${setCom.contents }"/></p>
+				    <div class="comments-bottom">
+				    
+					    <c:choose>
+						    <c:when test="${sessionId eq setCom.id }"> <%-- 본인이 쓴 댓글 일 경우 --%>
+							    <a class="modify-comments" href="#void">
+							    	<button type="button" class="modify-comments-btn">수정하기</button>
+							    </a>
+							    <a class="delete-comments" href="#void">
+							    	<button type="button"class="delete-comments-btn">삭제하기</button>
+							    </a>						    		
+						    </c:when>
+						    <c:when test="${sessionId ne setCom.id }"> <%-- 타인이 쓴 댓글 일 경우 --%>
+							    	<button type="button"class="report-comments-btn">신고하기</button>
+						   	</c:when>
+					   	</c:choose>
+					   	
+				    </div>
+			   	</div>
+			</div>
+			
+		</c:otherwise>
+		</c:choose>
+		</c:forEach>
+		
+		
 	</div>
 <!-- comments end -->
 
+<c:if test="${wriCheck eq 1 }">
+<!-- product-bottom -->
+	<div class="product-bottom-wrap">
+		<div class="product-bottom-btn">
+			<button type="button" class="modify-btn">
+				<span>수정</span>
+			</button>
+			<button type="button" class="delete-btn">
+				<span>삭제</span>
+			</button>
+		</div>
+	</div>
+<!-- product-bottom end-->
+</c:if>
+
+
 </div>
 <!-- container end -->
-
+<form id="commFrm" method="get">
+	<input type="hidden" name="comment_idx" id="comment_idx" value="${param.comment_idx }">
+	<input type="hidden" name="product_idx" id="product_idx" value="${param.product_idx }">
+</form>
 <!-- footer -->
 <%@ include file="../../common/jsp/footer.jsp" %>
 <!-- footer end -->

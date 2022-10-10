@@ -157,7 +157,7 @@
 
 .state {
 	width: 100px;
-	height: 20px;
+	height: 17px;
 	font-size: 15px;
 	border: solid 1px #e9ecef;
 	border-radius: 6px;
@@ -165,6 +165,24 @@
 	line-height: 20px;
 	padding: 12px 16px;
 	text-align: center;
+}
+
+.state-select {
+  width: 130px;
+  margin-left: 8px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 12px 16px;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border: solid 1px #e9ecef;
+  box-sizing: border-box;
+  font-size: 15px;
+  letter-spacing: -0.6px;
+  text-align: left;
+  background: #fff url(https://d1unjqcospf8gs.cloudfront.net/assets/home/articles/icon-arrow-down-ea33c4b4c74ce0aca95580c70c5ba1f464ff5833213b0fc8db5de0fab98b57e1.svg) no-repeat 89% 50%;
 }
 
 /* description */
@@ -277,11 +295,11 @@
 	text-decoration: none;
 }
 
-.comments-new{
+.comments-old{
 	color: #0A0400;
 }
 
-.comments-old{
+.comments-new{
 	color: #BEBEBE;
 }
 
@@ -316,6 +334,14 @@
 	font-size: 13px;
 	resize: none;
 	outline: 0;
+}
+
+.comments-basic > svg {
+	display: flex;
+	margin: 0 auto;
+	padding-top: 50px;
+	padding-bottom: 50px;
+	color: #BEBEBE;
 }
 
 .comments-sample-wrap {
@@ -428,3 +454,27 @@
 	color: #868e96;
 	margin-right: 4px;
 }
+
+/* product-bottom */
+.product-bottom-wrap {
+	padding: 10px 0;
+	width: 677px;
+	margin: 0 auto;
+	margin-bottom: 30px;
+}
+
+.product-bottom-btn{
+	display: flex;
+	justify-content: flex-end;
+}
+
+.modify-btn, .delete-btn {
+	height: 30px;
+ 	width: 50px;
+ 	background-color: #FF6900;
+ 	color: white;
+ 	border-radius: 6px;
+	font-size: 13px;
+	margin-left: 5px;
+}
+
