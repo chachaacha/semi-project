@@ -83,11 +83,16 @@ $(function() {
 							<c:out value="${os.posted_date }" />
 						</div><!-- dong_date --><!-- 구와 올린날짜. 디자인할 때랑 이름이 달라짐 ^~^ -->
 							<div class="price_ch">
-									<div class="btn_price">
-										<c:if test="${reserved eq 'Y'}"> <!-- c:if 안에 넣었는데 왜 안되죠..? -->
+								<div class="btn_price">
+								<c:choose> 
+										<c:when test="${os.reserved eq 'Y'}">
 											 <button class="reserved_btn" type="button">예약중</button>
-										</c:if> 
-										<fmt:formatNumber pattern="#,###,###원" value="${os.price }"></fmt:formatNumber>
+											 <fmt:formatNumber pattern="#,###,###원" value="${os.price }"></fmt:formatNumber>
+										</c:when>
+										<c:when test="${os.reserved eq 'N'}">
+											<fmt:formatNumber pattern="#,###,###원" value="${os.price }"></fmt:formatNumber>
+										</c:when>
+									</c:choose> 
 									</div><!-- "btn_price" -->
 									 	<div class="cmt_n_heart">
 											<div class="heart">하트&nbsp;

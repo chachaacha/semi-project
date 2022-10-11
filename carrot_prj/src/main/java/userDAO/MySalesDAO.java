@@ -53,7 +53,7 @@ public class MySalesDAO {
 			selectAll
 			.append("	select p.id, p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.reserved, p.sold_check, p.price, p.comment_cnt, p.liked_cnt	")
 			.append("	from	product p, loc_category lc																													")
-			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'N' 	or reserved = 'Y'																				");
+			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'N'														");
 			
 			pstmt = con.prepareStatement(selectAll.toString());
 		//4. 바인드 변수 설정

@@ -63,6 +63,10 @@
 .edit_del_btn{background: #fff;
 						float: right;
 			   		    }
+.price_ch{display: flex;
+			flex-direction: column;
+			margin-top: 20px;
+}
 .btn_price{display: inline-flex;
 			font-size: 16px;
 	

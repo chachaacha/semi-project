@@ -9,7 +9,15 @@
 <!-- parameter받은 VO생성 -->
 <jsp:useBean id="msdcVO" class="userVO.MySalesVO" scope="session"/>
 <!-- 2. VO에 setter method(property)호출 -->
-<jsp:setProperty property="*" name="msdcVO"/>
+<%-- <jsp:setProperty property="*" name="msdcVO"/> --%>
+<jsp:setProperty property="product_idx" name="msdcVO"/>
+<jsp:setProperty property="thumbnail" name="msdcVO"/>
+<jsp:setProperty property="title" name="msdcVO"/>
+<jsp:setProperty property="gu" name="msdcVO"/>
+<jsp:setProperty property="posted_date" name="msdcVO"/>
+<jsp:setProperty property="liked_cnt" name="msdcVO"/>
+<jsp:setProperty property="comment_cnt" name="msdcVO"/>
+<jsp:setProperty property="price" name="msdcVO"/>
 <!-- 세션에 저장된 아이디 -->
 <jsp:setProperty property="id" name="msdcVO" value="${id }"/>
  
@@ -56,7 +64,7 @@ $(function() {
 	String id = (String)session.getAttribute("id");
 	MySalesDAO msDAO=MySalesDAO.getInstance();
 	List<MySalesVO> dealComplete=msDAO.selectDealComplete(id);
-	//System.out.println("-@-@-"+dealComplete); //찍어보니 값이 안담긴당...
+	//System.out.println("-----"+dealComplete); //찍어보니 값이 안담긴당...
 	//스콥 객체에 할당하기
 	pageContext.setAttribute("dealComplete", dealComplete);
 	%>
@@ -84,7 +92,7 @@ $(function() {
 						</div><!-- dong_date --><!-- 구와 올린날짜. 디자인할 때랑 이름이 달라짐 ^~^ -->
 							<div class="price_ch">
 									<div class="btn_price">
-										<fmt:formatNumber pattern="#,###,###원" value="${dc.price }"></fmt:formatNumber>
+										<fmt:formatNumber pattern="#,###,###원" value="${dc.price }"/>
 									</div><!-- "btn_price" -->
 									 	<div class="cmt_n_heart">
 											<div class="heart">하트&nbsp;
