@@ -81,14 +81,16 @@ function chkNull(){
 		$("#password").focus();
 		return;
 	}
+	
 	//8~25자의 영문, 숫자, 특수문자 3가지를 조합하여 입력
-	var passChk= /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,25}$/;
+/* 	var passChk= /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,25}$/;
 	
 	if(!passChk.test($("#password").val().trim())){
 		alert("8~25자의 영문, 숫자, 특수문자 3가지를 조합하여 입력해야 합니다.");
 		$("#password").focus();
 		return;
-	}  
+	}   */
+	
 	//비밀번호확인 필수 입력	
 	if($("#passwordChk").val().trim() !== $("#password").val().trim()) {
 		alert("비밀번호가 일치하지 않습니다.");

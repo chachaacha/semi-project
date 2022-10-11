@@ -107,7 +107,7 @@ System.out.println(addr2);
 <!-- DB연결 -->
 <%
 JoinDAO jDAO=JoinDAO.getInstance();
-out.println ( jVO );
+/* out.println ( jVO ); */
 jDAO.insertJoin( jVO );%>
 
 <script type="text/javascript">
