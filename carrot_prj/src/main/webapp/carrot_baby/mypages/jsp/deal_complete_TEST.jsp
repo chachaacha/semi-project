@@ -9,7 +9,15 @@
 <!-- parameter받은 VO생성 -->
 <jsp:useBean id="msdcVO" class="userVO.MySalesVO" scope="session"/>
 <!-- 2. VO에 setter method(property)호출 -->
- <jsp:setProperty property="*" name="msdcVO"/>
+<jsp:setProperty property="*" name="msdcVO"/>
+<%-- <jsp:setProperty property="product_idx" name="msdcVO"/>
+<jsp:setProperty property="thumbnail" name="msdcVO"/>
+<jsp:setProperty property="title" name="msdcVO"/>
+<jsp:setProperty property="gu" name="msdcVO"/>
+<jsp:setProperty property="posted_date" name="msdcVO"/>
+<jsp:setProperty property="liked_cnt" name="msdcVO"/>
+<jsp:setProperty property="comment_cnt" name="msdcVO"/>
+<jsp:setProperty property="price" name="msdcVO"/> --%>
 <!-- 세션에 저장된 아이디 -->
 <jsp:setProperty property="id" name="msdcVO" value="${id }"/>
  
@@ -56,7 +64,9 @@ $(function() {
 	String id = (String)session.getAttribute("id");
 	MySalesDAO msDAO=MySalesDAO.getInstance();
 	List<MySalesVO> dealComplete=msDAO.selectDealComplete(id);
-	//System.out.println("-----"+dealComplete); //찍어보니 값이 안담긴당...
+	//System.out.println("-----"+dealComplete); //찍어보니 값이 안담긴당...--->계속 test1으로 테스트해봤었는데 test1에는 거래 완료가 없어서 
+	//빈 화면이 출력되는 거였음! test5로 하니까 판매중 버튼도 잘 걸림
+	
 	//스콥 객체에 할당하기
 	pageContext.setAttribute("dealComplete", dealComplete);
 	%>
