@@ -61,7 +61,10 @@ pageContext.setAttribute("wlList", wlList);
 	<c:forEach var="wl" items="${ wlList }">
 	<div class="list_of_interests_item">
 		<div class="list_of_interests_item_img">
-			<img alt="이미지 자리" src="#void">
+		<!-- 이미지 클릭시 해당 페이지로 이동 -->
+		<a href="">
+			<img alt="이미지 자리" src="${wl.thumbnail }">
+		</a>
 				<div class="list_of_interests_item_border">
 					<div class="loi_title"><c:out value="${ wl.title }"/> <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="heart_btn" viewBox="0 0 16 16">
   						<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>

@@ -34,7 +34,8 @@
   //신고하기 버튼 클릭 시
  	 $(".confirm").click(function(){
  		 //팝업창 열기
- 		window.open("report_profile_popup.jsp?id="+id,"report_profile_popup",
+ 		window.open("report_profile_popup.jsp?id="+id
+ 				,"report_profile_popup",
 		"width=520,height=620,top=234,left=979,scrolling=no")
 })	
 });
@@ -61,7 +62,7 @@ List<ProfilVO> ppList = pDAO.selectPp(id);
 <!-- 사용자에 따른 상품 전체 조회 -->
 <jsp:useBean id="ppVO" class="userVO.ProfilPVO"></jsp:useBean>
 <!-- hidden으로 받은 아이디 설정 -->
-<jsp:setProperty property="id" name="ppVO" value=""/>
+<jsp:setProperty property="id" name="ppVO" value="test1"/><!-- 이 부분 수정 -->
 <jsp:setProperty property="price" name="ppVO" />
 <jsp:setProperty property="product_idx" name="ppVO" />
 <jsp:setProperty property="thumbnail" name="ppVO" />

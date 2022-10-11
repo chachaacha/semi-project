@@ -72,7 +72,10 @@ pageContext.setAttribute("blList", blList);
 	<div class="purchase_list_title">구매내역</div>
 	<div class="purchase_list_item">
 		<div class="purchase_list_img">
+		<!-- 이미지 클릭시 해당 페이지로 이동 -->
+		<a href="">
 			<img alt="이미지 자리" src="${bl.thumbnail}">
+		</a>
 				<div class="purchase_list_border">
 				<div class="pl_title"><c:out value="${ bl.title }"/>
 					<button class="edit_del_btn" type="button">
