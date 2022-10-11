@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,8 +19,12 @@ $(function() {
 })
 </script>
 
-
 </head>
+<%-- 세션처리 --%>
+<c:if test="${ empty sessionScope.id }">
+<c:redirect url="../../login/jsp/user_login.jsp" />
+</c:if>
+
 <body>
 <div class="wrap">
 
@@ -42,7 +47,7 @@ $(function() {
 						<div class="region">서울 어디어디</div>
 				</div>
 			</div><!-- profile-wrap -->
-		<div><button class="block" type="button">차단하기</button> </div>
+		<div><button class="block" type="button">차단해제</button> </div>
 	</div><!-- profile -->
 	
 	<div class="profile">
@@ -55,7 +60,7 @@ $(function() {
 						<div class="region">서울시 강남구 역삼동</div>
 				</div>
 			</div>
-		<div><button class="block" type="button">차단하기</button></div>
+		<div><button class="block" type="button">차단해제</button></div>
 	</div><!-- profile -->
 	
 	

@@ -18,7 +18,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(function() {
-	 
 	//셀렉트 선택시 다른 테이블을 보여준다.
 	$("#memberCat").change(function(){
 		$("#selectStau").val($("#memberCat").val());
@@ -39,9 +38,11 @@ $(function() {
 });
 
 //신고 누를 시 팝업창열기
-//a 태그에 자바스크립트 영역을 열고 함수를 넣고 그 함수의 매개변수에 EL의 값을 받아온다. 
+//post방식으로 팝업창열기
 function openPopup(id) {
-	window.open("manger_member_block_popup.jsp?id="+id,"manger_member_block_popup","width=520,height=620,top=203,left=1336");
+	open("","manger_member_block_popup","width=520,height=620,top=203,left=1336");
+	$("#id").val(id);
+	$("#popupId").submit();
 }
 
 
@@ -95,6 +96,11 @@ function openPopup(id) {
 				<input type="hidden" id="searchStau"name="searchStau" value="${ fn:trim(param.searchStau) }"/>
 			</form>
 			
+			<!-- 팝업창을 post방식으로 열기 위한 form -->
+			<form id="popupId" method="post" target="manger_member_block_popup" action="manger_member_block_popup.jsp">
+				<input type="hidden" name="id" id="id"/>
+			</form>
+			
 			<div class="table-wrap table1">
 						 <table class="table">
 						 <caption>표 제목</caption>						 
@@ -133,10 +139,9 @@ function openPopup(id) {
 						 <%-- 차단해제 --%>
 						 <c:if test="${ not empty param.id }">
 						 <% mDAO.deleteBlock(request.getParameter("id")); %>
-						 <%-- 왜 쿼리스트링에 EL이나 출력식 쓰면 씹히는지 질문하기 --%>
-						 <c:set var="key" value="${ param.searchStau }"/>
+						 <%-- 왜씹힐까?? --%>
 						 <c:redirect url="manager_member_management.jsp">
-						 	<c:param name="searchStau" value="${ key }"/>
+						 	<c:param name="searchStau" value="${ param.searchStau }"/>
 						 	<c:param name="selectStau" value="${ param.selectStau }"/> 
 						 </c:redirect> 
 						 </c:if>

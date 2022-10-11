@@ -84,11 +84,11 @@ public class MemberDAO {
 			.append("	select mb.id, m.name, br.blocked_reason ")
 			.append("   from member m, manager_blocked mb, blocked_reason br	")
 			.append("   where (mb.id = m.id and  mb.br_idx = br.br_idx)  ");
-			if(id != "") {
+			if(id != null && !"".equals(id)) {
 				sb.append(" and mb.id like '%'||?||'%' ");
 			}
 			pstmt=con.prepareStatement(sb.toString());
-			if(id != "") {
+			if(id != null && !"".equals(id)) {
 				pstmt.setString(1, id);
 			}
 			rs=pstmt.executeQuery();

@@ -32,7 +32,7 @@ $(function() {
 </script>
 </head>
 <body>
-<form method="get" id = "blockFrm">
+<form method="post" id = "blockFrm">
 <input type="hidden" name="id" value="${ param.id }"/> <!-- 회원관리에서 웹파라메터로 받은 아이디를 다시 히든에 넣어 submit한다.  -->
 <div class="wrap">
 	<h1 class="title">차단하기</h1>

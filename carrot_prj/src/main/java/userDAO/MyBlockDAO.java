@@ -28,32 +28,22 @@ public class MyBlockDAO {
 	
 	public List<MyBlockVO> selectMB(String id) throws SQLException {
 		List<MyBlockVO> list = new ArrayList<MyBlockVO>();
-		
 		DbConnection dc = DbConnection.getInstance();
-		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
-		//1. 드라이버 로딩
 		try {
-		//2. Connection 얻기
 			con = dc.getConn();
-		//3. 쿼리문 생성 객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
-			.append("	select ub.id, ub.blocked_id, mb.nick, ub.blocked_date	")
-			.append("	from user_blocked ub, member mb							")
-			.append("	where (mb.id = ub.blocked_id) and	ub.id = ?				");
+			.append(" select ub.id, ub.blocked_id, mb.nick, ub.blocked_date	")
+			.append(" from user_blocked ub, member mb ")
+			.append(" where (mb.id = ub.blocked_id) and	ub.id = ? ");
 			
 			pstmt = con.prepareStatement(select.toString());
-		//4. 바인드 변수에 값 설정
 			pstmt.setString(1, id);
-		//5. 쿼리문 실행 후 결과 얻기.
 			rs = pstmt.executeQuery();
-			
 			MyBlockVO mcVO = null;
-			
 			while( rs.next() ) {
 				mcVO = new MyBlockVO();
 				mcVO.setId(rs.getString("id"));
@@ -62,10 +52,8 @@ public class MyBlockDAO {
 				mcVO.setBlocked_date(rs.getDate("blocked_date"));
 			}
 		} finally {
-		//6. 연결 끊기.
 			dc.dbClose(rs, pstmt, con);
 		}
-		
 		return list;
 	}
 	

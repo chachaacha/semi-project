@@ -82,12 +82,52 @@ public class MyCommDAO {
 			sb
 			.append("	update	product_comment	")
 			.append("	set		contents = '댓글 작성자에 의해 삭제된 댓글입니다.', deleted = 'Y' ")
-			.append("	where	product_idx = ?, comment_idx = ?, reply_idx = ? ");
+			.append("	where	product_idx = ? and comment_idx = ? and reply_idx = ? ");
 					
 			pstmt=con.prepareStatement(sb.toString());
 			pstmt.setString(1, mcVO.getProduct_idx());
 			pstmt.setInt(2, mcVO.getComment_idx());
 			pstmt.setInt(3, mcVO.getReply_idx());
+			resultCnt =pstmt.executeUpdate();
+			}finally {
+				dc.dbClose(null, pstmt, con);
+			}
+			return resultCnt;
+	}
+	
+	/**
+	 * 복수의 값 삭제
+	 * @param list
+	 * @return
+	 * @throws SQLException
+	 */
+	public int updateDropMultipleMc(List<MyCommVO> list) throws SQLException {
+		int resultCnt = 0;
+		DbConnection dc = DbConnection.getInstance();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con = dc.getConn();
+			StringBuilder sb = new StringBuilder();
+			sb
+			.append("	update	product_comment	")
+			.append("	set		contents = '댓글 작성자에 의해 삭제된 댓글입니다.', deleted = 'Y' ")
+			.append("	where	1=2 ");
+			
+			for(int i = 0; i < list.size(); i++) {
+				sb.append(" or (product_idx = ? and comment_idx = ? and reply_idx = ?) ");
+			}
+			pstmt = con.prepareStatement(sb.toString());
+					
+			MyCommVO mcVO =null;
+			int num = 0; //바인드변수 설정용
+			for(int i = 0; i < list.size(); i++) { 
+				mcVO= list.get(i);
+				pstmt.setString(++num, mcVO.getProduct_idx());
+				pstmt.setInt(++num, mcVO.getComment_idx());
+				pstmt.setInt(++num, mcVO.getReply_idx());
+			}
+	
 			resultCnt =pstmt.executeUpdate();
 			}finally {
 				dc.dbClose(null, pstmt, con);

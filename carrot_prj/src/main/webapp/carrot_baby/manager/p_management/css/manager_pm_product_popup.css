@@ -218,6 +218,7 @@ body {
 
 .heart-icon {
 	height: 30px;
+	cursor:none;
 	background-color: transparent;
 }
 

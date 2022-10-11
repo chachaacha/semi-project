@@ -158,8 +158,10 @@ function check() {
 };
 
 //게시글 팝업
-function openPopup(idx) {
-	window.open("manager_pm_product_popup.jsp?product_idx="+idx,"product_popup","width=780,height=930,top=0,left=560");
+function openPopup(pIdx) {
+	open("","product_popup","width=780,height=930,top=0,left=560");
+	$("#pIdx").val(pIdx);
+	$("#popupFrm").submit();
 };
 
 </script>
@@ -208,6 +210,11 @@ function openPopup(idx) {
 			<input type="hidden" id="categoryFlag" name="categoryFlag" value="${ param.categoryFlag }"/>
 			<input type="hidden" id="dateOrderFlag" name="dateOrderFlag" value="${ param.dateOrderFlag }"/>
 			<input type="hidden" id="reportOrderFlag" name="reportOrderFlag" value="${ param.reportOrderFlag }"/>
+			</form>
+			
+			<!-- 팝업을 post방식으로 열기위한 폼 --> 
+			<form method="post" action="manager_pm_product_popup.jsp" target="product_popup" id="popupFrm">
+				<input type="hidden" id="pIdx" name="product_idx"/>
 			</form>
 			
 			<div class="pm">
@@ -351,7 +358,7 @@ function openPopup(idx) {
 						 <c:if test="${ not empty ex }">
 						 <%-- 향휴 테이블에 on cascade 설정하기 --%>
 						 <script type="text/javascript">
-						 alert("무결성 예외발생!!");
+						 alert("자식테이블에서 참조중! 예외발생!!");
 						 location.href="manager_product_category.jsp";
 						 </script>
 						 </c:if>

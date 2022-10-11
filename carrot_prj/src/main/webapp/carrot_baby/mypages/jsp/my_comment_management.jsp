@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="userDAO.MyCommDAO"%>
 <%@page import="userVO.MyCommVO"%>
 <%@page import="java.util.List"%>
@@ -16,14 +17,18 @@
 <link rel="stylesheet" type="text/css" href="../css/my_comment_management.css">	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
-//선택 삭제와 댓글 삭제 버튼을 눌렀을 때 나오는 confirm창
 $(function() {
+	//선택삭제 버튼클릭시
+	$("#multipleDelBtn").click(function(){
+		if(confirm("정말로 삭제하시겠습니까?")){
+			$("#multipleDelFrm").submit();//체크박스 값들을 submit
+		}
+	});
 	
-	$(".cmt_delete").click(function() {//댓글 삭제 버튼
-		confirm("선택한 댓글을 정말 삭제하시겠어요?")
-	})
+	
 });
 
+//체크박스일괄처리
 function allChk() {
 	if($("#allChk").is(":checked")){
 		$("[name='commChk']").prop("checked",true);
@@ -31,14 +36,12 @@ function allChk() {
 		$("[name='commChk']").prop("checked",false);
 	}
 }
-
-function oneCommDelete(pIdx, cIdx, rIdx) {
+//댓글개별삭제
+function oneCommDelete(pIdx, cIdx, rIdx) { // 댓글삭제 버튼을 누를 시 값들이 저장되어 호출
 	if(confirm("선택한 댓글을 정말 삭제하시겠어요?")){
-		location.href="";
-	} else {
-		
+		$("#oneDelete").val(pIdx+","+cIdx+","+rIdx); // 값들을 히든폼에 넣어서 한번에 전달
+		$("#deleteFrm").submit();
 	}
-	
 }
 
 </script>
@@ -49,12 +52,12 @@ function oneCommDelete(pIdx, cIdx, rIdx) {
 </c:if>
 
 <% 
+//내댓글목록불러오기
 request.setCharacterEncoding("UTF-8");
 MyCommDAO mcDAO = MyCommDAO.getInstance();
 List<MyCommVO> mcList = mcDAO.selectMC((String)session.getAttribute("id"));
 pageContext.setAttribute("mcList", mcList);
 %>
-
 
 <div class="wrap">
 
@@ -67,26 +70,34 @@ pageContext.setAttribute("mcList", mcList);
 
 <%@ include file="myinfo_navi.jsp" %>
 
+<%-- 개별삭제를 위한 폼 --%>
+<form id="deleteFrm" method="post">
+<input type="hidden" id="oneDelete" name="oneDelete" value="${ param.oneDelete }"/>
+</form>
+
 <div class="mcm_title_wrap">
 	<div class="mcm_title">내 댓글 관리</div><!-- mcm title -->
+		
 		<div class="my_comment_list">
 			<div class="mcl_title">
 				<div class="mcl_title_align"><!-- mcl_title_align 시작 -->
 					<div><input type="checkbox" id="allChk" class="mcl_check" onclick="allChk()">번호</div><!-- mcl_num -->	
 					<div>내용</div><!-- mcl_content -->
 					<div>
-						<button class="mcl_button" type="button">선택삭제</button>
+						<button class="mcl_button" type="button" id="multipleDelBtn">선택삭제</button>
 					</div><!-- mcl_btn -->	
 				</div><!-- mcl_title_align 끝 -->
 		    </div><!-- mcl_title -->			
 				<!-- 댓글 내용들 -->
 				<div> <!-- mcl_content_wrap -->
 					<!-- 반복시작 -->
+					<form id="multipleDelFrm" method="post"> 
 					<c:set var="sizeChk" value="${ pageScope.mcList }"/>
 					<c:forEach var="mcList" items="${ pageScope.mcList }" varStatus="i">
 					<div class="mcl_content">
 						 <div><!-- chk_wrap -->
-						 	<input type="checkbox" name="commChk" class="mcl_check"/>${ i.count } 
+						 	<!-- ","로 나눠진 여러개의 값들을 하나의 value로 받는다. -->
+						 	<input type="checkbox" name="commChk" value="${ mcList.product_idx },${ mcList.comment_idx },${ mcList.reply_idx }" class="mcl_check"/>${ i.count } 
 						 </div>
 					  <div class="content_wrap"><!-- content_wrap 시작 -->
 						<div class="post_style">[글]&nbsp;<c:out value="${ mcList.title }"/></div><!-- mcl_content의 제목 --><!-- 폰트크기 댓글이랑 날짜랑 차이나게 키워야함 -->
@@ -102,9 +113,9 @@ pageContext.setAttribute("mcList", mcList);
 					<hr>
 					</c:if>
 					</c:forEach>
-				
-</div><!-- mcl_content_wrap-->
-</div><!-- 댓글관리 리스트 전체-->
+					</form> 
+				</div><!-- mcl_content_wrap-->
+		</div><!-- 댓글관리 리스트 전체-->
 </div>
 </div><!-- container end -->
 
@@ -113,6 +124,45 @@ pageContext.setAttribute("mcList", mcList);
 <!-- footer end -->
 
 </div>
+<%-- 댓글삭제처리 --%>
+<c:if test="${ not empty param.oneDelete }">
+<jsp:useBean id="mcdVO" class="userVO.MyCommVO"></jsp:useBean>
+<%-- 담아온 값을 split으로 자르고 해당하는 객체에 set --%>
+<jsp:setProperty property="product_idx" name="mcdVO" value="${ fn:split(param.oneDelete,',')[0] }"/>
+<jsp:setProperty property="comment_idx" name="mcdVO" value="${ fn:split(param.oneDelete,',')[1] }"/>
+<jsp:setProperty property="reply_idx" name="mcdVO" value="${ fn:split(param.oneDelete,',')[2] }"/>
+<% mcDAO.updateDropMc(mcdVO); %>
+<script type="text/javascript">
+location.href="my_comment_management.jsp";
+alert("댓글이 삭제되었습니다.");
+</script>
+</c:if>
+
+<%-- 댓글일괄삭제처리 --%>
+<c:if test="${ not empty paramValues.commChk or not empty param.commChk }">
+<% 
+List<MyCommVO> list = new ArrayList<>();
+String[] commArr = request.getParameterValues("commChk");// 배열 방 하나에 상품인덱스, 댓글인덱스, 답글인덱스가 ","로 구분되어 있다.
+MyCommVO mcuVO = null;
+String[] param = null;
+for(int i = 0 ; i<commArr.length;i++) {
+	mcuVO = new MyCommVO();
+	param=commArr[i].split(",");// split으로 넘어온 파라매터 배열의 각 방을 자른다.
+	mcuVO.setProduct_idx(param[0]);//첫번 째 방의 상품인덱스를 vo에 set
+	mcuVO.setComment_idx(Integer.parseInt(param[1]));//두번 째 방의 댓글인덱스를 vo에 set
+	mcuVO.setReply_idx(Integer.parseInt(param[2]));//세번 째 방의 답글인덱스를 vo에 set
+	list.add(mcuVO);
+}
+int resultCnt = mcDAO.updateDropMultipleMc(list);
+pageContext.setAttribute("resultCnt", resultCnt);
+%>
+<script type="text/javascript">
+location.href="my_comment_management.jsp";
+alert("${ resultCnt }개의 댓글이 삭제 되었습니다.");
+</script>
+
+
+</c:if>
 
 </body>
 </html>
