@@ -7,11 +7,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="http://211.63.89.149/jsp_prj/common/css/main_v1_220901.css"/>
-<jsp:useBean id="bVO" class="userVO.BoardVO" scope="page"/>
-<jsp:useBean id="wVO" class="userVO.WishVO" scope="page"/>
-<jsp:setProperty property="*" name="bVO"/>
-<jsp:setProperty property="*" name="wVO"/>
-
+<jsp:useBean id="ucVO" class="userVO.UserCommentVO" scope="page"/>
+<jsp:setProperty property="*" name="ucVO"/>
 <style type="text/css">
 
 </style>
@@ -28,30 +25,33 @@
 <%
 request.setCharacterEncoding("UTF-8");
 
-String id=request.getParameter("userId"); //유저 아이디
-String product_idx=request.getParameter("product_idx"); //하트 선택 유무
-String heartFlag=request.getParameter("flag"); //하트 선택 유무
+String work = request.getParameter("work");
+String product_idx = request.getParameter("product_idx");
+String id = request.getParameter("user_id");
+String contents = request.getParameter("contents");
 
 //BoardDAO 생성
 BoardDAO bDAO=BoardDAO.getInstance();
 
-wVO.setId(id);
-wVO.setProduct_idx(product_idx);
+if(work.equals("comment")){ 	//댓글달기
 
-if(id != null && !"".equals(id)) {
-	if(heartFlag.equals("true")){ //하트 눌렀을 때
-		bDAO.insertWish(wVO); //하트 수 증가
-		bDAO.updateWishCnt(product_idx); //실시간 하트 수 집계
-	}else { //하트 취소했을 때
-		bDAO.deleteWish(wVO); //하트 수 감소
-		bDAO.updateWishCnt(product_idx); //실시간 하트 수 집계
-	}
-		response.sendRedirect("../../product/jsp/user_buyer_product_comments.jsp?product_idx="+product_idx);
-		/* rd.forward(request,response); */
-} else {
-	response.sendRedirect("../../product/jsp/user_buyer_product_comments.jsp?product_idx="+product_idx);
+	ucVO.setProduct_idx(product_idx);
+	ucVO.setId(id);
+	ucVO.setContents(contents);
+	
+	bDAO.insertComm(ucVO);
+	
+}else if(work.equals("recomment")) { //답글달기 */
+	Integer comment_idx = Integer.parseInt(request.getParameter("comment_idx"));
+	ucVO.setProduct_idx(product_idx);
+	ucVO.setComment_idx(comment_idx);
+	ucVO.setId(id);
+	ucVO.setContents(contents);
+	
+	bDAO.insertReply(ucVO);
+	
 }
-
+	response.sendRedirect("../../product/jsp/user_buyer_product_comments.jsp?product_idx="+product_idx);
 %>
 </body>
 </html>

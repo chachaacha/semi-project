@@ -11,6 +11,7 @@ import java.util.List;
 import common.DbConnection;
 import userVO.BoardVO;
 import userVO.BuyVO;
+import userVO.MyInfoVO;
 import userVO.ReportBVO;
 import userVO.ReportCVO;
 import userVO.ReportVO;
@@ -81,6 +82,37 @@ public class BoardDAO {
 		
 		return bVO;
 	}//selectB
+	
+/*	//유저 닉네임
+	public String selectN(String id) throws SQLException {
+		DbConnection db = DbConnection.getInstance();
+		Connection con=null;
+		ResultSet rs=null;
+		PreparedStatement pstmt=null;
+		String str="";
+		
+		try {
+			con=db.getConn();
+			String insertWish = "select nick from member where id=? ";
+			pstmt=con.prepareStatement(insertWish.toString());
+			
+			pstmt.setString(1, id);
+			pstmt.executeUpdate();
+			
+			//System.out.println("------조회:"+insertWish);
+			//System.out.println("------조회:"+wVO);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				str=rs.getString(1);
+			}
+			
+		}finally {
+			db.dbClose(rs, pstmt, con);
+		}
+		return str;
+	}//selectWish */
 	
 	//게시글 작성자 확인
 	public int selectP(BoardVO bVO) throws SQLException {
@@ -291,8 +323,8 @@ public class BoardDAO {
 			.append("	where  m.id=pc.id and product_idx = ? ");
 			
 			//정렬 라디오 선택시
-			if(ucVO.getComment_idx() != -1) {
-				switch(ucVO.getComment_idx()) {
+			if(ucVO.getComment_flag() != -1) {
+				switch(ucVO.getComment_flag()) {
 				case 0:
 					sb.append(" order by pc.comment_idx desc, pc.reply_idx, pc.posted_date ");
 					break;
@@ -304,8 +336,8 @@ public class BoardDAO {
 			pstmt=con.prepareStatement(sb.toString());
 			pstmt.setString(1, ucVO.getProduct_idx());
 			
-			System.out.println("------취소:"+sb);
-			System.out.println("------취소:"+ucVO);
+			//System.out.println("------취소:"+sb);
+			//System.out.println("------취소:"+ucVO);
 			
 			rs=pstmt.executeQuery();
 			
@@ -336,22 +368,20 @@ public class BoardDAO {
 	//댓글 달기
 	public void insertComm(UserCommentVO cVO) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
-		
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		
 		try {
 			con=db.getConn();
 			
-			String insertComm="insert into product_comment(comment_idx, reply_idx, product_idx, id, nick, contents) values ((select nvl(max(comment_idx),0)+1 from product_comment where product_idx=?),0,?,?,?,?);";
+			String insertComm="insert into product_comment(comment_idx, reply_idx, product_idx, id, contents) values ((select nvl(max(comment_idx),0)+1 from product_comment where product_idx=?),0,?,?, ?)";
 			
 			pstmt=con.prepareStatement(insertComm);
 			
 			pstmt.setString(1, cVO.getProduct_idx());
 			pstmt.setString(2, cVO.getProduct_idx());
 			pstmt.setString(3, cVO.getId());
-			pstmt.setString(4, cVO.getNick());
-			pstmt.setString(5, cVO.getContents());
+			pstmt.setString(4, cVO.getContents());
 			
 			pstmt.executeUpdate();
 			
@@ -370,7 +400,7 @@ public class BoardDAO {
 		try {
 			con=db.getConn();
 			
-			String insertReply="insert into product_comment(comment_idx, reply_idx, product_idx ,id, nick, contents) values (?,(select nvl(max(reply_idx),0)+1 from product_comment where product_idx=?),?,?,?,?)";
+			String insertReply="insert into product_comment(comment_idx, reply_idx, product_idx ,id, contents) values (?,(select nvl(max(reply_idx),0)+1 from product_comment where product_idx=?),?,?,?)";
 			
 			pstmt=con.prepareStatement(insertReply);
 			
@@ -378,8 +408,10 @@ public class BoardDAO {
 			pstmt.setString(2, cVO.getProduct_idx());
 			pstmt.setString(3, cVO.getProduct_idx());
 			pstmt.setString(4, cVO.getId());
-			pstmt.setString(5, cVO.getNick());
-			pstmt.setString(6, cVO.getContents());
+			pstmt.setString(5, cVO.getContents());
+			
+			System.out.println(insertReply);
+			System.out.println(cVO);
 			
 			pstmt.executeUpdate();
 			
