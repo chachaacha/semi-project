@@ -127,15 +127,16 @@ session.setAttribute("user_id", user_id);
 		PostVO ppVO = pDAO.selectPost(pVO);
 		List<ImgVO> list_img = new ArrayList<ImgVO>();
 		list_img = pDAO.selectImg(product_idx);
-		int img
-		String
+		
 		for(int i = 0; i< list_img.size(); i++){
 			list_img.get(i).getImg_num();
-			++imgCnt;
 		} 
 		
 		//scope 객체 설정
 		String contents = ppVO.getContents();
+
+		
+		
 		int gu_idx = ppVO.getGu_idx();
 		pageContext.setAttribute("gu_idx", gu_idx);
 		int category_idx = ppVO.getCategory_idx();
