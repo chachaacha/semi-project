@@ -111,7 +111,7 @@ public class PostDAO {
 		return list;
 	}
 	
-	public List<ImgVO> selectImg() throws SQLException {
+	public List<ImgVO> selectImg(String product_idx) throws SQLException {
 		List<ImgVO> list = new ArrayList<ImgVO>();
 		
 		DbConnection dc = DbConnection.getInstance();
@@ -128,10 +128,13 @@ public class PostDAO {
 			StringBuilder select = new StringBuilder();
 			select
 			.append("	select	product_idx, product_img, img_num	")
-			.append("	from	product_img									");
+			.append("	from	product_img									")
+			.append("	where product_idx = ?								");
 			
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
+			pstmt.setString(1, product_idx);
+		//5. 쿼리문 생성 후 결과 얻기
 			rs = pstmt.executeQuery();
 			
 			ImgVO iVO = null;
@@ -145,13 +148,50 @@ public class PostDAO {
 				list.add(iVO);
 			}
 			
-		//5. 쿼리문 생성 후 결과 얻기
 		}finally {
 		//6. 연결 끊기
 			dc.dbClose(rs, pstmt, con);
 		}//end finally
 		
 		return list;
+	}
+	
+	public String selectIdx(String product_idx) throws SQLException{
+		String idx="";
+		
+		DbConnection dc = DbConnection.getInstance();
+		
+		Connection con =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		//1. 드라이버 로딩
+		try {
+		//2. Connection 얻기
+			con = dc.getConn();
+		//3. 쿼리문 생성 후 객체 얻기
+			StringBuilder select = new StringBuilder();
+			select
+			.append("	select product_idx		")
+			.append("	from product			")
+			.append("	where product_idx=?	");
+			
+			pstmt = con.prepareStatement(select.toString());
+		//4. 바인드 변수에 값 설정.
+			pstmt.setString(1, product_idx);
+		//5. 쿼리문 생성 후 결과 얻기
+			rs = pstmt.executeQuery();
+			
+			if( rs.next() ) {
+				idx = rs.getString("product_idx");
+			}//end if
+			
+		} finally {
+		//6. 연결 끊기
+			dc.dbClose(rs, pstmt, con);
+		}
+		
+		return idx;
 	}
 	
 	
@@ -307,6 +347,38 @@ public int updatePost(PostVO pVO) throws SQLException {
 	return updateCnt;
 }
 
+public int updateThumbnail(PostVO pVO) throws SQLException {
+	int updateCnt = 0;
+	
+	DbConnection dc = DbConnection.getInstance();
+	Connection con = null;
+	PreparedStatement pstmt = null;
+	
+	//1. 드라이버 로딩
+	try {
+		//2. Connection 얻기
+		con = dc.getConn();
+		//3. 쿼리문 생성객체 얻기
+		StringBuilder update = new StringBuilder();
+		update
+		.append("	update	product				")
+		.append("	set			thumbnail = ?		")
+		.append("	where		product_idx = ? 	");
+		
+		pstmt = con.prepareStatement(update.toString());
+		//4. 바인드 변수에 값 설정
+		pstmt.setString(1, pVO.getThumbnail());
+		pstmt.setString(2, pVO.getProduct_idx());
+		//5. 쿼리문 수행 후 결과 얻기
+		updateCnt = pstmt.executeUpdate();
+	} finally {
+		//6. 연결 끊기
+		dc.dbClose(null, pstmt, con);
+	}//end finally
+	
+	return updateCnt;
+}
+
 public int deleteImg(int product_idx) throws SQLException {
 	int deleteCnt = 0;
 	
@@ -336,7 +408,4 @@ public int deleteImg(int product_idx) throws SQLException {
 	
 	return deleteCnt;
 }
-
-
-	
 }//PostDAO

@@ -35,7 +35,38 @@ request.setCharacterEncoding("UTF-8");
 			maxSize, "UTF-8", new DefaultFileRenamePolicy() );
 	//4. 웹 파라메터 처리
 	//5. file control 처리
+	String product_idx = mr.getParameter("product_idx");
 	int cnt=Integer.parseInt(mr.getParameter("count"));
+	String title = mr.getParameter("title");
+	String contents = mr.getParameter("contents");
+	String user_id=(String)session.getAttribute("user_id");
+	String category_loc=mr.getParameter("category_loc");
+	int gu_idx = Integer.parseInt(category_loc);
+	String category_pd=mr.getParameter("category_pd");
+	int category_idx = Integer.parseInt(category_pd);
+	String priceS = mr.getParameter("price");
+	int price = Integer.parseInt(priceS);
+	String free = mr.getParameter("free");
+	if(free == null){
+		free = "N";
+	}
+%>
+<%-- <jsp:setProperty name="객체명" property="*"/> --%>
+	<jsp:setProperty property="id" name="pVO" value="<%= user_id %>"/>
+	<jsp:setProperty property="product_idx" name="pVO" value="<%= product_idx %>"/>
+	<jsp:setProperty property="category_idx" name="pVO" value="<%= category_idx %>"/>
+	<jsp:setProperty property="gu_idx" name="pVO" value="<%= gu_idx %>"/>
+	<jsp:setProperty property="price" name="pVO" value="<%= price %>"/>
+	<jsp:setProperty property="free" name="pVO" value="<%= free %>"/>
+	<jsp:setProperty property="title" name="pVO" value="<%= title %>"/>
+	<jsp:setProperty property="contents" name="pVO" value="<%= contents %>"/>
+	<jsp:setProperty property="thumbnail" name="pVO" value=""/>
+<%
+PostDAO pDAO = PostDAO.getInstance();
+out.println(pVO);
+pDAO.insertPost(pVO);
+%>
+<%
 	//원본 파일명
 	String[] reName = new String[cnt];
 	String[] originalName = new String[cnt];
@@ -47,11 +78,7 @@ request.setCharacterEncoding("UTF-8");
 	
 	boolean flag=false;
 	File temp = new File(uploadDir.getAbsolutePath()+"/"+reName[i]);
-	if(i > 0){
-%>
-<jsp:setProperty property="product_img" name="iVO" value="<%= reName[i] %>"/>
-<%
-	}
+
 	int checkSize=1024*1024*5;
 	if( temp.length() >= checkSize) {
 		flag=true;
@@ -66,41 +93,21 @@ request.setCharacterEncoding("UTF-8");
 <%} else {%>
 업로드 파일은 5MByte까지만 가능합니다.
 <%}//end else %>
-<%} %>
 <%
-
+if( reName[i] != null ){
 %>
+<jsp:setProperty property="product_img" name="iVO" value="<%= reName[i] %>"/>
+<jsp:setProperty property="product_idx" name="iVO" value="<%= product_idx %>"/>
+<jsp:setProperty property="img_num" name="iVO" value="<%= i+1 %>"/>
 <%
-String title = mr.getParameter("title");
-String contents = mr.getParameter("contents");
-String product_idx = mr.getParameter("product_idx");
-String user_id=(String)session.getAttribute("user_id");
-String category_loc=mr.getParameter("category_loc");
-int gu_idx = Integer.parseInt(category_loc);
-String category_pd=mr.getParameter("category_pd");
-int category_idx = Integer.parseInt(category_pd);
-String priceS = mr.getParameter("price");
-int price = Integer.parseInt(priceS);
-String free = mr.getParameter("free");
-if(free == null){
-	free = "N";
-}
+pDAO.insertImg(iVO);
 %>
-<!-- 2. VO에 setter method(property) 호출 -->
-<%-- <jsp:setProperty name="객체명" property="*"/> --%>
-<jsp:setProperty property="id" name="pVO" value="<%= user_id %>"/>
+<%} //end if %>
+<%}//end for %>
 <jsp:setProperty property="product_idx" name="pVO" value="<%= product_idx %>"/>
-<jsp:setProperty property="category_idx" name="pVO" value="<%= category_idx %>"/>
-<jsp:setProperty property="gu_idx" name="pVO" value="<%= gu_idx %>"/>
 <jsp:setProperty property="thumbnail" name="pVO" value="<%= reName[0] %>"/>
-<jsp:setProperty property="price" name="pVO" value="<%= price %>"/>
-<jsp:setProperty property="free" name="pVO" value="<%= free %>"/>
-<jsp:setProperty property="title" name="pVO" value="<%= title %>"/>
-<jsp:setProperty property="contents" name="pVO" value="<%= contents %>"/>
 <%
-PostDAO pDAO = PostDAO.getInstance();
-out.println(pVO);
-pDAO.insertPost(pVO);
+pDAO.updateThumbnail(pVO);
 %>
 </body>
 </html>

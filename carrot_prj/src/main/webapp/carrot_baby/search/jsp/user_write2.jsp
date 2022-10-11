@@ -1,3 +1,5 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="userVO.CatVO"%>
 <%@page import="userVO.LocVO"%>
 <%@page import="java.util.List"%>
@@ -152,11 +154,36 @@ session.setAttribute("user_id", user_id);
 		//VO 리스트로 받기
 		List<LocVO> lVOList = pDAO.selectLoc();
 		List<CatVO> pCatList = pDAO.selectCat();
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyMMdd");
+		Date now = new Date();        
+		String nowTime = sdf1.format(now);
+		int ran = (int)((Math.random()*10000));
+		String ran1= String.format("%04d", ran);
+		String productIDX = nowTime+ran1;
+		String idx_chk=pDAO.selectIdx(productIDX);
+		String product_idx="";
+		
+		if( idx_chk == null){
+			product_idx = productIDX;
+		} else{
+			while( true ){
+			ran = (int)((Math.random()*10000));
+			ran1= String.format("%04d", ran);
+			productIDX = nowTime+ran1;
+			idx_chk=pDAO.selectIdx(productIDX);
+				if( idx_chk != null ){
+					product_idx = productIDX;
+					break;
+				}//end if
+			}//end while
+		}//end else
 		
 		pageContext.setAttribute("lVOList", lVOList);
 		pageContext.setAttribute("cVOList", pCatList);
 		
 %>
+
+<%= product_idx %>
 <div class="wrap">
 <!-- header -->
 <%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
@@ -168,7 +195,7 @@ session.setAttribute("user_id", user_id);
 		<h1 class="write-title">중고거래 글쓰기</h1>
 		<div class="write">
 		<form name="writePost" id="writePost"  action="user_write_process.jsp" enctype="multipart/form-data" method="post">
-		<input type="hidden" name="product_idx" id="product_idx" value=""/>
+		<input type="hidden" name="product_idx" id="product_idx" value="<%= product_idx%>"/>
 			<div class="write-sel-wrap">
 						<div class="write-sel-wrap-text">서울특별시</div>
 						<select id="category_loc"name="category_loc" class="write-select" >

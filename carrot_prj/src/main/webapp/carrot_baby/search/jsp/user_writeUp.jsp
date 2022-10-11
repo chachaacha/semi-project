@@ -1,3 +1,5 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="userVO.ImgVO"%>
 <%@page import="java.io.Console"%>
 <%@page import="userVO.PostVO"%>
 <%@page import="org.apache.jasper.tagplugins.jstl.core.Param"%>
@@ -51,7 +53,6 @@ $(function() {
 		}//end else
 		
 	});//change
-	
 	
 	
 });//ready
@@ -113,7 +114,7 @@ session.setAttribute("user_id", user_id);
 <%
 		PostVO pVO = new PostVO();
 		// String product_idx= request.getParameter("product_idx");
-		String product_idx = "2210089137";
+		String product_idx = "2210116404";
 		pVO.setProduct_idx(product_idx);
 		pVO.setId(user_id);
 		//PostDAO와 연결
@@ -124,11 +125,13 @@ session.setAttribute("user_id", user_id);
 		List<CatVO> pCatList = pDAO.selectCat();
 		pageContext.setAttribute("cVOList", pCatList);
 		PostVO ppVO = pDAO.selectPost(pVO);
-		
+		List<ImgVO> list_img = new ArrayList<ImgVO>();
+		list_img = pDAO.selectImg(product_idx);
+		/* for(int i = 0; i< list_img.size(); i++){
+			list_img.get(i).getImg_num();
+		} */
 		
 		//scope 객체 설정
-		
-		
 		String contents = ppVO.getContents();
 		int gu_idx = ppVO.getGu_idx();
 		pageContext.setAttribute("gu_idx", gu_idx);
@@ -137,7 +140,10 @@ session.setAttribute("user_id", user_id);
 		String title = ppVO.getTitle();
 		String price = Integer.toString(ppVO.getPrice());
 		String free1 = ppVO.getFree();
+		
 %>
+<%= list_img %>
+<%= list_img.get(1).getProduct_img() %>
 <div class="wrap">
 <!-- header -->
 <%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
@@ -181,31 +187,27 @@ session.setAttribute("user_id", user_id);
 								<input type="text" name="price"  id = "price" class="checkbox-price-input" style= "text-align:right" 
 											oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="8" value ="<%= price %>">
 								<span class="checkbox-price-txt">원</span>
+								
+								<%if(free1.equals("Y")) {%> 
+								<script type="text/javascript">
+								$("#price").prop("readonly",true);
+								$("#price").css("background", "#ccc");
+								
+								</script>
+								 <%} %>
+								
+								
 							</div>
 						</div>
 			</div>
 			<div class="write-center-wrap">
 				<input type="text" name="title" id="title" class="write-title-input" placeholder="제목을 입력해주세요" value ="<%= title %>">
 			</div>
-		    </form>
-		    <form name="ImgPost" id="ImgPost" method="get" action="user_Img_process.jsp">
 		    <div class="write-center-wrap">
-				<div class="img-wrap">
-						<!-- <input type="file" id = "my-input" multiple = "multiple" style="visibility: hidden;"> -->
-						<input type="file" id = "btnAtt" multiple = "multiple" style="visibility: hidden;">
-						<label class="upload"  id="my-button">
-							<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
-							  <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-							  <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
-							</svg>
-						</label>
-					</div>
-					<div id = "att_zone"></div>			
+						
 				</div>
-				</form>
-				<form name="writePost" id="writePost" method="get" action="user_writeUp_process.jsp">
 				<textarea rows="30" name="contents" id="contents" class="contents-txtarea" placeholder="내용을 입력해주세요"   ><%= contents %></textarea>
-				</form>
+			</form>
 			<div class="register-write">
 					<button type="button" id="pushBtn" class="report-btn">등록하기</button>
 			</div>
