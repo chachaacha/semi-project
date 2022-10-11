@@ -1,6 +1,7 @@
 <%@page import="userDAO.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" info=""%>
+   <% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +24,6 @@
 </head>
 <body>
 <%
-request.setCharacterEncoding("UTF-8");
 
 String work = request.getParameter("work");
 String product_idx = request.getParameter("product_idx");
@@ -41,7 +41,7 @@ if(work.equals("comment")){ 	//댓글달기
 	
 	bDAO.insertComm(ucVO);
 	
-}else if(work.equals("recomment")) { //답글달기 */
+}else if(work.equals("recomment")) { //답글달기 
 	Integer comment_idx = Integer.parseInt(request.getParameter("comment_idx"));
 	ucVO.setProduct_idx(product_idx);
 	ucVO.setComment_idx(comment_idx);
