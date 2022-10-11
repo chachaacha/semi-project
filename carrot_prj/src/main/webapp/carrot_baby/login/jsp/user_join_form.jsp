@@ -15,12 +15,35 @@
 <link rel="stylesheet" type="text/css" href="../css/user_join_form.css"/> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <!-- 다음우편번호API -->
-<script src="https://spi.maps.daum.net/imap/map_js_init/postcode.v2.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <!--  -->
 <script type="text/javascript">
-//가입하기 버튼을 클릭했을 때
+//프로필사진 등록 미리보기
+function previewFile() {
+ //다른이미지에 적용되지않게 #profile로 id를 주어 타켓설정
+  const preview = document.querySelector('#profile');
+  const file = document.querySelector('input[type=file]').files[0];
+  const reader = new FileReader();
+
+  reader.addEventListener("load", () => {
+    // convert image file to base64 string
+    preview.src = reader.result;
+  }, false);
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+}
+
+//프로필사진 등록 삭제
+function deleteFile() {
+ 
+}
+
 $(function () {
+	//가입하기 버튼을 클릭했을 때
     $("#btn").click(function () {
+    	
 		//null 검사
     	chkNull(); 
     });
@@ -113,6 +136,7 @@ function chkNull(){
 		return;
 	}//end if
 	
+	document.memberFrm.onsubmit=true;
 	$("#memberFrm").submit();
 } 
 
@@ -133,38 +157,34 @@ function selectEmail(e){
 
 //우편번호 검색
 function zipcodeapi() {
-    new daum.Postcode({
-        oncomplete: function(data) {
-            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	 new daum.Postcode({
+         oncomplete: function(data) {
+             // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-            var fullAddr = ''; // 최종 주소 변수
-            var extraAddr = ''; // 조합형 주소 변수
+             // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+             // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+             var roadAddr = data.roadAddress; // 도로명 주소 변수
+             var extraRoadAddr = ''; // 참고 항목 변수
 
-            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                fullAddr = data.roadAddress;
+             // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+             // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+             if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                 extraRoadAddr += data.bname;
+             }
+             // 건물명이 있고, 공동주택일 경우 추가한다.
+             if(data.buildingName !== '' && data.apartment === 'Y'){
+                extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+             }
+             // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+             if(extraRoadAddr !== ''){
+                 extraRoadAddr = ' (' + extraRoadAddr + ')';
+             }
 
-            } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                fullAddr = data.jibunAddress;
-            }
-
-            // 사용자가 선택한 주소가 도로명 타입일때 조합한다.
-            if(data.userSelectedType === 'R'){
-                if(data.bname !== ''){
-                    extraAddr += data.bname;
-                }
-                if(data.buildingName !== ''){
-                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                }
-                fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
-            }
-
-            // 우편번호와 주소 정보를 해당 필드에 넣는다.
-            $('#zipcode').val(data.zonecode); //5자리 새우편번호 사용
-            $('#addr1').val(fullAddr);
-
-            // 커서를 상세주소 필드로 이동한다.
-            $('#addr2').focus();
-        }
+             // 우편번호와 주소 정보를 해당 필드에 넣는다.
+             document.getElementById("zipcode").value = data.zonecode;
+             document.getElementById("addr1").value = roadAddr;
+             document.getElementById("addr2").focus();
+         }//oncomplete
     }).open();
 }
 
@@ -176,7 +196,6 @@ function zipcodeapi() {
 
 <!-- container -->
 <div class="container">
-	<form name="memberFrm" id="memberFrm" enctype="multipart/form-data" method="post" action="user_join_form_process.jsp" >
 
 	<!-- 상단 로고 -->
 	<div>
@@ -186,6 +205,7 @@ function zipcodeapi() {
 	<!-- 회원가입  -->
 	<div class="title">회원가입</div>
 
+	<form name="memberFrm" id="memberFrm" enctype="multipart/form-data" method="post" action="user_join_form_process.jsp"  onsubmit="return false">
 	<!--회원가입 박스-->
 	<div class="writeForm">
 				<table>
@@ -193,12 +213,12 @@ function zipcodeapi() {
 						<th><label>프로필 사진</label></th>
 						<td>
 							<div class="profile">
-							<div><img src="../../images/profileImg.png"  class="img"></div>
+							<div><img src="../../images/profileImg.png" id="profile"  class="img" alt="Image preview"></div>
 							<div>
 								<div class="upload-btn-wrapper">
 									<button class="formBtn" id="uploadBtn">사진등록</button>
-									<input type="file" name="upfile"  />
-									 <input type="button" value="삭제" class="formBtn">
+									<input type="file" name="upfile" onchange="previewFile()"  />
+									 <input type="button" value="삭제" class="formBtn" onchange="deleteFile()" >
 								</div>
 							</div>
 							</div>

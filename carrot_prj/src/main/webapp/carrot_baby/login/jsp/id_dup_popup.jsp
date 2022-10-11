@@ -27,7 +27,8 @@ $(function() {
 			chkNull();
 		}//end if
 	});//keydown
-		
+	
+	//사용하기 버튼 클릭시
 	$("#idbtn").click(function(id){
 		opener.window.document.memberFrm.id.value=id;
 		self.close();
@@ -40,14 +41,8 @@ function chkNull(){
 		alert("아이디를 입력해 주세요.");
 		return;
 	}
-	
 	$("#frmDup").submit();
 }//chkNull
-
-function useId( id ){
-	opener.window.document.memberFrm.id.value=id;
-	self.close();
-}//useId
 
 </script>
 </head>
@@ -93,7 +88,7 @@ function useId( id ){
 	</div>
 	</c:if>
 	<!-- 버튼 -->
-	<button type="button" class="idBtn" id="idbtn" onclick="useId('${param.id }')">사용하기</button>
+	<button type="button" class="idBtn" id="idbtn" >사용하기</button>
 	</form>
 </div>
 </body>

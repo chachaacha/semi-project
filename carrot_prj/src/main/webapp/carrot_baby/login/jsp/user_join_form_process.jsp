@@ -89,7 +89,7 @@ System.out.println("--------주소: "+addr);
 String addr2=mr.getParameter("addr2");
 System.out.println(addr2);
 %>
-<jsp:setProperty property="img" name="jVO" value="<%= originalName %>"/>
+<jsp:setProperty property="img" name="jVO" value="<%= reName %>"/>
 
 <jsp:setProperty property="name" name="jVO" value="<%= name %>"/>
 <jsp:setProperty property="nick" name="jVO" value="<%= nick %>"/>

@@ -44,10 +44,14 @@ $(function () {
 </head>
 <body>
 	<div class="wrap">
-<c:if test="${ not empty param.pass }">
+<%
+System.out.println( "---user_find_pass.jsp---"+session.getAttribute("tempPass"));
+
+%>
+<c:if test="${ not empty tempPass }">
 	<script type="text/javascript">
 	//본인 아이디확인 팝업창 열기
-		window.open("find_pass_popup.jsp?pass="+'${ param.pass }',"find_pass_popup",
+		window.open("find_pass_popup.jsp","find_pass_popup",
 		"width=385,height=235,top=380,left=750");  
 	</script>
 </c:if>

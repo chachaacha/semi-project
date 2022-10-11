@@ -22,13 +22,13 @@ $(function() {
 </script>
 </head>
 <body>
-<jsp:useBean id="fVO" class="userVO.FindPwVO"></jsp:useBean>
-<jsp:setProperty property="*" name="fVO"/>
+<%-- <jsp:useBean id="fVO" class="userVO.FindPwVO"></jsp:useBean>
+<jsp:setProperty property="*" name="fVO"/> --%>
 
 <div class="wrap">
 	<div class="text">
 		<span>회원님의 임시비밀번호는</span><br>
-		<span><c:out value="${ param.pass }"/></span><br>
+		<span><c:out value="${ tempPass }"/></span><br>
 		<span>입니다.</span>
 	</div>
 	
