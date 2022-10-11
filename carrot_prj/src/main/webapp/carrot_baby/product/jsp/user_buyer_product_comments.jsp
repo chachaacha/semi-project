@@ -171,73 +171,49 @@ $(function() {
 			$(this).parent().parent().parent().next().toggle();
 		})
 		
-	<%-- //답글 쓰기
-		$("#re-com-btn").click(function() {
-			var sessionId="<%=(String)session.getAttribute("id") %>";
-			var comTxt=$("#re-com-text").val().replace(/(?:\r\n|\r|\n)/g, "<br>");
-			alert(comTxt);
-			var comIdx_val=$(".add-comments-btn").val();
-			
-			if(sessionId=="null") { //비회원일 경우 작동금지
-				alert("로그인이 필요한 동작입니다.")
-			}else{
-				$("#work").val("recomment");
-				$("#product_idx").val(${pIdx});
-				$("#comment_idx").val(comIdx_val);
-				$("#user_id").val(sessionId);
-				$("#contents").val(comTxt);
-				$("#comProFrm").submit();
-			} 
-		}) --%>
-		
 	//댓글 작성
 		$("#comments-btn").click(function() {
 			var sessionId="<%=(String)session.getAttribute("id") %>";
 			var comTxt=$("#comments-txtarea").val().replace(/(?:\r\n|\r|\n)/g, "<br>");
 			
-			if(sessionId=="null") { //비회원일 경우 작동금지
-				alert("로그인이 필요한 동작입니다.")
-			}else{
-				$("#work").val("comment");
-				$("#product_idx").val(${pIdx});
-				$("#user_id").val(sessionId);
-				$("#contents").val(comTxt);
-				$("#comProFrm").submit();
+			if(comTxt.length!=0) {
+				if(sessionId=="null") { //비회원일 경우 작동금지
+					alert("로그인이 필요한 동작입니다.")
+				}else{
+					$("#work").val("comment");
+					$("#product_idx").val(${pIdx});
+					$("#user_id").val(sessionId);
+					$("#contents").val(comTxt);
+					$("#comProFrm").submit();
+				}
+			}else {
+				alert("내용을 입력해주세요.");
 			}
 			
 		})
 		
-	
-		
 })
-
-	function profileMove(otherID) {
-		$("#id2").val(otherID);
-		$("#otherFrm").submit();
-	}
-
-	function test(ggg) {
+	//답댓글달기
+	$(document).on("click", "#re-com-btn", function() {
 		var sessionId="<%=(String)session.getAttribute("id") %>";
-		var comTxt=$("#re-com-text").val().replace(/(?:\r\n|\r|\n)/g, "<br>");
-		alert(comTxt);
-		alert(ggg);
+		var comIdx=$(this).val();
+		var comTxt=$(this).prev().children().val().replace(/(?:\r\n|\r|\n)/g, "<br>");
 		
-	}
-<%-- function test(comIdx){
-	var sessionId="<%=(String)session.getAttribute("id") %>";
-	var comTxt=$("#re-com-text").val().replace(/(?:\r\n|\r|\n)/g, "<br>");
-	/* var comIdx_val=$(".add-comments-btn").val(); */
-	
-	if(sessionId=="null") { //비회원일 경우 작동금지
-		alert("로그인이 필요한 동작입니다.")
-	}else{
-		$("#work").val("recomment");
-		$("#product_idx").val(${pIdx});
-		$("#comment_idx").val(comIdx);
-		$("#user_id").val(sessionId);
-		$("#contents").val(comTxt);
-		$("#comProFrm").submit();
-} --%>
+		if(comTxt.length!=0) {
+			if(sessionId=="null") { //비회원일 경우 작동금지
+				alert("로그인이 필요한 동작입니다.")
+			}else{
+				$("#work").val("recomment");
+				$("#product_idx").val(${pIdx});
+				$("#comment_idx").val(comIdx);
+				$("#user_id").val(sessionId);
+				$("#contents").val(comTxt);
+				$("#comProFrm").submit();
+			}		
+		}else {
+			alert("내용을 입력해주세요");
+		}
+	})
 
 </script>
 </head>
@@ -442,7 +418,7 @@ $(function() {
 					<div class="comments-input">
 						<textarea rows="3" id="re-com-text" class="comments-txtarea" placeholder="답글을 남겨보세요."></textarea>
 					</div>
-					<button type="button"type="button" id="re-com-btn" class="comments-btn" onclick="test(${setCom.comment_idx });">
+					<button type="button"type="button" id="re-com-btn" class="comments-btn" value="${setCom.comment_idx }">
 						<span>클릭</span>
 					</button>
 				</div>
