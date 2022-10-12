@@ -24,31 +24,48 @@
 </head>
 <body>
 <%
-
 String work = request.getParameter("work");
 String product_idx = request.getParameter("product_idx");
 String id = request.getParameter("user_id");
 String contents = request.getParameter("contents");
+Integer comment_idx = 0;
+Integer reply_idx = 0;
+
 
 //BoardDAO 생성
 BoardDAO bDAO=BoardDAO.getInstance();
 
 if(work.equals("comment")){ 	//댓글달기
-
 	ucVO.setProduct_idx(product_idx);
 	ucVO.setId(id);
 	ucVO.setContents(contents);
 	
 	bDAO.insertComm(ucVO);
+	bDAO.updateCommCount(product_idx);
 	
 }else if(work.equals("recomment")) { //답글달기 
-	Integer comment_idx = Integer.parseInt(request.getParameter("comment_idx"));
+	comment_idx = Integer.parseInt(request.getParameter("comment_idx"));
+
 	ucVO.setProduct_idx(product_idx);
 	ucVO.setComment_idx(comment_idx);
 	ucVO.setId(id);
 	ucVO.setContents(contents);
 	
 	bDAO.insertReply(ucVO);
+	bDAO.updateCommCount(product_idx);
+	
+}else if(work.equals("deletedCom")) { // 댓글삭제
+	comment_idx = Integer.parseInt(request.getParameter("comment_idx"));
+	reply_idx = Integer.parseInt(request.getParameter("reply_idx"));
+	
+	System.out.println("댓글 삭제 -----");
+	ucVO.setComment_idx(comment_idx);
+	ucVO.setReply_idx(reply_idx);
+	ucVO.setProduct_idx(product_idx);
+	ucVO.setContents("댓글 작성자에 의해 삭제된 댓글입니다.");
+	
+	bDAO.updateDropC(ucVO);
+	System.out.println("댓글 완료 -----");
 	
 }
 	response.sendRedirect("../../product/jsp/user_buyer_product_comments.jsp?product_idx="+product_idx);

@@ -192,6 +192,29 @@ $(function() {
 			
 		})
 		
+	<%-- //댓글 삭제
+		$("#del-com-btn").click(function() {
+			var sessionId="<%=(String)session.getAttribute("id") %>";
+			var replIdx=$(this).val();
+			var conFlag=confirm("댓글을 삭제하시겠습니까?");
+			
+			if(conFlag==true) {
+				alert("댓글을 삭제했습니다.");
+				alert(replIdx);
+				
+				/* $("#work").val("deletedCom");
+				$("#product_idx").val(${pIdx});
+				$("#comment_idx").val(comIdx);
+				$("#user_id").val(sessionId);
+				$("#contents").val(comTxt);
+				$("#comProFrm").submit(); */
+				
+			}else {
+				alert("취소하셨습니다.");
+			}
+		}) --%>
+	
+		
 })
 	//답댓글달기
 	$(document).on("click", "#re-com-btn", function() {
@@ -214,6 +237,53 @@ $(function() {
 			alert("내용을 입력해주세요");
 		}
 	})
+	
+	//댓글 삭제
+	$(document).on("click", "#del-com-btn", function() {
+		var sessionId="<%=(String)session.getAttribute("id") %>";
+		var delconIdx=$(this).prev().prev().val();
+		var replIdx=$(this).val();
+		
+		var conFlag=confirm("댓글을 삭제하시겠습니까?");
+		
+		if(conFlag==true) {
+			alert("댓글을 삭제했습니다.");
+			
+			$("#work").val("deletedCom");
+			$("#comment_idx").val(delconIdx);
+			$("#reply_idx").val(replIdx);
+			$("#product_idx").val(${pIdx});
+			$("#comProFrm").submit();
+			
+		}else {
+			alert("취소하셨습니다.");
+		}
+		
+	})
+	
+	//답글 삭제	
+	$(document).on("click", "#del-recom-btn", function() {
+		var sessionId="<%=(String)session.getAttribute("id") %>";
+		var delconIdx=$(this).prev().val();
+		var replIdx=$(this).val();
+		
+		var conFlag=confirm("댓글을 삭제하시겠습니까?");
+		
+		if(conFlag==true) {
+			alert("댓글을 삭제했습니다.");
+			
+			$("#work").val("deletedCom");
+			$("#comment_idx").val(delconIdx);
+			$("#reply_idx").val(replIdx);
+			$("#product_idx").val(${pIdx});
+			$("#comProFrm").submit();
+			
+		}else {
+			alert("취소하셨습니다.");
+		}
+		
+	})
+	
 
 </script>
 </head>
@@ -372,6 +442,11 @@ $(function() {
 
 		<c:forEach var="setCom" items="${setCom }" varStatus="i">
 		<c:choose>
+			<c:when test="${setCom.reply_idx eq 0 && setCom.deleted eq 'Y'}">
+				<div class="comments-sample-wrap">
+					<p class="comments-content"><c:out value="${setCom.contents }" escapeXml="false"/></p>
+				</div>
+			</c:when>
 			<c:when test="${setCom.reply_idx eq 0 }">
 				<div class="comments-sample-wrap">
 					<div class="comments-profile-wrap">
@@ -397,12 +472,8 @@ $(function() {
 					    	<c:choose>
 						    	<c:when test="${sessionId eq setCom.id }"> <%-- 본인이 쓴 댓글 일 경우 --%>
 							    		<button type="button" class="add-comments-btn" value="${setCom.comment_idx }">답글쓰기</button>
-							    	<a class="modify-comments" href="#void">
 							    		<button type="button" class="modify-comments-btn">수정하기</button>
-							    	</a>
-							    	<a class="delete-comments" href="#void">
-							    		<button type="button"class="delete-comments-btn">삭제하기</button>
-							    	</a>						    		
+							    		<button type="button" id="del-com-btn" class="delete-comments-btn" value="${setCom.reply_idx }">삭제하기</button>
 						    	</c:when>
 						    	<c:when test="${sessionId ne setCom.id }"> <%-- 타인이 쓴 댓글 일 경우 --%>
 							    		<button type="button" class="add-comments-btn" value="${setCom.comment_idx }">답글쓰기</button>
@@ -424,6 +495,12 @@ $(function() {
 				</div>
 		 	</c:when>
 		 	
+		<c:when test="${setCom.reply_idx ne 0 && setCom.deleted eq 'Y'}">
+			<div class="re-comments-sample-wrap">
+				<p class="comments-content"><c:out value="${setCom.contents }" escapeXml="false"/></p>
+			</div>
+		</c:when>
+		
 		<c:otherwise>
 			<div class="re-comments-sample-wrap">
 				<div class="comments-profile-wrap">
@@ -446,12 +523,9 @@ $(function() {
 				    
 					    <c:choose>
 						    <c:when test="${sessionId eq setCom.id }"> <%-- 본인이 쓴 댓글 일 경우 --%>
-							    <a class="modify-comments" href="#void">
-							    	<button type="button" class="modify-comments-btn">수정하기</button>
-							    </a>
-							    <a class="delete-comments" href="#void">
-							    	<button type="button"class="delete-comments-btn">삭제하기</button>
-							    </a>						    		
+							    	<button type="button" id="" class="modify-comments-btn">수정하기</button>
+							    	<input type="hidden" id="hid-comidx" value="${setCom.comment_idx }">
+							    	<button type="button" id="del-recom-btn" class="delete-comments-btn" value="${setCom.reply_idx }">삭제하기</button>
 						    </c:when>
 						    <c:when test="${sessionId ne setCom.id }"> <%-- 타인이 쓴 댓글 일 경우 --%>
 							    	<button type="button"class="report-comments-btn">신고하기</button>
@@ -502,10 +576,11 @@ $(function() {
 	<input type="hidden" name="product_idx" id="product_idx" value="${param.product_idx }">
 </form>
 <%-- 댓글 입력 기타 기능 --%>
-<form method="post" action="../../product/jsp/comment_process.jsp" id="comProFrm">
+<form method="get" action="../../product/jsp/comment_process.jsp" id="comProFrm">
 	<input type="hidden" name="work" id="work" value="${param.work }">
 	<input type="hidden" name="product_idx" id="product_idx" value="${param.product_idx }">
 	<input type="hidden" name="comment_idx" id="comment_idx" value="${param.comment_idx }">
+	<input type="hidden" name="reply_idx" id="reply_idx" value="${param.reply_idx }">
 	<input type="hidden" name="user_id" id="user_id" value="${param.user_id }">
 	<input type="hidden" name="contents" id="contents" value="${param.contents }">
 </form>

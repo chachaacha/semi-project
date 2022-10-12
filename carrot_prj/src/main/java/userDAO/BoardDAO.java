@@ -410,9 +410,6 @@ public class BoardDAO {
 			pstmt.setString(4, cVO.getId());
 			pstmt.setString(5, cVO.getContents());
 			
-			System.out.println(insertReply);
-			System.out.println(cVO);
-			
 			pstmt.executeUpdate();
 			
 		}finally {
@@ -452,6 +449,35 @@ public class BoardDAO {
 		return updateCnt;
 	}//updateComm
 	
+	//댓글 수 업데이트
+	public int updateCommCount(String product_idx) throws SQLException {
+		int updateCnt=0;
+		DbConnection db = DbConnection.getInstance();
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		
+		try {
+			con=db.getConn();
+			
+			StringBuilder updateComm = new StringBuilder();
+			updateComm
+			.append("	update product	")
+			.append("	set comment_cnt = (select count(product_idx) count from product_comment where product_idx=? )	")
+			.append("	where product_idx= ?	");
+			
+			pstmt=con.prepareStatement(updateComm.toString());
+			
+			pstmt.setString(1, product_idx);
+			pstmt.setString(2, product_idx);
+			
+			updateCnt=pstmt.executeUpdate();
+		}finally {
+			db.dbClose(null, pstmt, con);
+		}
+		
+		return updateCnt;
+	}//updateComm
+	
 	//댓글 신고
 	public void insertReport(ReportCVO rcVO) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
@@ -479,9 +505,7 @@ public class BoardDAO {
 	//댓글 신고시 신고 수 업데이트
 	public int updateReportC(UserCommentVO cVO) throws SQLException {
 		int updateCnt=0;
-		
 		DbConnection db = DbConnection.getInstance();
-		
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		
@@ -502,32 +526,32 @@ public class BoardDAO {
 		}finally {
 			db.dbClose(null, pstmt, con);
 		}
-		
 		return updateCnt;
 	}//updateReportC
 	
 	//댓글 삭제
 	public int updateDropC(UserCommentVO cVO) throws SQLException {
 		int updateCnt=0;
-		
 		DbConnection db = DbConnection.getInstance();
-		
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		
 		try {
 			con=db.getConn();
-			
 			StringBuilder updateDropC = new StringBuilder();
 			updateDropC
 			.append("	update product_comment	")
-			.append("	set deleted= 'Y'	")
-			.append("	where comment_idx=? and reply_idx=? and product_idx=?	");
+			.append("	set deleted= 'Y', contents=? ")
+			.append("	where comment_idx=? and reply_idx=? and product_idx=? ");
 			
 			pstmt=con.prepareStatement(updateDropC.toString());
-			pstmt.setInt(1, cVO.getComment_idx());
-			pstmt.setInt(2, cVO.getReply_idx());
-			pstmt.setString(3, cVO.getProduct_idx());
+			pstmt.setString(1, cVO.getContents());
+			pstmt.setInt(2, cVO.getComment_idx());
+			pstmt.setInt(3, cVO.getReply_idx());
+			pstmt.setString(4, cVO.getProduct_idx());
+			
+			System.out.println("------삭제:"+updateDropC);
+			System.out.println("------삭제:"+cVO);
 			
 			updateCnt=pstmt.executeUpdate();
 		}finally {
@@ -583,8 +607,6 @@ public class BoardDAO {
 			pstmt.setString(1, wVO.getId());
 			pstmt.setString(2, wVO.getProduct_idx());
 			pstmt.executeUpdate();
-			System.out.println("------좋아요:"+insertWish);
-			System.out.println("------좋아요:"+wVO);
 			
 		}finally {
 			db.dbClose(null, pstmt, con);
