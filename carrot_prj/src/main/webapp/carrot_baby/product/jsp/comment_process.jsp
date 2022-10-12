@@ -23,7 +23,7 @@
 </script>
 </head>
 <body>
-<%
+<% 
 String work = request.getParameter("work");
 String product_idx = request.getParameter("product_idx");
 String id = request.getParameter("user_id");
