@@ -31,7 +31,7 @@ public class LoginDAO {
 	
 	
 	/**
-	 * 로그인하기, 맞는값 찾아서 아이디 반환 없다면 ""반환
+	 * 로그인하기, 맞는값 찾아서 아이디 반환 없다면 null반환
 	 * @param lVO
 	 * @return
 	 * @throws SQLException
@@ -64,6 +64,56 @@ public class LoginDAO {
 			db.dbClose(rs, pstmt, con);
 		}
 		return id;
+	}
+	
+	public String selectChkQuit(String UserId) throws SQLException {
+		String id=null;
+		DbConnection db = DbConnection.getInstance();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = db.getConn();
+			StringBuilder sb = new StringBuilder(" select id from member where quit = 'Y' and id=? ");
+			
+			pstmt = con.prepareStatement(sb.toString());
+			pstmt.setString(1, UserId);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				id = rs.getString("id");
+			}
+		} finally {
+			db.dbClose(rs, pstmt, con);
+		}
+		return id;
+	}
+	
+	public String selectChkBlocked(String UserId) throws SQLException {
+		String blockReason=null;
+		DbConnection db = DbConnection.getInstance();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = db.getConn();
+			StringBuilder sb = new StringBuilder();
+			sb
+			.append(" select br.blocked_reason ")
+			.append(" from  manager_blocked mb, blocked_reason br ")
+			.append(" where (mb.br_idx = br.br_idx) and mb.id = ? ");
+			
+			pstmt = con.prepareStatement(sb.toString());
+			pstmt.setString(1, UserId);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				 blockReason= rs.getString("blocked_reason");
+			}
+		}finally {
+			db.dbClose(rs, pstmt, con);
+		}
+		return blockReason;
 	}
 	
 	

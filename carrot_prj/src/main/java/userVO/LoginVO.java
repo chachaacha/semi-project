@@ -6,8 +6,10 @@ public class LoginVO {
 	public LoginVO() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
-	public LoginVO(String id, String password) {
+	public LoginVO(String id, String password, String deleted, String blocked_reason) {
 		this.id = id;
 		this.password = password;
 	}
@@ -30,9 +32,8 @@ public class LoginVO {
 
 	@Override
 	public String toString() {
-		return "LoginVO [id=" + id + ", password=" + password + "]";
+		return "LoginVO [id=" + id + ", password=" + password + ", blocked_reason=" + "]";
 	}
-	
 	
 	
 	
