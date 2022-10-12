@@ -26,8 +26,9 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
+var cnt = 2;
+var minAppend=1;
 $(function() {
-	
 	
 	$("#pushBtn").click(function() {
 		//유효성 검사.
@@ -77,8 +78,11 @@ $(function() {
 		if( cnt == -1 ){ cnt = 0; };
 		--minAppend;
 	});
-	
 });//ready
+
+function imgClick() {
+	document.getElementById("#btnAdd").click();
+}
 
 
 function onClickUpload() {
@@ -136,7 +140,7 @@ function readURL(input ,cnt) {
 	    document.getElementById('preview'+cnt).src = "";
 	  }
 	}
-
+$("img[name=preview4]").attr("src","../image/dice_41.png");
 </script>
 </head>
 <body>
@@ -146,11 +150,9 @@ if(user_id==null){
 user_id = "test10";
 session.setAttribute("user_id", user_id);
 }
-%>
-<%
 		PostVO pVO = new PostVO();
 		// String product_idx= request.getParameter("product_idx");
-		String product_idx = "2210125313";
+		String product_idx = "2210129348";
 		pVO.setProduct_idx(product_idx);
 		pVO.setId(user_id);
 		//PostDAO와 연결
@@ -164,15 +166,10 @@ session.setAttribute("user_id", user_id);
 		List<ImgVO> list_img = new ArrayList<ImgVO>();
 		list_img = pDAO.selectImg(product_idx);
 		
-		for(int i = 0; i<= list_img.size(); i++){
-			
-		} 
 		
 		//scope 객체 설정
 		String contents = ppVO.getContents();
 
-		
-		
 		int gu_idx = ppVO.getGu_idx();
 		pageContext.setAttribute("gu_idx", gu_idx);
 		int category_idx = ppVO.getCategory_idx();
@@ -181,12 +178,18 @@ session.setAttribute("user_id", user_id);
 		String price = Integer.toString(ppVO.getPrice());
 		String free1 = ppVO.getFree();
 		
-		for(int i = 0; i<list_img.size(); i++){
-			
-		}
+		System.out.println(list_img);
+		System.out.println(list_img.size());
+		list_img.get(0).getProduct_img();
+		
+		%>
+		<%-- for(int i=2; i<list_img.size(); i++){
 %>
-<%= list_img %>
-<%= list_img.size() %>
+<script type="text/javascript">
+++cnt
+++minAppend;
+</script>
+<%} %> --%>
 <div class="wrap">
 <!-- header -->
 <%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
@@ -197,7 +200,7 @@ session.setAttribute("user_id", user_id);
 	<div class="write-wrap">
 		<h1 class="write-title">중고거래 글쓰기</h1>
 		<div class="write">
-		<form name="writePost" id="writePost" method="get" action="user_writeUp_process.jsp">
+		<form name="writePost" id="writePost" method="post" action="user_writeUp_process.jsp" enctype="multipart/form-data">
 		<input type="hidden" id="prouduct_idx" name="product_idx" value="<%= product_idx %>"/>
 			<div class="write-sel-wrap">
 						<div class="write-sel-wrap-text">서울특별시</div>
@@ -255,14 +258,26 @@ session.setAttribute("user_id", user_id);
 					<label>대표사진</label>
 					<input type="file" name="post_img1" class="inputBox" onchange="readURL(this,0);" id="post_img1"/>
 					<br/>
-					<img id="preview0" />
+					<img id="preview0" src="../image/<%= list_img.get(0).getProduct_img()%>"/>
 					</div>
 					<div>
 					<label>사진 1</label>
 					<input type="file" name="post_img2" class="inputBox" onchange="readURL(this,1);"/>
 					<br/>
-					<img id="preview1" />
+					<img id="preview1" src="../image/<%= list_img.get(1).getProduct_img()%>" />
 					</div>
+					<%for(int i =2; i<list_img.size(); i++) {%>
+					<div>
+					<label>사진 <%= i %></label>
+					<input type="file" name="post_img<%= i+1 %>" class="inputBox" onchange="readURL(this,<%= i %>);"/>
+					<br/>
+					<img id="preview<%= i %>" src="../image/<%= list_img.get(i).getProduct_img()%>" >
+					</div>
+					<script type="text/javascript">
+					++cnt
+					++minAppend;
+					</script>
+					<%} %>
 					</div>
 					</div>
 				</div>	

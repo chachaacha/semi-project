@@ -324,7 +324,7 @@ public int updatePost(PostVO pVO) throws SQLException {
 		StringBuilder update = new StringBuilder();
 		update
 		.append("	update	product																									")
-		.append("	set			gu_idx = ?, category_idx = ?, free = ?, price = ?, title = ?, thumbnail = ?, contents = ?	")
+		.append("	set			gu_idx = ?, category_idx = ?, free = ?, price = ?, title = ?, contents = ?	")
 		.append("	where		product_idx = ? 																						");
 	
 		pstmt = con.prepareStatement(update.toString());
@@ -334,9 +334,8 @@ public int updatePost(PostVO pVO) throws SQLException {
 		pstmt.setString(3, pVO.getFree());
 		pstmt.setInt(4, pVO.getPrice());
 		pstmt.setString(5, pVO.getTitle());
-		pstmt.setString(6, pVO.getThumbnail());
-		pstmt.setString(7, pVO.getContents());
-		pstmt.setString(8, pVO.getProduct_idx());
+		pstmt.setString(6, pVO.getContents());
+		pstmt.setString(7, pVO.getProduct_idx());
 	//5. 쿼리문 수행 후 결과 얻기
 		updateCnt = pstmt.executeUpdate();
 	} finally {
@@ -379,7 +378,7 @@ public int updateThumbnail(PostVO pVO) throws SQLException {
 	return updateCnt;
 }
 
-public int deleteImg(int product_idx) throws SQLException {
+public int deleteImg(String product_idx) throws SQLException {
 	int deleteCnt = 0;
 	
 	DbConnection dc = DbConnection.getInstance();
@@ -398,7 +397,7 @@ public int deleteImg(int product_idx) throws SQLException {
 		
 		pstmt = con.prepareStatement(delete.toString());
 		//4. 바인드 변수에 값 설정
-		pstmt.setInt(1, product_idx);
+		pstmt.setString(1, product_idx);
 		//5. 쿼리문 수행 후 결과 얻기
 		deleteCnt = pstmt.executeUpdate();
 	} finally {
