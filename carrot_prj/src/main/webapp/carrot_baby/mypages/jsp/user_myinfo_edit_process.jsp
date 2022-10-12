@@ -41,9 +41,11 @@ request.setCharacterEncoding("UTF-8");
 <jsp:setProperty property="id" name="miVO" value="${id }"/>
 
 <%
+//입력된 정보를 업데이트 
 MyInfoDAO miDAO = MyInfoDAO.getInstance();
 int result = miDAO.updateInfo(miVO);
 
+//다른 추가 정보를 입력하지 않더라도 창이 뜨도록 함.
 if(result>-1){
 	%>
 	<script type="text/javascript">

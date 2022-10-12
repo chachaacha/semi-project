@@ -54,23 +54,17 @@
 <jsp:useBean id="pVO" class="userVO.ProfilVO"></jsp:useBean>
 <jsp:setProperty property="*" name="pVO"/>
 <%
-String id="test1";
+String id=request.getParameter("id2");
 ProfilDAO pDAO = ProfilDAO.getInstance();
 List<ProfilVO> ppList = pDAO.selectPp(id);
 %>
 
 <!-- 사용자에 따른 상품 전체 조회 -->
 <jsp:useBean id="ppVO" class="userVO.ProfilPVO"></jsp:useBean>
-<!-- hidden으로 받은 아이디 설정 -->
-<jsp:setProperty property="id" name="ppVO" value="test1"/><!-- 이 부분 수정 -->
-<jsp:setProperty property="price" name="ppVO" />
-<jsp:setProperty property="product_idx" name="ppVO" />
-<jsp:setProperty property="thumbnail" name="ppVO" />
-<jsp:setProperty property="title" name="ppVO" />
-<jsp:setProperty property="gu" name="ppVO" />
-<jsp:setProperty property="reserved" name="ppVO" />
-<jsp:setProperty property="sold_check" name="ppVO" />
-<jsp:setProperty property="posted_date" name="ppVO" />
+<jsp:setProperty property="*" name="ppVO"/>
+<!-- 게시글 작성자 클릭시 넘겨받은 아이디를 value로 설정 -->
+<jsp:setProperty property="id" name="ppVO" value="${ param.id2 }"/>
+
 
 <div class="wrap">
 

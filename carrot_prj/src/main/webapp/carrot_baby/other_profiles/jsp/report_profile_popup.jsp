@@ -19,14 +19,20 @@ html {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(function() {
+	//신고하기 버튼 클릭 시 서브밋
 	$(".report-wc-btn").click(function(){
-		alert("신고가 접수되었습니다.")
-		self.close();
+		var idx=$("[name='rr_idx']:checked").val();
+		if(idx==null){
+			alert("신고사유를 선택하세요.");
+		};
+		$("#reportFrm").submit();
 	})
 })
 </script>
 </head>
 <body>
+<form method="post" id="reportFrm">
+<input type="hidden" name="id" value=${ id }/> <!-- 게시글에서 post방식으로 넘겨받은 아이디를 다시 히든으로 submit한다. -->
 <div class="wrap">
 	<h1 class="title">신고하기</h1>
 	<div class="sub-title">사유선택</div>
@@ -45,6 +51,7 @@ $(function() {
 	</div>
 	<button type="button" class="report-wc-btn">신고하기</button>
 </div>
+</form>
 
 <!-- 신고 프로세스 -->
 <c:if test="${ not empty param.rr_idx }">
@@ -58,12 +65,14 @@ $(function() {
 </c:catch>
 <c:if test="${ not empty integrityChk }">
 <script type="text/javascript">
+	//이미 신고했을 시 경고창을 보여주고 팝업창 종료.
 	alert("이미 신고된 아이디 입니다.");
 	self.close();
 	</script> 
 </c:if>
 	<script type="text/javascript">
-	alert("신고처리 했습니다.");
+	//예외가 발생하지 않은 경우 신고되지 않은 회원이기 때문에 신고한다.
+	alert("신고가 접수되었습니다.");
 	self.close();
 	</script>
 </c:if>

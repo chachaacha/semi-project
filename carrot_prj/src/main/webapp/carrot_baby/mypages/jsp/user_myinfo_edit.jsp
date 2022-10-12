@@ -18,6 +18,28 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
 <script type="text/javascript">
+//프로필사진 등록 미리보기
+function previewFile() {
+ //다른이미지에 적용되지않게 #profile로 id를 주어 타켓설정
+  const preview = document.querySelector('#profile');
+  const file = document.querySelector('input[type=file]').files[0];
+  const reader = new FileReader();
+
+  reader.addEventListener("load", () => {
+    // convert image file to base64 string
+    preview.src = reader.result;
+  }, false);
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+}
+
+//프로필사진 등록 삭제
+function deleteFile() {
+ 
+}
+
 //이메일 입력방식 선택
 function selectEmail(ele){
     var $ele = $(ele);
@@ -73,6 +95,16 @@ function zipcodeapi() {
 $(function(){
 	$("#btn").click(function(){
 		$("#infoEditFrm").submit();
+		
+	//기존에 sms 체크했을시 checked 되도록 함.
+	if(${param.sms_chk}=='Y'){
+		$("#sms_check").prop("checked",true);
+	}
+	});
+	//기존에 sms 체크했을시 checked 되도록 함.
+	if(${param.email_chk}=='Y'){
+		$("#sms_check").prop("checked",true);
+	}
 	});
 });//ready
 </script>
@@ -85,15 +117,17 @@ $(function(){
 	}
 %>
 <body>
-<!-- 저장된 내 정보 불러오기 -->
 <%
-//세션에 저장된 아이디 불러오기
+//Post 요청 방식
+request.setCharacterEncoding("UTF-8");
+
 String id = (String)session.getAttribute("id");
 
 if(id==null){
    response.sendRedirect("../../login/jsp/user_login.jsp");
 }
 
+//저장된 내 정보 불러오기
 MyInfoDAO miDAO = MyInfoDAO.getInstance();
 MyInfoVO info = miDAO.selectInfo(id);
 %>
@@ -119,14 +153,15 @@ MyInfoVO info = miDAO.selectInfo(id);
 							<td>
 								<div class="profile">
 									<div>
+									<!-- 파일로 넘긴 이미지 어떻게 보여주는지? -->
 										<img src="../../images/profileImg.png" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
 									</div>
 									
 									<div>
 										<div class="upload-btn-wrapper">
 											<button class="formBtn" style="padding: 8px 20px;">사진등록</button>
-											<input type="file" style="padding: 8px 20px; cursor: pointer;" />
-											<input type="button" value="삭제" class="formBtn" style="margin: 5px 5px; padding: 8px 20px; cursor: pointer;">
+											<input type="file" name="upfile" onchange="previewFile()" style="padding: 8px 20px; cursor: pointer;" />
+											<input type="button" value="삭제" class="formBtn" onchange="deleteFile()" style="margin: 5px 5px; padding: 8px 20px; cursor: pointer;">
 										</div>
 									</div>
 								</div>
@@ -151,14 +186,16 @@ MyInfoVO info = miDAO.selectInfo(id);
 						<tr>
 							<th>휴대폰</th>
 							<td><input type="text" name="phone_num" id="phone_num" value="<%=info.getPhone_num() %>" readonly="readonly" />
-								<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk" value="<%=info.getSms_chk() %>" style="cursor: pointer;"/>
+							<!-- 체크박스 초기값 설정하는거 왜 안되는지.. -->
+								<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk" style="cursor: pointer;" <%if(info.getSms_chk().equals("Y")) {%> checked="checked" <%} %> />
 								<label>SMS 수신동의</label></span></td>
 						</tr>
 						<tr>
 							<th><label>이메일</label></th>
 							<td class="mail_type">
+							<!-- 체크했었다가 취소했을 때 그 값을 어떻게 넘기는지? -->
 							<input type="text" value="<%=info.getEmail() %>" name="email" id="email" class="inputEmail" maxlength="100" />
-							<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" style="cursor: pointer;" />
+							<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" style="cursor: pointer;" <%if(info.getEmail_chk().equals("Y")) {%> checked="checked" <%} %>/>
 							<label>이메일 수신동의</label></span></td>
 						</tr>
 						<tr>
