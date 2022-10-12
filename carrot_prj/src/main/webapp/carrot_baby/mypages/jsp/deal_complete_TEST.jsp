@@ -1,3 +1,4 @@
+<%@page import="java.io.PrintWriter"%>
 <%@page import="userVO.MySalesVO"%>
 <%@page import="java.util.List"%>
 <%@page import="userDAO.MySalesDAO"%>
@@ -10,15 +11,7 @@
 <jsp:useBean id="msdcVO" class="userVO.MySalesVO" scope="session"/>
 <!-- 2. VO에 setter method(property)호출 -->
 <jsp:setProperty property="*" name="msdcVO"/>
-<%-- <jsp:setProperty property="product_idx" name="msdcVO"/>
-<jsp:setProperty property="thumbnail" name="msdcVO"/>
-<jsp:setProperty property="title" name="msdcVO"/>
-<jsp:setProperty property="gu" name="msdcVO"/>
-<jsp:setProperty property="posted_date" name="msdcVO"/>
-<jsp:setProperty property="liked_cnt" name="msdcVO"/>
-<jsp:setProperty property="comment_cnt" name="msdcVO"/>
-<jsp:setProperty property="price" name="msdcVO"/> --%>
-<!-- 세션에 저장된 아이디 -->
+<!-- 세션에 저장된 아이디 가져오기-->
 <jsp:setProperty property="id" name="msdcVO" value="${id }"/>
  
 <!DOCTYPE html>
@@ -70,6 +63,43 @@ $(function() {
 	//스콥 객체에 할당하기
 	pageContext.setAttribute("dealComplete", dealComplete);
 	%>
+	
+	<!--  게시글 삭제 코드 by 구선배 ㅋ-->
+	<%
+	//String id = null; 위에 써서 중복이라고 뜨는 건지? 일단 주석으로 막음
+	if(session.getAttribute("id") !=null ){ //세션에 아이디가 없다면?
+		id = (String)session.getAttribute("id"); //아이디를 세션에서 가져온다
+	}//end if
+	if(id ==null){  //아이디가 없다면, alert로 "로그인을 해주세요"가 나온다.
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert('로그인을 해주세요.')");
+		script.println("location.href ='user_login.jsp'");
+		script.println("</script>");
+	}//end if
+	
+	int product_idx =0;
+	if(request.getParameter("product_idx") != null){
+		product_idx=Integer.parseInt(request.getParameter("product_idx"));
+	}//end if
+	if(product_idx == 0) { //0으로 만들면 없애는,, 고런
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert('유효하지 않은 글입니다.')");
+		//예시에서는 게시판 메인으로 돌아가는 a href 코드를 썼는데 어디로 이동할지 생각해보기
+		script.println("</script>");
+	}//end if
+	//오류나서 밑에 두 줄은 막았습니다 ㅎㅎ.....
+	//MySalesVO msVo= new MySalesDAO().getMySalesVO("product_idx");
+	//MySalesVO msVo= new MySalesDAO().getInstance("product_idx");
+	//위에랑 같이 있는 if문은 권한이 없습니다가 들어가는데, 
+	//이 경우도 넣어야하나?/ 일단 밑에있는 else부터..!
+			
+	//MySalesDAO msDAO = new MySalesDAO(); //이것도 위에 똑같이 있어서 오류나는지?
+	//String result = MySalesDAO.deleteBoard(product_idx);
+	
+	
+	%>
 	<!-- for each로 반복 -->
 	<c:forEach var="dc" items="${dealComplete}">
 	 	<div class="deal_complete_item">
@@ -115,6 +145,12 @@ $(function() {
 	</div><!-- on-sale_item_img -->
 	</div><!-- deal_complete_item -->
 </c:forEach>
+
+	<c:if test="${ empty dealComplete  }" >
+	거래완료된 상품 내역이 없습니다.
+	</c:if>
+
+
 	</div> <!-- deal_complete_title_wrap -->
 	
 </div><!-- container -->

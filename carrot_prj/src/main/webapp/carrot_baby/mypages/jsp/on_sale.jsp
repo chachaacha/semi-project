@@ -112,7 +112,21 @@ $(function() {
 	</div><!-- on_sale_item_border-->
 	</div><!-- on-sale_item_img -->
 	</div><!-- on_sale_item-->
-</c:forEach>	
+</c:forEach>
+	
+<!-- ver.1 -->
+<c:if test="${ empty onSale  }" >
+	판매중인 상품 내역이 없습니다.
+</c:if>
+
+<!-- ver.2 -->
+<%-- <c:if test="${ empty onSale  }" >
+	<script type="text/javascript">
+	alert("판매중인 상품 내역이 없습니다.");
+	</script>
+</c:if> --%>
+
+
 	</div><!-- on_sale_wrap -->
 
 </div> <!-- 컨테이너 div -->
