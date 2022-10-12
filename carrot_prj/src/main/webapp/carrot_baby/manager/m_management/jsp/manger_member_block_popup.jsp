@@ -27,7 +27,7 @@ $(function() {
 		};
 		$("#blockFrm").submit();
 		
-	})
+	});
 });
 </script>
 </head>

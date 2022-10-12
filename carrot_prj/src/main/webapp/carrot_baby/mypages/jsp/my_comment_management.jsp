@@ -24,8 +24,6 @@ $(function() {
 			$("#multipleDelFrm").submit();//체크박스 값들을 submit
 		}
 	});
-	
-	
 });
 
 //체크박스일괄처리

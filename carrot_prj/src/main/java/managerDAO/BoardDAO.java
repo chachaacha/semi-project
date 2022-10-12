@@ -44,10 +44,10 @@ public class BoardDAO {
 			con = db.getConn();
 
 			StringBuilder sb = new StringBuilder();
-			sb.append(
-					" select m.img ,m.id, m.nick, p.thumbnail, p.price, p.title, p.contents, p.report_cnt, p.comment_cnt, p.free, p.reserved, p.liked_cnt, p.sold_check, p.posted_date, lc.gu, pc.category ")
-					.append(" from member m, product p, LOC_CATEGORY lc, PRODUCT_CATEGORY pc ")
-					.append(" where (p.id=m.id and p.gu_idx=lc.gu_idx and p.category_idx = pc.category_idx) and p.product_idx=? ");
+			sb
+			.append(" select m.img ,m.id, m.nick, p.thumbnail, p.price, p.title, p.contents, p.report_cnt, p.comment_cnt, p.free, p.reserved, p.liked_cnt, p.sold_check, p.posted_date, lc.gu, pc.category ")
+			.append(" from member m, product p, LOC_CATEGORY lc, PRODUCT_CATEGORY pc ")
+			.append(" where (p.id=m.id and p.gu_idx=lc.gu_idx and p.category_idx = pc.category_idx) and p.product_idx=? ");
 
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setString(1, product_idx);
@@ -98,8 +98,10 @@ public class BoardDAO {
 			con = db.getConn();
 
 			StringBuilder sb = new StringBuilder();
-			sb.append("	select pi.product_img	").append("	from product_img pi, product pd	")
-					.append("	where ( pi.product_idx = pd.product_idx) and pd.product_idx = ?  ");
+			sb
+			.append("	select pi.product_img	")
+			.append("	from product_img pi, product pd	")
+			.append("	where ( pi.product_idx = pd.product_idx) and pd.product_idx = ?  ");
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setString(1, product_idx);
 			rs = pstmt.executeQuery();
@@ -199,29 +201,29 @@ public class BoardDAO {
 	}// updateDropC
 
 	
-	/*
-	 * public int updateReportC(MangerCommentVO mcVO) throws SQLException { int
-	 * updateCnt=0;
-	 * 
-	 * DbConnection db = DbConnection.getInstance();
-	 * 
-	 * Connection con=null; PreparedStatement pstmt=null;
-	 * 
-	 * try { con=db.getConn();
-	 * 
-	 * StringBuilder updateReportC = new StringBuilder(); updateReportC
-	 * .append("	update product	")
-	 * .append("	set comment_cnt = (select count(product_idx) from product_comment where product_idx=?)	"
-	 * ) .append("	where product_idx=?	");
-	 * 
-	 * pstmt=con.prepareStatement(updateReportC.toString());
-	 * 
-	 * pstmt.setString(1, mcVO.getProduct_idx()); pstmt.setString(2,
-	 * mcVO.getProduct_idx());
-	 * 
-	 * 
-	 * updateCnt=pstmt.executeUpdate(); }finally { db.dbClose(null, pstmt, con); }
-	 * 
-	 * return updateCnt; }//updateReportC
+	/**
+	 * 게시물 단독삭제
+	 * @param product_idx
+	 * @return
+	 * @throws SQLException
 	 */
+	public int deleteProduct(String product_idx) throws SQLException { 
+		int rowCnt=0;
+		DbConnection db = DbConnection.getInstance();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			con = db.getConn();
+			StringBuffer sb = new StringBuffer();
+			sb.append(" delete from product ")
+			  .append(" where product_idx=? "); 
+		    pstmt = con.prepareStatement(sb.toString());
+		    pstmt.setString(1, product_idx);
+		    rowCnt = pstmt.executeUpdate();
+		    System.out.println(sb);
+		} finally {
+			db.dbClose(null, pstmt, con);
+		}
+		return rowCnt;
+	}
 }

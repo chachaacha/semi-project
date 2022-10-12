@@ -34,22 +34,21 @@ public class MyBlockDAO {
 		ResultSet rs = null;
 		try {
 			con = dc.getConn();
-			StringBuilder select = new StringBuilder();
-			select
-			.append(" select ub.id, ub.blocked_id, mb.nick, ub.blocked_date	")
-			.append(" from user_blocked ub, member mb ")
-			.append(" where (mb.id = ub.blocked_id) and	ub.id = ? ");
-			
-			pstmt = con.prepareStatement(select.toString());
+			StringBuilder sb = new StringBuilder();
+			sb  
+			.append(" select  m.nick||'('||substr(ub.blocked_id,0,4)||'****'||')' nick,  m.addr1, ub.blocked_id	")
+			.append(" from member m, USER_BLOCKED ub ")
+			.append(" where ( ub.blocked_id=m.id ) and ub.id=? ");
+			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			MyBlockVO mcVO = null;
 			while( rs.next() ) {
 				mcVO = new MyBlockVO();
-				mcVO.setId(rs.getString("id"));
+				mcVO.setNickPlusId(rs.getString("nick"));
+				mcVO.setAddr1(rs.getString("addr1"));
 				mcVO.setBlocked_id(rs.getString("blocked_id"));
-				mcVO.setNick(rs.getString("nick"));
-				mcVO.setBlocked_date(rs.getDate("blocked_date"));
+				list.add(mcVO);
 			}
 		} finally {
 			dc.dbClose(rs, pstmt, con);
@@ -69,18 +68,18 @@ public class MyBlockDAO {
 		//2. Connection 얻기
 			con = dc.getConn();
 		//3. 쿼리문 생성객체 얻기
-			StringBuilder delete = new StringBuilder();
-			delete
-			.append("	delete from	user_blocked			")
-			.append("	where id = ?,	blocked_id = ?	");
+			StringBuilder sb = new StringBuilder();
+			sb
+			.append("	delete from	user_blocked ")
+			.append("	where id = ? and blocked_id = ?	");
 			
-			pstmt = con.prepareStatement(delete.toString());
+			pstmt = con.prepareStatement(sb.toString());
 		//4. 바인드 변수에 값 설정
 			pstmt.setString(1, mbVO.getId());
 			pstmt.setString(2, mbVO.getBlocked_id());
 		//5. 쿼리문 수행 후 결과 얻기
-			deleteCnt = pstmt.executeUpdate(); //리턴되는 값: 0 - 삭제된 행 없는 경우 
-															// 또는 1 - 삭제된 행이 하나인 경우.
+			deleteCnt = pstmt.executeUpdate(); 
+															
 		} finally {
 		//6. 연결 끊기.
 			dc.dbClose(null, pstmt, con);

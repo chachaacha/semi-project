@@ -56,7 +56,7 @@ $(".p-title-link").click(function() {
 
 function openPopup(idx) {
 	window.open("manager_pm_product_popup.jsp?product_idx="+idx,"product_popup","width=780,height=930,top=0,left=560");
-};
+}
 
 </script>
 </head>

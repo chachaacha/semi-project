@@ -21,10 +21,10 @@ html {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 <script type="text/javascript">
-$(function() {
+$(function(){
 	 <!-- main top Swiper JS -->
 	 <!-- Initialize Swiper -->
-	   var swiper = new Swiper(".mySwiper", {
+	var swiper = new Swiper(".mySwiper", {
 	     spaceBetween: 0,
 	     loop: 1,
 	     centeredSlides: true,
@@ -38,12 +38,25 @@ $(function() {
 	     },
 	   });
 	   
-		// 취소버튼 클릭시 창 닫기
-	   $(".delete-btn").click(function() {
-			self.close();
-	   })
+	// 취소버튼 클릭시 창 닫기
+	$(".delete-btn").click(function(){
+		self.close();
+	});
+	   
+	// 게시글 삭제
+	$("#delBtn").click(function(){
+		if(confirm("정말로 삭제하시겠습니까?")){
+			$("#pIdx").val(${ param.product_idx });
+			$("#comment_idx").val(null);
+			$("#reply_idx").val(null)
+			$("#deleted").val(null)
+			$("#deleteFrm").submit();
+		}	
+ 	});
+	   
 });
 
+//댓글삭제 함수
 function deleteComm(commIdx, repIdx, del) {
 	if(confirm("정말로 삭제하시겠습니까?")){
 		$("#comment_idx").val(commIdx);
@@ -51,7 +64,6 @@ function deleteComm(commIdx, repIdx, del) {
 		$("#deleted").val(del)
 		$("#deleteFrm").submit();
 	} 
-		
 };
 
 </script>
@@ -225,12 +237,13 @@ pageContext.setAttribute("commList", commList);
 		</c:choose>
 		</c:forEach>
 		
-		<!-- 댓글삭제를 위한 폼 -->
+		<!-- 댓글삭제와 게시글 삭제를 위한 폼 -->
 		<form method="post" id="deleteFrm">
 			<input type="hidden" id="product_idx" name="product_idx" value="${ param.product_idx }"/><!-- 처음에는 부모창에서 받아온 파라메터를 사용하고 그 후에는 여기서 파라매터를 불러와서 상품에 대한 정보를 가진다. -->
 			<input type="hidden" id="comment_idx" name="comment_idx"/>
 			<input type="hidden" id="reply_idx" name="reply_idx"/>
 			<input type="hidden" id="deleted" name="deleted"/>
+			<input type="hidden" id="pIdx" name="pIdx"/>
 		</form>
 		
 		
@@ -240,7 +253,7 @@ pageContext.setAttribute("commList", commList);
 		<c:when test="${ not empty param.comment_idx and not empty param.reply_idx and param.deleted eq 'Y' }">
 		<script type="text/javascript">
 		alert("이미 삭제된 댓글입니다.");
-		$("#deleteFrm").submit();//새로고침을 위한 submit
+		$("#deleteFrm").submit();//새로고침을 위한 submit, 상품인덱스만 파라메터로 넘어가서 초기 페이지를 보여주게 된다.
 		</script>
 		</c:when>
 		<c:when test="${ not empty param.comment_idx and not empty param.reply_idx }">
@@ -253,13 +266,30 @@ pageContext.setAttribute("commList", commList);
 		</script>
 		</c:when>
 		</c:choose>
+		
+		<%-- 게시글삭제 --%>
+		<c:if test="${ not empty param.pIdx }">
+		<c:catch var="ex">
+		<% bDAO.deleteProduct(request.getParameter("pIdx")); %>
+		</c:catch>
+		<c:if test="${ not empty ex }">
+		<script type="text/javascript">
+		alert("무결성 예외 발생! 자식키 존재");
+		</script>
+		</c:if>
+		<script type="text/javascript">
+		alert("게시글을 삭제하였습니다.");
+		self.close();
+		</script>
+		</c:if>
+		
 	</div>
 <!-- comments end -->
 
 <!-- product-bottom -->
 	<div class="product-bottom-wrap">
 		<div class="product-bottom-btn">
-			<button type="button" class="modify-btn">
+			<button type="button" class="modify-btn" id="delBtn">
 				<span>글 삭제</span>
 			</button>
 			<button type="button" class="delete-btn">

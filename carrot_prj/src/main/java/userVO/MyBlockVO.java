@@ -1,28 +1,17 @@
 package userVO;
 
-import java.sql.Date;
-
 public class MyBlockVO {
-	private String id, blocked_id, nick;
-	private Date blocked_date;
+	private String nickPlusId, blocked_id, addr1, id;
 	
 	public MyBlockVO() {
 	}
 
-	public MyBlockVO(String id, String blocked_id, String nick, String gu, Date blocked_date) {
-		super();
-		this.id = id;
-		this.blocked_id = blocked_id;
-		this.nick = nick;
-		this.blocked_date = blocked_date;
+	public String getNickPlusId() {
+		return nickPlusId;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+	public void setNickPlusId(String nickPlusId) {
+		this.nickPlusId = nickPlusId;
 	}
 
 	public String getBlocked_id() {
@@ -33,26 +22,31 @@ public class MyBlockVO {
 		this.blocked_id = blocked_id;
 	}
 
-	public String getNick() {
-		return nick;
+	public String getAddr1() {
+		return addr1;
 	}
 
-	public void setNick(String nick) {
-		this.nick = nick;
+	public void setAddr1(String addr1) {
+		this.addr1 = addr1;
 	}
 
-	public Date getBlocked_date() {
-		return blocked_date;
+	public String getId() {
+		return id;
 	}
 
-	public void setBlocked_date(Date blocked_date) {
-		this.blocked_date = blocked_date;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@Override
 	public String toString() {
-		return "MyBlockVO [id=" + id + ", blocked_id=" + blocked_id + ", nick=" + nick
-				+ ", blocked_date=" + blocked_date + "]";
+		return "MyBlockVO [nickPlusId=" + nickPlusId + ", blocked_id=" + blocked_id + ", addr1=" + addr1 + ", id=" + id
+				+ "]";
 	}
+
+		
+	
+	
+	
 
 }
