@@ -95,6 +95,7 @@ function zipcodeapi() {
 $(function(){
 	$("#btn").click(function(){
 		$("#infoEditFrm").submit();
+	});
 });//ready
 </script>
 
