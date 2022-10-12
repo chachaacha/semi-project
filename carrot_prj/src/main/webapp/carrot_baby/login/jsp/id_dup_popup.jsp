@@ -30,7 +30,7 @@ $(function() {
 	
 	//사용하기 버튼 클릭시
 	$("#idbtn").click(function(id){
-		opener.window.document.memberFrm.id.value=id;
+		opener.window.document.memberFrm.id.value=document.getElementById("id").value;
 		self.close();
 	});
 });
