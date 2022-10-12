@@ -192,29 +192,6 @@ $(function() {
 			
 		})
 		
-	<%-- //댓글 삭제
-		$("#del-com-btn").click(function() {
-			var sessionId="<%=(String)session.getAttribute("id") %>";
-			var replIdx=$(this).val();
-			var conFlag=confirm("댓글을 삭제하시겠습니까?");
-			
-			if(conFlag==true) {
-				alert("댓글을 삭제했습니다.");
-				alert(replIdx);
-				
-				/* $("#work").val("deletedCom");
-				$("#product_idx").val(${pIdx});
-				$("#comment_idx").val(comIdx);
-				$("#user_id").val(sessionId);
-				$("#contents").val(comTxt);
-				$("#comProFrm").submit(); */
-				
-			}else {
-				alert("취소하셨습니다.");
-			}
-		}) --%>
-	
-		
 })
 	//답댓글달기
 	$(document).on("click", "#re-com-btn", function() {
@@ -280,6 +257,24 @@ $(function() {
 			
 		}else {
 			alert("취소하셨습니다.");
+		}
+		
+	})
+	
+	$(document).on("click", ".modify-comments-btn", function() {
+		$(this).parent().prev().prev().toggle();
+		$(this).next().next().toggle();
+		
+		var oriTxt=$(this).parent().prev().prev().text();
+		var modifyBox=$(this).parent().prev().toggle();
+		
+		var comTxt=modifyBox.val().replace("<br>",/(?:\r\n|\r|\n)/g);
+		
+		if(modifyBox.css('display')=="block") {
+			$(this).text("취소하기")
+		}else {
+			modifyBox.val(oriTxt);
+			$(this).text("수정하기")
 		}
 		
 	})
@@ -467,6 +462,7 @@ $(function() {
 		   	
 				   	<div class="comments-contents-wrap">
 					    <p class="comments-content"><c:out value="${setCom.contents }" escapeXml="false"/></p>
+					    <textarea id="modify-com-input" class="comments-content modify-box" style="display: none"><c:out value="${setCom.contents }" escapeXml="false"/></textarea>
 					    <div class="comments-bottom">
 					    	
 					    	<c:choose>
@@ -474,6 +470,7 @@ $(function() {
 							    		<button type="button" class="add-comments-btn" value="${setCom.comment_idx }">답글쓰기</button>
 							    		<button type="button" class="modify-comments-btn">수정하기</button>
 							    		<button type="button" id="del-com-btn" class="delete-comments-btn" value="${setCom.reply_idx }">삭제하기</button>
+							    		<button type="button" id="modi-enter-btn" class="modify-enter-btn" value="${setCom.reply_idx }" style="display: none">등록하기</button>
 						    	</c:when>
 						    	<c:when test="${sessionId ne setCom.id }"> <%-- 타인이 쓴 댓글 일 경우 --%>
 							    		<button type="button" class="add-comments-btn" value="${setCom.comment_idx }">답글쓰기</button>
