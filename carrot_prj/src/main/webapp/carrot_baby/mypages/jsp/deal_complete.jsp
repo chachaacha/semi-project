@@ -106,21 +106,11 @@ $(function() {
 	</div><!-- deal_complete_item -->
 </c:forEach>
 
-<!-- ver1 -->
 <c:if test="${ empty dealComplete  }" >
-	<script type="text/javascript">
-	alert("거래완료된 상품 내역이 없습니다.");
-	</script>
-</c:if>
+거래완료된 상품 내역이 없습니다.
+</c:if> 
 
-
-<!-- ver.2 -->
-<%-- <c:if test="${ empty dealComplete  }" >
-</c:if> --%>
-
-
-
-	</div> <!-- deal_complete_title_wrap -->
+</div> <!-- deal_complete_title_wrap -->
 	
 </div><!-- container -->
 
