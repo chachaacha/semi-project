@@ -95,17 +95,6 @@ function zipcodeapi() {
 $(function(){
 	$("#btn").click(function(){
 		$("#infoEditFrm").submit();
-		
-	//기존에 sms 체크했을시 checked 되도록 함.
-	if(${param.sms_chk}=='Y'){
-		$("#sms_check").prop("checked",true);
-	}
-	});
-	//기존에 sms 체크했을시 checked 되도록 함.
-	if(${param.email_chk}=='Y'){
-		$("#sms_check").prop("checked",true);
-	}
-	});
 });//ready
 </script>
 
