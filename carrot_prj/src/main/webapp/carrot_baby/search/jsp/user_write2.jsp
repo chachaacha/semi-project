@@ -48,13 +48,14 @@ $(function() {
 	
 	$("#btnAdd").click(function() {
 		/* if(){
-			alert("썸내일을 등록");
+			alert("썸네일을 등록");
 			return;
 		} */
 		//$("#inputWrap").last().append("<div>a</div>");//자식으로 삽입
 		//$("#inputWrap").first().append("<div>a</div>");
 		var outDiv = "<div><label>사진" + cnt + "<label>" 
-		+ " <input type = 'file' name = 'post_img"+ ++cnt +"' class='inputBox' onchange='readURL1(this);'/></div>";
+		+ " <input type = 'file' name = 'post_img"+ ++cnt +"' class='inputBox' onchange='readURL(this,"+ cnt +");'/><br/>"
+		+ "<img id='preview"+ cnt +"'/></div>";
 		$("#inputWrap").append(outDiv);
 		++minAppend;
 	});
@@ -114,29 +115,21 @@ function chkNull(){
 	/* document.location.href="user_search.jsp"; */
 }//chkNull
 
-function readURL(input) {
+function readURL(input ,cnt) {
+		 
 	  if (input.files && input.files[0]) {
 	    var reader = new FileReader();
 	    reader.onload = function(e) {
-	      document.getElementById('preview').src = e.target.result;
+	      document.getElementById('preview'+cnt).src = e.target.result;
 	    };
 	    reader.readAsDataURL(input.files[0]);
 	  } else {
-	    document.getElementById('preview').src = "";
+		  
+	    document.getElementById('preview'+cnt).src = "";
 	  }
 	}
 	
-function readURL1(input) {
-	  if (input.files && input.files[0]) {
-	    var reader = new FileReader();
-	    reader.onload = function(e) {
-	      document.getElementById('preview1').src = e.target.result;
-	    };
-	    reader.readAsDataURL(input.files[0]);
-	  } else {
-	    document.getElementById('preview1').src = "";
-	  }
-	}
+
 
 </script>
 </head>
@@ -182,8 +175,6 @@ session.setAttribute("user_id", user_id);
 		pageContext.setAttribute("cVOList", pCatList);
 		
 %>
-
-<%= product_idx %>
 <div class="wrap">
 <!-- header -->
 <%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
@@ -239,15 +230,15 @@ session.setAttribute("user_id", user_id);
 					<input type = "button" value = "삭제" class = "inputBtn" id = "btnRemove" />
 					<div>
 					<label>대표사진</label>
-					<input type="file" name="post_img1" class="inputBox" onchange="readURL(this);" id="post_img1"/>
+					<input type="file" name="post_img1" class="inputBox" onchange="readURL(this,0);" id="post_img1"/>
 					<br/>
-					<img id="preview" />
+					<img id="preview0" />
 					</div>
 					<div>
+					<label>사진 1</label>
+					<input type="file" name="post_img2" class="inputBox" onchange="readURL(this,1);"/>
 					<br/>
 					<img id="preview1" />
-					<label>사진 1</label>
-					<input type="file" name="post_img2" class="inputBox" onchange="readURL1(this);"/>
 					</div>
 					</div>
 					</div>

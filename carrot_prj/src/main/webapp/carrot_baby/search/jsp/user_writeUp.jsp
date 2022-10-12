@@ -54,6 +54,29 @@ $(function() {
 		
 	});//change
 	
+	$("#btnAdd").click(function() {
+		/* if(){
+			alert("썸네일을 등록");
+			return;
+		} */
+		//$("#inputWrap").last().append("<div>a</div>");//자식으로 삽입
+		//$("#inputWrap").first().append("<div>a</div>");
+		var outDiv = "<div><label>사진" + cnt + "<label>" 
+		+ " <input type = 'file' name = 'post_img"+ ++cnt +"' class='inputBox' onchange='readURL(this,"+ cnt +");'/><br/>"
+		+ "<img id='preview"+ cnt +"'/></div>";
+		$("#inputWrap").append(outDiv);
+		++minAppend;
+	});
+	$("#btnRemove").click(function() {
+		if(minAppend == 1){
+			alert("더 이상 삭제하실 수 없습니다.");
+			return;
+		}
+		$("#inputWrap div").last().remove();
+		cnt--;
+		if( cnt == -1 ){ cnt = 0; };
+		--minAppend;
+	});
 	
 });//ready
 
@@ -100,6 +123,20 @@ function chkNull(){
 	/* document.location.href="user_search.jsp"; */
 }//chkNull
 
+function readURL(input ,cnt) {
+	 
+	  if (input.files && input.files[0]) {
+	    var reader = new FileReader();
+	    reader.onload = function(e) {
+	      document.getElementById('preview'+cnt).src = e.target.result;
+	    };
+	    reader.readAsDataURL(input.files[0]);
+	  } else {
+		  
+	    document.getElementById('preview'+cnt).src = "";
+	  }
+	}
+
 </script>
 </head>
 <body>
@@ -108,13 +145,12 @@ String user_id =(String)session.getAttribute("user_id");
 if(user_id==null){
 user_id = "test10";
 session.setAttribute("user_id", user_id);
-
 }
 %>
 <%
 		PostVO pVO = new PostVO();
 		// String product_idx= request.getParameter("product_idx");
-		String product_idx = "2210116404";
+		String product_idx = "2210125313";
 		pVO.setProduct_idx(product_idx);
 		pVO.setId(user_id);
 		//PostDAO와 연결
@@ -128,8 +164,8 @@ session.setAttribute("user_id", user_id);
 		List<ImgVO> list_img = new ArrayList<ImgVO>();
 		list_img = pDAO.selectImg(product_idx);
 		
-		for(int i = 0; i< list_img.size(); i++){
-			list_img.get(i).getImg_num();
+		for(int i = 0; i<= list_img.size(); i++){
+			
 		} 
 		
 		//scope 객체 설정
@@ -145,9 +181,12 @@ session.setAttribute("user_id", user_id);
 		String price = Integer.toString(ppVO.getPrice());
 		String free1 = ppVO.getFree();
 		
+		for(int i = 0; i<list_img.size(); i++){
+			
+		}
 %>
 <%= list_img %>
-<%= list_img.get(1).getProduct_img() %>
+<%= list_img.size() %>
 <div class="wrap">
 <!-- header -->
 <%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
@@ -206,11 +245,29 @@ session.setAttribute("user_id", user_id);
 			</div>
 			<div class="write-center-wrap">
 				<input type="text" name="title" id="title" class="write-title-input" placeholder="제목을 입력해주세요" value ="<%= title %>">
-			</div>
-		    <div class="write-center-wrap">
-						
-				</div>
+				<div class="img-wrap">
+					<div class="write-imgs-upload-wrap">
+					<input type="hidden" name="count" value=""/>
+					<div id = "inputWrap">
+					<input type = "button" value = "추가" class = "inputBtn" id = "btnAdd" />
+					<input type = "button" value = "삭제" class = "inputBtn" id = "btnRemove" />
+					<div>
+					<label>대표사진</label>
+					<input type="file" name="post_img1" class="inputBox" onchange="readURL(this,0);" id="post_img1"/>
+					<br/>
+					<img id="preview0" />
+					</div>
+					<div>
+					<label>사진 1</label>
+					<input type="file" name="post_img2" class="inputBox" onchange="readURL(this,1);"/>
+					<br/>
+					<img id="preview1" />
+					</div>
+					</div>
+					</div>
+				</div>	
 				<textarea rows="30" name="contents" id="contents" class="contents-txtarea" placeholder="내용을 입력해주세요"   ><%= contents %></textarea>
+			</div>
 			</form>
 			<div class="register-write">
 					<button type="button" id="pushBtn" class="report-btn">등록하기</button>
