@@ -89,18 +89,17 @@ public class JoinDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs=null;
 		
-		//1. 드라비어 로딩
 		try {
-		//2. Connection 얻기
 			con=dc.getConn();
-		//3. 쿼리문 생성객체 얻기
 			StringBuilder sb = new StringBuilder();
-			sb.append("select id from member where id=?");
+			sb.append("select id from member where id=? ");
+			
 			pstmt=con.prepareStatement(sb.toString());
-		//4. 바인드 변수에 값 설정
+			
 			pstmt.setString(1, paramId);
-		//5. 쿼리문 수행 후 결과 얻기
+			
 			rs=pstmt.executeQuery();
+			
 			flag=rs.next();//검색결과 있음 true, 없음 false
 				
 		}finally {

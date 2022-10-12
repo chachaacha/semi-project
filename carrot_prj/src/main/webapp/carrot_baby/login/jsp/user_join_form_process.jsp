@@ -1,3 +1,5 @@
+<%@page import="kr.co.sist.util.cipher.DataEncrypt"%>
+<%@page import="java.security.MessageDigest"%>
 <%@page import="java.io.IOException"%>
 <%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
 <%@page import="com.oreilly.servlet.MultipartRequest"%>
@@ -53,8 +55,14 @@ System.out.println(nick);
 String id=mr.getParameter("id");
 System.out.println(id);
 //비밀번호
-String password=mr.getParameter("password");
-System.out.println(password);
+String pwd=mr.getParameter("password");
+System.out.println("일반비밀번호: "+pwd);
+String plainText=pwd;
+//알고리즘 설정하여 비밀번호 암호화
+MessageDigest md=MessageDigest.getInstance("MD5");
+md.update(plainText.getBytes());
+String md5=DataEncrypt.messageDigest("MD5", plainText);
+System.out.println(md5);
 //생년월일
 String birth=mr.getParameter("birth");
 System.out.println(birth);
@@ -94,7 +102,7 @@ System.out.println(addr2);
 <jsp:setProperty property="name" name="jVO" value="<%= name %>"/>
 <jsp:setProperty property="nick" name="jVO" value="<%= nick %>"/>
 <jsp:setProperty property="id" name="jVO" value="<%= id %>"/>
-<jsp:setProperty property="password" name="jVO" value="<%= password %>"/>
+<jsp:setProperty property="password" name="jVO" value="<%= md5 %>"/>
 <jsp:setProperty property="birth" name="jVO" value="<%= birth %>"/>
 <jsp:setProperty property="phone_num" name="jVO" value="<%= phone_num %>"/>
 <jsp:setProperty property="sms_chk" name="jVO" value="<%= check1 %>"/>

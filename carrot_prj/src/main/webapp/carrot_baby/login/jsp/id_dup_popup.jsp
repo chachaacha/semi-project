@@ -28,7 +28,7 @@ $(function() {
 		}//end if
 	});//keydown
 	
-	//사용하기 버튼 클릭시
+	//사용하기 버튼 클릭시 부모창으로 아이디 정보 전송
 	$("#idbtn").click(function(id){
 		opener.window.document.memberFrm.id.value=document.getElementById("id").value;
 		self.close();
@@ -48,7 +48,6 @@ function chkNull(){
 </head>
 <body>
 <div class="wrap">
-	<form method="get" id="frmDup" action="id_dup_popup.jsp">  
 	<h1 class="title">아이디 중복확인</h1>
 	<div style="padding: 30px 20px; ">
 	<div>
@@ -59,11 +58,13 @@ function chkNull(){
 	</div>
 	</div>
 	<!-- 1 -->
+	<form method="get" id="frmDup">  
 	<div class="contents">
 		<input type="text" class="idText" id="id" size="30" autocomplete="off" />
 		<input type="text" style="display:none;"/>
 		<input type="button" value="중복확인" class="chkBtn" id="chkBtn" />
 	</div>
+	</form>
 	<div class="msg">
 		<span>공백 또는 특수문자가 포함된 아이디는 사용할 수 없습니다.</span><br>
 		<span>숫자로 시작하거나, 숫자로만 이루어진 아이디는 사용할 수 없습니다.</span><br>
@@ -76,20 +77,20 @@ function chkNull(){
 	boolean flag=jDAO.selectId(request.getParameter("id"));
 	pageContext.setAttribute("flag",flag);//true면 사용중, false면 미사용
 	%>
-	<div id="view">입력하신 <strong><c:out value="${param.id}"/></strong>는
-	<c:choose>
-	<c:when test="${flag }">
-	<span style="color: #FF0000">사용중</span>입니다.
-	</c:when>
-	<c:otherwise>
-	<span style="color: #FF0000">사용가능</span>합니다.<br/>
-	</c:otherwise>
-	</c:choose>
+	<div class="msg2">
+		<span>입력하신 <c:out value="${param.id}" />는</span>
+		<c:choose>
+			<c:when test="${flag }">
+			<span style="color: #FF0000">사용중</span>입니다.
+			</c:when>
+			<c:otherwise>
+			<span style="color: #FF0000">사용가능</span>합니다.<br/>
+			</c:otherwise>
+		</c:choose><br>
 	</div>
 	</c:if>
 	<!-- 버튼 -->
 	<button type="button" class="idBtn" id="idbtn" >사용하기</button>
-	</form>
 </div>
 </body>
 </html>

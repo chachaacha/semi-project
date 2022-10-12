@@ -80,7 +80,7 @@ body {
 /* 본문 */
 .wrap {
 	width: 500px;
-	height: 350px;
+	height: 365px;
 	border: 1px solid #E6E6E6;
 	border-radius: 10px;
 	text-align: center;
@@ -131,10 +131,19 @@ body {
 	text-align: left;
 	font-size: 12px;
 	color: #6E6E6E;
-	padding: 30px 20px;
+	padding: 30px 20px 10px 20px;
+}
+
+.msg2 {
+	text-align: center;
+	font-size: 12px;
+	color: #6E6E6E;
 }
 
 .idBtn {
+    position: absolute;
+    top: 300px;
+    left: 35px;
 	background-color: #FF9326;
 	border-radius: 6px;
 	width: 450px;

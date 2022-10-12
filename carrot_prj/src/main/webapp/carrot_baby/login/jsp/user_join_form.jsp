@@ -51,7 +51,7 @@ $(function () {
 	//아이디 중복확인 팝업창 열기
     $("#idbtn").click(function() {
 		window.open("id_dup_popup.jsp","id_dup_popup",
-			"width=520,height=370,top=220,left=700");
+			"width=520,height=385,top=220,left=700");
 	});
 });
 
@@ -241,14 +241,14 @@ function zipcodeapi() {
 					<tr>
 						<th><label><span style="color:red">*</span>아이디</label></th>
 						<td>
-							<input type="text" placeholder="아이디를 입력해주세요" name="id" id="id" class="inputTxt inputIdtype"  maxlength="20" />
+							<input type="text" placeholder="아이디를 입력해주세요" name="id" id="id" class="inputTxt inputIdtype"  maxlength="20"  readonly="readonly" />
 							<input type="button" value="아이디 중복 확인" class="idBtn" id="idbtn" />
 						</td>
 					</tr>
 							<tr>
 						<th><label><span style="color:red">*</span>비밀번호</label></th>
 						<td>
-							<input type="password" placeholder="비밀번호를 입력해주세요" name="password" id="password" class="inputPass size02" />
+							<input type="password" placeholder="비밀번호를 입력해주세요" name="password" id="password" class="inputPass size02"/>
 							<span>*8~25자의 영문, 숫자, 특수문자 3가지를 조합하여 입력</span>
 						</td>
 					</tr>
@@ -286,7 +286,7 @@ function zipcodeapi() {
 								<option value='daum.net' >daum.net</option>
 								<option value='gmail.com' >gmail.com</option>
 								<option value='nate.com' >nate.com</option>
-								<option value='nate.com' >hotmail.com</option>
+								<option value='hotmail.com' >hotmail.com</option>
 							</select>
 							<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" value="Y" /><label>이메일 수신동의</label></span>
 						</td>
