@@ -49,14 +49,14 @@ public class JoinDAO {
 			
 			pstmt=con.prepareStatement(sb.toString());
 			pstmt.setString(1, jVO.getId());
-			pstmt.setString(2, DataEncrypt.messageDigest("MD5",jVO.getPassword()));
+			pstmt.setString(2, DataEncrypt.messageDigest("SHA-1",jVO.getPassword()));
 			pstmt.setString(3, jVO.getImg());
 			pstmt.setString(4, jVO.getName());
 			pstmt.setString(5, jVO.getNick());
 			pstmt.setString(6, jVO.getBirth());
 			pstmt.setString(7, jVO.getPhone_num());
 			pstmt.setString(8, jVO.getSms_chk());
-			pstmt.setString(9, jVO.getEmail());
+			pstmt.setString(9, de.encryption(jVO.getEmail()));
 			pstmt.setString(10, jVO.getEmail_chk());
 			pstmt.setString(11, jVO.getZipcode());
 			pstmt.setString(12, jVO.getAddr1());

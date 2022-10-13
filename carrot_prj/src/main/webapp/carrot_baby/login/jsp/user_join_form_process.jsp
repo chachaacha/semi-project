@@ -59,10 +59,10 @@ String pwd=mr.getParameter("password");
 System.out.println("일반비밀번호: "+pwd);
 String plainText=pwd;
 //알고리즘 설정하여 비밀번호 암호화
-MessageDigest md=MessageDigest.getInstance("MD5");
+MessageDigest md=MessageDigest.getInstance("SHA-1");
 md.update(plainText.getBytes());
-String md5=DataEncrypt.messageDigest("MD5", plainText);
-System.out.println(md5);
+String sha_p=DataEncrypt.messageDigest("SHA-1", plainText);
+System.out.println(sha_p);
 //생년월일
 String birth=mr.getParameter("birth");
 System.out.println(birth);
@@ -86,6 +86,10 @@ String email2=mr.getParameter("email2");
 System.out.println(email2);
 String email=email1+"@"+email2;
 System.out.println("--------이메일: "+email);
+//알고리즘 설정하여 이메일 암호화
+String plainText2=email;
+String sha_e=DataEncrypt.messageDigest("SHA-1", plainText2);
+System.out.println(sha_e);
 //우편번호
 String zipcode=mr.getParameter("zipcode");
 System.out.println(zipcode);
@@ -102,11 +106,11 @@ System.out.println(addr2);
 <jsp:setProperty property="name" name="jVO" value="<%= name %>"/>
 <jsp:setProperty property="nick" name="jVO" value="<%= nick %>"/>
 <jsp:setProperty property="id" name="jVO" value="<%= id %>"/>
-<jsp:setProperty property="password" name="jVO" value="<%= md5 %>"/>
+<jsp:setProperty property="password" name="jVO" value="<%= sha_p %>"/>
 <jsp:setProperty property="birth" name="jVO" value="<%= birth %>"/>
 <jsp:setProperty property="phone_num" name="jVO" value="<%= phone_num %>"/>
 <jsp:setProperty property="sms_chk" name="jVO" value="<%= check1 %>"/>
-<jsp:setProperty property="email" name="jVO" value="<%= email %>"/> 
+<jsp:setProperty property="email" name="jVO" value="<%= sha_e %>"/> 
 <jsp:setProperty property="email_chk" name="jVO" value="<%= check2 %>"/>
 <jsp:setProperty property="zipcode" name="jVO" value="<%= zipcode %>"/>
 <jsp:setProperty property="addr1" name="jVO" value="<%= addr %>"/> 
