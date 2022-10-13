@@ -131,9 +131,6 @@ public class BoardDAO {
 			pstmt.setString(2, bVO.getProduct_idx());
 			pstmt.executeUpdate();
 			
-			//System.out.println("------조회:"+insertWish);
-			//System.out.println("------조회:"+wVO);
-			
 			rs=pstmt.executeQuery();
 			
 			if(rs.next()) {
@@ -215,22 +212,22 @@ public class BoardDAO {
 	
 	public void insertReportB(ReportBVO rbVO) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
-		
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		
 		try {
 			con=db.getConn();
 			
-			String insertReportB = "insert into reported_board(id, nick, product_idx, rr_idx) values (?,?,?,?)";
+			String insertReportB = "insert into reported_board(id, product_idx, rr_idx) values (?,?,?)";
 			
 			pstmt=con.prepareStatement(insertReportB);
 			pstmt.setString(1, rbVO.getId());
-			pstmt.setString(2, rbVO.getNick());
-			pstmt.setString(3, rbVO.getProduct_idx());
-			pstmt.setInt(4, rbVO.getRr_idx());
+			pstmt.setString(2, rbVO.getProduct_idx());
+			pstmt.setInt(3, rbVO.getRr_idx());
 			
 			pstmt.executeUpdate();
+
+			
 		}finally {
 			db.dbClose(null, pstmt, con);
 		}
@@ -251,7 +248,7 @@ public class BoardDAO {
 			StringBuilder updateReportB = new StringBuilder();
 			updateReportB
 			.append("	update product	")
-			.append("	set reported_cnt=( select count(product_idx) from reported_board where product_idx=?)	")
+			.append("	set report_cnt=( select count(product_idx) from reported_board where product_idx=?)	")
 			.append("	where product_idx=?	");
 			
 			pstmt=con.prepareStatement(updateReportB.toString());
@@ -336,8 +333,6 @@ public class BoardDAO {
 			pstmt=con.prepareStatement(sb.toString());
 			pstmt.setString(1, ucVO.getProduct_idx());
 			
-			//System.out.println("------취소:"+sb);
-			//System.out.println("------취소:"+ucVO);
 			
 			rs=pstmt.executeQuery();
 			
@@ -487,14 +482,13 @@ public class BoardDAO {
 		try {
 			con=db.getConn();
 			
-			String insertReport="insert into reported_comment (id, nick, comment_idx, reply_idx, rr_idx) values(?, ?, ?, ?, ?)";
+			String insertReport="insert into reported_comment (id, comment_idx, reply_idx, rr_idx) values(?, ?, ?, ?)";
 			
 			pstmt=con.prepareStatement(insertReport);
 			pstmt.setString(1, rcVO.getId());
-			pstmt.setString(2, rcVO.getNick());
-			pstmt.setInt(3, rcVO.getComment_idx());
-			pstmt.setInt(4, rcVO.getReply_idx());
-			pstmt.setInt(5, rcVO.getRr_idx());
+			pstmt.setInt(2, rcVO.getComment_idx());
+			pstmt.setInt(3, rcVO.getReply_idx());
+			pstmt.setInt(4, rcVO.getRr_idx());
 			
 			pstmt.executeUpdate();
 		}finally {
@@ -672,7 +666,7 @@ public class BoardDAO {
 	}//updateWishCnt
 
 	////////////////////////거래완료 설정///////////////////////
-	public List<UserCommentVO> selectTrader(UserCommentVO cVO) throws SQLException{
+	public List<UserCommentVO> selectTrader(String product_idx) throws SQLException{
 		List<UserCommentVO> list = new ArrayList<UserCommentVO>();
 		
 		DbConnection db = DbConnection.getInstance();
@@ -686,16 +680,18 @@ public class BoardDAO {
 			
 			StringBuilder selectTrader = new StringBuilder();
 			selectTrader
-			.append("	select id, (select nick from member  where id=pc.id) nick	")
-			.append("	from product_comment pc	")
-			.append("	where  product_idx=? and comment_idx=? and reply_idx=?	")
-			.append("   group by id, nick ");
+			//.append("	select pc.id, m.nick	")
+			//.append("	from product_comment pc	")
+			//.append("	where  product_idx=? and comment_idx=? and reply_idx=?	")
+			//.append("   group by id, nick ");
+			.append("	select pc.id, m.nick	")
+			.append("	from product_comment pc, member m")
+			.append("	where pc.id=m.id and product_idx='?'	")
+			.append("   group by pc.id, m.nick; ");
 			
 			pstmt=con.prepareStatement(selectTrader.toString());
 			
-			pstmt.setString(1, cVO.getProduct_idx());
-			pstmt.setInt(2, cVO.getComment_idx());
-			pstmt.setInt(3, cVO.getReply_idx());
+			pstmt.setString(1, product_idx);
 			
 			rs=pstmt.executeQuery();
 			

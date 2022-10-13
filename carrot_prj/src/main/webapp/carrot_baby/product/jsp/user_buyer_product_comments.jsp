@@ -16,7 +16,7 @@
 <link rel="stylesheet" type="text/css" href="../../common/css/reset.css"/>
 <link rel="stylesheet" type="text/css" href="../../common/css/swiper-bundle.min.css"/>
 <link rel="stylesheet" type="text/css" href="../../common/css/user_wrap_container.css"/>
-<link rel="stylesheet" type="text/css" href="../css/user_buyer_product_comments.css"/>
+<link rel="stylesheet" type="text/css"  href="../css/user_buyer_product_comments.css"/>
 <jsp:useBean id="bVO" class="userVO.BoardVO" scope="page"/>
 <jsp:useBean id="wVO" class="userVO.WishVO" scope="page"/>
 <jsp:useBean id="ucVO" class="userVO.UserCommentVO" scope="page"/>
@@ -127,12 +127,6 @@ $(function() {
 		
 	})
 	   
-	 //게시글 신고 팝업창 열기
-		$(".report-btn").click(function() {
-			window.open("report_write_comments_popup.jsp","report_comments_popup",
-					"width=520,height=620,top=203,left=1336");
-		})
-		
 	//댓글 신고 팝업창 열기
 		$(".report-comments-btn").click(function() {
 			window.open("report_write_comments_popup.jsp","report_comments_popup",
@@ -193,6 +187,11 @@ $(function() {
 		})
 		
 })
+	function profileMove(otherIdx){
+		$("#id").val(otherIdx);
+		$("#otherFrm").submit();
+	}
+
 	//답댓글달기
 	$(document).on("click", "#re-com-btn", function() {
 		var sessionId="<%=(String)session.getAttribute("id") %>";
@@ -261,23 +260,79 @@ $(function() {
 		
 	})
 	
-	$(document).on("click", ".modify-comments-btn", function() {
-		$(this).parent().prev().prev().toggle();
-		$(this).next().next().toggle();
-		
-		var oriTxt=$(this).parent().prev().prev().text();
-		var modifyBox=$(this).parent().prev().toggle();
-		
-		var comTxt=modifyBox.val().replace("<br>",/(?:\r\n|\r|\n)/g);
-		
+	$(document).on("click", "#modi-com-btn", function() { //댓글 수정버튼 생성
+		$(this).parent().prev().prev().toggle(); //기존txt
+		$(this).next().next().toggle(); //등록하기 버튼
+		var modifyBox=$(this).parent().prev().toggle(); //수정창
+		var oriTxt=$(this).parent().prev().text(); 
+
 		if(modifyBox.css('display')=="block") {
 			$(this).text("취소하기")
 		}else {
-			modifyBox.val(oriTxt);
+			modifyBox.val(oriTxt); // 취소하면 추가로 입력한 값 초기화
 			$(this).text("수정하기")
 		}
 		
 	})
+	
+	$(document).on("click", "#modi-recom-btn", function() { //답글 수정버튼 생성
+		$(this).parent().prev().prev().toggle(); //기존txt
+		$(this).next().next().next().toggle(); //등록하기 버튼
+		var modifyBox=$(this).parent().prev().toggle(); //수정창
+		var oriTxt=$(this).parent().prev().text();
+
+		if(modifyBox.css('display')=="block") {
+			$(this).text("취소하기")
+		}else {
+			modifyBox.val(oriTxt); // 취소하면 추가로 입력한 값 초기화
+			$(this).text("수정하기")
+		}
+		
+	})
+	
+	$(document).on("click", "#modi-enter-btn", function() {// 댓글 수정
+		var comTxt=$(this).parent().prev().val().replace(/(?:\r\n|\r|\n)/g, "<br>");
+		var modiComIdx=$(this).prev().prev().prev().val();
+		var modiReIdx=$(this).val();
+	
+		$("#work").val("modiComment");
+		$("#contents").val(comTxt);
+		$("#comment_idx").val(modiComIdx);
+		$("#reply_idx").val(modiReIdx);
+		$("#product_idx").val(${pIdx});
+		$("#comProFrm").submit();
+		
+	})
+	
+	$(document).on("click", "#modi-reenter-btn", function() {// 답글 수정
+		var comTxt=$(this).parent().prev().val().replace(/(?:\r\n|\r|\n)/g, "<br>");
+		var modiComIdx=$(this).prev().prev().val();
+		var modiReIdx=$(this).val();
+	
+		$("#work").val("modiComment");
+		$("#contents").val(comTxt);
+		$("#comment_idx").val(modiComIdx);
+		$("#reply_idx").val(modiReIdx);
+		$("#product_idx").val(${pIdx});
+		$("#comProFrm").submit();
+		
+	})
+	
+	function openPop() { //신고 팝업창 열기
+		var sessionId="<%=(String)session.getAttribute("id") %>";
+		
+		if(sessionId=="null") {
+			alert("로그인이 필요한 동작입니다.");
+		}else {
+			var frmPop=document.popupFrm;
+			window.open("","report_comments_popup",
+					"width=520,height=620,top=203,left=1336");
+			frmPop.action = "report_write_comments_popup.jsp?";
+			frmPop.target = "report_comments_popup";
+			frmPop.id.value = "${sessionId }";
+			frmPop.submit();
+		}
+	}
 	
 
 </script>
@@ -368,8 +423,8 @@ $(function() {
 		<div class="description-title-wrap">
 			<h1 class="description-title"><c:out value="${pInfo.title }"/></h1>
 			<div class="report-wrap">
-				<c:if test="${wriCheck eq 1 }">
-				 	<button type="button" class="report-btn">
+				<c:if test="${sessionId ne pInfo.id }">
+				 	<button type="button" class="report-btn" onClick="openPop();">
 					 	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-slash-circle" viewBox="0 0 16 16">
 						  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
 						  <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708z"/>
@@ -438,16 +493,16 @@ $(function() {
 		<c:forEach var="setCom" items="${setCom }" varStatus="i">
 		<c:choose>
 			<c:when test="${setCom.reply_idx eq 0 && setCom.deleted eq 'Y'}">
-				<div class="comments-sample-wrap">
+				<div class="comments-sample-wrap ${sessionId eq setCom.id ? 'comments-sample-wrap-same' : ''}">
 					<p class="comments-content"><c:out value="${setCom.contents }" escapeXml="false"/></p>
 				</div>
 			</c:when>
 			<c:when test="${setCom.reply_idx eq 0 }">
-				<div class="comments-sample-wrap">
+				<div class="comments-sample-wrap ${sessionId eq setCom.id ? 'comments-sample-wrap-same' : ''}">
 					<div class="comments-profile-wrap">
 						 <div class="comments-profile-image-wrap">
 					             <div class="comments-profile-image">
-									<a class="profile-link" href="#void">
+									<a class="profile-link" href="javascript:profileMove('${setCom.id }');">
 					               		<img alt="프로필이미지" src="${setCom.img }">
 								   </a>
 					             </div>
@@ -459,22 +514,25 @@ $(function() {
 				    	 </div>
 				   	</div>
 		  
-		   	
+		   			<%
+		   				pageContext.setAttribute("crcn", "\r\n");
+		   				pageContext.setAttribute("br", "<br>");
+		   			%>
 				   	<div class="comments-contents-wrap">
 					    <p class="comments-content"><c:out value="${setCom.contents }" escapeXml="false"/></p>
-					    <textarea id="modify-com-input" class="comments-content modify-box" style="display: none"><c:out value="${setCom.contents }" escapeXml="false"/></textarea>
+					    <textarea id="modify-com-input" class="comments-content modify-box" style="display: none"><c:out value="${fn:replace(setCom.contents,br,crcn) }" escapeXml="false"/></textarea>
 					    <div class="comments-bottom">
 					    	
 					    	<c:choose>
 						    	<c:when test="${sessionId eq setCom.id }"> <%-- 본인이 쓴 댓글 일 경우 --%>
 							    		<button type="button" class="add-comments-btn" value="${setCom.comment_idx }">답글쓰기</button>
-							    		<button type="button" class="modify-comments-btn">수정하기</button>
+							    		<button type="button" id="modi-com-btn" class="modify-comments-btn">수정하기</button>
 							    		<button type="button" id="del-com-btn" class="delete-comments-btn" value="${setCom.reply_idx }">삭제하기</button>
 							    		<button type="button" id="modi-enter-btn" class="modify-enter-btn" value="${setCom.reply_idx }" style="display: none">등록하기</button>
 						    	</c:when>
 						    	<c:when test="${sessionId ne setCom.id }"> <%-- 타인이 쓴 댓글 일 경우 --%>
 							    		<button type="button" class="add-comments-btn" value="${setCom.comment_idx }">답글쓰기</button>
-							    		<button type="button"class="report-comments-btn">신고하기</button>
+							    		<button type="button"class="report-comments-btn" value="${setCom.reply_idx }" onClick="comOpenPop();">신고하기</button>
 						    	</c:when>
 					   		</c:choose>
 					   		
@@ -493,17 +551,17 @@ $(function() {
 		 	</c:when>
 		 	
 		<c:when test="${setCom.reply_idx ne 0 && setCom.deleted eq 'Y'}">
-			<div class="re-comments-sample-wrap">
+			<div class="re-comments-sample-wrap ${sessionId eq setCom.id ? 'comments-sample-wrap-same' : ''}">
 				<p class="comments-content"><c:out value="${setCom.contents }" escapeXml="false"/></p>
 			</div>
 		</c:when>
 		
 		<c:otherwise>
-			<div class="re-comments-sample-wrap">
+			<div class="re-comments-sample-wrap ${sessionId eq setCom.id ? 'comments-sample-wrap-same' : ''}">
 				<div class="comments-profile-wrap">
 					 <div class="comments-profile-image-wrap">
 				         <div class="comments-profile-image">
-							<a class="profile-link" href="#void">
+							<a class="profile-link" href="javascript:profileMove('${setCom.id }');">
 				               <img alt="프로필이미지" src="${setCom.img }">
 							 </a>
 				             </div>
@@ -516,13 +574,15 @@ $(function() {
 			   	</div>
 			   	<div class="comments-contents-wrap">
 				    <p class="comments-content"><c:out value="${setCom.contents }" escapeXml="false"/></p>
+				    <textarea id="modify-recom-input" class="comments-content modify-box" style="display: none"><c:out value="${fn:replace(setCom.contents,br,crcn) }" escapeXml="false"/></textarea>
 				    <div class="comments-bottom">
 				    
 					    <c:choose>
 						    <c:when test="${sessionId eq setCom.id }"> <%-- 본인이 쓴 댓글 일 경우 --%>
-							    	<button type="button" id="" class="modify-comments-btn">수정하기</button>
+							    	<button type="button" id="modi-recom-btn" class="modify-comments-btn">수정하기</button>
 							    	<input type="hidden" id="hid-comidx" value="${setCom.comment_idx }">
 							    	<button type="button" id="del-recom-btn" class="delete-comments-btn" value="${setCom.reply_idx }">삭제하기</button>
+							    	<button type="button" id="modi-reenter-btn" class="modify-enter-btn" value="${setCom.reply_idx }" style="display: none">등록하기</button>
 						    </c:when>
 						    <c:when test="${sessionId ne setCom.id }"> <%-- 타인이 쓴 댓글 일 경우 --%>
 							    	<button type="button"class="report-comments-btn">신고하기</button>
@@ -558,8 +618,8 @@ $(function() {
 </div>
 <!-- container end -->
 <!-- 타사용자 프로필 -->
-<form action="../../other_profiles/jsp/other_user_profile.jsp" id="otherFrm" method="post">
-	<input type="hidden" name="id2" id="id2" value="${param.id2 }">
+<form method="post" action="../../other_profiles/jsp/other_user_profile.jsp" id="otherFrm">
+	<input type="hidden" name="id" id="id" value="${param.id }">
 </form>
 <%-- 하트기능 --%>
 <form method="post" action="../../product/jsp/heart_process.jsp" id="heartFrm">
@@ -573,13 +633,20 @@ $(function() {
 	<input type="hidden" name="product_idx" id="product_idx" value="${param.product_idx }">
 </form>
 <%-- 댓글 입력 기타 기능 --%>
-<form method="get" action="../../product/jsp/comment_process.jsp" id="comProFrm">
+<form method="post" action="../../product/jsp/comment_process.jsp" id="comProFrm">
 	<input type="hidden" name="work" id="work" value="${param.work }">
 	<input type="hidden" name="product_idx" id="product_idx" value="${param.product_idx }">
 	<input type="hidden" name="comment_idx" id="comment_idx" value="${param.comment_idx }">
 	<input type="hidden" name="reply_idx" id="reply_idx" value="${param.reply_idx }">
 	<input type="hidden" name="user_id" id="user_id" value="${param.user_id }">
 	<input type="hidden" name="contents" id="contents" value="${param.contents }">
+</form>
+<%-- 신고팝업창 --%>
+<form method="post" id="popupFrm" name="popupFrm">
+	<input type="hidden" name="id" id="id" value="${param.id}">
+	<input type="hidden" name="product_idx" id="iproduct_idxd" value="${param.product_idx}">
+	<input type="hidden" name="comment_idx" id="comment_idx" value="${param.comment_idx}">
+	<input type="hidden" name="reply_idx" id="reply_idx" value="${param.reply_idx}">
 </form>
 
 <!-- footer -->

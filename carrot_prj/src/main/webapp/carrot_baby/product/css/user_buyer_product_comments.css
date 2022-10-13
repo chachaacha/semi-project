@@ -349,10 +349,15 @@
 	margin: 0 auto;
 	display: flex;
 	margin-top: 25px;
-	padding-bottom: 20px;
+	padding-bottom: 10px;
+	padding-top: 10px;
 	position: relative;
 	border-bottom: 1px solid #E6E6E6;
 	flex-direction: column;
+}
+
+.comments-sample-wrap-same{
+	background: #FDFAF6;
 }
 
 .comments-profile-wrap {
@@ -440,7 +445,8 @@
 	margin-left: 57px;
     display: flex;
     margin-top: 25px;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
+    padding-top: 10px;
     position: relative;
     border-bottom: 1px solid #E6E6E6;
     flex-direction: column;
@@ -455,6 +461,10 @@
     position: relative;
     border-bottom: 1px solid #E6E6E6;
     flex-direction: row;
+}
+
+.comments-sample-wrap-same{
+	background: #FDFAF6;
 }
 
 .add-comments, .delete-comments, .modify-comments {
