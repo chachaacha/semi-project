@@ -176,16 +176,14 @@ MyInfoVO info = miDAO.selectInfo(id);
 						<tr>
 							<th>휴대폰</th>
 							<td><input type="text" name="phone_num" id="phone_num" value="<%=info.getPhone_num() %>" readonly="readonly" />
-							<!-- 체크박스 초기값 설정하는거 왜 안되는지.. -->
-								<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk" style="cursor: pointer;" <%if(info.getSms_chk().equals("Y")) {%> checked="checked" <%} %> />
+								<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk" value="Y" style="cursor: pointer;" <%if(info.getSms_chk().equals("Y")) {%> checked="checked" <%} %> />
 								<label>SMS 수신동의</label></span></td>
 						</tr>
 						<tr>
 							<th><label>이메일</label></th>
 							<td class="mail_type">
-							<!-- 체크했었다가 취소했을 때 그 값을 어떻게 넘기는지? -->
 							<input type="text" value="<%=info.getEmail() %>" name="email" id="email" class="inputEmail" maxlength="100" />
-							<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" style="cursor: pointer;" <%if(info.getEmail_chk().equals("Y")) {%> checked="checked" <%} %>/>
+							<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" value="Y" style="cursor: pointer;" <%if(info.getEmail_chk().equals("Y")) {%> checked="checked" <%} %>/>
 							<label>이메일 수신동의</label></span></td>
 						</tr>
 						<tr>
