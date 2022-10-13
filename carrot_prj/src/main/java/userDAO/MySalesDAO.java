@@ -48,10 +48,10 @@ public class MySalesDAO {
 			con = dc.getConn();
 			// 3. 쿼리문 생성객체 얻기
 			StringBuilder selectAll = new StringBuilder();
-			selectAll.append(
-					"	select p.id, p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.reserved, p.sold_check, p.price, p.comment_cnt, p.liked_cnt	")
-					.append("	from	product p, loc_category lc																													")
-					.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'N'														");
+			selectAll.
+			append("	select p.id, p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.reserved, p.sold_check, p.price, p.comment_cnt, p.liked_cnt	")
+			.append("	from	product p, loc_category lc																													")
+			.append("	where	(p.gu_idx = lc.gu_idx) and id = ?	and sold_check = 'N'														");
 
 			pstmt = con.prepareStatement(selectAll.toString());
 			// 4. 바인드 변수 설정
@@ -93,8 +93,8 @@ public class MySalesDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int deleteBoard(MySalesVO msVO) throws SQLException { // 업데이트로 바꿔서 수정중입니다..
-		int deleteCnt = 0;
+	public int deleteBoard(String product_idx) throws SQLException { // 업데이트로 바꿔서 수정중입니다..
+	int deleteCnt = 0;
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -113,7 +113,7 @@ public class MySalesDAO {
 
 			pstmt = con.prepareStatement(delete.toString());
 			// 4. 바인드 변수에 값 설정
-			pstmt.setString(1, msVO.getProduct_idx());
+			pstmt.setString(1, product_idx);
 			// 5. 쿼리문 수행 후 결과 얻기
 			deleteCnt = pstmt.executeUpdate();
 
@@ -124,6 +124,8 @@ public class MySalesDAO {
 
 		return deleteCnt;
 	}// deleteBoard
+	
+	
 
 	public int updateReserved(MySalesVO msVO) throws SQLException {
 		int updateCnt = 0;
@@ -247,10 +249,10 @@ public class MySalesDAO {
 			con = dc.getConn();
 			// 3. 쿼리문 생성객체 얻기
 			StringBuilder selectDC = new StringBuilder();
-			selectDC.append(
-					"	select p.id, p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.reserved, p.sold_check, p.price, p.comment_cnt, p.liked_cnt, p.buyer_id, p.purchased_date	")
-					.append("	from	product p, loc_category lc																													")
-					.append("	where	(p.gu_idx = lc.gu_idx) and id = ? 	and sold_check = 'Y' 																			");
+			selectDC
+			.append("	select p.id, p.product_idx, p.thumbnail, p.title, lc.gu_idx, lc.gu, p.posted_date, p.reserved, p.sold_check, p.price, p.comment_cnt, p.liked_cnt, p.buyer_id, p.purchased_date	")
+			.append("	from	product p, loc_category lc																													")
+			.append("	where	(p.gu_idx = lc.gu_idx) and id = ? 	and sold_check = 'Y' 																			");
 			// 예약
 			pstmt = con.prepareStatement(selectDC.toString());
 			// 4. 바인드 변수 설정

@@ -1,3 +1,4 @@
+<%@page import="java.io.PrintWriter"%>
 <%@page import="userVO.MySalesVO"%>
 <%@page import="java.util.List"%>
 <%@page import="userDAO.MySalesDAO"%>
@@ -9,8 +10,8 @@
 <!-- parameter받은 VO생성 -->
 <jsp:useBean id="msdcVO" class="userVO.MySalesVO" scope="session"/>
 <!-- 2. VO에 setter method(property)호출 -->
- <jsp:setProperty property="*" name="msdcVO"/>
-<!-- 세션에 저장된 아이디 -->
+<jsp:setProperty property="*" name="msdcVO"/>
+<!-- 세션에 저장된 아이디 가져오기-->
 <jsp:setProperty property="id" name="msdcVO" value="${id }"/>
  
 <!DOCTYPE html>
@@ -26,9 +27,12 @@
 //...버튼 누르면 글 삭제할건지 물어보는 팝업창 열기
 $(function() {
 	$(".edit_del_btn").click(function() {
-		confirm("게시글을 정말 삭제하시겠어요?")
+		if(confirm("게시글을 정말 삭제하시겠어요?")){
+			$("pldx").val(${param.prdduct_idx});
+			$("#deleteFrm").submit();
+		}//end if
 	})
-})
+}); //ready
 </script>
 </head>
 <% 
@@ -56,10 +60,13 @@ $(function() {
 	String id = (String)session.getAttribute("id");
 	MySalesDAO msDAO=MySalesDAO.getInstance();
 	List<MySalesVO> dealComplete=msDAO.selectDealComplete(id);
-	//System.out.println("-----"+dealComplete); //찍어보니 값이 안담긴당...
+	//System.out.println("-----"+dealComplete); //찍어보니 값이 안담긴당...--->계속 test1으로 테스트해봤었는데 test1에는 거래 완료가 없어서 
+	//빈 화면이 출력되는 거였음! test5로 하니까 판매중 버튼도 잘 걸림
+	
 	//스콥 객체에 할당하기
 	pageContext.setAttribute("dealComplete", dealComplete);
 	%>
+	
 	<!-- for each로 반복 -->
 	<c:forEach var="dc" items="${dealComplete}">
 	 	<div class="deal_complete_item">
@@ -106,9 +113,32 @@ $(function() {
 	</div><!-- deal_complete_item -->
 </c:forEach>
 
+<!-- 게시글 삭제를 위한 폼-->
+<form method="post" id="deleteFrm">
+	<input type="hidden" id="product_idx" name="product_idx" value="${param.product_idx }"/>
+	<input type="hidden" id="pldx" name="pldx"/>
+</form>
+
+<!-- 게시글 삭제  -->
+<c:if test="${not empty param.product_idx }">
+<c:catch var="ex">
+<% msDAO.deleteBoard(request.getParameter("product_idx")); %>
+</c:catch>
+<c:if test="${not empty ex }">
+	<script type="text/javascript">
+	alert("무결성 예외 발생! 자식키 존재함")
+	</script>
+</c:if><!-- not empty ex  -->
+<script type="text/javascript">
+alert("게시글을 삭제하였습니다.");
+self.close();
+</script>
+</c:if><!-- not empty param.product_idx  -->
+
+<!-- 거래완료된 상품이 없을 경우 표시되는 메시지-->
 <c:if test="${ empty dealComplete  }" >
-거래완료된 상품 내역이 없습니다.
-</c:if> 
+	거래완료된 상품 내역이 없습니다.
+</c:if>
 
 </div> <!-- deal_complete_title_wrap -->
 	
