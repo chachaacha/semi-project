@@ -70,7 +70,6 @@ pDAO.insertPost(pVO);
 	//원본 파일명
 	String[] reName = new String[cnt];
 	String[] originalName = new String[cnt];
-	int img_num=0;
 	for(int i=0; i< cnt; i++){
 	originalName[i]=mr.getOriginalFileName("post_img"+(i+1));
 	//변경된 파일명
@@ -95,11 +94,10 @@ pDAO.insertPost(pVO);
 <%}//end else %>
 <%
 if( reName[i] != null ){
-++img_num;
 %>
 <jsp:setProperty property="product_img" name="iVO" value="<%= reName[i] %>"/>
 <jsp:setProperty property="product_idx" name="iVO" value="<%= product_idx %>"/>
-<jsp:setProperty property="img_num" name="iVO" value="<%= img_num %>"/>
+<jsp:setProperty property="img_num" name="iVO" value="<%= i+1 %>"/>
 <%
 pDAO.insertImg(iVO);
 %>

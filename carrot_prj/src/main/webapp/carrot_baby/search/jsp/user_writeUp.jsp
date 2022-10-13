@@ -122,6 +122,14 @@ function chkNull(){
 		return;
 	}
 	
+	for(var i=0; i<cnt; i++){
+		var thu = $("#preview"+i).val();
+		if(!thu){
+		alert("파일을 첨부해 주세요");
+		return;
+		}//end if
+	}//end for
+	
 	
 	$("#writePost").submit();
 	/* document.location.href="user_search.jsp"; */
@@ -152,7 +160,7 @@ session.setAttribute("user_id", user_id);
 }
 		PostVO pVO = new PostVO();
 		// String product_idx= request.getParameter("product_idx");
-		String product_idx = "2210129348";
+		String product_idx = "2210133573";
 		pVO.setProduct_idx(product_idx);
 		pVO.setId(user_id);
 		//PostDAO와 연결
@@ -256,13 +264,15 @@ session.setAttribute("user_id", user_id);
 					<input type = "button" value = "삭제" class = "inputBtn" id = "btnRemove" />
 					<div>
 					<label>대표사진</label>
-					<input type="file" name="post_img1" class="inputBox" onchange="readURL(this,0);" id="post_img1"/>
+					<input type="file" name="post_img1" id="post_img1" class="inputBox" onchange="readURL(this,0);" />
+					<input type="hidden" value="<%= list_img.get(0).getProduct_img()%>" id="chk_img0" name="chk_img0"/>
 					<br/>
 					<img id="preview0" src="../image/<%= list_img.get(0).getProduct_img()%>"/>
 					</div>
 					<div>
 					<label>사진 1</label>
-					<input type="file" name="post_img2" class="inputBox" onchange="readURL(this,1);"/>
+					<input type="file" name="post_img2" id="post_img2"class="inputBox" onchange="readURL(this,1);"/>
+					<input type="hidden" value="<%= list_img.get(1).getProduct_img()%>" id="chk_img1" name="chk_img1"/>
 					<br/>
 					<img id="preview1" src="../image/<%= list_img.get(1).getProduct_img()%>" />
 					</div>
@@ -270,6 +280,7 @@ session.setAttribute("user_id", user_id);
 					<div>
 					<label>사진 <%= i %></label>
 					<input type="file" name="post_img<%= i+1 %>" class="inputBox" onchange="readURL(this,<%= i %>);"/>
+					<input type="hidden" value="<%= list_img.get(i).getProduct_img()%>" id="chk_img<%= i %>" name="chk_img<%= i %>"/>
 					<br/>
 					<img id="preview<%= i %>" src="../image/<%= list_img.get(i).getProduct_img()%>" >
 					</div>

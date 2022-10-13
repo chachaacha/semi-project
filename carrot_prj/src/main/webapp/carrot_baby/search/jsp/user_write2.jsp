@@ -54,7 +54,7 @@ $(function() {
 		//$("#inputWrap").last().append("<div>a</div>");//자식으로 삽입
 		//$("#inputWrap").first().append("<div>a</div>");
 		var outDiv = "<div><label>사진" + cnt + "<label>" 
-		+ " <input type = 'file' name = 'post_img"+ ++cnt +"' class='inputBox' onchange='readURL(this,"+ cnt +");'/><br/>"
+		+ " <input type = 'file' name = 'post_img"+ ++cnt +"' id = 'post_img"+ cnt +"' class='inputBox' onchange='readURL(this,"+ cnt +");'/><br/>"
 		+ "<img id='preview"+ cnt +"'/></div>";
 		$("#inputWrap").append(outDiv);
 		++minAppend;
@@ -103,11 +103,13 @@ function chkNull(){
 		$("#contents").focus();
 		return;
 	}
-	var thu = $("#post_img1").val();
-	if(!thu){
+	for(var i=1; i<cnt+1; i++ ){
+		var thu = $("#post_img"+i).attr("src");
+		if( tmp == undefined ){
 		alert("파일을 첨부해 주세요");
 		return;
-	}
+		}//end if
+	}//end for
 	
 	$("input[name=count]").attr("value",cnt);
 	
@@ -230,13 +232,13 @@ session.setAttribute("user_id", user_id);
 					<input type = "button" value = "삭제" class = "inputBtn" id = "btnRemove" />
 					<div>
 					<label>대표사진</label>
-					<input type="file" name="post_img1" class="inputBox" onchange="readURL(this,0);" id="post_img1"/>
+					<input type="file" name="post_img1" id = "post_img1" class="inputBox" onchange="readURL(this,0);" />
 					<br/>
 					<img id="preview0" />
 					</div>
 					<div>
 					<label>사진 1</label>
-					<input type="file" name="post_img2" class="inputBox" onchange="readURL(this,1);"/>
+					<input type="file" name="post_img2" id="post_img2" class="inputBox" onchange="readURL(this,1);"/>
 					<br/>
 					<img id="preview1" />
 					</div>
