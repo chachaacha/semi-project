@@ -41,6 +41,7 @@ request.setCharacterEncoding("UTF-8");
 	for(int i =0; i<cnt; i++){
 		chk_img[i]= mr.getParameter("chk_img"+i);
 	}
+	
 	String title = mr.getParameter("title");
 	String contents = mr.getParameter("contents");
 	String user_id=(String)session.getAttribute("user_id");
@@ -96,22 +97,15 @@ pDAO.updatePost(pVO);
 <%} else {%>
 업로드 파일은 5MByte까지만 가능합니다.
 <%}//end else %>
-<%
-if( reName[i] != null ){
-%>
+<%if( reName[i] != null ){%>
 <jsp:setProperty property="product_img" name="iVO" value="<%= reName[i] %>"/>
 <jsp:setProperty property="product_idx" name="iVO" value="<%= product_idx %>"/>
 <jsp:setProperty property="img_num" name="iVO" value="<%= i+1 %>"/>
-<%
-pDAO.deleteImg(product_idx);
-pDAO.insertImg(iVO);
-%>
+<%pDAO.insertImg(iVO);%>
 <%} //end if %>
 <%}//end for %>
 <jsp:setProperty property="product_idx" name="pVO" value="<%= product_idx %>"/>
 <jsp:setProperty property="thumbnail" name="pVO" value="<%= reName[0] %>"/>
-<%
-pDAO.updateThumbnail(pVO);
-%>
+<%pDAO.updateThumbnail(pVO);%>
 </body>
 </html>
