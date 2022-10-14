@@ -13,17 +13,18 @@ import javax.naming.NamingException;
 import common.DbConnection;
 import kr.co.sist.util.cipher.DataEncrypt;
 import userVO.JoinVO;
-
+//키를 받아옴
 public class JoinDAO {
 	private static JoinDAO jDAO;
+	private String key;
 	
-	private JoinDAO() {
-		
+	private JoinDAO(String key) {
+		this.key=key;
 	}
 	
-	public static JoinDAO getInstance() {
+	public static JoinDAO getInstance(String key) {
 		if(jDAO==null) {
-			jDAO = new JoinDAO();
+			jDAO = new JoinDAO(key);
 		}
 		return jDAO;
 	}
@@ -44,8 +45,8 @@ public class JoinDAO {
 			sb.append("insert into member(id,password,img,name,nick,birth,phone_num,sms_chk,email,email_chk,zipcode,addr1,addr2) values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
 			//일방향Hash
-		      String key="abcdefghijklmonp1234~";
-		      DataEncrypt de=new DataEncrypt(DataEncrypt.messageDigest("SHA-1", key));
+		      DataEncrypt de=null;
+		      de=new DataEncrypt(DataEncrypt.messageDigest("SHA-1", key));
 			
 			pstmt=con.prepareStatement(sb.toString());
 			pstmt.setString(1, jVO.getId());

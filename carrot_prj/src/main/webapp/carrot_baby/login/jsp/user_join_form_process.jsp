@@ -118,7 +118,11 @@ System.out.println(addr2);
 
 <!-- DB연결 -->
 <%
-JoinDAO jDAO=JoinDAO.getInstance();
+//암호화 키 불러오기
+ServletContext sc=getServletContext();
+String key = sc.getInitParameter("userKey");
+//키를 집어넣기
+JoinDAO jDAO=JoinDAO.getInstance(key);
 /* out.println ( jVO ); */
 jDAO.insertJoin( jVO );%>
 

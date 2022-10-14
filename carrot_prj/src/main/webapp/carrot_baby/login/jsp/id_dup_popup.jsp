@@ -31,13 +31,13 @@ $(function() {
 	//사용하기 버튼 클릭시 부모창으로 아이디 정보 전송
 	$("#idbtn").click(function(id){
 		opener.window.document.memberFrm.id.value=document.getElementById("id").value;
-		//self.close();
+		self.close();
 	});
 });
 
 function chkNull(){
 	var id=$("#id").val();
-	var jsonParam={ "id":id }
+	var jsonParam={"id":id};
 	if(id == ""){
 		alert("아이디를 입력해 주세요.");
 		return;
@@ -51,13 +51,11 @@ function chkNull(){
 			alert("죄송합니다 잠시후 다시 시도해주세요.");
 			console.log("에러 : " + xhr.status);
 		}, success: function( jsonObj ){
-			$("#msgOutput").html(jsonObj.msg);
+			$("#msgOutput").text(jsonObj.msg);
 		}
 	});//ajax
 	
-	
-	
-	$("#frmDup").submit();
+	//$("#frmDup").submit();
 }//chkNull
 
 
@@ -83,8 +81,8 @@ function chkNull(){
 		<input type="button" value="중복확인" class="chkBtn" id="chkBtn" />
 	</div>
 	</form>
-	<input type="hidden" id="msg" name="msg"/>
-	<div class="msg" id="msgOutput">
+	<div class="msg">
+		<span id="msgOutput" ></span><br>
 		<span>숫자로 시작하거나, 숫자로만 이루어진 아이디는 사용할 수 없습니다.</span><br>
 		<span>공백 또는 특수문자가 포함된 아이디는 사용할 수 없습니다.</span><br>
 	</div>
@@ -95,17 +93,6 @@ function chkNull(){
 	boolean flag=jDAO.selectId(request.getParameter("id"));
 	pageContext.setAttribute("flag",flag);//true면 사용중, false면 미사용
 	%>
-	<div class="msg2">
-		<span>입력하신 <c:out value="${param.id}" />는</span>
-		<c:choose>
-			<c:when test="${flag }">
-			<span style="color: #FF0000">사용중</span>입니다.
-			</c:when>
-			<c:otherwise>
-			<span style="color: #FF0000">사용가능</span>합니다.<br/>
-			</c:otherwise>
-		</c:choose><br>
-	</div>
 	</c:if>
 	<!--  -->
 	<!-- 버튼 -->
