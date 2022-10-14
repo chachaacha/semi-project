@@ -408,7 +408,7 @@ pageContext.setAttribute("hVOList", hVOList);
 					<div class="card">
 							<div class="card-photo">
 							<a class="card-link" href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${hoVO.product_idx}">
-								<img alt="이미지 자리" src="<c:out value="${hoVO.thumbnail}"/>">
+								<img alt="이미지 자리" src="../image/${hoVO.thumbnail}"/>
 							</a>
 							</div>
 							<div class="card-desc">

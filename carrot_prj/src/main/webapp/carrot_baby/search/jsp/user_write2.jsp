@@ -145,7 +145,7 @@ function readURL(input ,cnt) {
 <%
 String user_id =(String)session.getAttribute("user_id");
 if(user_id==null){
-user_id = "test10";
+user_id = "user1";
 session.setAttribute("user_id", user_id);
 }
 %>

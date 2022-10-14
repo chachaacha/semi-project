@@ -168,7 +168,7 @@ session.setAttribute("user_id", user_id);
 }
 		PostVO pVO = new PostVO();
 		// String product_idx= request.getParameter("product_idx");
-		String product_idx = "2210133573";
+		String product_idx = "2210146976";
 		pVO.setProduct_idx(product_idx);
 		pVO.setId(user_id);
 		//PostDAO와 연결
