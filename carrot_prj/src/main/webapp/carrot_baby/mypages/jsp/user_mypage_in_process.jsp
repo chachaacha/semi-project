@@ -28,7 +28,8 @@
 <% 
 //POST 방식
 request.setCharacterEncoding("UTF-8"); 
-
+String pass=request.getParameter("password");
+System.out.println("비밀번호 : "+ pass);
 //입력받은 비밀번호 암호화
 /* String pass=request.getParameter("password");
 MessageDigest md=MessageDigest.getInstance("SHA-1");
@@ -41,10 +42,10 @@ System.out.println(sha); */
 <jsp:useBean id="lVO" class="userVO.LoginVO"></jsp:useBean>
 <!-- 전송 받은 아이디와 비번을 VO에 저장 -->
 <jsp:setProperty property="id" name="lVO" value="${ id }"/>
-<jsp:setProperty property="password" name="lVO" value="<%-- <%=sha %> --%>${param.password }"/>
-
+<jsp:setProperty property="password" name="lVO" value="<%= pass%>"/>
 <%
 LoginDAO lDAO = LoginDAO.getInstance();
+System.out.println(lVO);
 
 if(lDAO.selectLogin(lVO)==null){ //비밀번호를 잘못 입력했을 때
    %>
