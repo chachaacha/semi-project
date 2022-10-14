@@ -1,3 +1,4 @@
+<%@page import="kr.co.sist.util.cipher.DataEncrypt"%>
 <%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
 <%@page import="com.oreilly.servlet.MultipartRequest"%>
 <%@page import="java.io.File"%>
@@ -56,45 +57,47 @@ if(temp.length()> checkSize) {
 }
 //이름
 String name=mr.getParameter("name");
-System.out.println(name);
+
 //닉네임
 String nick=mr.getParameter("nick");
-System.out.println(nick);
+
 //아이디
 String id=mr.getParameter("id");
-System.out.println(id);
+
 //생년월일
 String birth=mr.getParameter("birth");
-System.out.println(birth);
+
 //휴대폰번호
 String phone_num=mr.getParameter("phone_num");
-System.out.println(phone_num);
+
 //sms 수신동의
 String sms_chk=mr.getParameter("sms_chk");
-//sms 수신동의 체크하지 않았을 때 sms_chk가 'N'으로 설정되도록.
+//sms 수신동의 체크하지 않았을 때 sms_chk가 'N'으로 설정되도록 한다.
 if(sms_chk==null){
 	sms_chk="N";
 }
 System.out.println(sms_chk);
+
 //이메일
 String email=mr.getParameter("email");
-System.out.println(email);
+//변경하려는 이메일은 다시 암호화해서 저장
+String sha=DataEncrypt.messageDigest("SHA-1", email);
+System.out.println(sha);
+
 //이메일 수신동의
 String email_chk=mr.getParameter("email_chk");
-//이메일 수신동의 체크하지 않았을 때 email_chk가 'N'으로 설정되도록.
+//이메일 수신동의 체크하지 않았을 때 email_chk가 'N'으로 설정되도록 한다.
 if(email_chk==null){
 	email_chk="N";
 }
 System.out.println(email_chk);
+
 //주소
 String addr1=mr.getParameter("addr1");
-System.out.println(addr1);
 //상세주소
 String addr2=mr.getParameter("addr2");
-System.out.println(addr2);
 //우편번호
 String zipcode=mr.getParameter("zipcode");
-System.out.println(zipcode);
 %>
 
 
@@ -105,7 +108,7 @@ System.out.println(zipcode);
 <jsp:setProperty property="nick" name="miVO" value="<%= nick %>"/>
 <jsp:setProperty property="phone_num" name="miVO" value="<%= id %>"/>
 <jsp:setProperty property="sms_chk" name="miVO" value="<%= sms_chk %>"/>
-<jsp:setProperty property="email" name="miVO" value="<%= email %>"/>
+<jsp:setProperty property="email" name="miVO" value="<%= sha %>"/>
 <jsp:setProperty property="email_chk" name="miVO" value="<%= email_chk %>"/>
 <jsp:setProperty property="zipcode" name="miVO" value="<%= zipcode %>"/>
 <jsp:setProperty property="addr1" name="miVO" value="<%= addr1 %>"/>

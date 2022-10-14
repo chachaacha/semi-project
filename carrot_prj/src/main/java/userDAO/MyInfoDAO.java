@@ -1,5 +1,8 @@
 package userDAO;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;
@@ -8,6 +11,7 @@ import java.sql.SQLException;
 
 import userVO.MyInfoVO;
 import common.DbConnection;
+import kr.co.sist.util.cipher.DataEncrypt;
 
 public class MyInfoDAO {
 
@@ -100,13 +104,17 @@ public class MyInfoDAO {
 			.append("set img = ?, nick = ?, phone_num = ?, sms_chk = ?, email = ?, email_chk = ?, zipcode = ?, addr1 = ?, addr2 =?	")
 			.append("where id = ? ");
 			
-			pstmt = con.prepareStatement(update.toString());
+			//변경하려는 이메일을 암호화해서 DB에 넣는다.
+			 String key="abcdefghijklmonp1234~";
+		     DataEncrypt de=new DataEncrypt(DataEncrypt.messageDigest("SHA-1", key));
+			
+		     pstmt = con.prepareStatement(update.toString());
 		//4. 바인드 변수에 값 설정
 			pstmt.setString(1, miVO.getImg());
 			pstmt.setString(2, miVO.getNick());
 			pstmt.setString(3, miVO.getPhone_num());
 			pstmt.setString(4, miVO.getSms_chk());
-			pstmt.setString(5, miVO.getEmail());
+			pstmt.setString(5, de.encryption(miVO.getEmail()));
 			pstmt.setString(6, miVO.getEmail_chk());
 			pstmt.setString(7, miVO.getZipcode());
 			pstmt.setString(8, miVO.getAddr1());
@@ -116,7 +124,13 @@ public class MyInfoDAO {
 		//5. 쿼리문 수행 후 결과 얻기
 			updateCnt = pstmt.executeUpdate();
 			
-		} finally {
+		} catch (UnsupportedEncodingException e) {
+	    	  e.printStackTrace();
+	      } catch (NoSuchAlgorithmException e) {
+	    	  e.printStackTrace();
+	      } catch(GeneralSecurityException e) {
+	    	  e.printStackTrace();
+	      }  finally {
 		//6. 연결 끊기
 			dc.dbClose(null, pstmt, con);
 		}//end finally

@@ -1,3 +1,5 @@
+<%@page import="kr.co.sist.util.cipher.DataEncrypt"%>
+<%@page import="kr.co.sist.util.cipher.DataDecrypt"%>
 <%@page import="userVO.MyInfoVO"%>
 <%@page import="userDAO.MyInfoDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -113,13 +115,13 @@ request.setCharacterEncoding("UTF-8");
 
 String id = (String)session.getAttribute("id");
 
-if(id==null){
+/* if(id==null){
    response.sendRedirect("../../login/jsp/user_login.jsp");
-}
+} */
 
 //저장된 내 정보 불러오기
 MyInfoDAO miDAO = MyInfoDAO.getInstance();
-MyInfoVO info = miDAO.selectInfo(id);
+MyInfoVO miVO = miDAO.selectInfo(id);
 %>
 	<div class="wrap">
 
@@ -132,7 +134,7 @@ MyInfoVO info = miDAO.selectInfo(id);
 
 			<%@ include file="myinfo_navi.jsp" %>
 
-				<form action="user_myinfo_edit_process.jsp" method="post" id="infoEditFrm">
+				<form action="user_myinfo_edit_process.jsp" enctype="multipart/form-data" method="post" id="infoEditFrm">
 				<!-- 내정보수정  -->
 				<div class="title">내 정보 수정</div>
 				<!-- 정보 작성 폼 -->
@@ -143,8 +145,8 @@ MyInfoVO info = miDAO.selectInfo(id);
 							<td>
 								<div class="profile">
 									<div>
-									<!-- 파일로 넘긴 이미지 어떻게 보여주는지? -->
-										<img src="../../images/profileImg.png" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
+									
+										<img src="C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/user_profile_upload/${miVO.getImg()}" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
 									</div>
 									
 									<div>
@@ -159,11 +161,11 @@ MyInfoVO info = miDAO.selectInfo(id);
 						</tr>
 						<tr>
 							<th><label>성명</label></th>
-							<td><input type="text" value="<%=info.getName() %>" id="name" class="inputTxt inputName" readonly="readonly" /></td>
+							<td><input type="text" value="<%=miVO.getName() %>" id="name" class="inputTxt inputName" readonly="readonly" /></td>
 						</tr>
 						<tr>
 							<th><label>별명</label></th>
-							<td><input type="text" value="<%=info.getNick() %>"	id="nick" name="nick" class="inputTxt inputNickName" /></td>
+							<td><input type="text" value="<%=miVO.getNick() %>"	id="nick" name="nick" class="inputTxt inputNickName" /></td>
 						</tr>
 						<tr>
 							<th><label>아이디</label></th>
@@ -171,27 +173,32 @@ MyInfoVO info = miDAO.selectInfo(id);
 						</tr>
 						<tr>
 							<th scope="row"><label>생년월일</label></th>
-							<td><input type="date" name="birth" id="birth" value="<%=info.getBirth() %>" readonly="readonly" /></td>
+							<td><input type="date" name="birth" id="birth" value="<%=miVO.getBirth() %>" readonly="readonly" /></td>
 						</tr>
 						<tr>
 							<th>휴대폰</th>
-							<td><input type="text" name="phone_num" id="phone_num" value="<%=info.getPhone_num() %>" readonly="readonly" />
-								<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk" value="Y" style="cursor: pointer;" <%if(info.getSms_chk().equals("Y")) {%> checked="checked" <%} %> />
+							<td><input type="text" name="phone_num" id="phone_num" value="<%=miVO.getPhone_num() %>" readonly="readonly" />
+								<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk" value="Y" style="cursor: pointer;" <%if(miVO.getSms_chk().equals("Y")) {%> checked="checked" <%} %> />
 								<label>SMS 수신동의</label></span></td>
 						</tr>
+						<%
+						//이메일은 암호화 되어있기 때문에 복호화해서 가져와야 한다.
+						String key="abcdefghijklmonp1234~";
+						DataDecrypt dd = new DataDecrypt(DataEncrypt.messageDigest("SHA-1", key));
+						%>
 						<tr>
 							<th><label>이메일</label></th>
 							<td class="mail_type">
-							<input type="text" value="<%=info.getEmail() %>" name="email" id="email" class="inputEmail" maxlength="100" />
-							<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" value="Y" style="cursor: pointer;" <%if(info.getEmail_chk().equals("Y")) {%> checked="checked" <%} %>/>
+							<input type="text" value="<%=dd.decryption(miVO.getEmail()) %>" name="email" id="email" class="inputEmail" maxlength="100" />
+							<span class="label_wrap"><input type="checkbox" id="email_chk" name="email_chk" value="Y" style="cursor: pointer;" <%if(miVO.getEmail_chk().equals("Y")) {%> checked="checked" <%} %>/>
 							<label>이메일 수신동의</label></span></td>
 						</tr>
 						<tr>
 							<th><label>주소</label></th>
-							<td class="addr_td"><input 	type="text" class="zipcode" id="zipcode" name="zipcode" value="<%=info.getZipcode() %>" readonly="readonly" onclick="zipcodeapi();" />
+							<td class="addr_td"><input 	type="text" class="zipcode" id="zipcode" name="zipcode" value="<%=miVO.getZipcode() %>" readonly="readonly" onclick="zipcodeapi();" />
 								<a class="formBtn" href="javascript:zipcodeapi();">우편번호검색</a><br />
-								<input type="text" id="addr1" class="addr" name="addr1" value="<%=info.getAddr1() %>" readonly="readonly" style="margin-top: 7px;" /><br />
-								<input type="text" id="addr2" class="addr" name="addr2" value="<%=info.getAddr2() %>" style="margin-top: 7px;" /></td>
+								<input type="text" id="addr1" class="addr" name="addr1" value="<%=miVO.getAddr1() %>" readonly="readonly" style="margin-top: 7px;" /><br />
+								<input type="text" id="addr2" class="addr" name="addr2" value="<%=miVO.getAddr2() %>" style="margin-top: 7px;" /></td>
 						</tr>
 					</table>
 				</div>
