@@ -30,30 +30,31 @@
 request.setCharacterEncoding("UTF-8"); 
 
 //입력받은 비밀번호 암호화
-String pass=request.getParameter("password");
+/* String pass=request.getParameter("password");
 MessageDigest md=MessageDigest.getInstance("SHA-1");
 md.update(pass.getBytes());
 String sha=DataEncrypt.messageDigest("SHA-1", pass);
-System.out.println(sha);
+System.out.println(sha); */
+
 %>
 <!-- VO 객체 생성 -->
 <jsp:useBean id="lVO" class="userVO.LoginVO"></jsp:useBean>
 <!-- 전송 받은 아이디와 비번을 VO에 저장 -->
 <jsp:setProperty property="id" name="lVO" value="${ id }"/>
-<jsp:setProperty property="password" name="lVO" value="<%=sha %>"/>
+<jsp:setProperty property="password" name="lVO" value="<%-- <%=sha %> --%>${param.password }"/>
 
 <%
 LoginDAO lDAO = LoginDAO.getInstance();
 
 if(lDAO.selectLogin(lVO)==null){ //비밀번호를 잘못 입력했을 때
-	%>
-	<script type="text/javascript">
-		alert("비밀번호를 잘못입력하셨습니다.")
-		location.href="user_mypage_in.jsp";
-	</script>
+   %>
+   <script type="text/javascript">
+      alert("비밀번호를 잘못입력하셨습니다.")
+      location.href="user_mypage_in.jsp";
+   </script>
 <%} else{ //비밀번호를 제대로 입력했을 때
-	
-	response.sendRedirect("user_myinfo_edit.jsp");
+   
+   response.sendRedirect("user_myinfo_edit.jsp");
 }%>
 </body>
 </html>

@@ -56,7 +56,7 @@ $(function(){
 			</div>
 
 			<!-- 비밀번호 입력  -->
-			<form action="user_mypage_in_process.jsp" method="get" id="passChkFrm">
+			<form action="user_mypage_in_process.jsp" method="post" id="passChkFrm">
 			<div style="text-align: center; margin: 50px; display: flex; align-items: center; justify-content: center;">
 				<input type="password" name="password" id="password" placeholder="비밀번호 입력" size="30" class="textBox">
 					<input type="button" value="확인" class="gBtn" id="chkBtn"/>

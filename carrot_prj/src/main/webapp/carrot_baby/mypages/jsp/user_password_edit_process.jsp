@@ -36,6 +36,9 @@
 <jsp:setProperty property="new_pw" name="puVO" value="${ param.password1 }"/>
 
 <%
+ServletContext sc=getServletContext();
+String key=sc.getInitParameter("userKey");
+
 PwUpDAO puDAO = PwUpDAO.getInstance();
 int result = puDAO.updatePw(puVO);
 
