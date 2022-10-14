@@ -7,7 +7,9 @@ String id = request.getParameter("id");
 
 JSONObject json = new JSONObject();
 
-JoinDAO jDAO=JoinDAO.getInstance();
+ServletContext sc=getServletContext();
+String key = sc.getInitParameter("userKey");
+JoinDAO jDAO=JoinDAO.getInstance(key);
 boolean flag=jDAO.selectId(request.getParameter(id));
 pageContext.setAttribute("flag",flag);//true면 사용중, false면 미사용
 if( flag == true ){

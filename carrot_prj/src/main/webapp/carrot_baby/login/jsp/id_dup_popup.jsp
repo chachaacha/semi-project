@@ -88,7 +88,9 @@ function chkNull(){
 	</div>
 	<c:if test="${ not empty param.id }">
 	<% //DBMS 연동
-	JoinDAO jDAO=JoinDAO.getInstance();
+	ServletContext sc=getServletContext();
+	String key = sc.getInitParameter("userKey");
+	JoinDAO jDAO=JoinDAO.getInstance(key);
 	
 	boolean flag=jDAO.selectId(request.getParameter("id"));
 	pageContext.setAttribute("flag",flag);//true면 사용중, false면 미사용
