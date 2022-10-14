@@ -393,7 +393,7 @@ $(function() {
 	     		<c:forEach var="pImg" items="${selImg }">
 		       		<div class="swiper-slide">
 		       			<div class="main-top-img-wrap">
-			       			<img src="${pImg }" alt="판매상품이미지1">
+			       			<img src="../../search/image/${pImg }" alt="판매상품이미지1">
 		       			</div>
 		       		</div>
 	     		</c:forEach>
