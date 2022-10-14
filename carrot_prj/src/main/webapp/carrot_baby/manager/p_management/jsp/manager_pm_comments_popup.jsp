@@ -55,7 +55,9 @@ $(".p-title-link").click(function() {
 });
 
 function openPopup(idx) {
-	window.open("manager_pm_product_popup.jsp?product_idx="+idx,"product_popup","width=780,height=930,top=0,left=560");
+	open("","product_popup","width=780,height=930,top=0,left=560");
+	$("#product_idx").val(idx);
+	$("#openPopup").submit();
 }
 
 </script>
@@ -67,8 +69,12 @@ function openPopup(idx) {
 <input type="hidden" id= "keyword" name="keyword" value="${ param.keyword }">
 </form>
 
+<form id="openPopup" action="manager_pm_product_popup.jsp" target="product_popup" method="post">
+	<input type="hidden" id="product_idx" name="product_idx"/>
+</form>
+
 <div class="product_management">
-			
+
 			<!-- 위 -->
 				<div class="pm_top">
 					<button type="button" class="all-delete-btn" id="resetBtn">초기화</button><button type="button" class="all-delete-btn" id="reportBtn">신고순</button><button type="button" class="all-delete-btn" id="dateBtn">최신순</button>
