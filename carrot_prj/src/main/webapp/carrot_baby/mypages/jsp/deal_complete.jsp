@@ -34,6 +34,9 @@ $(function() {
 		}//end if
 	})
 }); //ready
+
+
+
 </script>
 </head>
 <% 
@@ -58,6 +61,7 @@ $(function() {
 <div class="deal_complete_title_wrap">
 	<div class="deal_complete_title">거래완료</div>
 	<%
+	//거래완료된 상품들 불러오기
 	String id = (String)session.getAttribute("id");
 	MySalesDAO msDAO=MySalesDAO.getInstance();
 	List<MySalesVO> dealComplete=msDAO.selectDealComplete(id); //id에서 product_idx로 바꿨는데 뭐가 맞는지..
@@ -71,6 +75,7 @@ $(function() {
 	%>
 	
 	<!-- for each로 반복 -->
+	<form id="deleteFrm" method="post">
 	<c:forEach var="dc" items="${dealComplete}">
 	 	<div class="deal_complete_item">
 			<div class="deal_complete_item_img">
@@ -82,7 +87,7 @@ $(function() {
 							<a href="" style="text-decoration: none; color: black; ">
 							<c:out value="${dc.title }"/>
 							</a>
-						<button class="edit_del_btn" type="button">
+						<button class="edit_del_btn" type="button" onchange="deletePd(this, ${ dc.product_idx })">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
   							<path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
   							<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg>
@@ -115,28 +120,8 @@ $(function() {
 	</div><!-- on-sale_item_img -->
 	</div><!-- deal_complete_item -->
 </c:forEach>
+	</form>
 
-<!-- 게시글 삭제를 위한 폼-->
-<form method="post" id="deleteFrm">
-	<input type="hidden" id="product_idx" name="product_idx" value="${param.product_idx }"/>
-	<input type="hidden" id="pldx" name="pldx"/>
-</form>
-
-<!-- 게시글 삭제  -->
-<c:if test="${not empty param.pldx }">
-<c:catch var="ex"> <!-- 예외를 ex에 저장 / c:if와 함께 사용 -->
-<% msDAO.deleteBoard(request.getParameter("pldx")); %>
-</c:catch>
-<c:if test="${not empty ex }">
-	<script type="text/javascript">
-	alert("무결성 예외 발생! 자식키 존재함")
-	</script>
-</c:if><!-- not empty ex  -->
-<script type="text/javascript">/* 삭제 성공 시  */
-alert("게시글을 삭제하였습니다.");
-self.close();
-</script>
-</c:if><!-- not empty param.product_idx  -->
 
 <!-- 거래완료된 상품이 없을 경우 표시되는 메시지-->
 <c:if test="${ empty dealComplete  }" >
