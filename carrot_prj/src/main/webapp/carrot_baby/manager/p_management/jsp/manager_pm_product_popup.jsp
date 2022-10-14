@@ -86,22 +86,25 @@ List<MangerCommentVO> commList = bDAO.selectComm(request.getParameter("product_i
 pageContext.setAttribute("commList", commList);
 %>
 
+<%-- 이미지 불러오기 --%>
+<%
+List<String> imgList = bDAO.selectImg(request.getParameter("product_idx"));
+pageContext.setAttribute("imgList", imgList);
+%>
+
 <div class="wrap">
 <!-- product-img -->
 	<div class="product-img">
 		<div class="swiper mySwiper">
 	     	<div class="swiper-wrapper">
+	     		<c:forEach var="imgList" items="${ pageScope.imgList }" varStatus="i">
 	       		<div class="swiper-slide">
 	       			<div class="main-top-img-wrap">
 	       				<!-- 추후 섬네일, 이미지 구현  -->
-		       			<img src="http://localhost/html_prj/day0825/images/cimg.png" alt="판매상품이미지1">
+		       			<img src="../../../search/image/${ imgList }" alt="판매상품이미지${ i.count }">
 	       			</div>
 	       		</div>
-	       		<div class="swiper-slide">
-	       			<div class="main-top-img-wrap">
-		       			<img src="http://localhost/html_prj/day0825/images/cimg.png" alt="판매상품이미지2">
-	       			</div>
-	       		</div>
+	       		</c:forEach>
 	     	</div>
 	     <div class="swiper-button-next"></div>
 	     <div class="swiper-button-prev"></div>
@@ -184,10 +187,11 @@ pageContext.setAttribute("commList", commList);
 		<%-- 댓글 불러오기 --%>
 		<c:when test="${ commList.reply_idx eq 0 }">
 		<div class="comments-sample-wrap">
+			<c:if test="${ commList.deleted ne 'Y' }">
 			<div class="comments-profile-wrap">
 				 <div class="comments-profile-image-wrap">
 			             <div class="comments-profile-image">
-			               <img alt="프로필이미지" src="../../../images/${ commList.img }">
+			               <img alt="프로필이미지" src="../../../user_profile_upload/${ commList.img }">
 			             </div>
 			             <div class="comments-profile-left">
 			               <div class="comments-nickname"><c:out value="${ commList.idPlusNick }"/><c:if test="${ bVO.id eq commList.id }"><div class="writer">작성자</div></c:if></div>
@@ -202,8 +206,9 @@ pageContext.setAttribute("commList", commList);
 				</button>
 				</a>
 		   	</div>
+		   	</c:if>
 		   	<div class="comments-contents-wrap">
-			    <p class="comments-content"><c:out value="${ commList.contents }"/></p>
+			    <p class="comments-content"><c:out value="${ commList.contents }" escapeXml="false"/></p>
 		   	</div>
 		</div>
 		</c:when>
@@ -211,10 +216,11 @@ pageContext.setAttribute("commList", commList);
 		<c:otherwise>
 		<%-- 대댓글 불러오기 --%>
 		<div class="re-comments-sample-wrap">
+			<c:if test="${ commList.deleted ne 'Y' }">
 			<div class="comments-profile-wrap">
 				 <div class="comments-profile-image-wrap">
 			             <div class="comments-profile-image">
-			               <img alt="프로필이미지" src="../../../images/${ commList.img }">
+			               <img alt="프로필이미지" src="../../../user_profile_upload/${ commList.img }">
 			             </div>
 			             <div class="comments-profile-left">
 			               <div class="comments-nickname"><c:out value="${ commList.idPlusNick }"/><c:if test="${ bVO.id eq commList.id }"><div class="writer">작성자</div></c:if></div>
@@ -229,8 +235,9 @@ pageContext.setAttribute("commList", commList);
 				</button>
 				</a>
 		   	</div>
+		   	</c:if>
 		   	<div class="comments-contents-wrap">
-			    <p class="comments-content"><c:out value="${ commList.contents }"/></p>
+			    <p class="comments-content"><c:out value="${ commList.contents }" escapeXml="false"/></p>
 		   	</div>
 		</div>
 		</c:otherwise>

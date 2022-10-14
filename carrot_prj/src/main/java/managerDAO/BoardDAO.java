@@ -81,7 +81,6 @@ public class BoardDAO {
 
 	/**
 	 * 게시글 이미지 가져오기
-	 * 
 	 * @param product_idx
 	 * @return
 	 * @throws SQLException
@@ -91,17 +90,15 @@ public class BoardDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-
 		DbConnection db = DbConnection.getInstance();
-
 		try {
 			con = db.getConn();
-
 			StringBuilder sb = new StringBuilder();
 			sb
 			.append("	select pi.product_img	")
 			.append("	from product_img pi, product pd	")
-			.append("	where ( pi.product_idx = pd.product_idx) and pd.product_idx = ?  ");
+			.append("	where ( pi.product_idx = pd.product_idx ) and pd.product_idx = ?  ")
+			.append("   order by img_num  ");
 			pstmt = con.prepareStatement(sb.toString());
 			pstmt.setString(1, product_idx);
 			rs = pstmt.executeQuery();
@@ -109,7 +106,6 @@ public class BoardDAO {
 			while (rs.next()) {
 				list.add(rs.getString("product_img"));
 			}
-
 		} finally {
 			db.dbClose(rs, pstmt, con);
 		}
@@ -118,7 +114,6 @@ public class BoardDAO {
 
 	/**
 	 * 댓글불러오기
-	 * 
 	 * @param product_idx
 	 * @return
 	 * @throws SQLException
