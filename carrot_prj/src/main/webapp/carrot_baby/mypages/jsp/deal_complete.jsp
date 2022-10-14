@@ -1,7 +1,7 @@
 <%@page import="java.io.PrintWriter"%>
+<%@page import="userDAO.MySalesDAO"%>
 <%@page import="userVO.MySalesVO"%>
 <%@page import="java.util.List"%>
-<%@page import="userDAO.MySalesDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
@@ -17,6 +17,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<% request.setCharacterEncoding("UTF-8"); %>
 <meta charset="UTF-8">
 <title>거래완료</title>
 <link rel="stylesheet" type="text/css" href="../../common/css/reset.css"/> 
@@ -24,11 +25,11 @@
 <link rel="stylesheet" type="text/css" href="../css/deal_complete.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
-//...버튼 누르면 글 삭제할건지 물어보는 팝업창 열기
+// x 버튼 누르면 글 삭제할건지 물어보는 컨펌창
 $(function() {
 	$(".edit_del_btn").click(function() {
 		if(confirm("게시글을 정말 삭제하시겠어요?")){
-			$("pldx").val(${param.prdduct_idx});
+			$("pldx").val(${param.product_idx});
 			$("#deleteFrm").submit();
 		}//end if
 	})
@@ -59,9 +60,11 @@ $(function() {
 	<%
 	String id = (String)session.getAttribute("id");
 	MySalesDAO msDAO=MySalesDAO.getInstance();
-	List<MySalesVO> dealComplete=msDAO.selectDealComplete(id);
-	//System.out.println("-----"+dealComplete); //찍어보니 값이 안담긴당...--->계속 test1으로 테스트해봤었는데 test1에는 거래 완료가 없어서 
-	//빈 화면이 출력되는 거였음! test5로 하니까 판매중 버튼도 잘 걸림
+	List<MySalesVO> dealComplete=msDAO.selectDealComplete(id); //id에서 product_idx로 바꿨는데 뭐가 맞는지..
+	//System.out.println("-----"+dealComplete); //찍어보니 값이 안담김...--->계속 test1으로 테스트해봤었는데 test1에는 거래 완료가 없어서 
+	//빈 화면이 출력되는 거였음! 값이 있는 test5로 하니까 판매중 버튼도 잘 걸림
+	// 빈 화면이 출력될 경우 오류가 있는 것처럼 보일 수 있어서
+	//거래완료된 상품이 없을 땐 "거래완료된 상품 내역이 없습니다"를 화면에 띄움
 	
 	//스콥 객체에 할당하기
 	pageContext.setAttribute("dealComplete", dealComplete);
@@ -120,16 +123,16 @@ $(function() {
 </form>
 
 <!-- 게시글 삭제  -->
-<c:if test="${not empty param.product_idx }">
-<c:catch var="ex">
-<% msDAO.deleteBoard(request.getParameter("product_idx")); %>
+<c:if test="${not empty param.pldx }">
+<c:catch var="ex"> <!-- 예외를 ex에 저장 / c:if와 함께 사용 -->
+<% msDAO.deleteBoard(request.getParameter("pldx")); %>
 </c:catch>
 <c:if test="${not empty ex }">
 	<script type="text/javascript">
 	alert("무결성 예외 발생! 자식키 존재함")
 	</script>
 </c:if><!-- not empty ex  -->
-<script type="text/javascript">
+<script type="text/javascript">/* 삭제 성공 시  */
 alert("게시글을 삭제하였습니다.");
 self.close();
 </script>

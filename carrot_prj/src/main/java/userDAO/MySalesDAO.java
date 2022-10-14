@@ -93,7 +93,7 @@ public class MySalesDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int deleteBoard(String product_idx) throws SQLException { // 업데이트로 바꿔서 수정중입니다..
+	public int deleteBoard(String product_idx) throws SQLException {
 	int deleteCnt = 0;
 
 		Connection con = null;
@@ -107,8 +107,7 @@ public class MySalesDAO {
 			// 3. 쿼리문 생성객체 얻기
 			StringBuilder delete = new StringBuilder();
 			delete
-			.append("delete	")
-			.append("from	product			")
+			.append("delete from	product		")
 			.append("where product_idx = ?");
 
 			pstmt = con.prepareStatement(delete.toString());
@@ -116,7 +115,7 @@ public class MySalesDAO {
 			pstmt.setString(1, product_idx);
 			// 5. 쿼리문 수행 후 결과 얻기
 			deleteCnt = pstmt.executeUpdate();
-
+			System.out.println(delete);
 		} finally {
 			// 6. 연결 끊기.
 			dc.dbClose(null, pstmt, con);
@@ -141,8 +140,10 @@ public class MySalesDAO {
 			con = dc.getConn();
 			// 3. 쿼리문 생성객체 얻기
 			StringBuilder update = new StringBuilder();
-			update.append("update	product			").append("set			reserved = ?		")
-					.append("where		product_idx = ?	");
+			update
+			.append("update	product			")
+			.append("set			reserved = ?		")
+			.append("where		product_idx = ?	");
 
 			pstmt = con.prepareStatement(update.toString());
 			// 4. 바인드 변수에 값 설정
@@ -209,9 +210,10 @@ public class MySalesDAO {
 			con = dc.getConn();
 			// 3. 쿼리문 생성객체 얻기
 			StringBuilder update = new StringBuilder();
-			update.append("	update	product							")
-					.append("	set			buy_id = ? sold_check = Y	")
-					.append("	where 	product_idx = ?					");
+			update
+			.append("	update	product							")
+			.append("	set			buy_id = ? sold_check = Y	")
+			.append("	where 	product_idx = ?					");
 
 			pstmt = con.prepareStatement(update.toString());
 			// 4. 바인드 변수에 값 설정
