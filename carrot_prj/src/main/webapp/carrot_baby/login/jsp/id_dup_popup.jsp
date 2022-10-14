@@ -31,18 +31,36 @@ $(function() {
 	//사용하기 버튼 클릭시 부모창으로 아이디 정보 전송
 	$("#idbtn").click(function(id){
 		opener.window.document.memberFrm.id.value=document.getElementById("id").value;
-		self.close();
+		//self.close();
 	});
 });
 
 function chkNull(){
 	var id=$("#id").val();
+	var jsonParam={ "id":id }
 	if(id == ""){
 		alert("아이디를 입력해 주세요.");
 		return;
 	}
+	$.ajax({
+		url:"id_dup_popup_process.jsp",
+		type:"post",
+		data: jsonParam,
+		dataType:"json",
+		error:function(xhr) {
+			alert("죄송합니다 잠시후 다시 시도해주세요.");
+			console.log("에러 : " + xhr.status);
+		}, success: function( jsonObj ){
+			$("#msgOutput").html(jsonObj.msg);
+		}
+	});//ajax
+	
+	
+	
 	$("#frmDup").submit();
 }//chkNull
+
+
 
 </script>
 </head>
@@ -60,16 +78,16 @@ function chkNull(){
 	<!-- 1 -->
 	<form method="get" id="frmDup">  
 	<div class="contents">
-		<input type="text" class="idText" id="id" size="30" autocomplete="off" />
+		<input type="text" class="idText" id="id" name="id" size="30" autocomplete="off" />
 		<input type="text" style="display:none;"/>
 		<input type="button" value="중복확인" class="chkBtn" id="chkBtn" />
 	</div>
 	</form>
-	<div class="msg">
-		<span>공백 또는 특수문자가 포함된 아이디는 사용할 수 없습니다.</span><br>
+	<input type="hidden" id="msg" name="msg"/>
+	<div class="msg" id="msgOutput">
 		<span>숫자로 시작하거나, 숫자로만 이루어진 아이디는 사용할 수 없습니다.</span><br>
+		<span>공백 또는 특수문자가 포함된 아이디는 사용할 수 없습니다.</span><br>
 	</div>
-	<!--  -->
 	<c:if test="${ not empty param.id }">
 	<% //DBMS 연동
 	JoinDAO jDAO=JoinDAO.getInstance();
@@ -89,6 +107,7 @@ function chkNull(){
 		</c:choose><br>
 	</div>
 	</c:if>
+	<!--  -->
 	<!-- 버튼 -->
 	<button type="button" class="idBtn" id="idbtn" >사용하기</button>
 </div>

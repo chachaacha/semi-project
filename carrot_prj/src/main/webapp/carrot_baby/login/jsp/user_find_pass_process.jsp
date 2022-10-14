@@ -23,13 +23,13 @@ request.setCharacterEncoding("UTF-8"); %>
 <%
 /* 랜덤변수 */
 int[] abc = new int[8];
-		char[] abbc = new char[8];
-		StringBuilder temp1 = new StringBuilder();
-		for(int i =0; i<8; i++) {
-			abc[i] = (int)(Math.random()*74) +48; //48~57, 65~90,  97~122 :;<=>?@, [\]^_`
-			abbc[i]= (char)abc[i];
-			temp1.append(abbc[i]);
-		}
+      char[] abbc = new char[8];
+      StringBuilder temp1 = new StringBuilder();
+      for(int i =0; i<8; i++) {
+         abc[i] = (int)(Math.random()*74) +48; //48~57, 65~90,  97~122 :;<=>?@, [\]^_`
+         abbc[i]= (char)abc[i];
+         temp1.append(abbc[i]);
+      }
 String temp = temp1.toString();
 System.out.println( "임시비밀번호 : " +temp);
 
@@ -43,6 +43,8 @@ fVO.setTemp(temp);
 fDAO.updateTempPw(fVO);
 String pass=fDAO.selectView(id);
 pageContext.setAttribute("pass", pass);
+System.out.println("-----pass----"+pass);
+
 
 //비밀번호 암호화
 MessageDigest md=MessageDigest.getInstance("SHA-1");
@@ -51,22 +53,22 @@ String sha_p=DataEncrypt.messageDigest("SHA-1", pass);
 System.out.println("-----암호화----"+sha_p);
 
 %>
-	<script type="text/javascript">
+   <script type="text/javascript">
 <%
 System.out.println( "-----"+temp);
 if(fDAO.selectFindPw(fVO) !=null) {
-	//팝업창 비밀번호
-	session.setAttribute("tempPass",temp);
+   //팝업창 비밀번호
+   session.setAttribute("tempPass",temp);
 %>
-	location.href="user_find_pass.jsp";
+   location.href="user_find_pass.jsp";
 
 <%
-	}else{
+   }else{
 %>
 <!-- 입력된 정보를 확인하시오  -->
-	alert("입력하신 정보를 다시 확인해주세요.");
-	location.href="user_find_pass.jsp";
+   alert("입력하신 정보를 다시 확인해주세요.");
+   location.href="user_find_pass.jsp";
 <% } %>
-	</script>
+   </script>
 </body>
 </html>
