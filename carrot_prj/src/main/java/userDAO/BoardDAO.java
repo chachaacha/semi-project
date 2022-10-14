@@ -159,7 +159,8 @@ public class BoardDAO {
 			sb
 			.append("	select pi.product_img	")
 			.append("	from product_img pi, product pd	")
-			.append("	where ( pi.product_idx = pd.product_idx) and pd.product_idx = ?  ");
+			.append("	where ( pi.product_idx = pd.product_idx) and pd.product_idx = ?  ")
+			.append("	order by img_num asc  ");
 			pstmt=con.prepareStatement(sb.toString());
 			pstmt.setString(1, product_idx);
 			rs= pstmt.executeQuery();
