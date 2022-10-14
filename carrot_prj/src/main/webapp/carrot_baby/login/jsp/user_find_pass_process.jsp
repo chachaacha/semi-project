@@ -1,3 +1,5 @@
+<%@page import="kr.co.sist.util.cipher.DataEncrypt"%>
+<%@page import="java.security.MessageDigest"%>
 <%@ page import="userDAO.FindPwDAO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" info=""%>
@@ -30,9 +32,8 @@ int[] abc = new int[8];
 		}
 String temp = temp1.toString();
 System.out.println( "임시비밀번호 : " +temp);
-/* String name = request.getParameter("name");
-String birth = request.getParameter("birth");
-String phone_num = request.getParameter("phone_num");  */
+
+
 FindPwDAO fDAO=FindPwDAO.getInstance();
 String id=fDAO.selectFindPw(fVO);
 fVO.setId(id);
@@ -43,14 +44,20 @@ fDAO.updateTempPw(fVO);
 String pass=fDAO.selectView(id);
 pageContext.setAttribute("pass", pass);
 
+//비밀번호 암호화
+MessageDigest md=MessageDigest.getInstance("SHA-1");
+md.update(pass.getBytes());
+String sha_p=DataEncrypt.messageDigest("SHA-1", pass);
+System.out.println("-----암호화----"+sha_p);
+
 %>
 	<script type="text/javascript">
 <%
 System.out.println( "-----"+temp);
 if(fDAO.selectFindPw(fVO) !=null) {
+	//팝업창 비밀번호
 	session.setAttribute("tempPass",temp);
 %>
-<%-- <c:redirect url="user_find_pass.jsp"/> --%>
 	location.href="user_find_pass.jsp";
 
 <%
