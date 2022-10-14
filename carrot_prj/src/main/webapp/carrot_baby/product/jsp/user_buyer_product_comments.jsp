@@ -411,7 +411,7 @@ $(function() {
 				<div class="article-profile-image-wrap">
 		              <div class="article-profile-image">
 						<a class="profile-link" href="javascript:profileMove('${pInfo.id }');">
-		                	<img alt="프로필이미지" src="${pInfo.img }">
+		                	<img alt="프로필이미지" src="../../user_profile_upload/${pInfo.img }">
 				    	</a>
 		              </div>
 		              <div class="article-profile-left">
@@ -542,7 +542,7 @@ $(function() {
 						 <div class="comments-profile-image-wrap">
 					             <div class="comments-profile-image">
 									<a class="profile-link" href="javascript:profileMove('${setCom.id }');">
-					               		<img alt="프로필이미지" src="${setCom.img }">
+					               		<img alt="프로필이미지" src="../../user_profile_upload/${setCom.img }">
 								   </a>
 					             </div>
 					             <div class="comments-profile-left">
@@ -601,7 +601,7 @@ $(function() {
 					 <div class="comments-profile-image-wrap">
 				         <div class="comments-profile-image">
 							<a class="profile-link" href="javascript:profileMove('${setCom.id }');">
-				               <img alt="프로필이미지" src="${setCom.img }">
+				               <img alt="프로필이미지" src="../../user_profile_upload/${setCom.img }">
 							 </a>
 				             </div>
 				             <div class="comments-profile-left">
