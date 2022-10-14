@@ -104,8 +104,8 @@ function chkNull(){
 		return;
 	}
 	for(var i=1; i<cnt+1; i++ ){
-		var thu = $("#post_img"+i).attr("src");
-		if( tmp == undefined ){
+		var thu = $("#post_img"+i).val();
+		if( !thu ){
 		alert("이미지를 첨부해 주세요");
 		return;
 		}//end if
