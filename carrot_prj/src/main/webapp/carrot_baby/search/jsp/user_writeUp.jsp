@@ -63,8 +63,8 @@ $(function() {
 		//$("#inputWrap").last().append("<div>a</div>");//자식으로 삽입
 		//$("#inputWrap").first().append("<div>a</div>");
 		var outDiv = "<div><label>사진" + cnt + "<label>" 
-		+ " <input type = 'file' name = 'post_img"+ ++cnt +"' class='inputBox' onchange='readURL(this,"+ cnt +");'/><br/>"
-		+ "<img id='preview"+ cnt +"'/></div>";
+		+ " <input type = 'file' name = 'post_img"+ ++cnt +"' class='inputBox' onchange='readURL(this,"+ (cnt-1) +");'/><br/>"
+		+ "<img id='preview"+ (cnt-1) +"' name='preview"+ (cnt-1) +"'/></div>";
 		$("#inputWrap").append(outDiv);
 		++minAppend;
 	});
@@ -74,7 +74,7 @@ $(function() {
 			return;
 		}
 		$("#inputWrap div").last().remove();
-		cnt--;
+		--cnt;
 		if( cnt == -1 ){ cnt = 0; };
 		--minAppend;
 	});
@@ -123,13 +123,14 @@ function chkNull(){
 	}
 	
 	for(var i=0; i<cnt; i++){
-		var thu = $("#preview"+i).val();
-		if(!thu){
-		alert("파일을 첨부해 주세요");
+		var thu = $("#preview"+i).attr("src");
+		if(thu == undefined ){
+		alert("이미지를 첨부해 주세요");
 		return;
 		}//end if
 	}//end for
 	
+	$("input[name=count]").attr("value",cnt);
 	
 	$("#writePost").submit();
 	/* document.location.href="user_search.jsp"; */
@@ -147,8 +148,15 @@ function readURL(input ,cnt) {
 		  
 	    document.getElementById('preview'+cnt).src = "";
 	  }
+	  if(!/\.(jpeg|jpg|png|gif|bmp)$/i.test(input.value)){ 
+
+	        alert('이미지 파일만 업로드 가능합니다.'); 
+
+	        input.value = ''; 
+
+	        input.focus(); 
+	    }
 	}
-$("img[name=preview4]").attr("src","../image/dice_41.png");
 </script>
 </head>
 <body>
@@ -191,13 +199,7 @@ session.setAttribute("user_id", user_id);
 		list_img.get(0).getProduct_img();
 		
 		%>
-		<%-- for(int i=2; i<list_img.size(); i++){
-%>
-<script type="text/javascript">
-++cnt
-++minAppend;
-</script>
-<%} %> --%>
+<%= list_img.size() %>
 <div class="wrap">
 <!-- header -->
 <%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
@@ -209,6 +211,7 @@ session.setAttribute("user_id", user_id);
 		<h1 class="write-title">중고거래 글쓰기</h1>
 		<div class="write">
 		<form name="writePost" id="writePost" method="post" action="user_writeUp_process.jsp" enctype="multipart/form-data">
+		<input type="hidden" id="uploadImgSize" name="uploadImgSize" value="<%= list_img.size() %>"/>
 		<input type="hidden" id="prouduct_idx" name="product_idx" value="<%= product_idx %>"/>
 			<div class="write-sel-wrap">
 						<div class="write-sel-wrap-text">서울특별시</div>
@@ -264,7 +267,7 @@ session.setAttribute("user_id", user_id);
 					<input type = "button" value = "삭제" class = "inputBtn" id = "btnRemove" />
 					<div>
 					<label>대표사진</label>
-					<input type="file" name="post_img1" id="post_img1" class="inputBox" onchange="readURL(this,0);" />
+					<input type="file" name="post_img1" id="post_img1" class="inputBox" onchange="readURL(this,0);"/>
 					<input type="hidden" value="<%= list_img.get(0).getProduct_img()%>" id="chk_img0" name="chk_img0"/>
 					<br/>
 					<img id="preview0" src="../image/<%= list_img.get(0).getProduct_img()%>"/>
@@ -276,6 +279,7 @@ session.setAttribute("user_id", user_id);
 					<br/>
 					<img id="preview1" src="../image/<%= list_img.get(1).getProduct_img()%>" />
 					</div>
+					<%if(2 < list_img.size() ) {%>
 					<%for(int i =2; i<list_img.size(); i++) {%>
 					<div>
 					<label>사진 <%= i %></label>
@@ -288,7 +292,8 @@ session.setAttribute("user_id", user_id);
 					++cnt
 					++minAppend;
 					</script>
-					<%} %>
+					<%}//end for %>
+					<%}//end if %>
 					</div>
 					</div>
 				</div>	

@@ -24,6 +24,7 @@ request.setCharacterEncoding("UTF-8");
 <%-- <jsp:useBean id="객체명" class="객체화할 클래스" scope=""/> --%>
 <jsp:useBean id="pVO" class="userVO.PostVO"/>
 <jsp:useBean id="iVO" class="userVO.ImgVO"/>
+<jsp:useBean id="iiVO" class="userVO.ImgVO"/>
 
 <%
 	//1. 업로드 경로 얻기
@@ -37,6 +38,7 @@ request.setCharacterEncoding("UTF-8");
 	//5. file control 처리
 	String product_idx = mr.getParameter("product_idx");
 	int cnt=Integer.parseInt(mr.getParameter("count"));
+	int uploadImg_cnt=Integer.parseInt(mr.getParameter("uploadImgSize"));
 	String[] chk_img = new String[cnt];
 	for(int i =0; i<cnt; i++){
 		chk_img[i]= mr.getParameter("chk_img"+i);
@@ -65,7 +67,6 @@ request.setCharacterEncoding("UTF-8");
 	<jsp:setProperty property="free" name="pVO" value="<%= free %>"/>
 	<jsp:setProperty property="title" name="pVO" value="<%= title %>"/>
 	<jsp:setProperty property="contents" name="pVO" value="<%= contents %>"/>
-	<jsp:setProperty property="thumbnail" name="pVO" value=""/>
 <%
 PostDAO pDAO = PostDAO.getInstance();
 out.println(pVO);
@@ -98,14 +99,38 @@ pDAO.updatePost(pVO);
 업로드 파일은 5MByte까지만 가능합니다.
 <%}//end else %>
 <%if( reName[i] != null ){%>
-<jsp:setProperty property="product_img" name="iVO" value="<%= reName[i] %>"/>
 <jsp:setProperty property="product_idx" name="iVO" value="<%= product_idx %>"/>
+<jsp:setProperty property="img_num" name="iVO" value="<%= i+1 %>"/>
+<%pDAO.deleteImg(iVO); %>
+<% try {
+    String path = "C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/search/image/"+chk_img[i]; // C 드라이브 -> test폴더 -> test.txt
+    File file = new File(path); // file 생성
+
+    if(file.delete()){ // f.delete 파일 삭제에 성공하면 true, 실패하면 false
+        System.out.println("파일을 삭제하였습니다");
+    }else{
+        System.out.println("파일 삭제에 실패하였습니다");
+    }
+} catch(Exception e) {
+ e.printStackTrace();
+}%>
+<jsp:setProperty property="product_idx" name="iVO" value="<%= product_idx %>"/>
+<jsp:setProperty property="product_img" name="iVO" value="<%= reName[i] %>"/>
 <jsp:setProperty property="img_num" name="iVO" value="<%= i+1 %>"/>
 <%pDAO.insertImg(iVO);%>
 <%} //end if %>
 <%}//end for %>
+<%if( reName[0] != null ) { %>
 <jsp:setProperty property="product_idx" name="pVO" value="<%= product_idx %>"/>
 <jsp:setProperty property="thumbnail" name="pVO" value="<%= reName[0] %>"/>
 <%pDAO.updateThumbnail(pVO);%>
+<%} %>
+<%if( uploadImg_cnt > cnt ) {
+		for(int i=(cnt+1); i<=uploadImg_cnt; i++) {%>
+<jsp:setProperty property="product_idx" name="iiVO" value="<%= product_idx %>"/>			
+<jsp:setProperty property="img_num" name="iiVO" value="<%= i %>"/>
+<%	pDAO.deleteImg(iiVO);
+		}//end for 
+	}//end if%>
 </body>
 </html>

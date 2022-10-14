@@ -60,7 +60,6 @@ request.setCharacterEncoding("UTF-8");
 	<jsp:setProperty property="free" name="pVO" value="<%= free %>"/>
 	<jsp:setProperty property="title" name="pVO" value="<%= title %>"/>
 	<jsp:setProperty property="contents" name="pVO" value="<%= contents %>"/>
-	<jsp:setProperty property="thumbnail" name="pVO" value=""/>
 <%
 PostDAO pDAO = PostDAO.getInstance();
 out.println(pVO);

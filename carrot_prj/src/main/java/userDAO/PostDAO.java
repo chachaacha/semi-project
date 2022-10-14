@@ -129,7 +129,7 @@ public class PostDAO {
 			select
 			.append("	select	product_idx, product_img, img_num	")
 			.append("	from	product_img									")
-			.append("	where product_idx = ?								");
+			.append("	where product_idx = ?	 order by img_num asc					");
 			
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
@@ -256,7 +256,7 @@ public class PostDAO {
 			StringBuilder insert = new StringBuilder();
 			insert
 			.append("	insert into product_img(product_idx, product_img, img_num)	")
-			.append("	values(?, ?, ?)															");
+			.append("	values(?, ?, ?) 															");
 			
 			pstmt = con.prepareStatement(insert.toString());
 		//4. 바인드 변수에 값 설정
@@ -286,8 +286,8 @@ public void insertPost(PostVO pVO) throws SQLException{
 		//3. 쿼리문 생성 객체 얻기
 			StringBuilder insert = new StringBuilder();
 			insert
-			.append("	insert into product(product_idx, gu_idx, category_idx, free, price, title, thumbnail, contents,id)			")
-			.append("	values( ?, ?, ?, ?, ?, ?, ?, ?, ?)	");
+			.append("	insert into product(product_idx, gu_idx, category_idx, free, price, title, contents, id)			")
+			.append("	values( ?, ?, ?, ?, ?, ?, ?, ?)																					");
 		
 			pstmt = con.prepareStatement(insert.toString());
 		//4. 바인드 변수에 값 설정
@@ -297,9 +297,8 @@ public void insertPost(PostVO pVO) throws SQLException{
 			pstmt.setString(4, pVO.getFree());
 			pstmt.setInt(5, pVO.getPrice());
 			pstmt.setString(6, pVO.getTitle());
-			pstmt.setString(7, pVO.getThumbnail());
-			pstmt.setString(8, pVO.getContents());
-			pstmt.setString(9, pVO.getId());
+			pstmt.setString(7, pVO.getContents());
+			pstmt.setString(8, pVO.getId());
 		//5. 쿼리문 수행 후 결과 얻기
 			pstmt.executeUpdate();
 		} finally {
@@ -378,7 +377,7 @@ public int updateThumbnail(PostVO pVO) throws SQLException {
 	return updateCnt;
 }
 
-public int deleteImg(String product_idx) throws SQLException {
+public int deleteImg(ImgVO iVO) throws SQLException {
 	int deleteCnt = 0;
 	
 	DbConnection dc = DbConnection.getInstance();
@@ -392,12 +391,13 @@ public int deleteImg(String product_idx) throws SQLException {
 		//3. 쿼리문 생성객체 얻기
 		StringBuilder delete = new StringBuilder();
 		delete
-		.append("	delete		from product_img	")
-		.append("	where		product_idx = ?		");
+		.append("	delete		from product_img						")
+		.append("	where		product_idx = ? and img_num = ? 	");
 		
 		pstmt = con.prepareStatement(delete.toString());
 		//4. 바인드 변수에 값 설정
-		pstmt.setString(1, product_idx);
+		pstmt.setString(1, iVO.getProduct_idx());
+		pstmt.setInt(2, iVO.getImg_num());
 		//5. 쿼리문 수행 후 결과 얻기
 		deleteCnt = pstmt.executeUpdate();
 	} finally {

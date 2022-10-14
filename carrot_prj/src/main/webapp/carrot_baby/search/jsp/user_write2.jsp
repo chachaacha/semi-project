@@ -55,7 +55,7 @@ $(function() {
 		//$("#inputWrap").first().append("<div>a</div>");
 		var outDiv = "<div><label>사진" + cnt + "<label>" 
 		+ " <input type = 'file' name = 'post_img"+ ++cnt +"' id = 'post_img"+ cnt +"' class='inputBox' onchange='readURL(this,"+ cnt +");'/><br/>"
-		+ "<img id='preview"+ cnt +"'/></div>";
+		+ "<img id='preview"+ (cnt-1) +"' name='preview"+ (cnt-1) +"'/></div>";
 		$("#inputWrap").append(outDiv);
 		++minAppend;
 	});
@@ -106,7 +106,7 @@ function chkNull(){
 	for(var i=1; i<cnt+1; i++ ){
 		var thu = $("#post_img"+i).attr("src");
 		if( tmp == undefined ){
-		alert("파일을 첨부해 주세요");
+		alert("이미지를 첨부해 주세요");
 		return;
 		}//end if
 	}//end for
@@ -129,9 +129,15 @@ function readURL(input ,cnt) {
 		  
 	    document.getElementById('preview'+cnt).src = "";
 	  }
-	}
-	
+	  if(!/\.(jpeg|jpg|png|gif|bmp)$/i.test(input.value)){ 
 
+	        alert('이미지 파일만 업로드 가능합니다.'); 
+
+	        input.value = ''; 
+
+	        input.focus(); 
+	    }
+	}
 
 </script>
 </head>
