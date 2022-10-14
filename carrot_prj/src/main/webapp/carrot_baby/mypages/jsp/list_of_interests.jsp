@@ -85,6 +85,9 @@ pageContext.setAttribute("wlList", wlList);
 	</div><!-- loi_img -->
 	</div><!-- loi 전체를 담는 div -->
 	</c:forEach>
+	<c:if test="${ empty wlList  }" >
+	관심목록에 담긴 상품이 없습니다.
+	</c:if>
 </div>
 </div>
 <!-- container end -->

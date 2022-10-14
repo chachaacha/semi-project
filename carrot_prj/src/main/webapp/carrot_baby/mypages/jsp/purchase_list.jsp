@@ -103,6 +103,9 @@ pageContext.setAttribute("blList", blList);
 	</div><!-- purchase_list_img -->
 	</div><!-- purchase_list_item -->
 </c:forEach>
+<c:if test="${ empty onSale  }" >
+	구매하신 상품이 없습니다.
+</c:if>
 </div> <!-- 컨테이너 div -->
 </div><!-- container end -->
 

@@ -80,9 +80,6 @@ System.out.println(sms_chk);
 
 //이메일
 String email=mr.getParameter("email");
-//변경하려는 이메일은 다시 암호화해서 저장
-String sha=DataEncrypt.messageDigest("SHA-1", email);
-System.out.println(sha);
 
 //이메일 수신동의
 String email_chk=mr.getParameter("email_chk");
@@ -106,19 +103,18 @@ String zipcode=mr.getParameter("zipcode");
 <jsp:setProperty property="img" name="miVO" value="<%= reName %>"/>
 <jsp:setProperty property="name" name="miVO" value="<%= name %>"/>
 <jsp:setProperty property="nick" name="miVO" value="<%= nick %>"/>
-<jsp:setProperty property="phone_num" name="miVO" value="<%= id %>"/>
+<jsp:setProperty property="phone_num" name="miVO" value="<%= phone_num %>"/>
 <jsp:setProperty property="sms_chk" name="miVO" value="<%= sms_chk %>"/>
-<jsp:setProperty property="email" name="miVO" value="<%= sha %>"/>
+<jsp:setProperty property="email" name="miVO" value="<%= email %>"/>
 <jsp:setProperty property="email_chk" name="miVO" value="<%= email_chk %>"/>
 <jsp:setProperty property="zipcode" name="miVO" value="<%= zipcode %>"/>
 <jsp:setProperty property="addr1" name="miVO" value="<%= addr1 %>"/>
 <jsp:setProperty property="addr2" name="miVO" value="<%= addr2 %>"/>
-<jsp:setProperty property="id" name="miVO" value="${id }"/>
+<jsp:setProperty property="id" name="miVO" value="<%= id %>"/>
 
 <%
 //입력된 정보를 업데이트 
 MyInfoDAO miDAO = MyInfoDAO.getInstance();
-out.println(miVO);
 int result = miDAO.updateInfo(miVO);
 
 //다른 추가 정보를 입력하지 않더라도 창이 뜨도록 함.

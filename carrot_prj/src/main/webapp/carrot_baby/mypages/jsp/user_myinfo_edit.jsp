@@ -145,8 +145,7 @@ MyInfoVO miVO = miDAO.selectInfo(id);
 							<td>
 								<div class="profile">
 									<div>
-									
-										<img src="C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/user_profile_upload/${miVO.getImg()}" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
+										<img src="C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/user_profile_upload/<%=miVO.getImg()%>" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
 									</div>
 									
 									<div>
@@ -177,7 +176,7 @@ MyInfoVO miVO = miDAO.selectInfo(id);
 						</tr>
 						<tr>
 							<th>휴대폰</th>
-							<td><input type="text" name="phone_num" id="phone_num" value="<%=miVO.getPhone_num() %>" readonly="readonly" />
+							<td><input type="text" name="phone_num" id="phone_num" value="<%=miVO.getPhone_num() %>" />
 								<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk" value="Y" style="cursor: pointer;" <%if(miVO.getSms_chk().equals("Y")) {%> checked="checked" <%} %> />
 								<label>SMS 수신동의</label></span></td>
 						</tr>

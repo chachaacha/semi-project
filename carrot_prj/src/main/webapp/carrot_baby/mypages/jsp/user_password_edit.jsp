@@ -32,14 +32,14 @@ $("#btn").click(function(){
 		return
 	}
 	
-	//8~25자의 영문, 숫자, 특수문자 3가지를 조합하여 입력
+/* 	//8~25자의 영문, 숫자, 특수문자 3가지를 조합하여 입력
 	var passChk= /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,25}$/;
 	
 	if(!passChk.test($("#password1").val().trim())){
 		alert("8~25자의 영문, 숫자, 특수문자 3가지를 조합하여 입력해야 합니다.");
 		$("#password1").focus();
 		return;
-	}  
+	} */  
 	
 	//신규 비밀번호와 신규 비밀번호 확인이 일치하지 않을 때
 	if($("#password1").val()!=$("#password2").val()){

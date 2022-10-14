@@ -29,6 +29,9 @@
 <jsp:useBean id="puVO" class="userVO.PwUpVO"></jsp:useBean>
 <!-- 아이디와 입력받은 비밀번호, 새비밀번호를 VO에 저장  -->
 <jsp:setProperty property="id" name="puVO" value="${ id }"/>
+<%
+
+%>
 <jsp:setProperty property="password" name="puVO" value="${ param.password }"/>
 <jsp:setProperty property="new_pw" name="puVO" value="${ param.password1 }"/>
 
@@ -36,16 +39,16 @@
 PwUpDAO puDAO = PwUpDAO.getInstance();
 int result = puDAO.updatePw(puVO);
 
-if(result==0){
-	%>
-	<script type="text/javascript">
-		alert("비밀번호를 잘못 입력하셨습니다.")
-		location.href="user_password_edit.jsp";
-	</script>
-<%} else{ //result == 1, 비밀번호가 변경되었을 때
+if(result==1){//비밀번호가 변경되었을 때
 	%>
 	<script type="text/javascript">
 		alert("비밀번호가 변경되었습니다.")
+		location.href="user_password_edit.jsp";
+	</script>
+<%} else{ //비밀번호가 변경되지 않았을 때
+	%>
+	<script type="text/javascript">
+		alert("비밀번호를 잘못 입력하셨습니다.")
 		location.href="user_password_edit.jsp";
 	</script>
 <%}%>
