@@ -51,6 +51,8 @@
 				float: right;
 			    }
 .btn_price{display: inline-flex;
+			 font-size: 16px;
+			 align-items: center;
 }
 .complete_btn{width: 100px;
 				  height: 25px;
