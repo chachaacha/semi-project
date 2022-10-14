@@ -86,7 +86,7 @@ String email2=mr.getParameter("email2");
 System.out.println(email2);
 String email=email1+"@"+email2;
 System.out.println("--------이메일: "+email);
-//알고리즘 설정하여 이메일 암호화
+//알고리즘 설정하여 이메일 암호화(키추가)
 String plainText2=email;
 String sha_e=DataEncrypt.messageDigest("SHA-1", plainText2);
 System.out.println(sha_e);

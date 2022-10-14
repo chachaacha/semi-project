@@ -50,7 +50,7 @@ public class JoinDAO {
 			
 			pstmt=con.prepareStatement(sb.toString());
 			pstmt.setString(1, jVO.getId());
-			pstmt.setString(2, DataEncrypt.messageDigest("SHA-1",jVO.getPassword()));
+			pstmt.setString(2, jVO.getPassword());
 			pstmt.setString(3, jVO.getImg());
 			pstmt.setString(4, jVO.getName());
 			pstmt.setString(5, jVO.getNick());
