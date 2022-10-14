@@ -396,15 +396,16 @@ public class BoardDAO {
 		try {
 			con=db.getConn();
 			
-			String insertReply="insert into product_comment(comment_idx, reply_idx, product_idx ,id, contents) values (?,(select nvl(max(reply_idx),0)+1 from product_comment where product_idx=?),?,?,?)";
+			String insertReply="insert into product_comment(comment_idx, reply_idx, product_idx ,id, contents) values (?,(select nvl(max(reply_idx),0)+1 from product_comment where product_idx=? and comment_idx=?),?,?,?)";
 			
 			pstmt=con.prepareStatement(insertReply);
 			
 			pstmt.setInt(1, cVO.getComment_idx());
 			pstmt.setString(2, cVO.getProduct_idx());
-			pstmt.setString(3, cVO.getProduct_idx());
-			pstmt.setString(4, cVO.getId());
-			pstmt.setString(5, cVO.getContents());
+			pstmt.setInt(3, cVO.getComment_idx());
+			pstmt.setString(4, cVO.getProduct_idx());
+			pstmt.setString(5, cVO.getId());
+			pstmt.setString(6, cVO.getContents());
 			
 			pstmt.executeUpdate();
 			
