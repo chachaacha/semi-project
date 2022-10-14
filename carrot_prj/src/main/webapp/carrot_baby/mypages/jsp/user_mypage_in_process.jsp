@@ -1,3 +1,5 @@
+<%@page import="kr.co.sist.util.cipher.DataEncrypt"%>
+<%@page import="java.security.MessageDigest"%>
 <%@page import="userDAO.LoginDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" info=""%>
@@ -26,16 +28,19 @@
 <% 
 //POST 방식
 request.setCharacterEncoding("UTF-8"); 
-//세션에 있는 아이디
-String sessionId=(String)session.getAttribute("id");
-//입력받은 비밀번호
-String inputPass = request.getParameter("password");
+
+//입력받은 비밀번호 암호화
+String pass=request.getParameter("password");
+MessageDigest md=MessageDigest.getInstance("SHA-1");
+md.update(pass.getBytes());
+String sha=DataEncrypt.messageDigest("SHA-1", pass);
+System.out.println(sha);
 %>
 <!-- VO 객체 생성 -->
 <jsp:useBean id="lVO" class="userVO.LoginVO"></jsp:useBean>
 <!-- 전송 받은 아이디와 비번을 VO에 저장 -->
 <jsp:setProperty property="id" name="lVO" value="${ id }"/>
-<jsp:setProperty property="password" name="lVO" value="${ param.password }"/>
+<jsp:setProperty property="password" name="lVO" value="<%=sha %>"/>
 
 <%
 LoginDAO lDAO = LoginDAO.getInstance();

@@ -9,4 +9,13 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
+  
+  <context-param>
+  <param-name>userKey</param-name>
+  <param-value>tkddyddlfwh</param-value>
+  </context-param>
+  <context-param>
+  <param-name>managerKey</param-name>
+  <param-value>aoslwjdlfwh</param-value>
+  </context-param>
 </web-app>
