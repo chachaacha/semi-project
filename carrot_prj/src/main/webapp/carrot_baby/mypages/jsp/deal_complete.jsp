@@ -80,7 +80,7 @@ $(function() {
 	 	<div class="deal_complete_item">
 			<div class="deal_complete_item_img">
 				<a href="">
-				<img alt="이미지 자리" src="${dc.thumbnail }">
+				<img alt="이미지 자리" src="../../search/image/${dc.thumbnail }">
 				</a>
 					<div class="deal_complete_item_border">
 						<div class="dci_title">

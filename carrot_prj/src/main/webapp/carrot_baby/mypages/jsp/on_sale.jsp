@@ -65,7 +65,7 @@ $(function() {
 	<div class="on_sale_item">
 		<div class="on_sale_item_img">
 			<a href="">
-			<img alt="이미지 자리" src="${os.thumbnail}">
+			<img alt="이미지 자리" src="../../search/image/${os.thumbnail}">
 			</a>
 			<div class="on_sale_item_border">
 				<div class="olcl_title">

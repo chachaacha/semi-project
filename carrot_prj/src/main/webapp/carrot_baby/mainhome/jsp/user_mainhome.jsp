@@ -164,7 +164,7 @@ $(function() {
 							<div class="card-photo">
 								<a class="card-link" 
 									href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${main.product_idx }">
-									<img alt="이미지 위치" src="${main.thumbnail }"><!-- 이미지는 src에 걸기! -->
+									<img alt="이미지 위치" src="../../search/image/${main.thumbnail }"><!-- 이미지는 src에 걸기! -->
 								</a>
 							</div><!-- card-photo -->
 							<div class="card-desc">
