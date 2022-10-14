@@ -20,9 +20,11 @@
 <jsp:useBean id="bVO" class="userVO.BoardVO" scope="page"/>
 <jsp:useBean id="wVO" class="userVO.WishVO" scope="page"/>
 <jsp:useBean id="ucVO" class="userVO.UserCommentVO" scope="page"/>
+<jsp:useBean id="buyVO" class="userVO.BuyVO" scope="page"/>
 <jsp:setProperty property="*" name="bVO"/>
 <jsp:setProperty property="*" name="wVO"/>
 <jsp:setProperty property="*" name="ucVO"/>
+<jsp:setProperty property="*" name="buyVO"/>
 
 <%
 //세션 아이디 얻기
@@ -67,6 +69,16 @@ pageContext.setAttribute("setCom", setCom);
 /* 유저 닉네임가져오기
 String nick=bDAO.selectN(sessionId);
 pageContext.setAttribute("nick", nick); */
+
+String reserve=request.getParameter("reserved");
+if(reserve!=null) {
+bDAO.updateStatus(buyVO);
+%>
+<script type="text/javascript">
+location.href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${param.product_idx}";
+</script>
+<%
+}
 
 %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -127,12 +139,6 @@ $(function() {
 		
 	})
 	   
-	//댓글 신고 팝업창 열기
-		$(".report-comments-btn").click(function() {
-			window.open("report_write_comments_popup.jsp","report_comments_popup",
-					"width=520,height=620,top=203,left=1336");
-		})
-		
 	//구매자 선택 팝업창 열기
 		$(".state-select").change(function() {
 			var buyer=$(".state-select").val();
@@ -186,8 +192,23 @@ $(function() {
 			
 		})
 		
-})
-	function profileMove(otherIdx){
+		//상태 변경 업데이트
+		$(".state-select").change(function() {
+			var stateVal=$(this).val();
+			var stateIdx=$(".state-select option").index($(".state-select option:selected"));
+			/* $(".state-select").val("${pInfo.reserved}").prop("selected",true); */
+			
+			if(stateIdx!=2) {
+				$("#reserved").val(stateVal);
+				$("#product_idx").val(product_idx);
+				$("#statusFrm").submit();
+			} 
+			
+		})
+		
+})//ready
+
+	function profileMove(otherIdx){ //타사용자 프로필 이동
 		$("#id").val(otherIdx);
 		$("#otherFrm").submit();
 	}
@@ -318,7 +339,7 @@ $(function() {
 		
 	})
 	
-	function openPop() { //신고 팝업창 열기
+	function openPop() { //게시글 신고하기
 		var sessionId="<%=(String)session.getAttribute("id") %>";
 		
 		if(sessionId=="null") {
@@ -329,11 +350,29 @@ $(function() {
 					"width=520,height=620,top=203,left=1336");
 			frmPop.action = "report_write_comments_popup.jsp?";
 			frmPop.target = "report_comments_popup";
+			frmPop.type.value = "breport";
 			frmPop.id.value = "${sessionId }";
 			frmPop.submit();
 		}
 	}
-	
+
+	function comOpenPop(repoComIdx, repoReIdx) {//댓글, 답글 신고하기
+		var sessionId="<%=(String)session.getAttribute("id") %>";
+		if(sessionId=="null") {
+			alert("로그인이 필요한 동작입니다.");
+		}else {
+			var frmPop=document.popupFrm;
+			window.open("","report_comments_popup",
+					"width=520,height=620,top=203,left=1336");
+			frmPop.action = "report_write_comments_popup.jsp?";
+			frmPop.target = "report_comments_popup";
+			frmPop.type.value = "creport";
+			frmPop.id.value = "${sessionId }";
+			frmPop.comment_idx.value = repoComIdx;
+			frmPop.reply_idx.value = repoReIdx;
+			frmPop.submit();
+		}
+	}
 
 </script>
 </head>
@@ -408,9 +447,9 @@ $(function() {
 		 	
 		 	<c:if test="${wriCheck eq 1 }">
 			 	<select name="state" class="state-select">
-					<option value="판매중">판매중</option>
-					<option value="예약중">예약중</option>
-					<option value="판매완료" class="soldout">판매완료</option>
+					<option value="N" ${pInfo.reserved eq 'N' ?	"selected":""}>판매중</option>
+					<option value="Y" ${pInfo.reserved eq 'Y' ? "selected":""}>예약중</option>
+					<option class="soldout" value="SY" ${pInfo.sold_check eq 'Y' ? "selected":""}>판매완료</option>
 				</select>
 			</c:if>
 		</div>
@@ -532,7 +571,7 @@ $(function() {
 						    	</c:when>
 						    	<c:when test="${sessionId ne setCom.id }"> <%-- 타인이 쓴 댓글 일 경우 --%>
 							    		<button type="button" class="add-comments-btn" value="${setCom.comment_idx }">답글쓰기</button>
-							    		<button type="button"class="report-comments-btn" value="${setCom.reply_idx }" onClick="comOpenPop();">신고하기</button>
+							    		<button type="button" id="report-com-btn" class="report-comments-btn" value="${setCom.reply_idx }" onclick="comOpenPop(${setCom.comment_idx },${setCom.reply_idx });">신고하기</button>
 						    	</c:when>
 					   		</c:choose>
 					   		
@@ -585,7 +624,7 @@ $(function() {
 							    	<button type="button" id="modi-reenter-btn" class="modify-enter-btn" value="${setCom.reply_idx }" style="display: none">등록하기</button>
 						    </c:when>
 						    <c:when test="${sessionId ne setCom.id }"> <%-- 타인이 쓴 댓글 일 경우 --%>
-							    	<button type="button"class="report-comments-btn">신고하기</button>
+							    	<button type="button"class="report-comments-btn" onclick="comOpenPop(${setCom.comment_idx },${setCom.reply_idx });">신고하기</button>
 						   	</c:when>
 					   	</c:choose>
 					   	
@@ -595,8 +634,6 @@ $(function() {
 		</c:otherwise>
 		</c:choose>
 		</c:forEach>
-		
-		
 	</div>
 <!-- comments end -->
 
@@ -643,10 +680,16 @@ $(function() {
 </form>
 <%-- 신고팝업창 --%>
 <form method="post" id="popupFrm" name="popupFrm">
+	<input type="hidden" name="type" id="type" value="${param.type}">
 	<input type="hidden" name="id" id="id" value="${param.id}">
-	<input type="hidden" name="product_idx" id="iproduct_idxd" value="${param.product_idx}">
+	<input type="hidden" name="product_idx" id="product_idx" value="${param.product_idx}">
 	<input type="hidden" name="comment_idx" id="comment_idx" value="${param.comment_idx}">
 	<input type="hidden" name="reply_idx" id="reply_idx" value="${param.reply_idx}">
+</form>
+<%-- 상태변경 --%>
+<form method="post" id="statusFrm" name="statusFrm">
+	<input type="hidden" name="product_idx" id="product_idx" value="${param.product_idx}">
+	<input type="hidden" name="reserved" id="reserved" value="${param.reserved}">
 </form>
 
 <!-- footer -->

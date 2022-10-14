@@ -323,10 +323,10 @@ public class BoardDAO {
 			if(ucVO.getComment_flag() != -1) {
 				switch(ucVO.getComment_flag()) {
 				case 0:
-					sb.append(" order by pc.comment_idx desc, pc.reply_idx, pc.posted_date ");
+					sb.append(" order by pc.comment_idx asc, pc.reply_idx, pc.posted_date ");
 					break;
 				case 1:
-					sb.append(" order by pc.comment_idx asc, pc.reply_idx, pc.posted_date ");
+					sb.append(" order by pc.comment_idx desc, pc.reply_idx, pc.posted_date ");
 				}
 			}
 			
@@ -482,13 +482,17 @@ public class BoardDAO {
 		try {
 			con=db.getConn();
 			
-			String insertReport="insert into reported_comment (id, comment_idx, reply_idx, rr_idx) values(?, ?, ?, ?)";
+			String insertReport="insert into reported_comment (id, product_idx, comment_idx, reply_idx, rr_idx) values(?, ?, ?, ?, ?)";
 			
 			pstmt=con.prepareStatement(insertReport);
 			pstmt.setString(1, rcVO.getId());
-			pstmt.setInt(2, rcVO.getComment_idx());
-			pstmt.setInt(3, rcVO.getReply_idx());
-			pstmt.setInt(4, rcVO.getRr_idx());
+			pstmt.setString(2, rcVO.getProduct_idx());
+			pstmt.setInt(3, rcVO.getComment_idx());
+			pstmt.setInt(4, rcVO.getReply_idx());
+			pstmt.setInt(5, rcVO.getRr_idx());
+			
+			System.out.println("----"+insertReport);
+			System.out.println("----"+rcVO);
 			
 			pstmt.executeUpdate();
 		}finally {
@@ -508,13 +512,17 @@ public class BoardDAO {
 			
 			StringBuilder updateReportC = new StringBuilder();
 			updateReportC
-			.append("	update product	")
-			.append("	set comment_cnt = (select count(product_idx) from product_comment where product_idx=?)	")
-			.append("	where product_idx=?	");
+			.append("	update product_comment	")
+			.append("	set reported_cnt = (select count(*) from reported_comment where product_idx=? and comment_idx=? and reply_idx=? )	")
+			.append("	where product_idx=? and comment_idx=? and reply_idx=?	");
 			
 			pstmt=con.prepareStatement(updateReportC.toString());
 			pstmt.setString(1, cVO.getProduct_idx());
-			pstmt.setString(2, cVO.getProduct_idx());
+			pstmt.setInt(2, cVO.getComment_idx());
+			pstmt.setInt(3, cVO.getReply_idx());
+			pstmt.setString(4, cVO.getProduct_idx());
+			pstmt.setInt(5, cVO.getComment_idx());
+			pstmt.setInt(6, cVO.getReply_idx());
 			
 			updateCnt=pstmt.executeUpdate();
 		}finally {
@@ -573,10 +581,6 @@ public class BoardDAO {
 			pstmt.setString(2, wVO.getProduct_idx());
 			pstmt.executeUpdate();
 			
-			
-			//System.out.println("------조회:"+insertWish);
-			//System.out.println("------조회:"+wVO);
-			
 			rs=pstmt.executeQuery();
 			
 			if(rs.next()) {
@@ -625,9 +629,6 @@ public class BoardDAO {
 			pstmt.setString(2, wVO.getProduct_idx());
 			
 			deleteCnt=pstmt.executeUpdate();
-			//System.out.println("------취소:"+deleteWish);
-			//System.out.println("------취소:"+wVO);
-
 			
 		}finally {
 			db.dbClose(null, pstmt, con);
@@ -722,7 +723,7 @@ public class BoardDAO {
 			StringBuilder updateTrader = new StringBuilder();
 			updateTrader
 			.append("	update product 	")
-			.append("	set sold_checked='Y' , buy_id=?	")
+			.append("	set reserved='N', sold_check='Y' , buyer_id=?	")
 			.append("	where product_idx=? 	");
 			
 			pstmt=con.prepareStatement(updateTrader.toString());
@@ -730,6 +731,51 @@ public class BoardDAO {
 			pstmt.setString(2, bVO.getProduct_idx());
 			
 			updateCnt=pstmt.executeUpdate();
+		}finally {
+			db.dbClose(null, pstmt, con);
+		}
+		
+		return updateCnt;
+	}//updateTrader
+	
+	public int updateStatus(BuyVO bVO) throws SQLException {
+		int updateCnt=0;
+		
+		DbConnection db = DbConnection.getInstance();
+		
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		try {
+			con=db.getConn();
+			
+			StringBuilder updateTrader = new StringBuilder();
+			updateTrader
+			.append("	update product 	")
+			.append("	set buyer_id=null, sold_check='N' ");
+			
+			if(bVO.getReserved() != null) {
+				switch(bVO.getReserved()) {
+				case "N":
+					updateTrader
+					.append(", reserved='N'");
+					break;
+				case "Y":
+					updateTrader
+					.append(", reserved='Y'");
+				}
+			}
+			
+			updateTrader.append("where product_idx=? ");
+			
+			pstmt=con.prepareStatement(updateTrader.toString());
+			pstmt.setString(1, bVO.getProduct_idx());
+			
+			System.out.println("-------"+updateTrader);
+			System.out.println("-------"+bVO);
+			
+			
+			updateCnt=pstmt.executeUpdate();
+			
 		}finally {
 			db.dbClose(null, pstmt, con);
 		}

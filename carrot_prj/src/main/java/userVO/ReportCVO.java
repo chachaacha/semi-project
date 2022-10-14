@@ -1,17 +1,18 @@
 package userVO;
 
 public class ReportCVO {
-	private String id, nick;
+	private String id, nick, product_idx;
 	private int comment_idx, reply_idx, rr_idx;
 	
 	public ReportCVO() {
 
 	}
 
-	public ReportCVO(String id, String nick, int comment_idx, int reply_idx, int rr_idx) {
+	public ReportCVO(String id, String nick, String product_idx, int comment_idx, int reply_idx, int rr_idx) {
 		super();
 		this.id = id;
 		this.nick = nick;
+		this.product_idx = product_idx;
 		this.comment_idx = comment_idx;
 		this.reply_idx = reply_idx;
 		this.rr_idx = rr_idx;
@@ -31,6 +32,14 @@ public class ReportCVO {
 
 	public void setNick(String nick) {
 		this.nick = nick;
+	}
+
+	public String getProduct_idx() {
+		return product_idx;
+	}
+
+	public void setProduct_idx(String product_idx) {
+		this.product_idx = product_idx;
 	}
 
 	public int getComment_idx() {
@@ -59,8 +68,8 @@ public class ReportCVO {
 
 	@Override
 	public String toString() {
-		return "ReportCVO [id=" + id + ", nick=" + nick + ", comment_idx=" + comment_idx + ", reply_idx=" + reply_idx
-				+ ", rr_idx=" + rr_idx + "]";
+		return "ReportCVO [id=" + id + ", nick=" + nick + ", product_idx=" + product_idx + ", comment_idx="
+				+ comment_idx + ", reply_idx=" + reply_idx + ", rr_idx=" + rr_idx + "]";
 	}
 
 	
