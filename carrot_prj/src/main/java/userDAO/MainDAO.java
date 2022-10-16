@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.DbConnection;
+import userVO.BlockUVO;
 import userVO.CatVO;
 import userVO.HomeVO;
 import userVO.LocVO;
 import userVO.MainFlagVO;
+import userVO.MyCommVO;
 
 public class MainDAO {
 	private static MainDAO mDAO;
@@ -115,6 +117,47 @@ public class MainDAO {
 		}
 	}
 	
+	public List<BlockUVO> selectBlock(String id) throws SQLException {
+		List<BlockUVO> list = new ArrayList<BlockUVO>();
+		
+		DbConnection dc = DbConnection.getInstance();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		//1. 드라이버 로딩
+		try {
+		//2. Connection 얻기
+			con = dc.getConn();
+		//3. 쿼리문 생성객체 얻기
+			StringBuilder select = new StringBuilder();
+			select
+			.append(" select blocked_id ")
+			.append(" from user_blocked ")
+			.append(" where id=? ");
+		
+			pstmt = con.prepareStatement(select.toString());
+		//4. 바인드 변수에 값 설정
+			pstmt.setString(1, id);
+		//5. 쿼리문 실행 후 결과 얻기
+			rs = pstmt.executeQuery();
+			
+			BlockUVO bVO = null;
+			
+			while( rs.next() ) {
+				bVO = new BlockUVO();
+				bVO.setBlocked_id(rs.getString("blocked_id"));
+ 
+				list.add(bVO);
+			}
+		} finally {
+		//6. 연결 끊기.
+			dc.dbClose(rs, pstmt, con);
+		}//finally
+		return list;
+	}//selectMC
+	
 	public int selectTotal(MainFlagVO mfVO) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
 		Connection con = null;
@@ -126,8 +169,8 @@ public class MainDAO {
 			con=db.getConn();
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select count(*) ")
-			  .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx,(select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank, sold_check from product p ) ")
-			  .append("where 1=1 and sold_check='N'");
+			  .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx, id, (select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank, sold_check,  (select quit from member where id = p.id) quit from product p ) ")
+			  .append("where 1=1 and sold_check='N' and quit='N'");
 
 			  pstmt= con.prepareStatement(sb.toString());
 				if(mfVO.getKeyword() != null &&  !"".equals(mfVO.getKeyword())) {
@@ -261,8 +304,8 @@ public class MainDAO {
 			StringBuffer sb = new StringBuffer();
 			//항시실행
 			sb.append("select thumbnail,title, price, gu, comment_cnt, liked_cnt, product_idx ")
-			  .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx,(select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank, product_idx, sold_check from product p ) ")
-			  .append("where 1=1 and sold_check='N' ");
+			  .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx, id, (select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank, product_idx, sold_check, (select quit from member where id = p.id) quit from product p ) ")
+			  .append("where 1=1 and sold_check='N' and quit='N' ");
 			  /*.append("and rank between ((?-1)*16)+(?-(?*1-1)) and ((?-1)*16)+16 ");*/
 			
 			/* System.out.println("-----keyword-------"+ mfVO.getKeyword()); */
@@ -403,8 +446,8 @@ public class MainDAO {
 			
 
 			
-			//System.out.println("--query---"+ sb );
-			//System.out.println("--value--- "+ mfVO );  
+			System.out.println("--query---"+ sb );
+			System.out.println("--value--- "+ mfVO );  
 					
 			rs = pstmt.executeQuery();
 			HomeVO hVO = null;

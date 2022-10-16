@@ -494,7 +494,7 @@ $(function() {
 			</c:if>
 		</p>
 		<div class="description-detail">
-			<c:out value="${pInfo.contents }"/>
+			<c:out value="${pInfo.contents }" escapeXml="false"/>
 		</div>
 	</div>
 <!-- description end -->

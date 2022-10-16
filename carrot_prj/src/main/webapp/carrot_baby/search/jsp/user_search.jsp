@@ -1,3 +1,4 @@
+<%@page import="userVO.BlockUVO"%>
 <%@page import="javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar"%>
 <%@page import="userVO.HomeVO"%>
 <%@page import="userVO.MainFlagVO"%>
@@ -16,9 +17,11 @@
 <jsp:useBean id="sVO" class="userVO.SearchVO" scope="page"/>
 <jsp:useBean id="mfVO" class="userVO.MainFlagVO" scope="page"/>
 <jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"/>
+<jsp:useBean id="bVO" class="userVO.BlockUVO" scope="page"/>
 <jsp:setProperty property="*" name="sVO"/>
 <jsp:setProperty property="*" name="mfVO"/>
 <jsp:setProperty property="*" name="hVO"/>
+<jsp:setProperty property="*" name="bVO"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -131,6 +134,9 @@ $(function(){
 <!-- header end-->
 
 <% 
+//세션 아이디 얻기
+String sessionId=(String)session.getAttribute("id");
+pageContext.setAttribute("sessionId", sessionId);
 
 //MainDAO 생성
 MainDAO mDAO=MainDAO.getInstance();
@@ -168,6 +174,9 @@ List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
 pageContext.setAttribute("hVOList", hVOList);
 //System.out.println("필터 적용된 게시물의 수 : "+hVOList.size());
 
+
+List<BlockUVO> bList=mDAO.selectBlock(sessionId);
+System.out.println(bList);
 %>
 
 <!-- container -->
