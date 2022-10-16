@@ -137,7 +137,8 @@ function chkNull(){
 	}//end for
 	
 	$("input[name=count]").attr("value",cnt);
-	
+	var comTxt=$("#contents").val().replace(/(?:\r\n|\r|\n)/g, "<br>");
+	$("#contents").val(comTxt);
 	$("#writePost").submit();
 	/* document.location.href="user_search.jsp"; */
 }//chkNull
