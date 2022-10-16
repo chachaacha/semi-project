@@ -159,18 +159,22 @@ $(function() {
 				<div class="card-wrap">
 					<!-- 매물 목록 -->
 					<c:forEach var="main"  items="${mainList}"><!-- forEach를 사용하여 반복 -->
-				
+					<%-- <!--  판매완료된 물건은 메인화면에 뜨지 않게 하기-->
+					<c:if test="${ main.sold_check eq 'N' }"> --%>
+					
 					<div class="card">
 							<div class="card-photo">
 								<a class="card-link" 
 									href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${main.product_idx }">
 									<img alt="이미지 위치" src="../../search/image/${main.thumbnail }"><!-- 이미지는 src에 걸기! -->
 								</a>
+								
 							</div><!-- card-photo -->
 							<div class="card-desc">
 								<a class="card-link" href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${main.product_idx }">
 									<h2 class="card-title"><c:out value="${main.title }"/></h2>
 								</a>
+								
 								<div class="card-price">
 								<!-- 가격이 0원이라면 나눔으로 표시됨 -->
 								<c:if test="${main.price eq 0}">나눔</c:if>
@@ -185,10 +189,9 @@ $(function() {
 								ㆍ
 								<span> 댓글&nbsp;<c:out value="${main.comment_cnt }"/></span>
 							</div><!-- card-counts -->
-						
 					</div><!-- card -->
+			<%-- </c:if><!-- 판매완료된 물건은 안뜨게 --> --%>
 			</c:forEach>
-
 	</div><!-- card-wrap -->
 	</div><!-- main-middle-content -->
 	</div><!-- main-middle-wrap -->

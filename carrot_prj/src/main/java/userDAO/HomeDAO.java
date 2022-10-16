@@ -43,22 +43,21 @@ public class HomeDAO {
 		HomeVO hVO = null;
 		try {
 			con = db.getConn();
-			String sql="select product_idx, thumbnail,title, price, gu, comment_cnt, liked_cnt ";
-				   sql+="from ";
-				   sql+="(select product_idx, thumbnail,title, price, (select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank ";
-				   sql+="from product p) ";
-				   sql+="where rank between 1 and 8";
-			pstmt = con.prepareStatement(sql);
+			StringBuffer sb = new StringBuffer();
+			sb.append("select thumbnail,title, price, gu, comment_cnt, liked_cnt, product_idx ")
+	           .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx,(select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank, product_idx, sold_check, (select quit from member where id = p.id) quit from product p ) ")
+	           .append("where 1=1 and sold_check='N' and quit='N' and rank between 1 and 8 ");
+			pstmt= con.prepareStatement(sb.toString());
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				hVO = new HomeVO();
-				hVO.setProduct_idx(rs.getString("product_idx"));
 				hVO.setThumbnail(rs.getString("thumbnail"));
 				hVO.setTitle(rs.getString("title"));
 				hVO.setPrice(rs.getInt("price"));
 				hVO.setGu(rs.getString("gu"));
 				hVO.setComment_cnt(rs.getInt("comment_cnt"));
 				hVO.setLiked_cnt(rs.getInt("liked_cnt"));
+				hVO.setProduct_idx(rs.getString("product_idx"));
 				list.add(hVO);
 			}
 		} finally {
