@@ -4,18 +4,10 @@ import java.util.Date;
 
 public class MemberVO {
 	private String id, name, birth;
-	private Date joined_date;
+	private Date joined_date, quit_date;
 	
 	public MemberVO() {
 
-	}
-
-	public MemberVO(String id, String name, String birth, Date joined_date) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.birth = birth;
-		this.joined_date = joined_date;
 	}
 
 	public String getId() {
@@ -50,9 +42,20 @@ public class MemberVO {
 		this.joined_date = joined_date;
 	}
 
+	public Date getQuit_date() {
+		return quit_date;
+	}
+
+	public void setQuit_date(Date quit_date) {
+		this.quit_date = quit_date;
+	}
+
 	@Override
 	public String toString() {
-		return "MemberVO [id=" + id + ", name=" + name + ", birth=" + birth + ", joined_date=" + joined_date + "]";
+		return "MemberVO [id=" + id + ", name=" + name + ", birth=" + birth + ", joined_date=" + joined_date
+				+ ", quit_date=" + quit_date + "]";
 	}
+
+	
 	
 }

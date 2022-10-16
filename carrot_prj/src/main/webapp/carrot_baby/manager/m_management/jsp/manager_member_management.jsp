@@ -79,6 +79,7 @@ function openPopup(id) {
 			<div class="mm-top">
 				<select id="memberCat" name="category" class="category-select">
 							<option value="all"${ 'all' eq param.selectStau?" selected='selected'":""  }>회원 리스트</option>
+							<option value="quit"${ 'quit' eq param.selectStau?" selected='selected'":""  }>탈퇴 회원 리스트</option>
 							<option value="block"${ 'block' eq param.selectStau?" selected='selected'":""  }>차단 회원 리스트</option>
 				</select>
 				<div class="search-wrap">
@@ -118,6 +119,19 @@ function openPopup(id) {
 						 <c:forEach var="memList" items="${ pageScope.memList }">
 						    <%-- 신고하기를 눌렀을 때 이 부분을 form으로 처리하면 id가 중복되기 때문에 a 태그를 통해 javascript영역을 열고 EL을 넣어서 매개값으로 전달한다. --%>
 						  	<tr><td><c:out value="${ memList.id }"/></td><td><c:out value="${ memList.name }"/></td><td><c:out value="${ memList.joined_date }"/></td><td><c:out value="${ memList.birth }"/></td><td><a href="javascript:openPopup('${ memList.id }')"><button type="button" class="block-btn">차단</button></a></td></tr>
+						 </c:forEach>
+						 </c:when>
+						 <c:when test="${ param.selectStau  eq 'quit'  }">
+						 <% 
+						 List<MemberVO> quitList = mDAO.selectQuitMember(request.getParameter("searchStau"));
+						 pageContext.setAttribute("quitList", quitList);
+						 %>	
+						 <tr><th>아이디명</th><th >회원명</th><th>가입날짜</th><th>탈퇴날짜</th></tr>
+						 <c:if test="${ empty pageScope.quitList }">
+						 <tr><td colspan="4">조회된결과가 없습니다.</td></tr>
+						 </c:if> 
+						 <c:forEach var="quitList" items="${ pageScope.quitList }">
+						    <tr><td><c:out value="${ quitList.id }"/></td><td><c:out value="${ quitList.name }"/></td><td><c:out value="${ quitList.joined_date }"/></td><td><c:out value="${ quitList.quit_date }"/></td></tr>
 						 </c:forEach>
 						 </c:when>
 						 <c:when test="${ param.selectStau  eq 'block'  }">

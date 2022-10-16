@@ -163,7 +163,7 @@ pageContext.setAttribute("imgList", imgList);
 		<p class="description-category"><c:out value="${ bVO.category }"/>
 			<time><fmt:formatDate pattern="yyyy-MM-dd" value="${ bVO.posted_date }"/></time>
 		</p>
-		<p class="description-price"><c:out value="${ bVO.price }"/>
+		<p class="description-price"><fmt:formatNumber pattern="#,###,###" value="${ bVO.price }"/>원
 		</p>
 		<div class="description-detail">
 			<p>

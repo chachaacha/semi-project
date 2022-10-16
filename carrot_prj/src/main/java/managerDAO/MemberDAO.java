@@ -27,24 +27,20 @@ public class MemberDAO {
 		return mDAO;
 	}//getInstance
 	
-	//전체 회원정보 가져오기
+	//전체 회원정보 가져오기(탈퇴X)
 	public List<MemberVO> selectMember(String id) throws SQLException{
 		List<MemberVO> list = new ArrayList<MemberVO>();
-		
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
-		
 		DbConnection db = DbConnection.getInstance();
-		
 		try {
 			con=db.getConn();
-			
 			StringBuilder sb = new StringBuilder();
 			sb
 			.append("	select id, name, birth, joined_date	")
 			.append("	from member		")
-			.append("   where 1=1  ");
+			.append("   where 1=1 and quit='N'  ");
 			if(id != null && !"".trim().equals(id)) {
 				sb.append(" and id like '%'||?||'%' ");
 			}
@@ -69,7 +65,52 @@ public class MemberDAO {
 		return list;
 	}//selectMember
 	
+	public List<MemberVO> selectQuitMember(String id) throws SQLException{
+		List<MemberVO> list = new ArrayList<MemberVO>();
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		DbConnection db = DbConnection.getInstance();
+		try {
+			con=db.getConn();
+			StringBuilder sb = new StringBuilder();
+			sb
+			.append("	select id, name, joined_date, quit_date	")
+			.append("	from member		")
+			.append("   where 1=1 and quit='Y'  ");
+			if(id != null && !"".trim().equals(id)) {
+				sb.append(" and id like '%'||?||'%' ");
+			}
+			pstmt=con.prepareStatement(sb.toString());
+			if(id != null && !"".trim().equals(id)) {
+				pstmt.setString(1, id);
+			}
+			rs=pstmt.executeQuery();
+			
+			MemberVO mVO=null;
+			while(rs.next()) {
+				mVO=new MemberVO();
+				mVO.setId(rs.getString("id"));
+				mVO.setName(rs.getString("name"));
+				mVO.setJoined_date(rs.getDate("joined_date"));
+				mVO.setQuit_date(rs.getDate("quit_date"));
+				list.add(mVO);
+			}
+		}finally {
+			db.dbClose(rs, pstmt, con);
+		}
+		return list;
+	}//selectMember
 	
+	
+	
+	
+	/**
+	 * 차단회원정보
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<ManagerBlockVO> selectBlockedMember(String id) throws SQLException{
 		List<ManagerBlockVO> list = new ArrayList<ManagerBlockVO>();
 		Connection con=null;

@@ -58,24 +58,5 @@ pageContext.setAttribute("blockId", lDAO.selectChkBlocked(id));// 입력한 아�
 </c:otherwise>
 </c:choose>
 
-
-
-<%-- <%
-	
-	if(lDAO.selectLogin(lVO)!=null) {
-		if(lDAO.selectChkQuit(id) != null) {
-		}
-		
-		session.setMaxInactiveInterval(60*60);
-		session.setAttribute("id", lVO.getId());
-		response.sendRedirect("../../mainhome/jsp/user_mainhome.jsp");
-	}else{
-%>
-<!-- 아이디 비번 확인하시오  -->
-	<script type="text/javascript">
-	alert("아이디 혹은 비밀번호가 잘못되었습니다.");
-	location.href="user_login.jsp";
-	</script>
-<% } %> --%>
 </body>
 </html>

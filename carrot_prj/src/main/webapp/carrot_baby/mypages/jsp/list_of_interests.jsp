@@ -16,12 +16,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
 </head>
-<% 
-// 세션 만료시 로그인화면으로 이동
-	if(session.getAttribute("id")==null) {
-		response.sendRedirect("../../login/jsp/user_login.jsp");
-	}
-%>
+<%-- 세션말료시 로그인화면 이동 --%>
+<c:if test="${ empty id }">
+<c:redirect url="../../login/jsp/user_login.jsp"/>
+</c:if>
+
 <body>
 <!--VO객체 생성 -->
 <jsp:useBean id="wlVO" class="userVO.WishListVO"></jsp:useBean>
