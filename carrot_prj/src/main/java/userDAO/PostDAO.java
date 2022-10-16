@@ -127,8 +127,8 @@ public class PostDAO {
 		//3. 쿼리문 생성객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
-			.append("	select	product_idx, product_img, img_num	")
-			.append("	from	product_img									")
+			.append("	select	product_idx, product_img, img_num						")
+			.append("	from	product_img														")
 			.append("	where product_idx = ?	 order by img_num asc					");
 			
 			pstmt = con.prepareStatement(select.toString());
