@@ -200,14 +200,18 @@ $(function() {
 			
 		})
 		
-		$(".delete-btn").click(function() {
+		$(".delete-btn").click(function() { //게시글 삭제
 			
 			var conFlag=confirm("게시글을 삭제하시겠습니까?");
 			
 			if(conFlag==true) {
-				alert("삭제");
+				$("#bDelFrm").submit();
 			}
 			
+		})
+		
+		$(".modify-btn").click(function() {
+			location.href="../../search/jsp/user_writeUp.jsp?product_idx=${pIdx}";
 		})
 		
 })//ready
@@ -648,9 +652,11 @@ $(function() {
 			<button type="button" class="modify-btn">
 				<span>수정</span>
 			</button>
-			<button type="button" class="delete-btn">
-				<span>삭제</span>
-			</button>
+			<form method="post" action="board_delete_process.jsp?product_idx=${pIdx}" id="bDelFrm">
+				<button type="button" class="delete-btn">
+					<span>삭제</span>
+				</button>
+			</form>
 		</div>
 	</div>
 <!-- product-bottom end-->
