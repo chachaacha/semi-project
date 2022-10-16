@@ -11,13 +11,15 @@ import userVO.FindPwVO;
 
 public class FindPwDAO {
 	private static FindPwDAO fDAO;
+	private String key;
 	
-	private FindPwDAO() {
+	private FindPwDAO(String key) {
+		this.key=key;
 	}
 	
-	public static FindPwDAO getInstance() {
+	public static FindPwDAO getInstance(String key) {
 		if(fDAO==null) {
-			fDAO = new FindPwDAO();
+			fDAO = new FindPwDAO(key);
 		}
 		return fDAO;
 	}
@@ -67,6 +69,7 @@ public class FindPwDAO {
 			con=db.getConn();
 			StringBuffer sb = new StringBuffer();
 			sb.append("update member set password=? where id=? and name=?");
+			
 			pstmt=con.prepareStatement(sb.toString());
 			pstmt.setString(1, fVO.getTemp());
 			pstmt.setString(2, fVO.getId());

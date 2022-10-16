@@ -64,10 +64,16 @@ function deleteFile() {
  
 }
 
+//전화번호 하이픈입력
+const autoHyphen = (target) => {
+	 target.value = target.value
+	   .replace(/[^0-9]/g, '')
+	   .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+}
+
 $(function () {
 	//가입하기 버튼을 클릭했을 때
     $("#btn").click(function () {
-    	
 		//null 검사
     	chkNull(); 
     });
@@ -106,14 +112,25 @@ function chkNull(){
 		return;
 	}
 	
-	//8~25자의 영문, 숫자, 특수문자 3가지를 조합하여 입력
-/* 	var passChk= /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,25}$/;
-	
-	if(!passChk.test($("#password").val().trim())){
-		alert("8~25자의 영문, 숫자, 특수문자 3가지를 조합하여 입력해야 합니다.");
-		$("#password").focus();
-		return;
-	}   */
+	//8~25자의 영문,숫자, 특수문자를 혼합하여 입력
+	 var pw = $("#password").val();
+	 var num = pw.search(/[0-9]/g);
+	 var eng = pw.search(/[a-z]/ig);
+	 var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+	 if(pw.length < 8 || pw.length > 20){
+
+	  alert("8자리 ~ 20자리 이내로 입력해주세요.");
+	  return false;
+	 }else if(pw.search(/\s/) != -1){
+	  alert("비밀번호는 공백 없이 입력해주세요.");
+	  return false;
+	 }else if(num < 0 || eng < 0 || spe < 0 ){
+	  alert("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
+	  return false;
+	 }else {
+	    return true;
+	 }
 	
 	//비밀번호확인 필수 입력	
 	if($("#passwordChk").val().trim() !== $("#password").val().trim()) {
@@ -133,6 +150,8 @@ function chkNull(){
 		$("#phone_num").focus();
 		return;
 	}
+
+	
 	//이메일 필수 입력	
  	if($("#email1").val().trim()=="") {
 		alert("이메일을 입력하세요");
@@ -273,7 +292,7 @@ function zipcodeapi() {
 						<th><label><span style="color:red">*</span>비밀번호</label></th>
 						<td>
 							<input type="password" placeholder="비밀번호를 입력해주세요" name="password" id="password" class="inputPass size02"/>
-							<span>*8~25자의 영문, 숫자, 특수문자 3가지를 조합하여 입력</span>
+							<span>*8~25자의 문자 및 숫자를 조합하여 입력해야 합니다.</span>
 						</td>
 					</tr>
 							<tr>
@@ -291,7 +310,7 @@ function zipcodeapi() {
 					<tr>
 						<th><span style="color:red">*</span>휴대폰</th>
 						<td>
-							<input type="tel" name="phone_num" id="phone_num" placeholder="예) 010-1234-5678" />
+							<input type="tel" name="phone_num" id="phone_num" placeholder="전화번호를 입력해주세요" oninput="autoHyphen(this)"/>
 							<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk"  value="Y"  />
 							<label>SMS 수신동의</label></span>
 						</td>

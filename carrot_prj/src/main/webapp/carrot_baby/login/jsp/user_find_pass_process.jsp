@@ -31,10 +31,12 @@ int[] abc = new int[8];
          temp1.append(abbc[i]);
       }
 String temp = temp1.toString();
-System.out.println( "임시비밀번호 : " +temp);
+System.out.println( "임시비밀번호 생성 : " +temp);
 
-
-FindPwDAO fDAO=FindPwDAO.getInstance();
+//암호화 키 불러오기
+ServletContext sc=getServletContext();
+String key = sc.getInitParameter("userKey");
+FindPwDAO fDAO=FindPwDAO.getInstance(key);
 String id=fDAO.selectFindPw(fVO);
 fVO.setId(id);
 fVO.setName(request.getParameter("name"));
@@ -42,9 +44,6 @@ fVO.setTemp(temp);
 
 fDAO.updateTempPw(fVO);
 String pass=fDAO.selectView(id);
-pageContext.setAttribute("pass", pass);
-System.out.println("-----pass----"+pass);
-
 
 //비밀번호 암호화
 MessageDigest md=MessageDigest.getInstance("SHA-1");
@@ -52,16 +51,16 @@ md.update(pass.getBytes());
 String sha_p=DataEncrypt.messageDigest("SHA-1", pass);
 System.out.println("-----암호화----"+sha_p);
 
+pageContext.setAttribute("pass", pass);
+
 %>
    <script type="text/javascript">
 <%
-System.out.println( "-----"+temp);
 if(fDAO.selectFindPw(fVO) !=null) {
    //팝업창 비밀번호
    session.setAttribute("tempPass",temp);
 %>
    location.href="user_find_pass.jsp";
-
 <%
    }else{
 %>
