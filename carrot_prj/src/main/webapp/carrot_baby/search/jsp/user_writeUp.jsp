@@ -197,12 +197,8 @@ String user_id =(String)session.getAttribute("user_id");
 		String price = Integer.toString(ppVO.getPrice());
 		String free1 = ppVO.getFree();
 		
-		System.out.println(list_img);
-		System.out.println(list_img.size());
-		list_img.get(0).getProduct_img();
 		
 		%>
-<%= list_img.size() %>
 <div class="wrap">
 <!-- header -->
 <%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
