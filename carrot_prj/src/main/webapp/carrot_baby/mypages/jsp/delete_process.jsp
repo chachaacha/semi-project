@@ -1,5 +1,10 @@
+<%@page import="java.io.PrintWriter"%>
+<%@page import="userDAO.MySalesDAO"%>
+<%@page import="userVO.MySalesVO"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" info="마이페이지 내에서 게시물 삭제하기"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +23,17 @@
 
 </script>
 <body>
+<%
+//POST방식의 요청 한글 처리
+request.setCharacterEncoding("UTF_8");
+%>
+
+<!--1. bean생성 -->
+<%-- <jsp:useBean id="객체명" class="객체화할 클래스" scope=""/> --%>
+<jsp:useBean id="msVO" class="userVO.MySalesVO" />
+<!--2. setter method 호출 : 모든 파라메터가 입력-->
+<%-- <jsp:setProperty name="객체명" property="*"/> --%>
+<jsp:setProperty property="*" name="msVO"/>
 
 <!-- 게시글 삭제를 위한 폼-->
 <form method="post" id="deleteFrm">
@@ -28,7 +44,7 @@
 <!-- 게시글 삭제  -->
 <c:if test="${not empty param.pldx }">
 <c:catch var="ex"> <!-- 예외를 ex에 저장 / c:if와 함께 사용 -->
-<%-- <% msDAO.deleteBoard(request.getParameter("pldx")); %> --%>
+ <%-- <% msdcVO.deleteBoard(request.getParameter("pldx")); %>  --%> 
 </c:catch>
 <c:if test="${not empty ex }">
 	<script type="text/javascript">
