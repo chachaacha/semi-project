@@ -119,8 +119,12 @@ String id = (String)session.getAttribute("id");
    response.sendRedirect("../../login/jsp/user_login.jsp");
 } */
 
+//web.xml에 저장된 암호화된 key를 불러온다.
+ServletContext sc=getServletContext();
+String key=sc.getInitParameter("userKey");
+
 //저장된 내 정보 불러오기
-MyInfoDAO miDAO = MyInfoDAO.getInstance();
+MyInfoDAO miDAO = MyInfoDAO.getInstance(key);
 MyInfoVO miVO = miDAO.selectInfo(id);
 %>
 	<div class="wrap">
@@ -182,8 +186,8 @@ MyInfoVO miVO = miDAO.selectInfo(id);
 						</tr>
 						<%
 						//이메일은 암호화 되어있기 때문에 복호화해서 가져와야 한다.
-						String key="abcdefghijklmonp1234~";
 						DataDecrypt dd = new DataDecrypt(DataEncrypt.messageDigest("SHA-1", key));
+						
 						%>
 						<tr>
 							<th><label>이메일</label></th>

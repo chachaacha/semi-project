@@ -79,6 +79,7 @@ if(sms_chk==null){
 System.out.println(sms_chk);
 
 //이메일
+//이메일은 DAO에서 암호화해서 DB에 저장한다.
 String email=mr.getParameter("email");
 
 //이메일 수신동의
@@ -113,8 +114,11 @@ String zipcode=mr.getParameter("zipcode");
 <jsp:setProperty property="id" name="miVO" value="<%= id %>"/>
 
 <%
+//web.xml에 저장된 암호화된 key를 불러온다.
+ServletContext sc=getServletContext();
+String key=sc.getInitParameter("userKey");
 //입력된 정보를 업데이트 
-MyInfoDAO miDAO = MyInfoDAO.getInstance();
+MyInfoDAO miDAO = MyInfoDAO.getInstance(key);
 int result = miDAO.updateInfo(miVO);
 
 //다른 추가 정보를 입력하지 않더라도 창이 뜨도록 함.

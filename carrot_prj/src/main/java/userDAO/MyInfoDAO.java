@@ -16,14 +16,19 @@ import kr.co.sist.util.cipher.DataEncrypt;
 public class MyInfoDAO {
 
 	private static MyInfoDAO miDAO;
+	private String key; //이메일 암호화를 위한 키
 	
 	private MyInfoDAO() {
 		
 	}//MyInfoDAO
 	
-	public static MyInfoDAO getInstance() {
+	private MyInfoDAO(String key) {
+		this.key=key;
+	}//MyInfoDAO
+	
+	public static MyInfoDAO getInstance(String key) {
 		if( miDAO == null ) {
-			miDAO = new MyInfoDAO();
+			miDAO = new MyInfoDAO(key);
 		}//end if
 		return miDAO;
 	}//getInstance
@@ -105,8 +110,7 @@ public class MyInfoDAO {
 			.append("where id = ? ");
 			
 			//변경하려는 이메일을 암호화해서 DB에 넣는다.
-			 String key="abcdefghijklmonp1234~";
-		     DataEncrypt de=new DataEncrypt(DataEncrypt.messageDigest("SHA-1", key));
+			DataEncrypt de=new DataEncrypt(DataEncrypt.messageDigest("SHA-1", key));
 			
 		     pstmt = con.prepareStatement(update.toString());
 		//4. 바인드 변수에 값 설정

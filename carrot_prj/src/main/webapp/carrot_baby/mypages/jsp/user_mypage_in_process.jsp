@@ -28,21 +28,20 @@
 <% 
 //POST 방식
 request.setCharacterEncoding("UTF-8"); 
+
+//입력받은 비밀번호 일방향 해쉬로 암호화 
 String pass=request.getParameter("password");
-System.out.println("비밀번호 : "+ pass);
-//입력받은 비밀번호 암호화
-/* String pass=request.getParameter("password");
 MessageDigest md=MessageDigest.getInstance("SHA-1");
 md.update(pass.getBytes());
 String sha=DataEncrypt.messageDigest("SHA-1", pass);
-System.out.println(sha); */
+System.out.println(sha);
 
 %>
 <!-- VO 객체 생성 -->
 <jsp:useBean id="lVO" class="userVO.LoginVO"></jsp:useBean>
 <!-- 전송 받은 아이디와 비번을 VO에 저장 -->
 <jsp:setProperty property="id" name="lVO" value="${ id }"/>
-<jsp:setProperty property="password" name="lVO" value="<%= pass%>"/>
+<jsp:setProperty property="password" name="lVO" value="<%= sha%>"/> <!-- DB에 암호화해서 저장한 비밀번호와 비교 -->
 <%
 LoginDAO lDAO = LoginDAO.getInstance();
 System.out.println(lVO);

@@ -53,10 +53,10 @@ public class PwUpDAO {
          
          pstmt = con.prepareStatement(update.toString());
       //4. 바인드 변수에 값 설정
-         //기존 비밀번호와 입력한 비밀번호를 비교할 때 입력한 비밀번호를 암호화해서 맞는지 비교한다.
-         //새 비밀번호도 암호화 해서 DB에 저장한다.
+         //새 비밀번호를 암호화 해서 DB에 저장한다.
          pstmt.setString(1, DataEncrypt.messageDigest("SHA-1", puVO.getNew_pw()));
          pstmt.setString(2, puVO.getId());
+         //기존 비밀번호와 입력한 비밀번호를 비교할 때 입력한 비밀번호도 암호화해서 맞는지 비교한다.
          pstmt.setString(3,  /*DataEncrypt.messageDigest("SHA-1",*/  puVO.getPassword());
          
          updateCnt=pstmt.executeUpdate();
