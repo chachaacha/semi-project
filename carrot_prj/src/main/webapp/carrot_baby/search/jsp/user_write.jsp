@@ -58,6 +58,12 @@ $(function() {
 		+ "<img id='preview"+ (cnt-1) +"' name='preview"+ (cnt-1) +"'/></div>";
 		$("#inputWrap").append(outDiv);
 		++minAppend;
+		
+		if( cnt ==10 ){
+			alert("이미지를 10개 이상 추가 할 수 없습니다.");
+			return;
+		}
+		
 	});
 	$("#btnRemove").click(function() {
 		if(minAppend == 1){
@@ -144,10 +150,6 @@ function readURL(input ,cnt) {
 <body>
 <%
 String user_id =(String)session.getAttribute("user_id");
-if(user_id==null){
-user_id = "user1";
-session.setAttribute("user_id", user_id);
-}
 %>
 <%
 		//PostDAO와 연결

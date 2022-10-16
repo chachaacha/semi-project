@@ -67,6 +67,12 @@ $(function() {
 		+ "<img id='preview"+ (cnt-1) +"' name='preview"+ (cnt-1) +"'/></div>";
 		$("#inputWrap").append(outDiv);
 		++minAppend;
+		
+		if( cnt ==10 ){
+			alert("이미지를 10개 이상 추가 할 수 없습니다.");
+			return;
+		}
+		
 	});
 	$("#btnRemove").click(function() {
 		if(minAppend == 1){
@@ -152,7 +158,7 @@ function readURL(input ,cnt) {
 
 	        alert('이미지 파일만 업로드 가능합니다.'); 
 
-	        input.value = ''; 
+	        input.value = '';
 
 	        input.focus(); 
 	    }

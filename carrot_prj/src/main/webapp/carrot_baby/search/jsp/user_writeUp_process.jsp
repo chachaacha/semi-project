@@ -69,7 +69,6 @@ request.setCharacterEncoding("UTF-8");
 	<jsp:setProperty property="contents" name="pVO" value="<%= contents %>"/>
 <%
 PostDAO pDAO = PostDAO.getInstance();
-out.println(pVO);
 pDAO.updatePost(pVO);
 %>
 <%
@@ -89,15 +88,7 @@ pDAO.updatePost(pVO);
 		flag=true;
 		temp.delete(); //파일 삭제
 	}//end if
-	
-	if( !flag ){
 %>
-	파일이 업로드 되었습니다.<br/>
-	파일명 : <%= originalName[i] %>(<%= reName[i] %>)
-	나이 : <%= cnt %><br/>
-<%} else {%>
-업로드 파일은 5MByte까지만 가능합니다.
-<%}//end else %>
 <%if( reName[i] != null ){%>
 <jsp:setProperty property="product_idx" name="iVO" value="<%= product_idx %>"/>
 <jsp:setProperty property="img_num" name="iVO" value="<%= i+1 %>"/>
@@ -131,6 +122,12 @@ pDAO.updatePost(pVO);
 <jsp:setProperty property="img_num" name="iiVO" value="<%= i %>"/>
 <%	pDAO.deleteImg(iiVO);
 		}//end for 
-	}//end if%>
+	}//end if
+pageContext.setAttribute("product_idx", product_idx);
+	%>
+<script type="text/javascript">
+	location.href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${ product_idx }";
+</script>	
+	
 </body>
 </html>
