@@ -212,12 +212,12 @@ public class MySalesDAO {
 			StringBuilder update = new StringBuilder();
 			update
 			.append("	update	product							")
-			.append("	set			buy_id = ? sold_check = Y	")
+			.append("	set			buyer_id = ? sold_check = Y	")
 			.append("	where 	product_idx = ?					");
 
 			pstmt = con.prepareStatement(update.toString());
 			// 4. 바인드 변수에 값 설정
-			pstmt.setString(1, bVO.getBuy_id());
+			pstmt.setString(1, bVO.getBuyer_id());
 			pstmt.setString(2, bVO.getProduct_idx());
 			// 5. 쿼리문 수행 후 결과 얻기
 		} finally {

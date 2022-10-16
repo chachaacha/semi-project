@@ -138,16 +138,7 @@ $(function() {
 		}
 		
 	})
-	   
-	//구매자 선택 팝업창 열기
-		$(".state-select").change(function() {
-			var buyer=$(".state-select").val();
-			if(buyer=="판매완료"){
-				window.open("choice_popup.jsp","popup_select",
-						"width=520,height=490,top=203,left=1336");
-			}
-		})
-		
+	  
 	// 댓글 조회 필터
 		$(".comments-old").click(function() {
 			var comFlag=$(this).attr("value");
@@ -202,7 +193,20 @@ $(function() {
 				$("#reserved").val(stateVal);
 				$("#product_idx").val(product_idx);
 				$("#statusFrm").submit();
-			} 
+			}else {
+				window.open("choice_popup.jsp?product_idx=${pIdx}","popup_select",
+				"width=520,height=490,top=203,left=1336");
+			}
+			
+		})
+		
+		$(".delete-btn").click(function() {
+			
+			var conFlag=confirm("게시글을 삭제하시겠습니까?");
+			
+			if(conFlag==true) {
+				alert("삭제");
+			}
 			
 		})
 		
@@ -433,7 +437,7 @@ $(function() {
 			</div>
 		 	<c:if test="${wriCheck eq 0 }">
 		 		<c:choose>
-				 	<c:when test="${pInfo.reserved eq 'N' }">
+				 	<c:when test="${pInfo.reserved eq 'N' && pInfo.sold_check eq 'N'}">
 				 		<div class="state">판매중</div>
 				 	</c:when>
 				 	<c:when test="${pInfo.reserved eq 'Y' }">
@@ -449,7 +453,7 @@ $(function() {
 			 	<select name="state" class="state-select">
 					<option value="N" ${pInfo.reserved eq 'N' ?	"selected":""}>판매중</option>
 					<option value="Y" ${pInfo.reserved eq 'Y' ? "selected":""}>예약중</option>
-					<option class="soldout" value="SY" ${pInfo.sold_check eq 'Y' ? "selected":""}>판매완료</option>
+					<option class="soldout" ${pInfo.sold_check eq 'Y' ? "selected":""} value="Y" ${pInfo.sold_check eq 'Y' ? "selected":""}>판매완료</option>
 				</select>
 			</c:if>
 		</div>
@@ -501,10 +505,10 @@ $(function() {
 					<c:set var="comIndx" value="${empty param.comment_flag ? 0 : param.comment_flag }"/> 
 					<ul class="comments-align">
 						<li>
-							<a ${comIndx eq 0 ? "class='comments-old'" : "class='comments-new'"} href="javascript:void(0);" value="0">등록순</a>
+							<a ${comIndx eq 0 ? "class='comments-new'" : "class='comments-old'"} href="javascript:void(0);" value="0">최신순</a>
 						</li>
 						<li>
-							<a ${comIndx eq 1 ? "class='comments-old'" : "class='comments-new'"} href="javascript:void(0);" value="1">최신순</a>
+							<a ${comIndx eq 1 ? "class='comments-new'" : "class='comments-old'"} href="javascript:void(0);" value="1">등록순</a>
 						</li>
 					</ul>
 				</div>
@@ -552,7 +556,7 @@ $(function() {
 					           </div>
 				    	 </div>
 				   	</div>
-		  
+
 		   			<%
 		   				pageContext.setAttribute("crcn", "\r\n");
 		   				pageContext.setAttribute("br", "<br>");

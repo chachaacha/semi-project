@@ -1,11 +1,21 @@
+<%@page import="userVO.UserCommentVO"%>
+<%@page import="java.util.List"%>
+<%@page import="userDAO.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>구매자 선택</title>
 <link rel="stylesheet" type="text/css" href="../css/choice_popup.css"/>
+<jsp:useBean id="ucVO" class="userVO.UserCommentVO" scope="page"/>
+<jsp:useBean id="bVO" class="userVO.BuyVO" scope="page"/>
+<jsp:setProperty property="*" name="ucVO"/>
+<jsp:setProperty property="*" name="bVO"/>
 <style type="text/css">
 html {
 	overflow: hidden;
@@ -16,11 +26,35 @@ html {
 <script type="text/javascript">
 $(function() {
 	$(".choice-btn").click(function(){
-		alert("구매자 선택이 완료되었습니다.")
-		self.close();
+		
+		var buyerVal=$('input:radio[name="report"]:checked').val();
+		$("#buyer_id").val(buyerVal);
+		$("#buyerFrm").submit();
 	})
 })
 </script>
+<%
+//BoardDAO 생성
+BoardDAO bDAO=BoardDAO.getInstance();
+
+String product_idx=request.getParameter("product_idx");
+
+//거래완료 구매자 리스트 불러오기
+List<UserCommentVO> selCom=bDAO.selectTrader(product_idx);
+pageContext.setAttribute("selCom", selCom);
+
+String buyer_id=request.getParameter("buyer_id");
+
+if(buyer_id!=null){
+	bDAO.updateTrader(bVO);
+%>
+	<script type="text/javascript">
+	alert("구매자 선택이 완료되었습니다.");
+	self.close();
+</script>
+<%
+}
+%>
 </head>
 <body>
 <div class="wrap">
@@ -37,17 +71,17 @@ $(function() {
 </div><!--  -->
 	<div class="contents">
 		<ul>
-			<li><input type="radio" name="report" class="report-wc-radio">
-			<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">  차승주주(chch****)</li>
-			<li><input type="radio" name="report" class="report-wc-radio">
-			<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">  시크릿주주(secr****)</li>
-			<li><input type="radio" name="report" class="report-wc-radio">
-			<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">  다함께 차차차(dada****)</li>
-			<li><input type="radio" name="report" class="report-wc-radio">
-			<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">  차파게티 요리사(jjap****)</li>
+			<c:forEach var="comList" items="${selCom}">
+			<li><input type="radio" value="${comList.id }" name="report" class="report-wc-radio">
+			<img alt="프로필이미지"src="../../user_profile_upload/${comList.img }" class="profile-img"> <c:out value="${comList.nick}"/>(<c:out value="${fn:substring(comList.id,0,4) }****"/>)</li>
+			</c:forEach>
 		</ul>
 	</div>
 	<button type="button" class="choice-btn">확인</button>
 </div>
+<form method="post" id="buyerFrm">
+	<input type="hidden" name="buyer_id" id="buyer_id" value="${param.buyer_id }">
+	<input type="hidden" name="product_idx" id="product_idx" value="${param.product_idx }">
+</form>
 </body>
 </html>

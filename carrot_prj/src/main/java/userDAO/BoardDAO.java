@@ -11,7 +11,6 @@ import java.util.List;
 import common.DbConnection;
 import userVO.BoardVO;
 import userVO.BuyVO;
-import userVO.MyInfoVO;
 import userVO.ReportBVO;
 import userVO.ReportCVO;
 import userVO.ReportVO;
@@ -324,10 +323,10 @@ public class BoardDAO {
 			if(ucVO.getComment_flag() != -1) {
 				switch(ucVO.getComment_flag()) {
 				case 0:
-					sb.append(" order by pc.comment_idx asc, pc.reply_idx, pc.posted_date ");
+					sb.append(" order by pc.comment_idx desc, pc.reply_idx, pc.posted_date ");
 					break;
 				case 1:
-					sb.append(" order by pc.comment_idx desc, pc.reply_idx, pc.posted_date ");
+					sb.append(" order by pc.comment_idx, pc.reply_idx, pc.posted_date ");
 				}
 			}
 			
@@ -683,14 +682,10 @@ public class BoardDAO {
 			
 			StringBuilder selectTrader = new StringBuilder();
 			selectTrader
-			//.append("	select pc.id, m.nick	")
-			//.append("	from product_comment pc	")
-			//.append("	where  product_idx=? and comment_idx=? and reply_idx=?	")
-			//.append("   group by id, nick ");
-			.append("	select pc.id, m.nick	")
+			.append("	select pc.id, m.nick, m.img	")
 			.append("	from product_comment pc, member m")
-			.append("	where pc.id=m.id and product_idx='?'	")
-			.append("   group by pc.id, m.nick; ");
+			.append("	where pc.id=m.id and product_idx=?")
+			.append("   group by pc.id, m.nick , m.img ");
 			
 			pstmt=con.prepareStatement(selectTrader.toString());
 			
@@ -703,8 +698,10 @@ public class BoardDAO {
 				cmVO = new UserCommentVO();
 				cmVO.setId(rs.getString("id"));
 				cmVO.setNick(rs.getString("nick"));
+				cmVO.setImg(rs.getString("img"));
 				list.add(cmVO);
 			}//end while
+			
 		}finally {
 			db.dbClose(rs, pstmt, con);
 		}
@@ -729,7 +726,7 @@ public class BoardDAO {
 			.append("	where product_idx=? 	");
 			
 			pstmt=con.prepareStatement(updateTrader.toString());
-			pstmt.setString(1,bVO.getBuy_id());
+			pstmt.setString(1,bVO.getBuyer_id());
 			pstmt.setString(2, bVO.getProduct_idx());
 			
 			updateCnt=pstmt.executeUpdate();
@@ -771,10 +768,6 @@ public class BoardDAO {
 			
 			pstmt=con.prepareStatement(updateTrader.toString());
 			pstmt.setString(1, bVO.getProduct_idx());
-			
-			System.out.println("-------"+updateTrader);
-			System.out.println("-------"+bVO);
-			
 			
 			updateCnt=pstmt.executeUpdate();
 			
