@@ -45,15 +45,19 @@ if(temp.length()> checkSize) {
 	flag=false;
 	temp.delete();
 }
+//이미지
+String img=mr.getParameter("img");
+if(img == null){
+	img = "profile.png";
+}
+System.out.println("***이미지***"+img);
 //이름
 String name=mr.getParameter("name");
-System.out.println(name);
 //별명
 String nick=mr.getParameter("nick");
-System.out.println(nick);
 //아이디
 String id=mr.getParameter("id");
-System.out.println(id);
+System.out.println("***아이디***"+id);
 //비밀번호
 String pwd=mr.getParameter("password");
 System.out.println("일반비밀번호: "+pwd);
@@ -62,13 +66,11 @@ String plainText=pwd;
 MessageDigest md=MessageDigest.getInstance("SHA-1");
 md.update(plainText.getBytes());
 String sha_p=DataEncrypt.messageDigest("SHA-1", plainText);
-System.out.println(sha_p);
+System.out.println("***암호화비번***"+sha_p);
 //생년월일
 String birth=mr.getParameter("birth");
-System.out.println(birth);
 //폰번호
 String phone_num=mr.getParameter("phone_num");
-System.out.println(phone_num);
 //<!-- 체크박스 -->
 String check1=mr.getParameter("sms_chk");
 if(check1 == null){
@@ -85,21 +87,19 @@ System.out.println(email1);
 String email2=mr.getParameter("email2");
 System.out.println(email2);
 String email=email1+"@"+email2;
-System.out.println("--------이메일: "+email);
+System.out.println("이메일: "+email);
 //알고리즘 설정하여 이메일 암호화(키추가)
 String plainText2=email;
 String sha_e=DataEncrypt.messageDigest("SHA-1", plainText2);
-System.out.println(sha_e);
+System.out.println("***암호화이메일***"+sha_e);
 //우편번호
 String zipcode=mr.getParameter("zipcode");
-System.out.println(zipcode);
 //<!-- 주소 추출 -->
 String str=mr.getParameter("addr1");
 String addr=str.substring(0,str.lastIndexOf("구")+1);
-System.out.println("--------주소: "+addr);
+System.out.println("--주소: "+addr);
 //상세주소
 String addr2=mr.getParameter("addr2");
-System.out.println(addr2);
 %>
 <jsp:setProperty property="img" name="jVO" value="<%= reName %>"/>
 

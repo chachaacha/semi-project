@@ -18,6 +18,30 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <!--  -->
 <script type="text/javascript">
+$("#uploadBtn").click(function(){
+	//확장자가 jpg,gif,jpeg,png,bmp 만 업로드 가능하도록 JS 코드작성.
+	var fileName=$("#upfile").val();
+	var blockExt="jpg,gif,jpeg,png,bmp".split(",");
+	var flag=false;
+	
+	if( fileName == ""){
+		alert("업로드할 파일을 선택해주세요.");
+		return;
+	}//end if
+	
+	var fileExt=fileName.substring(fileName.lastIndexOf(".")+1);
+	for(var i= 0 ; i < blockExt.length ; i++){
+		if(blockExt[i] == fileExt){
+			 flag=true;
+		}//end if
+	}//end for
+	
+	if(!flag){
+		alert("이미지파일만 업로드 가능");
+		return;
+	}//end if
+});
+
 //프로필사진 등록 미리보기
 function previewFile() {
  //다른이미지에 적용되지않게 #profile로 id를 주어 타켓설정
@@ -219,7 +243,7 @@ function zipcodeapi() {
 							<div>
 								<div class="upload-btn-wrapper">
 									<button class="formBtn" id="uploadBtn">사진등록</button>
-									<input type="file" name="upfile" onchange="previewFile()"  />
+									<input type="file" name="upfile" onchange="previewFile()" id="upfile" />
 									 <input type="button" value="삭제" class="formBtn" onchange="deleteFile()" >
 								</div>
 							</div>

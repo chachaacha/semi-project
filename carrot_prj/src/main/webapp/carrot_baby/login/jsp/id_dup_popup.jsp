@@ -81,8 +81,10 @@ function chkNull(){
 		<input type="button" value="중복확인" class="chkBtn" id="chkBtn" />
 	</div>
 	</form>
-	<div class="msg">
+	<div  class="msg">
 		<span id="msgOutput" ></span><br>
+	</div>
+	<div class="msg2">	
 		<span>숫자로 시작하거나, 숫자로만 이루어진 아이디는 사용할 수 없습니다.</span><br>
 		<span>공백 또는 특수문자가 포함된 아이디는 사용할 수 없습니다.</span><br>
 	</div>
