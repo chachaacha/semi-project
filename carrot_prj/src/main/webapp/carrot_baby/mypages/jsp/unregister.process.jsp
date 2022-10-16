@@ -1,3 +1,5 @@
+<%@page import="kr.co.sist.util.cipher.DataEncrypt"%>
+<%@page import="java.security.MessageDigest"%>
 <%@page import="userDAO.QuitDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" info=""%>
@@ -24,20 +26,29 @@
 </head>
 <body>
 <%
+//POST 방식
 request.setCharacterEncoding("UTF-8");
+
+//입력받은 비밀번호 일방향 해쉬로 암호화 
+String pass=request.getParameter("password");
+MessageDigest md=MessageDigest.getInstance("SHA-1");
+md.update(pass.getBytes());
+String sha=DataEncrypt.messageDigest("SHA-1", pass);
+System.out.println(sha);
 %>
 
 <!-- VO객체 생성 -->
 <jsp:useBean id="qVO" class="userVO.QuitVO"></jsp:useBean>
 <jsp:setProperty property="id" name="qVO" value="${ id }"/>
-<jsp:setProperty property="password" name="qVO" value="${ param.password }"/>
+<jsp:setProperty property="password" name="qVO" value="<%=sha %>"/>
 
-<%
+
+<% 
 QuitDAO qDAO = QuitDAO.getInstance();
 int result = qDAO.updateQuit(qVO);
 
 if(result==0){ //비밀번호 잘못 입력
-	%>
+%>
 		<script type="text/javascript">
 		alert("비밀번호를 잘못 입력하셨습니다.")
 		location.href="unregister.jsp";
