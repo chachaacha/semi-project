@@ -19,25 +19,36 @@
 <!--  -->
 <script type="text/javascript">
 //프로필사진 등록 미리보기
-function previewFile() {
- //다른이미지에 적용되지않게 #profile로 id를 주어 타켓설정
-  const preview = document.querySelector('#profile');
-  const file = document.querySelector('input[type=file]').files[0];
-  const reader = new FileReader();
-
-  reader.addEventListener("load", () => {
-    // convert image file to base64 string
-    preview.src = reader.result;
-  }, false);
-
-  if (file) {
-    reader.readAsDataURL(file);
-  }
+function previewFile(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+        $('#profile').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+  //프로필사진 확장자제한
+	  if(!/\.(jpeg|jpg|png|gif|bmp)$/i.test(input.value)){ 
+	        alert('이미지 파일만 업로드 가능합니다.'); 
+	        input.value = ''; 
+	        input.focus(); 
+	    }
 }
 
 //프로필사진 등록 삭제
 function deleteFile() {
- 
+ 	$("#profile").attr("src", "../../user_profile_upload/profileImg.png");
+}
+
+//공백사용못하게
+function noSpaceForm(obj) { 
+    var str_space = /\s/;  // 공백체크
+    if(str_space.exec(obj.value)) { //공백 체크
+        alert("해당 항목에는 공백을 사용할수 없습니다.\n\n공백은 자동적으로 제거 됩니다.");
+        obj.focus();
+        obj.value = obj.value.replace(' ',''); // 공백제거
+        return false;
+    }
 }
 
 //전화번호 하이픈입력
@@ -46,7 +57,6 @@ const autoHyphen = (target) => {
 	   .replace(/[^0-9]/g, '')
 	   .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
 }
-
 
 //이메일 입력방식 선택
 function selectEmail(e){
@@ -97,30 +107,15 @@ function zipcodeapi() {
 }
 
 $(function () {
-$("#uploadBtn").click(function(){
-	//확장자가 jpg,gif,jpeg,png,bmp 만 업로드 가능하도록 JS 코드작성.
-	var fileName=$("#upfile").val();
-	var blockExt="jpg,gif,jpeg,png,bmp".split(",");
-	var flag=false;
+	//사진등록 버튼 클릭했을 때
+	 $("#uploadBtn").on('change', function(){
+		 previewFile(this);
+	});
+	//사진등록 삭제버튼 클릭 시
+	 $("#deleteBtn").click(function() {
+		 deleteFile();
+	});
 	
-	if( fileName == ""){
-		alert("업로드할 파일을 선택해주세요.");
-		return;
-	}//end if
-	
-	var fileExt=fileName.substring(fileName.lastIndexOf(".")+1);
-	for(var i= 0 ; i < blockExt.length ; i++){
-		if(blockExt[i] == fileExt){
-			 flag=true;
-		}//end if
-	}//end for
-	
-	if(!flag){
-		alert("이미지파일만 업로드 가능");
-		return;
-	}//end if
-});
-
 	//아이디 중복확인 팝업창 열기
     $("#idbtn").click(function() {
 		window.open("id_dup_popup.jsp","id_dup_popup",
@@ -263,9 +258,9 @@ function chkNull(){
 							<div><img src="../../images/profileImg.png" id="profile"  class="img" alt="Image preview"></div>
 							<div>
 								<div class="upload-btn-wrapper">
-									<button class="formBtn" id="uploadBtn">사진등록</button>
-									<input type="file" name="upfile" onchange="previewFile()" id="upfile" />
-									 <input type="button" value="삭제" class="formBtn" onchange="deleteFile()" >
+									<input type="button" value="사진등록" class="formBtn">
+									<input type="file" name="upfile" id="uploadBtn" />
+									 <input type="button" value="삭제" class="formBtn" id="deleteBtn" >
 								</div>
 							</div>
 							</div>
@@ -274,13 +269,13 @@ function chkNull(){
 					<tr>
 						<th><label><span style="color:red">*</span>성명</label></th>
 						<td>
-							<input type="text" placeholder="이름을 입력해주세요" id="name" name="name" class="inputTxt inputName" />
+							<input type="text" placeholder="이름을 입력해주세요" id="name" name="name" class="inputTxt inputName" onkeyup="noSpaceForm(this);" />
 						</td>
 					</tr>
 					<tr>
 						<th><label><span style="color:red">*</span>별명</label></th>
 						<td>
-							<input type="text" placeholder="별명을 입력해주세요" id="nick" name="nick" class="inputTxt inputNickName" />
+							<input type="text" placeholder="별명을 입력해주세요" id="nick" name="nick" class="inputTxt inputNickName" onkeyup="noSpaceForm(this);"  />
 						</td>
 					</tr>
 					<tr>
@@ -293,7 +288,7 @@ function chkNull(){
 							<tr>
 						<th><label><span style="color:red">*</span>비밀번호</label></th>
 						<td>
-							<input type="password" placeholder="비밀번호를 입력해주세요" name="password" id="password" class="inputPass"/>
+							<input type="password" placeholder="비밀번호를 입력해주세요" name="password" id="password" class="inputPass" onkeyup="noSpaceForm(this);" />
 							<span>8~20자의 영문,숫자, 특수문자를 혼합하여 입력해야 합니다.</span>
 						</td>
 					</tr>
@@ -312,7 +307,7 @@ function chkNull(){
 					<tr>
 						<th><span style="color:red">*</span>휴대폰</th>
 						<td>
-							<input type="tel" name="phone_num" id="phone_num" placeholder="전화번호를 입력해주세요" oninput="autoHyphen(this)"/>
+							<input type="tel" name="phone_num" id="phone_num" placeholder="전화번호를 입력해주세요" oninput="autoHyphen(this)" />
 							<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk"  value="Y"  />
 							<label>SMS 수신동의</label></span>
 						</td>
@@ -322,7 +317,7 @@ function chkNull(){
 						<td class="mail_type">
 						<!--  방법 1-->
 							<input type="hidden"  name="email" id="email" />
-							<input type=text placeholder="이메일 입력" name="email1" id="email1" class="inputEmail" maxlength="100" />
+							<input type=text placeholder="이메일 입력" name="email1" id="email1" class="inputEmail" maxlength="100" onkeyup="noSpaceForm(this);"  />
 							<span class="email_txt">@</span>
 							<input type="text" name="email2" id="email2" class="inputEmail" maxlength="100" />
 							<select class="selectEmail" name="email3" id="email3" onchange="selectEmail(this)">

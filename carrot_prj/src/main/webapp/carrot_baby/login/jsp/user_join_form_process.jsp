@@ -37,6 +37,9 @@ MultipartRequest mr = new MultipartRequest(request, uploadDir.getAbsolutePath(),
 String originalName=mr.getOriginalFileName("upfile");
 //변경된 파일명
 String reName=mr.getFilesystemName("upfile");
+if(reName == null){
+	reName = "profileImg.png";
+}
 
 boolean flag=false;
 File temp=new File(uploadDir.getAbsolutePath()+"/"+reName);
@@ -45,12 +48,7 @@ if(temp.length()> checkSize) {
 	flag=false;
 	temp.delete();
 }
-//이미지
-String img=mr.getParameter("img");
-if(img == null){
-	img = "profileImg.png";
-}
-System.out.println("***이미지***"+img);
+System.out.println("***이미지***"+reName);
 //이름
 String name=mr.getParameter("name");
 //별명

@@ -16,6 +16,17 @@ html {
 <!-- jQuery google CDN -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
+//공백사용못하게
+function noSpaceForm(obj) {
+    var str_space = /\s/;  // 공백체크
+    if(str_space.exec(obj.value)) { //공백 체크
+        alert("해당 항목에는 공백을 사용할수 없습니다.");
+        obj.focus();
+        obj.value = obj.value.replace(' ',''); // 공백제거
+        return false;
+    }
+}
+
 $(function() {
 	//중복확인 버튼 클릭시
 	$("#chkBtn").click(function(){
@@ -58,8 +69,6 @@ function chkNull(){
 	//$("#frmDup").submit();
 }//chkNull
 
-
-
 </script>
 </head>
 <body>
@@ -76,7 +85,7 @@ function chkNull(){
 	<!-- 1 -->
 	<form method="get" id="frmDup">  
 	<div class="contents">
-		<input type="text" class="idText" id="id" name="id" size="30" autocomplete="off" />
+		<input type="text" class="idText" id="id" name="id" size="30" autocomplete="off" onkeyup="noSpaceForm(this);"/>
 		<input type="text" style="display:none;"/>
 		<input type="button" value="중복확인" class="chkBtn" id="chkBtn" />
 	</div>
