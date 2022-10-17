@@ -61,8 +61,10 @@
     			  margin-right: 10px;
 }
 .edit_del_btn{background: #fff;
-						float: right;
-			   		    }
+				 float: right;
+				 margin-top: -25px;
+				 
+			    }
 .price_ch{display: flex;
 			flex-direction: column;
 			margin-top: 20px;

@@ -149,7 +149,7 @@ $(function() {
 <!-- main middle -->
 	<div class="main-middle-wrap">
 		<div class="main-middle-content">
-			<h1 class="main-middle-title">중고거래</h1>
+			<h1 class="main-middle-title">중고거래 인기매물</h1>
 			<%
 			HomeDAO hDao=HomeDAO.getInstance(); //연결을 한번 했기 때문에 밑에서 또 연결할 필요x
 			List<HomeVO> mainList=hDao.selectProduct();

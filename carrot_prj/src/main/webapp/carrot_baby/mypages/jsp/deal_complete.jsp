@@ -25,15 +25,17 @@
 <link rel="stylesheet" type="text/css" href="../css/deal_complete.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
-// x 버튼 누르면 글 삭제할건지 물어보는 컨펌창
+// x 버튼 누르면 글 삭제
 $(function() {
 	$(".edit_del_btn").click(function() {
-		if(confirm("게시글을 정말 삭제하시겠어요?")){
-			$("pldx").val(${param.product_idx});
-			$("#deleteFrm").submit();
+		var conFlag =confirm("게시글을 정말 삭제하시겠어요?");
+		
+		if(conFlag==true){
+		$("#deleteFrm").submit();
 		}//end if
-	})
+	});//click
 }); //ready
+
 
 
 
@@ -61,8 +63,9 @@ $(function() {
 <div class="deal_complete_title_wrap">
 	<div class="deal_complete_title">거래완료</div>
 	<%
-	//거래완료된 상품들 불러오기
+	//세션 아이디 얻기
 	String id = (String)session.getAttribute("id");
+	//거래완료된 상품들 불러오기
 	MySalesDAO msDAO=MySalesDAO.getInstance();
 	List<MySalesVO> dealComplete=msDAO.selectDealComplete(id); //id에서 product_idx로 바꿨는데 뭐가 맞는지..
 	//System.out.println("-----"+dealComplete); //찍어보니 값이 안담김...--->계속 test1으로 테스트해봤었는데 test1에는 거래 완료가 없어서 
@@ -70,12 +73,13 @@ $(function() {
 	// 빈 화면이 출력될 경우 오류가 있는 것처럼 보일 수 있어서
 	//거래완료된 상품이 없을 땐 "거래완료된 상품 내역이 없습니다"를 화면에 띄움
 	
+	
+	
 	//스콥 객체에 할당하기
 	pageContext.setAttribute("dealComplete", dealComplete);
 	%>
 	
 	<!-- for each로 반복 -->
-	<form id="deleteFrm" method="post">
 	<c:forEach var="dc" items="${dealComplete}">
 	 	<div class="deal_complete_item">
 			<div class="deal_complete_item_img">
@@ -87,11 +91,13 @@ $(function() {
 							<a href="" style="text-decoration: none; color: black; ">
 							<c:out value="${dc.title }"/>
 							</a>
+					<form method="post" action="Mypage_delete_process.jsp?product_idx=${pldx}" id="deleteFrm">
 						<button class="edit_del_btn" type="button" onchange="deleteProduct(this, ${ dc.product_idx })">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
   							<path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
   							<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg>
 						</button>
+					</form>	
 							<div class="dong_date">
 							<c:out value="${dc.gu }"/>
 							ㆍ
@@ -120,7 +126,6 @@ $(function() {
 	</div><!-- on-sale_item_img -->
 	</div><!-- deal_complete_item -->
 </c:forEach>
-	</form>
 
 
 <!-- 거래완료된 상품이 없을 경우 표시되는 메시지-->

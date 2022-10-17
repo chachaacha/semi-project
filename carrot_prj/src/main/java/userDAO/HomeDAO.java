@@ -46,7 +46,9 @@ public class HomeDAO {
 			StringBuffer sb = new StringBuffer();
 			sb.append("select thumbnail,title, price, gu, comment_cnt, liked_cnt, product_idx ")
 	           .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx,(select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank, product_idx, sold_check, (select quit from member where id = p.id) quit from product p ) ")
-	           .append("where 1=1 and sold_check='N' and quit='N' and rank between 1 and 8 ");
+	           .append("where 1=1 and sold_check='N' and quit='N' order by posted_date desc ")
+			   .append("offset 1 rows ")
+			   .append("fetch next 8 rows only ");
 			pstmt= con.prepareStatement(sb.toString());
 			rs=pstmt.executeQuery();
 			while(rs.next()) {

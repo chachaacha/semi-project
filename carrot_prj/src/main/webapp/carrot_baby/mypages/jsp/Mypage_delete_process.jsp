@@ -25,37 +25,28 @@
 <body>
 <%
 //POST방식의 요청 한글 처리
-request.setCharacterEncoding("UTF_8");
+request.setCharacterEncoding("UTF-8");
+
+//MysalesDaO생성
+MySalesDAO msDAO=MySalesDAO.getInstance();
+//게시글 삭제를 위해 상품인덱스 설정하기
+String product_idx=request.getParameter("product_idx");
+//세션에 있는 아이디 불러오기
+//String id=(String)session.getAttribute("id");
+msDAO.deleteBoard(product_idx);
+
+//이후에 다시 거래완료 목록이 조회된 페이지로 돌아감.
+response.sendRedirect("deal_complete.jsp");
 %>
 
-<!--1. bean생성 -->
-<%-- <jsp:useBean id="객체명" class="객체화할 클래스" scope=""/> --%>
+<%-- <!--1. bean생성 -->
+<jsp:useBean id="객체명" class="객체화할 클래스" scope=""/>
 <jsp:useBean id="msVO" class="userVO.MySalesVO" />
 <!--2. setter method 호출 : 모든 파라메터가 입력-->
-<%-- <jsp:setProperty name="객체명" property="*"/> --%>
-<jsp:setProperty property="*" name="msVO"/>
+<jsp:setProperty name="객체명" property="*"/>
+<jsp:setProperty property="*" name="msVO"/> --%>
 
-<!-- 게시글 삭제를 위한 폼-->
-<form method="post" id="deleteFrm">
-	<input type="hidden" id="product_idx" name="product_idx" value="${param.product_idx }"/>
-	<input type="hidden" id="pldx" name="pldx"/>
-</form>
 
-<!-- 게시글 삭제  -->
-<c:if test="${not empty param.pldx }">
-<c:catch var="ex"> <!-- 예외를 ex에 저장 / c:if와 함께 사용 -->
- <%-- <% msdcVO.deleteBoard(request.getParameter("pldx")); %>  --%> 
-</c:catch>
-<c:if test="${not empty ex }">
-	<script type="text/javascript">
-	alert("무결성 예외 발생! 자식키 존재함")
-	</script>
-</c:if><!-- not empty ex  -->
-<script type="text/javascript">/* 삭제 성공 시  */
-alert("게시글을 삭제하였습니다.");
-self.close();
-</script>
-</c:if><!-- not empty param.product_idx  -->
 
 
 </body>

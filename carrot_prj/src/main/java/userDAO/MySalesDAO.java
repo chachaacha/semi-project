@@ -279,7 +279,6 @@ public class MySalesDAO {
 				msdcVO.setLiked_cnt(rs.getInt("liked_cnt"));
 				msdcVO.setBuyer_id(rs.getString("buyer_id")); // 추가
 				msdcVO.setPurchased_date(rs.getDate("purchased_date")); // 추가
-
 				list.add(msdcVO);
 			} // end while
 		} finally {
