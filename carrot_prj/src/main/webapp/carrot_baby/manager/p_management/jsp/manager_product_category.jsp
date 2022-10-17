@@ -325,6 +325,7 @@ function pageMove(page) {
 							<option value="${ catList.category_idx }"${ catList.category_idx eq param.categoryFlag?" selected='selected'":""}><c:out value="${ catList.category }"/></option>
 							</c:forEach>
 					</select>
+					<div>
 					<div class="table-wrap">
 							<%-- 메서드 매개변수VO 값설정 --%>
 							<jsp:useBean id="psVO" class="managerVO.ProductSearchVO"></jsp:useBean><%-- VO생성 --%>
@@ -379,8 +380,7 @@ function pageMove(page) {
 						 </script>
 						 </c:if>
 					</div>
-			</div>
-					<!-- 페이징 -->
+										<!-- 페이징 -->
 				<c:if test="${ empty param.titleSearch }">
 				<c:set var="ceil" value="${ total/10 }"/>
 				<fmt:parseNumber var="lastPage" integerOnly="true" value="${ ceil+(1-(ceil%1))%1  }"/>
@@ -404,6 +404,9 @@ function pageMove(page) {
 					</c:if>
 				</div>
 				</c:if>
+				</div>
+			</div>
+
 			</div>
 		</div>
 	</div>

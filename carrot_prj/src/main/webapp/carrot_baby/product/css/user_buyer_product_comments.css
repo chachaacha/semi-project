@@ -254,6 +254,7 @@ a {
 .description-detail {
 	margin-bottom: 16px;
 	margin-top: 8px;
+	white-space: pre;
 }
 
 .description-detail p {

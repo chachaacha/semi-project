@@ -500,9 +500,7 @@ $(function() {
 				<fmt:formatNumber value="${pInfo.price }" pattern="#,###,###원"/>
 			</c:if>
 		</p>
-		<p class="description-detail">
-			<c:out value="${pInfo.contents }" escapeXml="false"/>
-		</p>
+		<p class="description-detail"><c:out value="${pInfo.contents }" escapeXml="false"/></p>
 	</div>
 <!-- description end -->
 
@@ -665,7 +663,7 @@ $(function() {
 						<%-- // 이전 버튼 생성 (<<)(<) --%>
 						<c:if test="${curPage >= 5}"> <%-- // 현재 페이지가 5이상일때부터 (<)버튼 생성 --%>
 							<a href="javascript:pageMove(1);" class="page-bottom-next">&lt;&lt;</a> <%-- // 누르면 pageFlag 1로 이동시킴 --%>
-							<a href="javascript:pageMove(${curPage-4});" class="page-bottom-next">&lt;</a> <%-- // (<) 누르면 pageFlag를 현재페이지에서-4로 이동시킴(이전 페이지 블럭) --%>
+							<a href="javascript:pageMove(${ startNum eq 1 ? 1 :startNum-1 });" class="page-bottom-next">&lt;</a> <%-- // (<) 누르면 pageFlag를 현재페이지에서-4로 이동시킴(이전 페이지 블럭) --%>
 						</c:if>					
 					
 						<%-- // 페이지블럭 구하기 (4개씩만=4개씩만 출력하기원해서 조건값을 줬기 때문)  --%>

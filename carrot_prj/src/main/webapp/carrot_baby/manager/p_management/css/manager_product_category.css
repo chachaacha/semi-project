@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+a {
+	text-decoration: none;
+}
+
 .product_management-wrap {
 	width: 1280px;
 	margin: 0 auto;
@@ -242,9 +246,7 @@
 /* 페이지 */
 .page-bottom {
 	display: flex;
-	margin-top: 60px;
 	justify-content: center;
-	margin-bottom: 60px;
 }
 
 .page-bottom-icon {
@@ -270,7 +272,7 @@
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
-	background-color: #ff6900;
+	background-color: #7D7D7D;
 	margin-right: 12px;
 	cursor: pointer;
 	color: #fff;
@@ -285,7 +287,7 @@
 	height: 40px;
 	border-radius: 50%;
 	border: 1px solid #E0E0E0;
-	background: #84AA7C;
+	background: #495057;
 	color: #fff;
 	cursor: pointer;	
 	margin-right: 12px;

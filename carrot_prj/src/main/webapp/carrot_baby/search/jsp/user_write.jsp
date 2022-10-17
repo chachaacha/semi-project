@@ -257,7 +257,6 @@ String user_id =(String)session.getAttribute("id");
 					</div>
 				</div>
 				<textarea rows="30" name="contents" id="contents" class="contents-txtarea" placeholder="내용을 입력해주세요" ></textarea>
-				<
 			</div>
 		    </form>
 			<div class="register-write">

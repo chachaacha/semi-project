@@ -302,7 +302,7 @@ String user_id =(String)session.getAttribute("id");
 						pageContext.setAttribute("contents", contents);
 		   			%>
 				</div>	
-				<textarea rows="30" name="contents" id="contents" class="contents-txtarea" placeholder="내용을 입력해주세요"   ><c:out value=" ${fn:replace(contents,br,crcn) }" escapeXml="false"/></textarea>
+				<textarea rows="30" name="contents" id="contents" class="contents-txtarea" placeholder="내용을 입력해주세요"><c:out value="${fn:replace(contents,br,crcn) }" escapeXml="false"/></textarea>
 			</div>
 			</form>
 			<div class="register-write">
