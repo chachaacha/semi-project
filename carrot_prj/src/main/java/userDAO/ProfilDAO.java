@@ -358,7 +358,7 @@ public void insertBlock(BlockUVO buVO) throws SQLException {
 			pstmt=con.prepareStatement(insert); // 쿼리문을 넣어 쿼리문 실행객체를 얻는다.
 		//4. 바인드변수에 값 설정
 			pstmt.setString(1, buVO.getId());
-			pstmt.setString(2, buVO.getBlock_id());
+			pstmt.setString(2, buVO.getBlocked_id());
 		//5. 쿼리문 수행 후 결과 얻기
 			pstmt.executeUpdate();
 		} finally {
