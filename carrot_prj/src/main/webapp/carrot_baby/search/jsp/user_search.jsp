@@ -175,12 +175,21 @@ pageContext.setAttribute("hVOList", hVOList);
 //System.out.println("필터 적용된 게시물의 수 : "+hVOList.size());
 
 
-List<BlockUVO> bList=mDAO.selectBlock(sessionId);
-System.out.println(bList);
+List<String> bList=mDAO.selectBlock(sessionId);
+if(bList.size()!=0) {
+System.out.println(bList.get(1));
+}
+
+/* for(int i = 0 ; i<bList.size();i++) {
+	System.out.println(bList.get(i));
+} */
+
+pageContext.setAttribute("bList", bList);
 %>
 
 <!-- container -->
-<div class="container">
+<div class="container">.
+
 	<div class="test">
 	<div class="content">
 		<h1 class="content-head-title">
@@ -514,6 +523,7 @@ System.out.println(bList);
 	<input type="hidden" name="priceFlag" id="priceFlag" value="${param.priceFlag }">
 	<input type="hidden" name="minPrice" id="minPrice" value="${param.minPrice }">
 	<input type="hidden" name="maxPrice" id="maxPrice" value="${param.maxPrice }">
+	<input type="hidden" name="id" id="id" value="${param.id }">
 </form>
 
 <!-- footer -->

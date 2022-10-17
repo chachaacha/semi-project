@@ -2,14 +2,15 @@ package userVO;
 
 public class MainFlagVO {
 	private int categoryFlag, guFlag, orderByFlag, priceFlag, minPrice, maxPrice, pageFlag;
-	private String freeFlag, keyword;
+	private String freeFlag, keyword, id;
 	
 	public MainFlagVO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public MainFlagVO(int categoryFlag, int guFlag, int orderByFlag, int priceFlag, int minPrice, int maxPrice, int pageFlag,
-			String freeFlag, String keyword) {
+	public MainFlagVO(int categoryFlag, int guFlag, int orderByFlag, int priceFlag, int minPrice, int maxPrice,
+			int pageFlag, String freeFlag, String keyword, String id) {
+		super();
 		this.categoryFlag = categoryFlag;
 		this.guFlag = guFlag;
 		this.orderByFlag = orderByFlag;
@@ -19,6 +20,7 @@ public class MainFlagVO {
 		this.pageFlag = pageFlag;
 		this.freeFlag = freeFlag;
 		this.keyword = keyword;
+		this.id = id;
 	}
 
 	public int getCategoryFlag() {
@@ -69,6 +71,14 @@ public class MainFlagVO {
 		this.maxPrice = maxPrice;
 	}
 
+	public int getPageFlag() {
+		return pageFlag;
+	}
+
+	public void setPageFlag(int pageFlag) {
+		this.pageFlag = pageFlag;
+	}
+
 	public String getFreeFlag() {
 		return freeFlag;
 	}
@@ -85,19 +95,19 @@ public class MainFlagVO {
 		this.keyword = keyword;
 	}
 
-	public int getPageFlag() {
-		return pageFlag;
+	public String getId() {
+		return id;
 	}
-	
-	public void setPageFlag(int pageFlag) {
-		this.pageFlag = pageFlag;
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@Override
 	public String toString() {
 		return "MainFlagVO [categoryFlag=" + categoryFlag + ", guFlag=" + guFlag + ", orderByFlag=" + orderByFlag
 				+ ", priceFlag=" + priceFlag + ", minPrice=" + minPrice + ", maxPrice=" + maxPrice + ", pageFlag="
-				+ pageFlag + ", freeFlag=" + freeFlag + ", keyword=" + keyword + "]";
+				+ pageFlag + ", freeFlag=" + freeFlag + ", keyword=" + keyword + ", id=" + id + "]";
 	}
-	
+
 }

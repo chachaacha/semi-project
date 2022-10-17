@@ -14,7 +14,6 @@ import userVO.CatVO;
 import userVO.HomeVO;
 import userVO.LocVO;
 import userVO.MainFlagVO;
-import userVO.MyCommVO;
 
 public class MainDAO {
 	private static MainDAO mDAO;
@@ -117,11 +116,9 @@ public class MainDAO {
 		}
 	}
 	
-	public List<BlockUVO> selectBlock(String id) throws SQLException {
-		List<BlockUVO> list = new ArrayList<BlockUVO>();
-		
+	public List<String> selectBlock(String id) throws SQLException {
+		List<String> list = new ArrayList<>();
 		DbConnection dc = DbConnection.getInstance();
-		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -143,13 +140,8 @@ public class MainDAO {
 		//5. 쿼리문 실행 후 결과 얻기
 			rs = pstmt.executeQuery();
 			
-			BlockUVO bVO = null;
-			
 			while( rs.next() ) {
-				bVO = new BlockUVO();
-				bVO.setBlocked_id(rs.getString("blocked_id"));
- 
-				list.add(bVO);
+				list.add(rs.getString("blocked_id"));
 			}
 		} finally {
 		//6. 연결 끊기.
@@ -165,7 +157,7 @@ public class MainDAO {
 		ResultSet rs = null;
 		int count=0;
 		List<HomeVO> list = new ArrayList<>();
-		try{
+		try{                                                                                                                                                                                                                                                                                                                                           
 			con=db.getConn();
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select count(*) ")
@@ -173,6 +165,7 @@ public class MainDAO {
 			  .append("where 1=1 and sold_check='N' and quit='N'");
 
 			  pstmt= con.prepareStatement(sb.toString());
+			  
 				if(mfVO.getKeyword() != null &&  !"".equals(mfVO.getKeyword())) {
 					sb.append(" and title like '%'||trim(?)||'%' ");
 				}
@@ -212,6 +205,10 @@ public class MainDAO {
 						sb.append(" and price between ? and ? ");
 					}
 				}
+				
+		//	  	if(mfVO.getId() != null) {
+		//	  		sb.append(" and not id=? ");
+		//	  	}
 				
 				//정렬 라디오 선택시
 				if(mfVO.getOrderByFlag() != -1) {
