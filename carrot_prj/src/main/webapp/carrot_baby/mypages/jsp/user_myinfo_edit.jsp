@@ -34,7 +34,7 @@ function readURL(input) {
 
 //프로필사진 등록 삭제
 function deleteFile() {
- 	$("$myImg").attr("src", "../../user_profile_upload");
+ 	$("#myImg").attr("src", "../../user_profile_upload/profileImg.png");
 }
 
 //전화번호 하이픈입력
@@ -160,7 +160,7 @@ MyInfoVO miVO = miDAO.selectInfo(id);
 									
 									<div>
 										<div class="upload-btn-wrapper">
-											<button class="formBtn" style="padding: 8px 20px;">사진등록</button>
+											<input type="button" class="formBtn" style="padding: 8px 20px;" value="사진등록">
 											<input type="file" name="upfile" id="upfile" style="padding: 8px 20px; cursor: pointer;" />
 											<input type="button" value="삭제" id="deleteImg" class="formBtn" style="margin: 5px 5px; padding: 8px 20px; cursor: pointer;">
 										</div>
