@@ -330,9 +330,13 @@ public class BoardDAO {
 				}
 			}
 			
+			sb.append("offset  ((?-1)*15) rows ") // ? (=(pageFlag-1)*16) 에서부터
+			  .append("fetch next 15 rows only "); 
+			
 			pstmt=con.prepareStatement(sb.toString());
 			pstmt.setString(1, ucVO.getProduct_idx());
 			
+			pstmt.setInt(2, ucVO.getPage_flag());
 			
 			rs=pstmt.executeQuery();
 			

@@ -1,7 +1,6 @@
 package userDAO;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.DbConnection;
-import userVO.BlockUVO;
 import userVO.CatVO;
 import userVO.HomeVO;
 import userVO.LocVO;
@@ -150,7 +148,55 @@ public class MainDAO {
 		return list;
 	}//selectMC
 	
-	public int selectTotal(MainFlagVO mfVO) throws SQLException {
+/*	public int test(List<String> bList) throws SQLException {
+		DbConnection db = DbConnection.getInstance();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count=0;
+		List<HomeVO> list = new ArrayList<>();
+		try{                                                                                                                                                                                                                                                                                                                                           
+			con=db.getConn();
+			StringBuilder sb = new StringBuilder();
+			sb.append(" select count(*) ")
+			.append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx, id, (select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank, sold_check,  (select quit from member where id = p.id) quit from product p ) ")
+			.append("where 1=1 and sold_check='N' and quit='N'");
+			
+			pstmt= con.prepareStatement(sb.toString());
+			System.out.println("--test1---"+ sb );
+			System.out.println("--test1--- "+ bList ); 
+				for(int i=0; i<bList.size(); i++) {
+					sb.append(" and not id=? ");
+				}
+			
+			pstmt = con.prepareStatement(sb.toString());
+			System.out.println("--test2---"+ sb );
+			System.out.println("--test2--- "+ bList ); 
+				
+				for(int i1=0; i1<bList.size(); i1++) {
+					pstmt.setString(i1+1, bList.get(i1));
+				}
+			
+			//pstmt.setString(1, bList.get(0));
+			//pstmt.setString(2, bList.get(1));
+			
+			System.out.println("--test3---"+ sb );
+			System.out.println("--test3--- "+ bList );   
+			
+			rs = pstmt.executeQuery();
+			
+			
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+			
+		} finally {
+			db.dbClose(rs, pstmt, con);
+		}
+		return count;
+	} */
+	
+	public int selectTotal(MainFlagVO mfVO, List<String> bList) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -165,6 +211,11 @@ public class MainDAO {
 			  .append("where 1=1 and sold_check='N' and quit='N'");
 
 			  pstmt= con.prepareStatement(sb.toString());
+			  
+				
+				for(int i=0; i<bList.size(); i++) {
+					sb.append(" and not id=? ");
+				}
 			  
 				if(mfVO.getKeyword() != null &&  !"".equals(mfVO.getKeyword())) {
 					sb.append(" and title like '%'||trim(?)||'%' ");
@@ -206,10 +257,6 @@ public class MainDAO {
 					}
 				}
 				
-		//	  	if(mfVO.getId() != null) {
-		//	  		sb.append(" and not id=? ");
-		//	  	}
-				
 				//정렬 라디오 선택시
 				if(mfVO.getOrderByFlag() != -1) {
 					switch(mfVO.getOrderByFlag()) {
@@ -226,51 +273,78 @@ public class MainDAO {
 				
 				pstmt = con.prepareStatement(sb.toString());
 				
+				int num=0;
+				
+				for(num=0; num<bList.size(); num++) {
+					pstmt.setString(num+1, bList.get(num));
+				}
+				
 				//바인드 변수가 밀리는 현상?? 어떻게 처리? 모든 경우의 수에 맞게 처리~
 				if(mfVO.getKeyword() != null && !"".equals(mfVO.getKeyword() )  ) { // 키워드만 검색
-					pstmt.setString(1, mfVO.getKeyword());
+					num++;
+					pstmt.setString(num, mfVO.getKeyword());
 					if(mfVO.getGuFlag() != 0) { // 키워드랑 구 선택
-						pstmt.setInt(2, mfVO.getGuFlag());
+						num++;
+						pstmt.setInt(num, mfVO.getGuFlag());
 						if(mfVO.getCategoryFlag() != 0) {// 키워드랑 구랑 카테고리랑 선택
-							pstmt.setInt(3, mfVO.getCategoryFlag()); 
+							num++;
+							pstmt.setInt(num, mfVO.getCategoryFlag()); 
 							if(mfVO.getPriceFlag() == 7) {// 키워드랑 구랑 카테고리랑 가격직접설정 선택까지
-								pstmt.setInt(4, mfVO.getMinPrice());
-								pstmt.setInt(5, mfVO.getMaxPrice());
+								num++;
+								pstmt.setInt(num, mfVO.getMinPrice());
+								num++;
+								pstmt.setInt(num, mfVO.getMaxPrice());
 							}
 						} else if(mfVO.getPriceFlag() == 7) {// 키워드랑 구랑 가격설정직접설정 선택
-							pstmt.setInt(6, mfVO.getMinPrice());
-							pstmt.setInt(7, mfVO.getMaxPrice());
+							num++;
+							pstmt.setInt(num, mfVO.getMinPrice());
+							num++;
+							pstmt.setInt(num, mfVO.getMaxPrice());
 						}
 					} else if(mfVO.getCategoryFlag() != 0) { //키워드랑 카테고리만 선택
-						pstmt.setInt(2, mfVO.getCategoryFlag());
+						num++;
+						pstmt.setInt(num, mfVO.getCategoryFlag());
 						if(mfVO.getPriceFlag() == 7) {//키워드랑 카테고리랑 가격직접설정 선택
-							pstmt.setInt(3, mfVO.getMinPrice());
-							pstmt.setInt(4, mfVO.getMaxPrice());
+							num++;
+							pstmt.setInt(num, mfVO.getMinPrice());
+							num++;
+							pstmt.setInt(num, mfVO.getMaxPrice());
 						}
 					}
 				} else if(mfVO.getGuFlag() != 0) { // 구만 선택
-					pstmt.setInt(1, mfVO.getGuFlag());
+					num++;
+					pstmt.setInt(num, mfVO.getGuFlag());
 					if(mfVO.getCategoryFlag() != 0) {// 구랑 카테고리만 선택
-						pstmt.setInt(2, mfVO.getCategoryFlag()); 
+						num++;
+						pstmt.setInt(num, mfVO.getCategoryFlag()); 
 						if(mfVO.getPriceFlag() == 7) {// 구랑 카테고리랑 가격직접설정 선택
-							pstmt.setInt(3, mfVO.getMinPrice());
-							pstmt.setInt(4, mfVO.getMaxPrice());
+							num++;
+							pstmt.setInt(num, mfVO.getMinPrice());
+							num++;
+							pstmt.setInt(num, mfVO.getMaxPrice());
 						}
 					} else if(mfVO.getPriceFlag() == 7) {// 구랑 가격직접설정만 선택
-						pstmt.setInt(5, mfVO.getMinPrice());
-						pstmt.setInt(6, mfVO.getMaxPrice());
+						num++;
+						pstmt.setInt(num, mfVO.getMinPrice());
+						num++;
+						pstmt.setInt(num, mfVO.getMaxPrice());
 					}
 				} else if(mfVO.getCategoryFlag() != 0) {// 카테고리만 선택
-					pstmt.setInt(1, mfVO.getCategoryFlag()); 
+					num++;
+					pstmt.setInt(num, mfVO.getCategoryFlag()); 
 					if(mfVO.getPriceFlag() == 7) { // 카테고리랑 가격 설정만 선택
-						pstmt.setInt(2, mfVO.getMinPrice());
-						pstmt.setInt(3, mfVO.getMaxPrice());
+						num++;
+						pstmt.setInt(num, mfVO.getMinPrice());
+						num++;
+						pstmt.setInt(num, mfVO.getMaxPrice());
 					}
 				} else if(mfVO.getPriceFlag() == 7) { // 가격직접설정만 선택
 					System.out.println("--------------값 : "+mfVO );
-					pstmt.setInt(1, mfVO.getMinPrice());
-					pstmt.setInt(2, mfVO.getMaxPrice());
-				}
+					num++;
+					pstmt.setInt(num, mfVO.getMinPrice());
+					num++;
+					pstmt.setInt(num, mfVO.getMaxPrice());
+				} 
 				
 				//System.out.println("--query---"+ sb );
 				//System.out.println("--value--- "+ mfVO );   
@@ -288,9 +362,7 @@ public class MainDAO {
 		return count;
 	}
 	
-	
-	
-	public List<HomeVO> selectProduct(MainFlagVO mfVO) throws SQLException {
+	public List<HomeVO> selectProduct(MainFlagVO mfVO, List<String> bList) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -304,6 +376,10 @@ public class MainDAO {
 			  .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx, id, (select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank, product_idx, sold_check, (select quit from member where id = p.id) quit from product p ) ")
 			  .append("where 1=1 and sold_check='N' and quit='N' ");
 			  /*.append("and rank between ((?-1)*16)+(?-(?*1-1)) and ((?-1)*16)+16 ");*/
+			
+			for(int i=0; i<bList.size(); i++) {
+				sb.append(" and not id=? ");
+			}
 			
 			/* System.out.println("-----keyword-------"+ mfVO.getKeyword()); */
 			if(mfVO.getKeyword() != null &&  !"".equals(mfVO.getKeyword())) {
@@ -370,6 +446,11 @@ public class MainDAO {
 			
 			
 			int num=0;
+			
+			for(num=0; num<bList.size(); num++) {
+				pstmt.setString(num+1, bList.get(num));
+			}
+			
 			//바인드 변수가 밀리는 현상?? 어떻게 처리? 모든 경우의 수에 맞게 처리~
 			if(mfVO.getKeyword() != null && !"".equals(mfVO.getKeyword() )  ) { // 키워드만 검색
 				num++;
@@ -441,10 +522,8 @@ public class MainDAO {
 			num++;
 			pstmt.setInt(num, mfVO.getPageFlag());
 			
-
-			
-			System.out.println("--query---"+ sb );
-			System.out.println("--value--- "+ mfVO );  
+			//System.out.println("--query---"+ sb );
+			//System.out.println("--value--- "+ mfVO );  
 					
 			rs = pstmt.executeQuery();
 			HomeVO hVO = null;

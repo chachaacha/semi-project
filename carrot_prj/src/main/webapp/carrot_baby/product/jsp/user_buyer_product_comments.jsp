@@ -145,6 +145,7 @@ $(function() {
 			
 			$("#product_idx").val(${pIdx});
 			$("#comment_flag").val(comFlag);
+			$("#page_flag").val(1);
 			$("#commFrm").submit();
 		})
 		
@@ -154,6 +155,7 @@ $(function() {
 			
 			$("#product_idx").val(${pIdx});
 			$("#comment_flag").val(comFlag);
+			$("#page_flag").val(1);
 			$("#commFrm").submit();
 		})
 		
@@ -381,6 +383,11 @@ $(function() {
 			frmPop.submit();
 		}
 	}
+	
+	function pageMove(nowPage) { //페이지 이동
+		$("#page_flag").val(nowPage);
+		$("#commFrm").submit();
+	}
 
 </script>
 </head>
@@ -529,7 +536,7 @@ $(function() {
 				
 		</div>
 
-		<c:if test="${commCnt eq 0}">
+		<c:if test="${commCnt eq 0}"> <%-- 댓글 0일 때 --%>
 			<div class="comments-basic">
 				<svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
 					 <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
@@ -645,6 +652,46 @@ $(function() {
 	</div>
 <!-- comments end -->
 
+				<c:set var="ceil"  value="${commCnt/15}"/> <%-- //총 게시물 수/16(=한 페이지에 보이고 싶은 카드의 개수) --%>
+				<fmt:parseNumber var="lastpage" integerOnly="true" value="${ceil+(1-(ceil%1))%1 }"/> <%-- // 총 페이지의 수 (올림처리. int형으로 소수점 버림) ex) 1.5일 경우 총 2페이지 2.3일 경우 총 3페이지 --%>
+				<c:set var="curPage" value="${empty param.page_flag ? 1 : param.page_flag }"/> <%-- // 현재페이지  (pageFlag가 비어있을때는 1로 계산 : class 설정필요때문=처음 매물창 접속시 1페이지버튼이 주황색이어야해서) --%>
+				<c:set var="startNum" value="${curPage - (curPage-1) % 4 }"/> <%-- // 현재 페이지가 속한 처음 페이지의 수 구하기 %4 (= 4는 한번에 노출시키고자하는 페이지블럭의 갯수를 설정해둔것) --%>
+				<c:set var="isLast" value="3"/> <%-- // forEach 돌릴때 end의 기본값, 한번에 페이지 4개만 노출시키고 싶음 ex) 1,2,3,4 => begin이 0부터 시작하므로 end의 기본값은 3 --%>
+
+				<!-- 오른쪽 매물 하단 페이지 버튼 -->
+				<c:if test="${commCnt ne 0 }">	<%-- // 만약 게시글 수가 0일때 페이지생성을 못하도록 조건을 줌 (게시글이 있을 경우에만 페이지 생성) --%>
+					<div class="page-bottom">
+						
+						<%-- // 이전 버튼 생성 (<<)(<) --%>
+						<c:if test="${curPage >= 5}"> <%-- // 현재 페이지가 5이상일때부터 (<)버튼 생성 --%>
+							<a href="javascript:pageMove(1);" class="page-bottom-next">&lt;&lt;</a> <%-- // 누르면 pageFlag 1로 이동시킴 --%>
+							<a href="javascript:pageMove(${curPage-4});" class="page-bottom-next">&lt;</a> <%-- // (<) 누르면 pageFlag를 현재페이지에서-4로 이동시킴(이전 페이지 블럭) --%>
+						</c:if>					
+					
+						<%-- // 페이지블럭 구하기 (4개씩만=4개씩만 출력하기원해서 조건값을 줬기 때문)  --%>
+						<c:if test="${startNum + 4 >= lastpage }"> 
+						<%-- // 만약 총페이지수보다 현재페이지가 속한 처음페이지 + 4가 더 크다면 총페이지수에서 - 처음페이지구함 = 마지막 페이지 블럭의 end값 구하기   --%>
+						<%-- // 12 + 4 >= 13 (true) => 13 - 12 = 1 => begin=0 end=1 => 12, 13 까지만 페이지 생성 --%>
+							<c:set var="isLast" value="${lastpage - startNum }"/>
+						</c:if>
+						
+						<%-- // 페이지블럭의 기본값은 3이기 때문에 총 4씩 출력, 마지막페이지 수를 구할땐 위의 if를 타고 구해진 isLast값이 새로 들어가서 마지막페이지블럭 출력 --%>
+						<c:forEach var="i" begin="0" end="${isLast }" step="1" >
+							<a href="javascript:pageMove(${startNum + i});" ${curPage eq startNum + i ? "class='page-bottom-icon-click'" : "class='page-bottom-icon'"}><c:out value="&nbsp;${startNum+i}&nbsp;" escapeXml="false"/></a>
+																					<%-- // 현재페이지와 버튼의 출력값이 같을때 주황색으로 보이도록 설정 : 아닐경우 흰색 --%>
+						</c:forEach>
+						
+						<%-- // (>)(>>) 다음 버튼 생성  --%>
+						<c:if test="${startNum + 4 < lastpage }"> <%-- // 마지막 페이지에는 생성이 안되도록 조건 --%>
+							<a href="javascript:pageMove(${startNum+4});" class="page-bottom-next">&gt;</a> <%-- // (>)버튼을 누르면 pageFlag에서 + 4 로 이동시킴 --%>
+							<a href="javascript:pageMove(${lastpage});" class="page-bottom-next">&gt;&gt;</a> <%-- // (>>)버튼을 누르면 마지막 페이지로 이동  --%>
+						</c:if>
+					
+					</div>
+				</c:if>
+
+
+
 <c:if test="${wriCheck eq 1 }">
 <!-- product-bottom -->
 	<div class="product-bottom-wrap">
@@ -678,6 +725,7 @@ $(function() {
 <form id="commFrm" method="get">
 	<input type="hidden" name="comment_flag" id="comment_flag" value="${param.comment_flag }">
 	<input type="hidden" name="product_idx" id="product_idx" value="${param.product_idx }">
+	<input type="hidden" name="page_flag" id="page_flag" value="${param.page_flag }">
 </form>
 <%-- 댓글 입력 기타 기능 --%>
 <form method="post" action="../../product/jsp/comment_process.jsp" id="comProFrm">

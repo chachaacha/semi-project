@@ -159,8 +159,18 @@ mDAO.insetKeyword(searchTxt.trim());
 List<LocVO> lVOList=mDAO.selectGu();
 pageContext.setAttribute("lVOList", lVOList);
 
+//유저가 차단한 회원 목록
+List<String> bList=mDAO.selectBlock(sessionId);
+/* if(bList.size()!=0) {
+System.out.println(bList.get(0));
+} */
+
+/* for(int i = 0 ; i<bList.size();i++) {
+	System.out.println(bList.get(i));
+} */
+
 //상품의 총 개수 구함
-int total=mDAO.selectTotal(mfVO);
+int total=mDAO.selectTotal(mfVO,bList);
 //System.out.println("총 게시물 수 : "+ total);
 pageContext.setAttribute("total", total);
 
@@ -170,21 +180,9 @@ if(mfVO.getPageFlag()==0) {
 mfVO.setPageFlag(1);
 }
 
-List<HomeVO> hVOList=mDAO.selectProduct(mfVO);
+List<HomeVO> hVOList=mDAO.selectProduct(mfVO, bList);
 pageContext.setAttribute("hVOList", hVOList);
 //System.out.println("필터 적용된 게시물의 수 : "+hVOList.size());
-
-
-List<String> bList=mDAO.selectBlock(sessionId);
-if(bList.size()!=0) {
-System.out.println(bList.get(1));
-}
-
-/* for(int i = 0 ; i<bList.size();i++) {
-	System.out.println(bList.get(i));
-} */
-
-pageContext.setAttribute("bList", bList);
 %>
 
 <!-- container -->
@@ -523,7 +521,6 @@ pageContext.setAttribute("bList", bList);
 	<input type="hidden" name="priceFlag" id="priceFlag" value="${param.priceFlag }">
 	<input type="hidden" name="minPrice" id="minPrice" value="${param.minPrice }">
 	<input type="hidden" name="maxPrice" id="maxPrice" value="${param.maxPrice }">
-	<input type="hidden" name="id" id="id" value="${param.id }">
 </form>
 
 <!-- footer -->
