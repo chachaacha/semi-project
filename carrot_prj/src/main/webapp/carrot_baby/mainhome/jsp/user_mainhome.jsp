@@ -1,3 +1,4 @@
+<%@page import="userDAO.MainDAO"%>
 <%@page import="userVO.HomeVO"%>
 <%@page import="java.util.List"%>
 <%@page import="userDAO.HomeDAO"%>
@@ -9,8 +10,10 @@
     
 <!-- 1. parameter 받을 VO 생성-->
 <jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"/>
+<jsp:useBean id="sbVO" class="userVO.BlockUVO"/>
 <!-- 2. VO에 setter method(property)호출 -->
 <jsp:setProperty property="*" name="hVO"/>
+<jsp:setProperty property="*" name="sbVO"/>
 		
 <!DOCTYPE html>
 <html>
@@ -151,14 +154,29 @@ $(function() {
 		<div class="main-middle-content">
 			<h1 class="main-middle-title">중고거래 인기매물</h1>
 			<%
+			//HomeDAO생성
 			HomeDAO hDao=HomeDAO.getInstance(); //연결을 한번 했기 때문에 밑에서 또 연결할 필요x
+			//인기매물 조회
 			List<HomeVO> mainList=hDao.selectProduct();
 			//스콥 객체에 할당
 			pageContext.setAttribute("mainList", mainList );
+			
+			//MainDAO 생성
+			MainDAO mDao=MainDAO.getInstance();
+			
+			//세션 아이디 얻기
+			String id = (String)session.getAttribute("id");
+			//차단한 회원 목록 조회
+			List<String> blockList=mDao.selectBlock(id);
+			//스콥 객체에 할당
+			pageContext.setAttribute("blockList", blockList);
 			%>
 				<div class="card-wrap">
 					<!-- 매물 목록 -->
 					<c:forEach var="main"  items="${mainList}"><!-- forEach를 사용하여 반복 -->
+					<!--내가 차단한 회원의 물건은 메인화면에도 뜨지 않게 -->
+					<c:if test="${blockList.blocked_id empty }">
+					
 					<%-- <!--  판매완료된 물건은 메인화면에 뜨지 않게 하기-->
 					<c:if test="${ main.sold_check eq 'N' }"> --%>
 					
@@ -191,6 +209,7 @@ $(function() {
 							</div><!-- card-counts -->
 					</div><!-- card -->
 			<%-- </c:if><!-- 판매완료된 물건은 안뜨게 --> --%>
+			</c:if>
 			</c:forEach>
 	</div><!-- card-wrap -->
 	</div><!-- main-middle-content -->

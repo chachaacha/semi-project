@@ -39,15 +39,6 @@ msDAO.deleteBoard(product_idx);
 response.sendRedirect("deal_complete.jsp");
 %>
 
-<%-- <!--1. bean생성 -->
-<jsp:useBean id="객체명" class="객체화할 클래스" scope=""/>
-<jsp:useBean id="msVO" class="userVO.MySalesVO" />
-<!--2. setter method 호출 : 모든 파라메터가 입력-->
-<jsp:setProperty name="객체명" property="*"/>
-<jsp:setProperty property="*" name="msVO"/> --%>
-
-
-
 
 </body>
 </html>
