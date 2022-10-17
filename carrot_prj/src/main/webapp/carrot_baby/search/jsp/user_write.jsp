@@ -54,7 +54,7 @@ $(function() {
 		//$("#inputWrap").last().append("<div>a</div>");//자식으로 삽입
 		//$("#inputWrap").first().append("<div>a</div>");
 		var outDiv = "<div><label>사진" + cnt + "<label>" 
-		+ " <input type = 'file' name = 'post_img"+ ++cnt +"' id = 'post_img"+ cnt +"' class='inputBox' onchange='readURL(this,"+ cnt +");'/><br/>"
+		+ " <input type = 'file' name = 'post_img"+ ++cnt +"' id = 'post_img"+ cnt +"' class='inputBox' onchange='readURL(this,"+ (cnt-1) +");'/><br/>"
 		+ "<img id='preview"+ (cnt-1) +"' name='preview"+ (cnt-1) +"'/></div>";
 		$("#inputWrap").append(outDiv);
 		++minAppend;
