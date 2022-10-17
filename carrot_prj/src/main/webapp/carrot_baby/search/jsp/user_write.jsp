@@ -152,6 +152,7 @@ function readURL(input ,cnt) {
 <%
 String user_id =(String)session.getAttribute("id");
 %>
+
 <%
 		//PostDAO와 연결
 		PostDAO pDAO = PostDAO.getInstance();
@@ -197,6 +198,7 @@ String user_id =(String)session.getAttribute("id");
 		<h1 class="write-title">중고거래 글쓰기</h1>
 		<div class="write">
 		<form name="writePost" id="writePost"  action="user_write_process.jsp" enctype="multipart/form-data" method="post">
+		<input type="hidden" name="user_id" id="user_id" value="<%= user_id %>">
 		<input type="hidden" name="product_idx" id="product_idx" value="<%= product_idx%>"/>
 			<div class="write-sel-wrap">
 						<div class="write-sel-wrap-text">서울특별시</div>

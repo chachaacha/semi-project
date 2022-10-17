@@ -39,7 +39,7 @@ request.setCharacterEncoding("UTF-8");
 	int cnt=Integer.parseInt(mr.getParameter("count"));
 	String title = mr.getParameter("title");
 	String contents = mr.getParameter("contents");
-	String user_id=(String)session.getAttribute("user_id");
+	String user_id=mr.getParameter("user_id");
 	String category_loc=mr.getParameter("category_loc");
 	int gu_idx = Integer.parseInt(category_loc);
 	String category_pd=mr.getParameter("category_pd");
