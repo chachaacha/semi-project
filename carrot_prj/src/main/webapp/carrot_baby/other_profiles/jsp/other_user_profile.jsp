@@ -50,21 +50,28 @@
   <!-- tab끝 -->
 </head>
 <body>
+<% //POST방식의 요청 한글 처리
+request.setCharacterEncoding("UTF-8");%>
+
 <!-- 사용자의 기본 정보 가져오기 -->
-<jsp:useBean id="pVO" class="userVO.ProfilVO"></jsp:useBean>
-<jsp:setProperty property="*" name="pVO"/>
-<%
-String id=request.getParameter("id");
-ProfilDAO pDAO = ProfilDAO.getInstance();
-List<ProfilVO> ppList = pDAO.selectPp(id);
-%>
+<jsp:useBean id="pfVO" class="userVO.ProfilVO"></jsp:useBean>
+<jsp:setProperty property="*" name="pfVO"/>
+<jsp:setProperty property="id" name="pfVO" value="${ param.id }"/>
 
 <!-- 사용자에 따른 상품 전체 조회 -->
 <jsp:useBean id="ppVO" class="userVO.ProfilPVO"></jsp:useBean>
 <!-- 게시글 작성자 클릭시 넘겨받은 아이디를 value로 설정 -->
-<jsp:setProperty property="id" name="ppVO" value="${ param.id }"/>
 <jsp:setProperty property="*" name="ppVO"/>
+<jsp:setProperty property="id" name="ppVO" value="${ param.id }"/>
 
+<% 
+String id=request.getParameter("id");
+ProfilDAO pDAO = ProfilDAO.getInstance();
+
+//사용자 기본 정보 가져오기
+ProfilVO pVO = pDAO.selectPp(id);
+pageContext.setAttribute("pVO", pVO);
+%>
 
 <div class="wrap">
 
@@ -81,13 +88,13 @@ List<ProfilVO> ppList = pDAO.selectPp(id);
 				<div class="profile_img_wrap">
 					<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">
 				</div><!-- profile_img -->
-				<div class="nick_name"><%=pVO.getNick() %>( <%=pVO.getId() %>)
+				<div class="nick_name">${pVO.nick} ( <c:out value="${fn:substring(pVO.id,0,4) }****"/>)
 					<div class="btns">
 						<button class="confirm" type="button">신고하기</button>
 						<button class="block" type="button">차단하기</button>
 					</div><!-- btns -->
 				</div><!-- 별명 -->
-				<div class="report_cnt">누적 신고 횟수 : <%= pVO.getReport_cnt() %></div>
+				<div class="report_cnt">누적 신고 횟수 : ${pVO.report_cnt}</div>
 			
 			</div><!-- profile -->
 			

@@ -32,8 +32,8 @@ public class ProfilDAO {
 	
 	
 	//사용자 기본 정보 가져오기
-	public List<ProfilVO> selectPp(String id) throws SQLException {
-		List<ProfilVO> list = new ArrayList<ProfilVO>();
+	public ProfilVO selectPp(String id) throws SQLException {
+		ProfilVO pVO=null;
 		
 		DbConnection dc = DbConnection.getInstance();
 		
@@ -48,7 +48,7 @@ public class ProfilDAO {
 				//3. 쿼리문 생성객체 얻기
 					StringBuilder selectCpEmp = new StringBuilder();
 					selectCpEmp
-					.append("	select rpad(substr(id,1,4),8,'*') id, img, nick, reported_cnt	")
+					.append("	select id, img, nick, report_cnt	")
 					.append("	from	member							")
 					.append("	where id =?								");
 					
@@ -58,13 +58,12 @@ public class ProfilDAO {
 				//5. 쿼리문 생성 후 결과 얻기
 					rs = pstmt.executeQuery(); // rs는 CURSOR의 제어권을 가지고 있다.
 					
-					ProfilVO pVO = null;
 					if( rs.next() ) {
 						pVO = new ProfilVO();
 						pVO.setId(rs.getString("id"));
 						pVO.setImg(rs.getString("img"));
 						pVO.setNick(rs.getString("nick"));
-						pVO.setReport_cnt(rs.getInt("reported_cnt"));
+						pVO.setReport_cnt(rs.getInt("report_cnt"));
 					}
 					
 				} finally {
@@ -72,7 +71,7 @@ public class ProfilDAO {
 					dc.dbClose(rs, pstmt, con);
 				}//end finally
 				
-		return list;
+		return pVO;
 	}//selectPp
 	
 	//상품 전체조회
@@ -325,7 +324,7 @@ public class ProfilDAO {
 				StringBuilder update = new StringBuilder();
 				update
 				.append("	update	member								")
-				.append("	set			reported_cnt = reported_cnt +1	")
+				.append("	set			report_cnt = report_cnt +1	")
 				.append("	where		id = ?									");
 					
 				pstmt=con.prepareStatement(update.toString());

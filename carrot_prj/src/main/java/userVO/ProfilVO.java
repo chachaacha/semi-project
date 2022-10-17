@@ -5,6 +5,7 @@ public class ProfilVO {
 	private int report_cnt;
 	
 	public ProfilVO() {
+		
 	}
 
 	public ProfilVO(String id, String nick, String img, int report_cnt) {
