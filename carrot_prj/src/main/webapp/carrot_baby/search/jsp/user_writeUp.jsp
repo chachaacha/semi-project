@@ -68,8 +68,11 @@ $(function() {
 		$("#inputWrap").append(outDiv);
 		++minAppend;
 		
-		if( cnt ==10 ){
-			alert("이미지를 10개 이상 추가 할 수 없습니다.");
+		if( cnt == 7 ){
+			alert("이미지는 6개까지 추가할 수 있습니다.");
+			$("#inputWrap div").last().remove();
+			cnt--;
+			--minAppend;
 			return;
 		}
 		
@@ -273,7 +276,7 @@ String user_id =(String)session.getAttribute("id");
 					<img id="preview0" src="../image/<%= list_img.get(0).getProduct_img()%>"/>
 					</div>
 					<div>
-					<label>사진 1</label>
+					<label>사진1</label>
 					<input type="file" name="post_img2" id="post_img2"class="inputBox" onchange="readURL(this,1);"/>
 					<input type="hidden" value="<%= list_img.get(1).getProduct_img()%>" id="chk_img1" name="chk_img1"/>
 					<br/>
@@ -282,7 +285,7 @@ String user_id =(String)session.getAttribute("id");
 					<%if(2 < list_img.size() ) {%>
 					<%for(int i =2; i<list_img.size(); i++) {%>
 					<div>
-					<label>사진 <%= i %></label>
+					<label>사진<%= i %></label>
 					<input type="file" name="post_img<%= i+1 %>" class="inputBox" onchange="readURL(this,<%= i %>);"/>
 					<input type="hidden" value="<%= list_img.get(i).getProduct_img()%>" id="chk_img<%= i %>" name="chk_img<%= i %>"/>
 					<br/>
