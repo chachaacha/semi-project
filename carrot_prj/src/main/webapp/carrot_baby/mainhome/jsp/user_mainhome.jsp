@@ -10,7 +10,7 @@
     
 <!-- 1. parameter 받을 VO 생성-->
 <jsp:useBean id="hVO" class="userVO.HomeVO" scope="page"/>
-<jsp:useBean id="sbVO" class="userVO.BlockUVO"/>
+<jsp:useBean id="sbVO" class="userVO.MyBlockVO"/>
 <!-- 2. VO에 setter method(property)호출 -->
 <jsp:setProperty property="*" name="hVO"/>
 <jsp:setProperty property="*" name="sbVO"/>
@@ -175,7 +175,7 @@ $(function() {
 					<!-- 매물 목록 -->
 					<c:forEach var="main"  items="${mainList}"><!-- forEach를 사용하여 반복 -->
 					<!--내가 차단한 회원의 물건은 메인화면에도 뜨지 않게 -->
-					<c:if test="${blockList.blocked_id empty }">
+					<c:if test="${empty blockList}">
 					
 					<%-- <!--  판매완료된 물건은 메인화면에 뜨지 않게 하기-->
 					<c:if test="${ main.sold_check eq 'N' }"> --%>
