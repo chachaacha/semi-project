@@ -26,6 +26,72 @@ public class ProductDAO {
 		return pDAO;
 	}
 	
+	public int selectTotal(ProductSearchVO psVO) throws SQLException {
+		int count = 0;
+		DbConnection db = DbConnection.getInstance();
+		Connection con = null;
+		PreparedStatement pstmt =null;
+		ResultSet rs = null;
+		try {
+			con = db.getConn();
+			StringBuffer sb = new StringBuffer();
+			sb.append(" select count(*) total ")
+			  .append(" from product p ")
+			  .append(" where 1=1 ");
+			if(psVO.getSelStatus() != 0) {
+				switch(psVO.getSelStatus()) {
+				case 1:
+					sb.append(" and sold_check = 'N' ");
+					break;
+				case 2:
+					sb.append(" and sold_check = 'Y' ");
+					break;
+				}
+			}
+			
+			if(psVO.getCategoryFlag() != 0) {
+				sb.append(" and category_idx=? ");
+			} 
+			
+			
+			if(psVO.getDateOrderFlag() != 0) {
+				switch(psVO.getDateOrderFlag()) {
+				case 1:
+					sb.append(" order by posted_date desc ");
+					break;
+					
+				case 2:
+					sb.append(" order by posted_date ");
+				}
+			}
+			
+			if(psVO.getReportOrderFlag() != 0) {
+				switch(psVO.getReportOrderFlag()) {
+				case 1:
+					sb.append(" order by report_cnt desc ");
+					break;
+					
+				case 2:
+					sb.append(" order by report_cnt ");
+				}
+			}
+			
+			
+			pstmt = con.prepareStatement(sb.toString());
+			if(psVO.getCategoryFlag() != 0) {
+				pstmt.setInt(1, psVO.getCategoryFlag());
+			}
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt("total");
+			}
+		} finally {
+			db.dbClose(rs, pstmt, con);
+		}
+		return count;
+	}
+	
+	
 	public List<ProductVO> selectProduct(ProductSearchVO psVO) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
 		Connection con = null;
@@ -76,11 +142,17 @@ public class ProductDAO {
 				}
 			}
 			
+			sb
+			.append(" offset ((?-1)*10) rows ")
+			.append(" fetch next 10 rows only ");
 			
 			pstmt = con.prepareStatement(sb.toString());
+			
+			int num = 0;
 			if(psVO.getCategoryFlag() != 0) {
-				pstmt.setInt(1, psVO.getCategoryFlag());
+				pstmt.setInt(++num, psVO.getCategoryFlag());
 			}
+			pstmt.setInt(++num, psVO.getPageFlag());
 			rs = pstmt.executeQuery();
 			ProductVO pVO = null;
 			while(rs.next()) {
@@ -99,6 +171,36 @@ public class ProductDAO {
 		}
 		return list;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	/**

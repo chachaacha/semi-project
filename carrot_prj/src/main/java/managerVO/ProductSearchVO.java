@@ -1,7 +1,7 @@
 package managerVO;
 
 public class ProductSearchVO {
-	private int categoryFlag , selStatus, dateOrderFlag, reportOrderFlag;
+	private int categoryFlag , selStatus, dateOrderFlag, reportOrderFlag, pageFlag;
 	
 	public ProductSearchVO() {
 		// TODO Auto-generated constructor stub
@@ -39,10 +39,18 @@ public class ProductSearchVO {
 		this.reportOrderFlag = reportOrderFlag;
 	}
 
+	public int getPageFlag() {
+		return pageFlag;
+	}
+
+	public void setPageFlag(int pageFlag) {
+		this.pageFlag = pageFlag;
+	}
+
 	@Override
 	public String toString() {
 		return "ProductSearchVO [categoryFlag=" + categoryFlag + ", selStatus=" + selStatus + ", dateOrderFlag="
-				+ dateOrderFlag + ", reportOrderFlag=" + reportOrderFlag + "]";
+				+ dateOrderFlag + ", reportOrderFlag=" + reportOrderFlag + ", pageFlag=" + pageFlag + "]";
 	}
 	
 	

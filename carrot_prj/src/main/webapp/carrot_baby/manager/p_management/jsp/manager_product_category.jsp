@@ -10,6 +10,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html>
@@ -164,6 +165,12 @@ function openPopup(pIdx) {
 	$("#popupFrm").submit();
 };
 
+//페이지 이동
+function pageMove(page) {
+	$("#pageFlag").val(page);
+	$("#hidFrm").submit();
+}
+
 </script>
 
 <%-- 세션만료시 로그인 창 복귀 --%>
@@ -205,11 +212,12 @@ function openPopup(pIdx) {
 				<button type="button" ${selLine eq 2 ? "class='pm_btn-check'" : " class='pm_btn' "} id="soldoutBtn">거래완료</button>
 			</div>
 			<!-- 파라메터를 묶기 위한 폼 -->
-			<form id="hidFrm" method="post">
+			<form id="hidFrm" method="get">
 			<input type="hidden" id="selStatus" name="selStatus" value="${ param.selStatus }"/>
 			<input type="hidden" id="categoryFlag" name="categoryFlag" value="${ param.categoryFlag }"/>
 			<input type="hidden" id="dateOrderFlag" name="dateOrderFlag" value="${ param.dateOrderFlag }"/>
 			<input type="hidden" id="reportOrderFlag" name="reportOrderFlag" value="${ param.reportOrderFlag }"/>
+			<input type="hidden" id="pageFlag" name="pageFlag" value="${ param.pageFlag }"/>
 			</form>
 			
 			<!-- 팝업을 post방식으로 열기위한 폼 --> 
@@ -323,10 +331,13 @@ function openPopup(pIdx) {
 							<jsp:setProperty property="*" name="psVO"/><%-- hidFrm 서브밋시 form name과 변수명이 같은 같 자동 setter --%>
 							<%-- 기본적으로는 날짜 내림차순정렬로 보여준다. --%>
 							<jsp:setProperty property="dateOrderFlag" name="psVO" value="${ empty param.dateOrderFlag and empty param.reportOrderFlag ?1:param.dateOrderFlag }"/>
+							<jsp:setProperty property="pageFlag" name="psVO" value="${ empty param.pageFlag  ?1: param.pageFlag }"/>
 							<%
 							//상품불러오기
 							ProductDAO pDAO = ProductDAO.getInstance(); 
 				    		List<ProductVO> proList = pDAO.selectProduct(psVO);
+				    		int total = pDAO.selectTotal(psVO);
+				    		pageContext.setAttribute("total", total);
 							%>
 							<c:if test="${ not empty param.titleSearch }">
 							<% proList=pDAO.selectKeywordProduct(request.getParameter("titleSearch").trim()); %>
@@ -344,7 +355,7 @@ function openPopup(pIdx) {
 						  	</c:forEach>
 						 </table>  
 						 </form>
-						 
+				
 						 <%-- 일괄삭제 처리 --%>
 						 <c:if test="${ not empty paramValues.productChk or not empty param.productChk }">
 						 <c:catch var="ex">
@@ -368,7 +379,31 @@ function openPopup(pIdx) {
 						 </script>
 						 </c:if>
 					</div>
+			</div>
+					<!-- 페이징 -->
+				<c:if test="${ empty param.titleSearch }">
+				<c:set var="ceil" value="${ total/10 }"/>
+				<fmt:parseNumber var="lastPage" integerOnly="true" value="${ ceil+(1-(ceil%1))%1  }"/>
+				<c:set var="curPage" value="${ empty param.pageFlag? 1: param.pageFlag }"/>
+				<c:set var="startNum" value="${ curPage-(curPage-1)%5 }"/>
+				<c:set var="isLast" value="4"/>	
+				
+				<div class="page-bottom">
+					<a href="javascript:pageMove(1)"  class="page-bottom-next">&lt;&lt;</a>
+					<a href="javascript:pageMove('${ startNum eq 1 ? 1 :startNum-1 }')"  class="page-bottom-next">&lt;</a>
+					<c:if test="${ startNum +5 > lastPage }">
+						<c:set var="isLast" value="${lastPage - startNum }"/>
+					</c:if>
+					<c:forEach var="i" begin="0" end="${ isLast }" step="1">
+						<a href="javascript:pageMove(${ startNum+i })" ${curPage eq startNum + i  ? "class='page-bottom-icon-click'" : "class='page-bottom-icon'"}><c:out value="&nbsp;${ startNum+i }&nbsp;" escapeXml="false"/></a>
+					</c:forEach>
+					
+					<c:if test="${ startNum + 5 <= lastPage }">
+						<a href="javascript:pageMove('${ startNum+5 }')"  class="page-bottom-next">&gt;</a>
+						<a href="javascript:pageMove('${ lastPage }')"  class="page-bottom-next">&gt;&gt;</a>
+					</c:if>
 				</div>
+				</c:if>
 			</div>
 		</div>
 	</div>
