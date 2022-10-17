@@ -381,7 +381,7 @@ function pageMove(page) {
 						 </c:if>
 					</div>
 										<!-- 페이징 -->
-				<c:if test="${ empty param.titleSearch }">
+				<c:if test="${ total gt 0 and empty param.titleSearch }">
 				<c:set var="ceil" value="${ total/10 }"/>
 				<fmt:parseNumber var="lastPage" integerOnly="true" value="${ ceil+(1-(ceil%1))%1  }"/>
 				<c:set var="curPage" value="${ empty param.pageFlag? 1: param.pageFlag }"/>
