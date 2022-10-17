@@ -48,7 +48,7 @@ if(temp.length()> checkSize) {
 //이미지
 String img=mr.getParameter("img");
 if(img == null){
-	img = "profile.png";
+	img = "profileImg.png";
 }
 System.out.println("***이미지***"+img);
 //이름

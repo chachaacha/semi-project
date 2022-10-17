@@ -126,7 +126,7 @@ height: 60px;
 .writeForm table tr td .inputPass {
 	width: 248px;
 }
-/*.writeForm table tr td .inputTxt{width:calc(30% - 40px);}*/
+
 .writeForm table tr td .inputPass.size02 {
 	width: calc(40% - 40px);
 	max-width: 248px;

@@ -18,30 +18,6 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <!--  -->
 <script type="text/javascript">
-$("#uploadBtn").click(function(){
-	//확장자가 jpg,gif,jpeg,png,bmp 만 업로드 가능하도록 JS 코드작성.
-	var fileName=$("#upfile").val();
-	var blockExt="jpg,gif,jpeg,png,bmp".split(",");
-	var flag=false;
-	
-	if( fileName == ""){
-		alert("업로드할 파일을 선택해주세요.");
-		return;
-	}//end if
-	
-	var fileExt=fileName.substring(fileName.lastIndexOf(".")+1);
-	for(var i= 0 ; i < blockExt.length ; i++){
-		if(blockExt[i] == fileExt){
-			 flag=true;
-		}//end if
-	}//end for
-	
-	if(!flag){
-		alert("이미지파일만 업로드 가능");
-		return;
-	}//end if
-});
-
 //프로필사진 등록 미리보기
 function previewFile() {
  //다른이미지에 적용되지않게 #profile로 id를 주어 타켓설정
@@ -71,18 +47,92 @@ const autoHyphen = (target) => {
 	   .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
 }
 
+
+//이메일 입력방식 선택
+function selectEmail(e){
+  var $e = $(e);
+  var $email1 = $('input[name=email2]');
+
+  // '1'인 경우 직접입력
+  if($e.val() == "1"){
+      $email1.attr('readonly', false);
+      $email1.val('');
+  } else {
+      $email1.attr('readonly', true);
+      $email1.val($e.val());
+  }
+}
+
+//우편번호 검색
+function zipcodeapi() {
+	 new daum.Postcode({
+       oncomplete: function(data) {
+           // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+           // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+           // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+           var roadAddr = data.roadAddress; // 도로명 주소 변수
+           var extraRoadAddr = ''; // 참고 항목 변수
+
+           // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+           // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+           if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+               extraRoadAddr += data.bname;
+           }
+           // 건물명이 있고, 공동주택일 경우 추가한다.
+           if(data.buildingName !== '' && data.apartment === 'Y'){
+              extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+           }
+           // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+           if(extraRoadAddr !== ''){
+               extraRoadAddr = ' (' + extraRoadAddr + ')';
+           }
+
+           // 우편번호와 주소 정보를 해당 필드에 넣는다.
+           document.getElementById("zipcode").value = data.zonecode;
+           document.getElementById("addr1").value = roadAddr;
+           document.getElementById("addr2").focus();
+       }//oncomplete
+  }).open();
+}
+
 $(function () {
+$("#uploadBtn").click(function(){
+	//확장자가 jpg,gif,jpeg,png,bmp 만 업로드 가능하도록 JS 코드작성.
+	var fileName=$("#upfile").val();
+	var blockExt="jpg,gif,jpeg,png,bmp".split(",");
+	var flag=false;
+	
+	if( fileName == ""){
+		alert("업로드할 파일을 선택해주세요.");
+		return;
+	}//end if
+	
+	var fileExt=fileName.substring(fileName.lastIndexOf(".")+1);
+	for(var i= 0 ; i < blockExt.length ; i++){
+		if(blockExt[i] == fileExt){
+			 flag=true;
+		}//end if
+	}//end for
+	
+	if(!flag){
+		alert("이미지파일만 업로드 가능");
+		return;
+	}//end if
+});
+
+	//아이디 중복확인 팝업창 열기
+    $("#idbtn").click(function() {
+		window.open("id_dup_popup.jsp","id_dup_popup",
+			"width=520,height=385,top=220,left=700");
+	});
+
 	//가입하기 버튼을 클릭했을 때
     $("#btn").click(function () {
 		//null 검사
     	chkNull(); 
     });
     
-	//아이디 중복확인 팝업창 열기
-    $("#idbtn").click(function() {
-		window.open("id_dup_popup.jsp","id_dup_popup",
-			"width=520,height=385,top=220,left=700");
-	});
 });
 
 //필수 입력에 대한 체크 수행
@@ -93,27 +143,29 @@ function chkNull(){
 		$("#name").focus();
 		return;
 	}
+	
 	//별명 필수 입력	
 	if($("#nick").val().trim()=="") {
 		alert("별명을 입력하세요");
 		$("#nick").focus();
 		return;
 	}
+	
 	//아이디 필수 입력	
 	if($("#id").val().trim()=="") {
 		alert("아이디를 입력하세요");
 		$("#id").focus();
 		return;
 	}
+	
 	//비밀번호 필수 입력	
 	if($("#password").val().trim()=="") {
 		alert("비밀번호를 입력하세요");
 		$("#password").focus();
 		return;
 	}
-	
-	//8~25자의 영문,숫자, 특수문자를 혼합하여 입력
-	 var pw = $("#password").val();
+	//8~20자의 영문,숫자, 특수문자를 혼합하여 입력
+	var pw = $("#password").val();
 	 var num = pw.search(/[0-9]/g);
 	 var eng = pw.search(/[a-z]/ig);
 	 var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
@@ -129,28 +181,28 @@ function chkNull(){
 	  alert("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
 	  return false;
 	 }else {
-	    return true;
+		console.log("통과"); 
 	 }
-	
 	//비밀번호확인 필수 입력	
 	if($("#passwordChk").val().trim() !== $("#password").val().trim()) {
 		alert("비밀번호가 일치하지 않습니다.");
 		$("#passwordChk").focus();
 		return;
 	}
+	
 	//생년월일 필수 입력	
 	if($("#birth").val().trim()=="") {
 		alert("생년월일을 입력하세요");
 		$("#birth").focus();
 		return;
 	}
+	
 	//번호 필수 입력	
 	if($("#phone_num").val().trim()=="") {
 		alert("휴대폰번호를 입력하세요");
 		$("#phone_num").focus();
 		return;
 	}
-
 	
 	//이메일 필수 입력	
  	if($("#email1").val().trim()=="") {
@@ -164,7 +216,6 @@ function chkNull(){
 		$("#email2").focus();
 		return;
 	} 
-	
 /* 	//방법1 email1과 email2를 email에 설정한다. 
 	$("#email").val( $("#email1").val()+"@"+$("#email2").val() );// 끗!!!! */
 
@@ -184,55 +235,6 @@ function chkNull(){
 	document.memberFrm.onsubmit=true;
 	$("#memberFrm").submit();
 } 
-
-//이메일 입력방식 선택
-function selectEmail(e){
-    var $e = $(e);
-    var $email1 = $('input[name=email2]');
-
-    // '1'인 경우 직접입력
-    if($e.val() == "1"){
-        $email1.attr('readonly', false);
-        $email1.val('');
-    } else {
-        $email1.attr('readonly', true);
-        $email1.val($e.val());
-    }
-}
-
-//우편번호 검색
-function zipcodeapi() {
-	 new daum.Postcode({
-         oncomplete: function(data) {
-             // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-             // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
-             // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-             var roadAddr = data.roadAddress; // 도로명 주소 변수
-             var extraRoadAddr = ''; // 참고 항목 변수
-
-             // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-             // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-             if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                 extraRoadAddr += data.bname;
-             }
-             // 건물명이 있고, 공동주택일 경우 추가한다.
-             if(data.buildingName !== '' && data.apartment === 'Y'){
-                extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-             }
-             // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-             if(extraRoadAddr !== ''){
-                 extraRoadAddr = ' (' + extraRoadAddr + ')';
-             }
-
-             // 우편번호와 주소 정보를 해당 필드에 넣는다.
-             document.getElementById("zipcode").value = data.zonecode;
-             document.getElementById("addr1").value = roadAddr;
-             document.getElementById("addr2").focus();
-         }//oncomplete
-    }).open();
-}
-
 </script>
 </head>
 <body>
@@ -291,14 +293,14 @@ function zipcodeapi() {
 							<tr>
 						<th><label><span style="color:red">*</span>비밀번호</label></th>
 						<td>
-							<input type="password" placeholder="비밀번호를 입력해주세요" name="password" id="password" class="inputPass size02"/>
-							<span>*8~25자의 문자 및 숫자를 조합하여 입력해야 합니다.</span>
+							<input type="password" placeholder="비밀번호를 입력해주세요" name="password" id="password" class="inputPass"/>
+							<span>8~20자의 영문,숫자, 특수문자를 혼합하여 입력해야 합니다.</span>
 						</td>
 					</tr>
 							<tr>
 						<th><label><span style="color:red">*</span>비밀번호 확인</label></th>
 						<td>
-							<input type="password" placeholder="비밀번호를 입력해주세요" name="passwordChk" id="passwordChk" class="inputPass size02 mmarT10"  />
+							<input type="password" placeholder="비밀번호를 입력해주세요" name="passwordChk" id="passwordChk" class="inputPass"  />
 						</td>
 					</tr>
 					<tr>
