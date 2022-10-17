@@ -110,7 +110,7 @@ body {
 .contents {
 	border-radius: 6px;
 	border: 1px solid #E6E6E6;
-	width: 450px;
+	width: 480px;
 	margin: 0 auto;
 	margin-bottom: 20px;
 	overflow: hidden;
@@ -130,7 +130,7 @@ body {
 	height: 20px;
 	border-radius: 100%;
 	margin-right: 15px;
-	margin-left: 25px;
+	margin-left: 20px;
 }
 
 .report-wc-radio {
