@@ -34,6 +34,10 @@ $(function() {
 })
 </script>
 <%
+//세션 아이디 얻기
+String sessionId=(String)session.getAttribute("id");
+pageContext.setAttribute("sessionId", sessionId);
+
 //BoardDAO 생성
 BoardDAO bDAO=BoardDAO.getInstance();
 
@@ -72,8 +76,10 @@ if(buyer_id!=null){
 	<div class="contents">
 		<ul>
 			<c:forEach var="comList" items="${selCom}">
+			<c:if test="${comList.id ne  sessionId}">
 			<li><input type="radio" value="${comList.id }" name="report" class="report-wc-radio">
 			<img alt="프로필이미지"src="../../user_profile_upload/${comList.img }" class="profile-img"> <c:out value="${comList.nick}"/>(<c:out value="${fn:substring(comList.id,0,4) }****"/>)</li>
+			</c:if>
 			</c:forEach>
 		</ul>
 	</div>

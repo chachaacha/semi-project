@@ -108,12 +108,14 @@ body {
 }
 
 .contents {
+	height: 200px;
 	border-radius: 6px;
 	border: 1px solid #E6E6E6;
 	width: 450px;
 	margin: 0 auto;
 	margin-bottom: 20px;
-	overflow: hidden;
+	overflow: scroll;
+	overflow-x: hidden;
 }
 
 .contents ul li {

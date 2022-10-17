@@ -500,9 +500,9 @@ $(function() {
 				<fmt:formatNumber value="${pInfo.price }" pattern="#,###,###원"/>
 			</c:if>
 		</p>
-		<div class="description-detail">
+		<p class="description-detail">
 			<c:out value="${pInfo.contents }" escapeXml="false"/>
-		</div>
+		</p>
 	</div>
 <!-- description end -->
 

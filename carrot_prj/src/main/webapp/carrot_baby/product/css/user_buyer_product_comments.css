@@ -424,6 +424,7 @@ a {
 
 .comments-content {
 	font-size: 15px;
+	white-space: pre;
 }
 
 .modify-box {
