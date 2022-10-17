@@ -39,7 +39,7 @@ function previewFile() {
 
 //프로필사진 등록 삭제
 function deleteFile() {
- 
+ 	$("$myImg").attr("src", "");
 }
 
 //이메일 입력방식 선택
@@ -149,7 +149,7 @@ MyInfoVO miVO = miDAO.selectInfo(id);
 							<td>
 								<div class="profile">
 									<div>
-										<img src="C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/user_profile_upload/<%=miVO.getImg()%>" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
+										<img src="../../user_profile_upload/<%= miVO.getImg() %>" id="myImg" name="myImg" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
 									</div>
 									
 									<div>

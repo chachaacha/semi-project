@@ -150,7 +150,7 @@ function readURL(input ,cnt) {
 </head>
 <body>
 <%
-String user_id =(String)session.getAttribute("user_id");
+String user_id =(String)session.getAttribute("id");
 %>
 <%
 		//PostDAO와 연결

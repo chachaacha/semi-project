@@ -168,9 +168,10 @@ function readURL(input ,cnt) {
 </head>
 <body>
 <%
-String user_id =(String)session.getAttribute("user_id");
+String user_id =(String)session.getAttribute("id");
 
 		PostVO pVO = new PostVO();
+		PostVO ppVO = new PostVO();
 		String product_idx= request.getParameter("product_idx");
 		pVO.setProduct_idx(product_idx);
 		pVO.setId(user_id);
@@ -181,7 +182,7 @@ String user_id =(String)session.getAttribute("user_id");
 		pageContext.setAttribute("lVOList", lVOList);
 		List<CatVO> pCatList = pDAO.selectCat();
 		pageContext.setAttribute("cVOList", pCatList);
-		PostVO ppVO = pDAO.selectPost(pVO);
+		ppVO = pDAO.selectPost(pVO);
 		List<ImgVO> list_img = new ArrayList<ImgVO>();
 		list_img = pDAO.selectImg(product_idx);
 		
@@ -236,7 +237,7 @@ String user_id =(String)session.getAttribute("user_id");
 						<c:if test=""></c:if>
 							<div class="checkbox-share-wrap">
 								<input type="checkbox" name="free" id= "free" value="Y" class="checkbox-share" 
-								<%if(free1.equals("Y")) {%> checked="checked" <%} %>>
+								<%if("Y".equals(free1)) {%> checked="checked" <%} %>>
 								<span class="checkbox-share-txt">나눔</span>
 							</div>
 							<div class="checkbox-price-wrap">
@@ -244,7 +245,7 @@ String user_id =(String)session.getAttribute("user_id");
 											oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="8" value ="<%= price %>">
 								<span class="checkbox-price-txt">원</span>
 								
-								<%if(free1.equals("Y")) {%> 
+								<%if("Y".equals(free1)) {%> 
 								<script type="text/javascript">
 								$("#price").prop("readonly",true);
 								$("#price").css("background", "#ccc");
