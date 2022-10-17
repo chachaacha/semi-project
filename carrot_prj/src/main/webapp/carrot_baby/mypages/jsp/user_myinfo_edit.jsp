@@ -21,25 +21,20 @@
 
 <script type="text/javascript">
 //프로필사진 등록 미리보기
-function previewFile() {
- //다른이미지에 적용되지않게 #profile로 id를 주어 타켓설정
-  const preview = document.querySelector('#profile');
-  const file = document.querySelector('input[type=file]').files[0];
-  const reader = new FileReader();
-
-  reader.addEventListener("load", () => {
-    // convert image file to base64 string
-    preview.src = reader.result;
-  }, false);
-
-  if (file) {
-    reader.readAsDataURL(file);
-  }
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+        $('#myImg').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
 }
+
 
 //프로필사진 등록 삭제
 function deleteFile() {
- 	$("$myImg").attr("src", "");
+ 	$("$myImg").attr("src", "../../user_profile_upload");
 }
 
 //이메일 입력방식 선택
@@ -98,6 +93,14 @@ $(function(){
 	$("#btn").click(function(){
 		$("#infoEditFrm").submit();
 	});
+	
+	 $("#upfile").on('change', function(){
+		 readURL(this);
+	});
+	 $("#deleteImg").click(function() {
+		 deleteFile();
+	});
+	 
 });//ready
 </script>
 
@@ -149,14 +152,14 @@ MyInfoVO miVO = miDAO.selectInfo(id);
 							<td>
 								<div class="profile">
 									<div>
-										<img src="../../user_profile_upload/<%= miVO.getImg() %>" id="myImg" name="myImg" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
+										<img src="../../user_profile_upload/<%= miVO.getImg() %>" id="myImg" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
 									</div>
 									
 									<div>
 										<div class="upload-btn-wrapper">
 											<button class="formBtn" style="padding: 8px 20px;">사진등록</button>
-											<input type="file" name="upfile" onchange="previewFile()" style="padding: 8px 20px; cursor: pointer;" />
-											<input type="button" value="삭제" class="formBtn" onchange="deleteFile()" style="margin: 5px 5px; padding: 8px 20px; cursor: pointer;">
+											<input type="file" name="upfile" id="upfile" style="padding: 8px 20px; cursor: pointer;" />
+											<input type="button" value="삭제" id="deleteImg" class="formBtn" style="margin: 5px 5px; padding: 8px 20px; cursor: pointer;">
 										</div>
 									</div>
 								</div>
