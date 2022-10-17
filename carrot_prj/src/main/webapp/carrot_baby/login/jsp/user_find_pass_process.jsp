@@ -31,25 +31,26 @@ int[] abc = new int[8];
          temp1.append(abbc[i]);
       }
 String temp = temp1.toString();
+
+//비밀번호 암호화
+MessageDigest md=MessageDigest.getInstance("SHA-1");
+md.update(temp.getBytes());
+String sha_p=DataEncrypt.messageDigest("SHA-1", temp);
 System.out.println( "임시비밀번호 생성 : " +temp);
+System.out.println("-----암호화----"+sha_p);
 
 //암호화 키 불러오기
 ServletContext sc=getServletContext();
 String key = sc.getInitParameter("userKey");
 FindPwDAO fDAO=FindPwDAO.getInstance(key);
+
 String id=fDAO.selectFindPw(fVO);
 fVO.setId(id);
 fVO.setName(request.getParameter("name"));
-fVO.setTemp(temp);
+fVO.setTemp(sha_p);
 
 fDAO.updateTempPw(fVO);
 String pass=fDAO.selectView(id);
-
-//비밀번호 암호화
-MessageDigest md=MessageDigest.getInstance("SHA-1");
-md.update(pass.getBytes());
-String sha_p=DataEncrypt.messageDigest("SHA-1", pass);
-System.out.println("-----암호화----"+sha_p);
 
 pageContext.setAttribute("pass", pass);
 
