@@ -214,6 +214,11 @@ String user_id =(String)session.getAttribute("id");
 		<h1 class="write-title">중고거래 글쓰기</h1>
 		<div class="write">
 		<form name="writePost" id="writePost" method="post" action="user_writeUp_process.jsp" enctype="multipart/form-data">
+		<div>
+		<%for(int i =0; i<list_img.size(); i++) {%>
+		<input type="hidden" value="<%= list_img.get(i).getProduct_img()%>" id="deleteChk_img<%= i %>" name="deleteChk_img<%= i %>"/>
+		<%} %>
+		</div>
 		<input type="hidden" id="uploadImgSize" name="uploadImgSize" value="<%= list_img.size() %>"/>
 		<input type="hidden" id="prouduct_idx" name="product_idx" value="<%= product_idx %>"/>
 			<div class="write-sel-wrap">

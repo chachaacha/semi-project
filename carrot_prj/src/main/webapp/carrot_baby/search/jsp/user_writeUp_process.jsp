@@ -39,7 +39,11 @@ request.setCharacterEncoding("UTF-8");
 	String product_idx = mr.getParameter("product_idx");
 	int cnt=Integer.parseInt(mr.getParameter("count"));
 	int uploadImg_cnt=Integer.parseInt(mr.getParameter("uploadImgSize"));
+	String[] deleteChk_img = new String[uploadImg_cnt];
 	String[] chk_img = new String[cnt];
+	for(int i =0; i<uploadImg_cnt; i++){
+		deleteChk_img[i]= mr.getParameter("deleteChk_img"+i);
+	}
 	for(int i =0; i<cnt; i++){
 		chk_img[i]= mr.getParameter("chk_img"+i);
 	}
@@ -121,6 +125,20 @@ pDAO.updatePost(pVO);
 <jsp:setProperty property="product_idx" name="iiVO" value="<%= product_idx %>"/>			
 <jsp:setProperty property="img_num" name="iiVO" value="<%= i %>"/>
 <%	pDAO.deleteImg(iiVO);
+try {
+    String path = "C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/search/image/"+deleteChk_img[i-1]; // C 드라이브 -> test폴더 -> test.txt
+    File file = new File(path); // file 생성
+
+    if(file.delete()){ // f.delete 파일 삭제에 성공하면 true, 실패하면 false
+        System.out.println("파일을 삭제하였습니다");
+    }else{
+        System.out.println("파일 삭제에 실패하였습니다");
+    }
+} catch(Exception e) {
+ e.printStackTrace();
+}
+
+
 		}//end for 
 	}//end if
 pageContext.setAttribute("product_idx", product_idx);
