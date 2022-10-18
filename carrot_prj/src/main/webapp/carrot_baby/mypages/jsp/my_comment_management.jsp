@@ -90,11 +90,13 @@ pageContext.setAttribute("total", total);
 </form>
 
 <div class="mcm_title_wrap">
-	<!-- //////////////////////////////////////////////수정부탁/////////////////////////////////////////// -->
+	
 	<div class="mcm_title">내 댓글 관리<span class="title-span"> (총 댓글 수 <c:out value="${ total }"/>개)</span></div><!-- mcm title -->
-		
-		<div class="my_comment_list">
-			<div class="mcl_title">
+		<c:if test="${ empty mcList }">
+		작성한 댓글이 없습니다.
+		</c:if>
+		<div class="my_comment_list"${ empty mcList ?" style='display:none'":"" }>
+		    <div class="mcl_title">
 				<div class="mcl_title_align"><!-- mcl_title_align 시작 -->
 					<div><input type="checkbox" id="allChk" class="mcl_check" onclick="allChk()">번호</div><!-- mcl_num -->	
 					<div>내용</div><!-- mcl_content -->
@@ -102,7 +104,7 @@ pageContext.setAttribute("total", total);
 						<button class="mcl_button" type="button" id="multipleDelBtn">선택삭제</button>
 					</div><!-- mcl_btn -->	
 				</div><!-- mcl_title_align 끝 -->
-		    </div><!-- mcl_title -->			
+		    </div><!-- mcl_title -->
 				<!-- 댓글 내용들 -->
 				<div> <!-- mcl_content_wrap -->
 					<!-- 반복시작 -->
@@ -140,7 +142,7 @@ pageContext.setAttribute("total", total);
 		<c:set var="isLast" value="2"/>
 		<c:if test="${ total gt 0 }">
 		
-		<c:if test="${curPage >= 5}">
+		<c:if test="${curPage >= 4}">
 		<a href="javascript:pageMove(1)" class="page-bottom-next">&lt;&lt;</a>
 		<a href="javascript:pageMove('${ startNum eq 1 ? 1 :  startNum-1 }')" class="page-bottom-next">&lt;</a>
 		</c:if>
@@ -148,6 +150,7 @@ pageContext.setAttribute("total", total);
 		<c:if test="${ startNum+3 > lastPage }">
 			<c:set var="isLast" value="${ lastPage - startNum }"/>
 		</c:if>
+		
 		<c:forEach var="i" step="1" begin="0" end="${ isLast }">
 			<a href="javascript:pageMove('${ startNum+ i }')"${ curPage eq startNum+i ? "class='page-bottom-icon-click'": "class='page-bottom-icon'" }><c:out value="&nbsp;${ startNum+i }&nbsp;" escapeXml="false"/></a>
 		</c:forEach>
@@ -156,6 +159,7 @@ pageContext.setAttribute("total", total);
 			<a href="javascript:pageMove('${ startNum+3 }')" class="page-bottom-next">&gt;&gt;</a>
 			<a href="javascript:pageMove('${ lastPage }')" class="page-bottom-next">&gt;</a>
 		</c:if>
+		
 		</c:if>
 		</div>
 </div>

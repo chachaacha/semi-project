@@ -63,7 +63,9 @@ location.href="block_user_management.jsp";
 <%@ include file="myinfo_navi.jsp" %>
 <div class="title_wrap">
 	<div class="title">차단 사용자 관리</div>
-	
+	<c:if test="${ empty mbList }">
+	<span>차단회원이 없습니다.</span>
+	</c:if>
 	<c:forEach var="mbList" items="${ pageScope.mbList }">
 	<div class="profile">
 			<div class="profile-wrap">
