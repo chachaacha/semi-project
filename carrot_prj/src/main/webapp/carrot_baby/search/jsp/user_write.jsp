@@ -27,18 +27,6 @@ var cnt = 2;
 var minAppend=1;
 $(function() {	
 	
-/* 	/* div 선택시 파일 열기  
-	const imgUpload=document.querySelector("#post_img1");
-	const upload=document.querySelector("#preview0");
-	
-	upload.addEventListener('click', () => imgUpload.click());
-	
-	/* div 선택시 파일 열기  
-	const imgUpload=document.querySelector("#post_img2");
-	const upload=document.querySelector("#preview1");
-	
-	upload.addEventListener('click', () => imgUpload.click()); */
-	
 	$("#pushBtn").click(function() {
 		//유효성 검사.
 		chkNull();
