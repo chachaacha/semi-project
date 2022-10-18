@@ -57,7 +57,7 @@ public class JoinDAO {
 			pstmt.setString(6, jVO.getBirth());
 			pstmt.setString(7, jVO.getPhone_num());
 			pstmt.setString(8, jVO.getSms_chk());
-			pstmt.setString(9, jVO.getEmail());
+			pstmt.setString(9, de.encryption(jVO.getEmail()));
 			pstmt.setString(10, jVO.getEmail_chk());
 			pstmt.setString(11, jVO.getZipcode());
 			pstmt.setString(12, jVO.getAddr1());

@@ -86,10 +86,6 @@ String email2=mr.getParameter("email2");
 System.out.println(email2);
 String email=email1+"@"+email2;
 System.out.println("이메일: "+email);
-//알고리즘 설정하여 이메일 암호화(키추가)
-String plainText2=email;
-String sha_e=DataEncrypt.messageDigest("SHA-1", plainText2);
-System.out.println("***암호화이메일***"+sha_e);
 //우편번호
 String zipcode=mr.getParameter("zipcode");
 //<!-- 주소 추출 -->
@@ -108,7 +104,7 @@ String addr2=mr.getParameter("addr2");
 <jsp:setProperty property="birth" name="jVO" value="<%= birth %>"/>
 <jsp:setProperty property="phone_num" name="jVO" value="<%= phone_num %>"/>
 <jsp:setProperty property="sms_chk" name="jVO" value="<%= check1 %>"/>
-<jsp:setProperty property="email" name="jVO" value="<%= sha_e %>"/> 
+<jsp:setProperty property="email" name="jVO" value="<%= email %>"/> 
 <jsp:setProperty property="email_chk" name="jVO" value="<%= check2 %>"/>
 <jsp:setProperty property="zipcode" name="jVO" value="<%= zipcode %>"/>
 <jsp:setProperty property="addr1" name="jVO" value="<%= addr %>"/> 
