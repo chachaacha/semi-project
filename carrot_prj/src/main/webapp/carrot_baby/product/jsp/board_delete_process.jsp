@@ -1,3 +1,7 @@
+<%@page import="java.io.File"%>
+<%@page import="userVO.ImgVO"%>
+<%@page import="java.util.List"%>
+<%@page import="userDAO.PostDAO"%>
 <%@page import="userDAO.MySalesDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" info=""%>
@@ -25,8 +29,26 @@ request.setCharacterEncoding("UTF-8");
 
 //MySalesDAO 생성
 MySalesDAO msDAO=MySalesDAO.getInstance();
-
+PostDAO pDAO=PostDAO.getInstance();
 String product_idx=request.getParameter("product_idx"); //게시글 삭제를 위한 인덱스
+
+List<ImgVO> list = null;
+list= pDAO.selectImg(product_idx);
+for(int i = 0; i<list.size(); i++){
+	try {
+	    String path = "../../search/image/"+list.get(i).getProduct_img(); // C 드라이브 -> test폴더 -> test.txt
+	    File file = new File(path); // file 생성
+
+	    if(file.delete()){ // f.delete 파일 삭제에 성공하면 true, 실패하면 false
+	        System.out.println("파일을 삭제하였습니다");
+	    }else{
+	        System.out.println("파일 삭제에 실패하였습니다");
+	    }
+	} catch(Exception e) {
+	 e.printStackTrace();
+	}	
+}//end for
+
 
 msDAO.deleteBoard(product_idx);
 
