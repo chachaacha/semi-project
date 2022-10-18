@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+a {
+	text-decoration: none;
+}
+
 .mcm_title_wrap{
 	margin: 0 auto;
     display: flex;
@@ -69,6 +73,10 @@
 .cmt_style{color: #B8B8B8;
 			}
 
+.title-span {
+	font-size: 15px;
+	color:#495057;
+}
 
 /* 페이지 */
 .page-bottom {

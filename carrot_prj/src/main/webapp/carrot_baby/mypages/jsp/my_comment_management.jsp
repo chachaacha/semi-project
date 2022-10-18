@@ -91,7 +91,7 @@ pageContext.setAttribute("total", total);
 
 <div class="mcm_title_wrap">
 	<!-- //////////////////////////////////////////////수정부탁/////////////////////////////////////////// -->
-	<div class="mcm_title">내 댓글 관리<span>(총 댓글 수<c:out value="${ total }"/>개)</span></div><!-- mcm title -->
+	<div class="mcm_title">내 댓글 관리<span class="title-span"> (총 댓글 수 <c:out value="${ total }"/>개)</span></div><!-- mcm title -->
 		
 		<div class="my_comment_list">
 			<div class="mcl_title">
@@ -139,8 +139,11 @@ pageContext.setAttribute("total", total);
 		<c:set var="startNum" value="${ curPage - (curPage - 1)% 3 }"/>
 		<c:set var="isLast" value="2"/>
 		<c:if test="${ total gt 0 }">
+		
+		<c:if test="${curPage >= 5}">
 		<a href="javascript:pageMove(1)" class="page-bottom-next">&lt;&lt;</a>
 		<a href="javascript:pageMove('${ startNum eq 1 ? 1 :  startNum-1 }')" class="page-bottom-next">&lt;</a>
+		</c:if>
 		
 		<c:if test="${ startNum+3 > lastPage }">
 			<c:set var="isLast" value="${ lastPage - startNum }"/>
