@@ -14,6 +14,20 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
+//생년월일 하이픈입력
+const birthHyphen = (target) => {
+	 target.value = target.value
+	   .replace(/[^0-8]/g, '')
+	   .replace(/^(\d{4})(\d{2})(\d{2})$/, `$1-$2-$3`);
+}
+
+//전화번호 하이픈입력
+const autoHyphen = (target) => {
+	 target.value = target.value
+	   .replace(/[^0-9]/g, '')
+	   .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+}
+
 $(function () {
     $("#chkBtn").click(function () {
 
@@ -83,8 +97,8 @@ $(function () {
 				<span class="infoText">이름 / 생년월일/ 휴대폰으로 찾기</span>
 				<div style="margin: 30px">
 					<input type="text" placeholder="이름 입력" size="18" class="textBox" name="name" id="name" >
-					<input type="text" placeholder="예) 2000-01-01" size="18" class="textBox" name="birth" id="birth" ><br>
-					<input type="text" placeholder="예) 010-1234-5678" size="46" class="textBox" name="phone_num" id="phone_num" style="margin: 5px">
+					<input type="text" placeholder="생년월일 입력" size="18" class="textBox" name="birth" id="birth" oninput="birthHyphen(this)" ><br>
+					<input type="text" placeholder="휴대번호 입력" size="46" class="textBox" name="phone_num" id="phone_num" style="margin: 5px" oninput="autoHyphen(this)" >
 				</div>
 			</div>
 
@@ -93,6 +107,12 @@ $(function () {
 				 <input type="button" value="확인" class="oBtn" id="chkBtn">
 			</div>
 			</form>
+			
+			<!-- 비번찾기 찾기창 이동 -->
+			<div class="linkText">
+				<p>비밀번호가 기억나지 않는다면?</p>
+				<p><a href="user_find_pass.jsp" style="color:#FF9326">비밀번호 찾기 바로가기</a></p>
+			</div>
 
 		</div>
 		<!-- container end -->

@@ -1,3 +1,4 @@
+<%@page import="kr.co.sist.util.cipher.DataEncrypt"%>
 <%@page import="managerDAO.LoginDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -107,8 +108,14 @@ $(function(){
 </body>
 <jsp:useBean id="lVO" class="managerVO.LoginVO" scope="page"></jsp:useBean>
 <jsp:setProperty property="*" name="lVO"/>
+
+<c:if test="${ not empty param.newPw }">
 <% 
+lVO.setPassword(DataEncrypt.messageDigest("SHA-1", request.getParameter("password")));
+lVO.setNewPw(DataEncrypt.messageDigest("SHA-1", request.getParameter("newPw")));
 LoginDAO lDAO = LoginDAO.getInstance();
+System.out.println(DataEncrypt.messageDigest("SHA-1", request.getParameter("password")));
+System.out.print(lVO);
 int result = lDAO.updatePW(lVO);
 pageContext.setAttribute("result", result);
 %>
@@ -120,12 +127,12 @@ alert("변경된 비밀번호로 재접속해 주세요.");
 location.href="../../login/jsp/manager_login.jsp";
 </script>
 </c:when>
-<c:when test="${ not empty param.manager_id && result eq 0 }"> <%-- 처음 진입시에는 실행되지 않게 웹 파라메터가 있을 경우에만 수행한다. --%>
+<c:otherwise>
 <script type="text/javascript">
 alert("현재 비밀번호가 올바르지 않습니다.");
 </script>
-</c:when>
+</c:otherwise>
 </c:choose>
-
+</c:if>
 
 </html>

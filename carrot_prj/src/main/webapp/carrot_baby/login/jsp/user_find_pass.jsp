@@ -13,6 +13,13 @@
 <link rel="stylesheet" type="text/css" href="../css/user_find_pass.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
+//전화번호 하이픈입력
+const autoHyphen = (target) => {
+	 target.value = target.value
+	   .replace(/[^0-9]/g, '')
+	   .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+}
+
 $(function () {
     $("#chkBtn").click(function () {
 
@@ -88,21 +95,20 @@ System.out.println( "---user_find_pass.jsp---"+session.getAttribute("tempPass"))
 				<div style="margin: 30px">
 					<input type="text" placeholder="이름 입력" size="18" name='name' class="textBox" id="name">
 					<input type="text" placeholder="아이디 입력" size="18" name="id" class="textBox" id="id"><br>
-					<input type="text" placeholder="예) 010-1234-5678" size="46" name="phone_num" class="textBox" id="phone_num" style="margin: 5px">
+					<input type="text" placeholder="휴대번호 입력" size="46" name="phone_num" class="textBox" id="phone_num" style="margin: 5px" oninput="autoHyphen(this)" >
 				</div>
 			</div>
 			
 			<!-- 확인 취소 버튼  -->
 			<div style="text-align: center; margin: 30px;">
 				<input type="button" value="확인" class="oBtn" id="chkBtn">
-				 <a href="../../mainhome/jsp/user_mainhome.jsp"><input 	type="button" value="취소" class="gBtn"></a>
 			</div>
 			</form>
 
 			<!-- 아이디 찾기창 이동 -->
 			<div class="linkText">
 				<p>아이디가 기억나지 않는다면?</p>
-				<p><a href="user_find_id.jsp">아이디 찾기 바로가기</a></p>
+				<p><a href="user_find_id.jsp" style="color:#FF9326">아이디 찾기 바로가기</a></p>
 			</div>
 		</div>
 	<!-- container end -->
