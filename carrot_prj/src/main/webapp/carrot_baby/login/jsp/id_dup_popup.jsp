@@ -16,7 +16,7 @@ html {
 <!-- jQuery google CDN -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
-//공백사용못하게
+//공백입력 방지
 function noSpaceForm(obj) {
     var str_space = /\s/;  // 공백체크
     if(str_space.exec(obj.value)) { //공백 체크
@@ -25,6 +25,23 @@ function noSpaceForm(obj) {
         obj.value = obj.value.replace(' ',''); // 공백제거
         return false;
     }
+}
+
+// 한글입력 방지 
+function noKor() {
+	$("#id").keyup(function(event){
+		if (!(event.keyCode >=37 && event.keyCode<=40)) {
+			var inputVal = $(this).val();
+			$(this).val(inputVal.replace(/[^a-z._0-9^-]/gi,''));		
+		}
+	});
+}
+
+//중복버튼클릭시에만 사용하기 버튼 활성화
+var btn;
+function btn_on() {
+ btn = document.getElementById('idbtn');
+ btn.disabled = false;
 }
 
 $(function() {
@@ -72,6 +89,11 @@ function chkNull(){
 	});//ajax
 }//chkNull
 
+function btnActive()  {
+	  const target = document.getElementById("#chkBtn");
+	  target.disabled = false;
+	}
+
 </script>
 </head>
 <body>
@@ -88,9 +110,9 @@ function chkNull(){
 	<!-- 1 -->
 	<form method="get" id="frmDup">  
 	<div class="contents">
-		<input type="text" class="idText" id="id" name="id" size="30" autocomplete="off" onkeyup="noSpaceForm(this);"/>
+		<input type="text" class="idText" id="id" name="id" size="30" autocomplete="off" onkeydown="noKor();"style="ime-mode:disabled;"onkeyup="noSpaceForm(this);"/>
 		<input type="text" style="display:none;"/>
-		<input type="button" value="중복확인" class="chkBtn" id="chkBtn" />
+		<input type="button" value="중복확인" class="chkBtn" id="chkBtn" onclick="btn_on();" />
 	</div>
 	</form>
 	<div  class="msg">
@@ -101,7 +123,7 @@ function chkNull(){
 		<span>공백 또는 특수문자가 포함된 아이디는 사용할 수 없습니다.</span><br>
 	</div>
 	<!-- 버튼 -->
-	<button type="button" class="idBtn" id="idbtn" >사용하기</button>
+	<button type="button" class="idBtn" id="idbtn" disabled="disabled" >사용하기</button>
 </div>
 </body>
 </html>
