@@ -27,9 +27,13 @@
 //...버튼 누르면 글 삭제할건지 물어보는 팝업창 열기
 $(function() {
 	$(".edit_del_btn").click(function() {
-		confirm("게시글을 정말 삭제하시겠어요?")
-	})
-})
+		var conFlag=confirm("게시글을 정말 삭제하시겠어요?");
+		
+		if(conFlag==true){
+			$("#deleteFrm").submit();
+		}//end if
+	});//click
+});//ready
 </script>
 </head>
 <% 
@@ -53,15 +57,25 @@ $(function() {
 <div class="on_sale_wrap">
 	<div class="on_sale_title">판매중</div>
 	<%
+	//세션 아이디 얻기
 	String id = (String)session.getAttribute("id");
+	
+	//MySalesDAO를 생성하고 판매중인 상품 불러오기
 	 MySalesDAO msDAO=MySalesDAO.getInstance();
 	List<MySalesVO> onSale=msDAO.selectSale(id);
+	
 	//System.out.println("----"+onSale); //값이 들어가는지 확인용
 	//스콥 객체에 할당
 	pageContext.setAttribute("onSale", onSale);
+	
+	//조회되고 있는 거래완료 창의 상품 인덱스 얻기
+	String pldx=request.getParameter("product_idx");
+	//스콥 객체에 할당
+	pageContext.setAttribute("pldx", pldx );
 	%>
 <!-- forEach로 반복하기 -->
 <c:forEach var="os" items="${onSale}">
+<form method="post" action="Mypage_delete_process.jsp?product_idx=${pldx}" id="deleteFrm">
 	<div class="on_sale_item">
 		<div class="on_sale_item_img">
 			<a href="">
@@ -112,6 +126,7 @@ $(function() {
 	</div><!-- on_sale_item_border-->
 	</div><!-- on-sale_item_img -->
 	</div><!-- on_sale_item-->
+	</form>	
 </c:forEach>
 	
 <c:if test="${ empty onSale  }" >

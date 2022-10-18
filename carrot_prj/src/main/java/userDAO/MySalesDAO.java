@@ -107,8 +107,8 @@ public class MySalesDAO {
 			// 3. 쿼리문 생성객체 얻기
 			StringBuilder delete = new StringBuilder();
 			delete
-			.append("delete from	product		")
-			.append("where product_idx = ?");
+			.append("	delete from	product		")
+			.append("	where product_idx = ?		");
 
 			pstmt = con.prepareStatement(delete.toString());
 			// 4. 바인드 변수에 값 설정

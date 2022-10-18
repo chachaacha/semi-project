@@ -64,7 +64,7 @@ $(function() {
 	//세션 아이디 얻기
 	String id = (String)session.getAttribute("id");
 	
-	//거래완료된 상품들 불러오기
+	//MySalesDAO를 생성하고 거래완료된 상품들 불러오기
 	MySalesDAO msDAO=MySalesDAO.getInstance();
 	List<MySalesVO> dealComplete=msDAO.selectDealComplete(id); 
 	
@@ -72,15 +72,15 @@ $(function() {
 	pageContext.setAttribute("dealComplete", dealComplete);
 	
 	//조회되고 있는 거래완료 창의 상품 인덱스 얻기
-	String pldx=request.getParameter("product_idx");
+	//String pldx=request.getParameter("product_idx");
 	//스콥 객체에 할당
-	pageContext.setAttribute("pldx", pldx );
+	//pageContext.setAttribute("pldx", pldx );
 	
 	%>
 	
 	<!-- for each로 반복 -->
 	<c:forEach var="dc" items="${dealComplete}">
-<form method="post" action="Mypage_delete_process.jsp?product_idx=${pldx}" id="deleteFrm">
+<form method="post" action="Mypage_delete_process.jsp?product_idx=${dc.product_idx}" id="deleteFrm">
 	 	<div class="deal_complete_item">
 			<div class="deal_complete_item_img">
 				<a href="">

@@ -1,3 +1,5 @@
+<%@page import="userVO.ImgVO"%>
+<%@page import="userDAO.PostDAO"%>
 <%@page import="java.io.PrintWriter"%>
 <%@page import="userDAO.MySalesDAO"%>
 <%@page import="userVO.MySalesVO"%>
@@ -27,18 +29,25 @@
 //POST방식의 요청 한글 처리
 request.setCharacterEncoding("UTF-8");
 
-//MysalesDaO생성
+//MysalesDao생성
 MySalesDAO msDAO=MySalesDAO.getInstance();
 //게시글 삭제를 위해 상품인덱스 설정하기
 String product_idx=request.getParameter("product_idx");
 //세션에 있는 아이디 불러오기
 //String id=(String)session.getAttribute("id");
+
+//PostDAO생성과 이미지 불러오기
+PostDAO pDao=PostDAO.getInstance();
+List<ImgVO> ImgDel=pDao.selectImg(product_idx);
+
+///////////////////////////////////////////
 msDAO.deleteBoard(product_idx);
+
+
 
 //이후에 다시 거래완료 목록이 조회된 페이지로 돌아감.
 response.sendRedirect("deal_complete.jsp");
 %>
-
 
 </body>
 </html>

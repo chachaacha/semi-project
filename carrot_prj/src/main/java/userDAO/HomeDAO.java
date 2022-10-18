@@ -34,7 +34,7 @@ public class HomeDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<HomeVO> selectProduct() throws SQLException {
+	public List<HomeVO> selectProduct(String id ) throws SQLException {
 		DbConnection db = DbConnection.getInstance();
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -42,14 +42,33 @@ public class HomeDAO {
 		List<HomeVO> list = new ArrayList<>();
 		HomeVO hVO = null;
 		try {
+			
+			System.out.print("------------id is---------"+id);
 			con = db.getConn();
 			StringBuffer sb = new StringBuffer();
-			sb.append("select thumbnail,title, price, gu, comment_cnt, liked_cnt, product_idx ")
-	           .append("from (select thumbnail,title, price, posted_date, free, gu_idx, category_idx,(select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, row_number() over(order by liked_cnt desc) rank, product_idx, sold_check, (select quit from member where id = p.id) quit from product p ) ")
-	           .append("where 1=1 and sold_check='N' and quit='N' order by liked_cnt desc ")
-			   .append("offset 1 rows ")
-			   .append("fetch next 8 rows only ");
+			sb.append("select thumbnail, title, price, gu, comment_cnt, liked_cnt, product_idx ")
+	           .append(" from (select thumbnail, title, price, posted_date, free, gu_idx, category_idx, ")
+	           .append(" (select gu from loc_category where gu_idx = p.gu_idx) gu, comment_cnt, liked_cnt, ")
+			   .append(" row_number() over(order by liked_cnt desc) rank, product_idx, sold_check, ")
+			   .append(" (select quit from member where id = p.id) quit from product p ) ")
+			   .append(" where 1=1 ")
+			   .append(" and sold_check='N' and quit='N' ");
+			  
+			   if(id != null) {
+			   sb.append(" and product_idx not in( select	product_idx ")
+			   .append(" from user_blocked ub,  product p ")
+			   .append(" where p.id=ub.blocked_id ")
+			   .append(" and ub.id=? ) ");
+			   }
+			   sb.append(" order by liked_cnt desc ")
+			   .append(" offset 1 rows  fetch next 8 rows only ");
+			   
+			   System.out.println(sb+" ///id"+id);
 			pstmt= con.prepareStatement(sb.toString());
+			
+			if(id != null) {
+			pstmt.setString(1,id);
+			}
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				hVO = new HomeVO();
@@ -65,6 +84,7 @@ public class HomeDAO {
 		} finally {
 			db.dbClose(rs, pstmt, con);
 		}
+		System.out.println("--- data size----"+ list.size());
 		return list;
 	}//end selectProduct()
 	
