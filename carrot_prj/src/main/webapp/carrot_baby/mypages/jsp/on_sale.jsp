@@ -76,10 +76,12 @@ $(function() {
 <c:forEach var="os" items="${onSale}">
 <form method="post" action="Mypage_delete_process.jsp?product_idx=${os.product_idx}" id="deleteFrm">
 	<div class="on_sale_item">
+		<div class="on_sale_item_wrap">
 		<div class="on_sale_item_img">
 			<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${os.product_idx }">
 			<img alt="이미지 자리" src="../../search/image/${os.thumbnail}">
 			</a>
+		</div><!-- on-sale_item_img -->
 			<div class="on_sale_item_border">
 				<div class="olcl_title">
 					<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${os.product_idx }" style="text-decoration: none; color: black; ">
@@ -123,7 +125,7 @@ $(function() {
 	
 	</div><!-- olcl_title"-->
 	</div><!-- on_sale_item_border-->
-	</div><!-- on-sale_item_img -->
+	</div><!-- on_sale_item_wrap -->
 	</div><!-- on_sale_item-->
 	</form>	
 </c:forEach>

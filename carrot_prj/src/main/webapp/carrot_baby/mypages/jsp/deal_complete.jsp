@@ -82,10 +82,12 @@ $(function() {
 	<c:forEach var="dc" items="${dealComplete}">
 <form method="post" action="Mypage_delete_process.jsp?product_idx=${dc.product_idx}" id="deleteFrm">
 	 	<div class="deal_complete_item">
+	 		<div class="deal_complete_item_wrap">
 			<div class="deal_complete_item_img">
 				<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${dc.product_idx }">
 				<img alt="이미지 자리" src="../../search/image/${dc.thumbnail }">
 				</a>
+				</div><!-- deal_complete_item_img -->
 					<div class="deal_complete_item_border">
 						<div class="dci_title">
 							<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${dc.product_idx }" style="text-decoration: none; color: black; ">
@@ -122,7 +124,7 @@ $(function() {
 								
 	</div><!-- dci_title -->
 	</div><!-- on_sale_item_border-->
-	</div><!-- on-sale_item_img -->
+	</div><!-- deal_complete_item_wrap -->
 	</div><!-- deal_complete_item -->
 	</form>	
 </c:forEach>

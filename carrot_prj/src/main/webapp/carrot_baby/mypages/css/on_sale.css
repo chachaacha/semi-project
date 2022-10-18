@@ -26,15 +26,21 @@
 .on_sale_item_img{width: 160px; /*판매중인 상품 이미지가 들어갈 자리. 사이즈,,,고민 회의 후에 결정하기로*/
 					   height: 160px;
 					   border: 1px solid #C3C3C3;
-					   margin-left: 30px;
-					   margin-top: 20px;
+					   display: flex;
+					   overflow: hidden;
+					   box-sizing: border-box;
+					   overflow: hidden;
 					  }	
+.on_sale_item_img img{
+							box-sizing: border-box;
+    						width: 100%;
+   							 height: 100%;
+	
+}					  					  
 .on_sale_item_border{width: 950px;
 							height: 160px;
 							border: 1px solid #C3C3C3; /*content 위치 잡기 위해서 임시로 border를 설정해둠*/
 							flex-direction: row; /* row는 가로줄 cloumn은 세로줄*/
-							margin-left: 200px;
-							margin-top: -20px;
 							}		
 .olcl_title{font-size: 20px;
 			margin-left: 15px;
@@ -102,4 +108,8 @@
 			    
 .btn_price{display: inline-flex;
 			font-size: 16px;
+}
+.on_sale_item_wrap{display: flex;
+						justify-content: space-evenly;
+						margin-top: 20px;
 }
