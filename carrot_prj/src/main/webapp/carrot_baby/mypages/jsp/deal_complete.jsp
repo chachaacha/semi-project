@@ -83,12 +83,12 @@ $(function() {
 <form method="post" action="Mypage_delete_process.jsp?product_idx=${dc.product_idx}" id="deleteFrm">
 	 	<div class="deal_complete_item">
 			<div class="deal_complete_item_img">
-				<a href="">
+				<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${dc.product_idx }">
 				<img alt="이미지 자리" src="../../search/image/${dc.thumbnail }">
 				</a>
 					<div class="deal_complete_item_border">
 						<div class="dci_title">
-							<a href="" style="text-decoration: none; color: black; ">
+							<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${dc.product_idx }" style="text-decoration: none; color: black; ">
 							<c:out value="${dc.title }"/>
 							</a>
 						<button class="edit_del_btn" type="button" onchange="deleteProduct(this, ${ dc.product_idx })">
