@@ -100,10 +100,23 @@ String zipcode=mr.getParameter("zipcode");
 String chk_img=mr.getParameter("chk_img");
 %>
 <!--  -->
-<%if(reName != null) {
-	if(chk_img.equals("profileImg.png")){
-		
-	}
+<%if(reName == null && !chk_img.equals("profileImg.png")) {
+	try {
+	    String path = "C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/user_profile_upload/"+chk_img; // C 드라이브 -> test폴더 -> test.txt
+	    File file = new File(path); // file 생성
+
+	    if(file.delete()){ // f.delete 파일 삭제에 성공하면 true, 실패하면 false
+	        System.out.println("파일을 삭제하였습니다");
+	    }else{
+	        System.out.println("파일 삭제에 실패하였습니다");
+	    }
+	} catch(Exception e) {
+	 e.printStackTrace();
+	}//end catch
+}//end if
+%>
+
+<%if(reName != null && !chk_img.equals("profileImg.png")) {
 	try {
 	    String path = "C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/user_profile_upload/"+chk_img; // C 드라이브 -> test폴더 -> test.txt
 	    File file = new File(path); // file 생성
