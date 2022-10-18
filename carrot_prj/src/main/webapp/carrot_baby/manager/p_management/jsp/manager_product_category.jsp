@@ -212,7 +212,7 @@ function pageMove(page) {
 				<button type="button" ${selLine eq 2 ? "class='pm_btn-check'" : " class='pm_btn' "} id="soldoutBtn">거래완료</button>
 			</div>
 			<!-- 파라메터를 묶기 위한 폼 -->
-			<form id="hidFrm" method="get">
+			<form id="hidFrm" method="post">
 			<input type="hidden" id="selStatus" name="selStatus" value="${ param.selStatus }"/>
 			<input type="hidden" id="categoryFlag" name="categoryFlag" value="${ param.categoryFlag }"/>
 			<input type="hidden" id="dateOrderFlag" name="dateOrderFlag" value="${ param.dateOrderFlag }"/>
@@ -380,7 +380,7 @@ function pageMove(page) {
 						 </script>
 						 </c:if>
 					</div>
-										<!-- 페이징 -->
+				<!-- 페이징 -->
 				<c:if test="${ total gt 0 and empty param.titleSearch }">
 				<c:set var="ceil" value="${ total/10 }"/>
 				<fmt:parseNumber var="lastPage" integerOnly="true" value="${ ceil+(1-(ceil%1))%1  }"/>

@@ -106,16 +106,14 @@ $(function(){
 </div><!-- wrap  -->
 
 </body>
+<%-- 비번변경 --%>
 <jsp:useBean id="lVO" class="managerVO.LoginVO" scope="page"></jsp:useBean>
 <jsp:setProperty property="*" name="lVO"/>
-
 <c:if test="${ not empty param.newPw }">
 <% 
 lVO.setPassword(DataEncrypt.messageDigest("SHA-1", request.getParameter("password")));
 lVO.setNewPw(DataEncrypt.messageDigest("SHA-1", request.getParameter("newPw")));
 LoginDAO lDAO = LoginDAO.getInstance();
-System.out.println(DataEncrypt.messageDigest("SHA-1", request.getParameter("password")));
-System.out.print(lVO);
 int result = lDAO.updatePW(lVO);
 pageContext.setAttribute("result", result);
 %>

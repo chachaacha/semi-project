@@ -1,3 +1,4 @@
+<%@page import="kr.co.sist.util.cipher.DataEncrypt"%>
 <%@ page import="userDAO.LoginDAO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
@@ -17,6 +18,7 @@
 <!-- 2. VO에 전송 받은 값 저장 -->
 <jsp:setProperty property="*" name="lVO"/>
 <%
+lVO.setPassword(DataEncrypt.messageDigest("SHA-1", request.getParameter("password")));
 String id = request.getParameter("id");// 웹 파라메터로 넘어온 아이디
 LoginDAO lDAO = LoginDAO.getInstance();
 pageContext.setAttribute("returnId", lDAO.selectLogin(lVO)); //입력한 아이디와 비번을 통해 아이디 리턴

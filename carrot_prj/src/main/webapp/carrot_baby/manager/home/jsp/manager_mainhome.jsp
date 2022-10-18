@@ -53,7 +53,7 @@
 	int quitMem = hDAO.selectMember2();
 	int totalMem = hDAO.selectMember3();
 %>
-		<div class="title">■ 오늘의 거래 현황</div>
+	<%-- 	<div class="title">■ 오늘의 거래 현황</div>
 
 		<div>
 		 <table class="table">
@@ -64,7 +64,7 @@
     <tr><td>3</td><td>무료나눔</td><td>1</td><td>0</td></tr>
   </table>  
 			<hr>
-		</div>
+		</div> --%>
 
 		<div class="title">■ 거래완료 현황</div>
 		<div>
