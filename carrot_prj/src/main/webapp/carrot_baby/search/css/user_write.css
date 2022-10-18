@@ -101,6 +101,11 @@
 	font-size: 20px;
 }
 
+.write-imgs-upload-wrap{
+	display: flex;
+    align-items: center;
+}
+
 .write-center-wrap {
 	width: 900px;
 	border-bottom: 1px solid #E6E6E6;
@@ -128,8 +133,87 @@
 	margin-top:40px;
 }
 
+.inputWrap {
+	margin-top: 20px;
+    margin-left: 90px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.inputwrap-wrap {
+
+	display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.imginput-wrap{
+	width: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+	margin-bottom: 10px;
+}
+
+.filebtn-wrap {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+}
+
+.filebtn {
+	margin-right: 5px;
+    margin-left: 5px;
+	display: flex;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background: #FAA330;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type="file"] {
+    height: 1px;
+    width: 1px;
+    position: absolute;
+}
+
+.filelabel {
+	background: #80A878;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    width: 120px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.bi {
+	color: #fff;
+	margin-right: 0px;	
+}
+
 .imgs-upload {
 	display: none;
+}
+
+.inputBox {
+	 width: 220px;
+}
+
+.imginput{
+	margin-top: 10px;
+    width: 120px;
+    height: 120px;
+    background-color: #BEBEBE;
+    border-radius: 20px;
+    overflow: hidden;
 }
 
 .upload {
