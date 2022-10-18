@@ -82,3 +82,10 @@
 	padding: 15px 60px;
 	cursor: pointer;
 }
+
+.linkText {
+	display: block;
+	margin: 0px auto;
+	width: 360px;
+	padding:20px;
+}
