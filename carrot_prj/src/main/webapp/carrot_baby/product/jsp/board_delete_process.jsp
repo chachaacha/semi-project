@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.io.File"%>
 <%@page import="userVO.ImgVO"%>
 <%@page import="java.util.List"%>
@@ -32,7 +33,7 @@ MySalesDAO msDAO=MySalesDAO.getInstance();
 PostDAO pDAO=PostDAO.getInstance();
 String product_idx=request.getParameter("product_idx"); //게시글 삭제를 위한 인덱스
 
-List<ImgVO> list = null;
+List<ImgVO> list = new ArrayList<ImgVO>();
 list= pDAO.selectImg(product_idx);
 for(int i = 0; i<list.size(); i++){
 	try {
