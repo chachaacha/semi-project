@@ -389,8 +389,10 @@ function pageMove(page) {
 				<c:set var="isLast" value="4"/>	
 				
 				<div class="page-bottom">
-					<a href="javascript:pageMove(1)"  class="page-bottom-next">&lt;&lt;</a>
-					<a href="javascript:pageMove('${ startNum eq 1 ? 1 :startNum-1 }')"  class="page-bottom-next">&lt;</a>
+					<c:if test='${ startNum - 5 gt 1 }'>
+						<a href="javascript:pageMove(1)"  class="page-bottom-next">&lt;&lt;</a>
+						<a href="javascript:pageMove('${ startNum eq 1 ? 1 :startNum-1 }')"  class="page-bottom-next">&lt;</a>
+					</c:if>
 					<c:if test="${ startNum +5 > lastPage }">
 						<c:set var="isLast" value="${lastPage - startNum }"/>
 					</c:if>
