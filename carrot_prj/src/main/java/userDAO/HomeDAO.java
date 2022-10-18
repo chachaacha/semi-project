@@ -43,7 +43,7 @@ public class HomeDAO {
 		HomeVO hVO = null;
 		try {
 			
-			System.out.print("------------id is---------"+id);
+			//System.out.print("------------id is---------"+id);
 			con = db.getConn();
 			StringBuffer sb = new StringBuffer();
 			sb.append("select thumbnail, title, price, gu, comment_cnt, liked_cnt, product_idx ")
@@ -63,7 +63,7 @@ public class HomeDAO {
 			   sb.append(" order by liked_cnt desc ")
 			   .append(" offset 1 rows  fetch next 8 rows only ");
 			   
-			   System.out.println(sb+" ///id"+id);
+			   //System.out.println(sb+" ///id"+id);
 			pstmt= con.prepareStatement(sb.toString());
 			
 			if(id != null) {

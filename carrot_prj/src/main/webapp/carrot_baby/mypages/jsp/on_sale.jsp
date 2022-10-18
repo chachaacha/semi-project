@@ -5,7 +5,6 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-    <!-- 안에 걸려있는 로그인 헤더에 taglib~ 이거 있으면 또 안써도 되는건지? -->
 
 <!-- parameter받은 VO생성 -->
 <jsp:useBean id="mssVO" class="userVO.MySalesVO" scope="session"/>
@@ -24,7 +23,7 @@
 <link rel ="stylesheet" href="../css/on_sale.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
-//...버튼 누르면 글 삭제할건지 물어보는 팝업창 열기
+//x 버튼 누르면 글 삭제
 $(function() {
 	$(".edit_del_btn").click(function() {
 		var conFlag=confirm("게시글을 정말 삭제하시겠어요?");
@@ -69,13 +68,13 @@ $(function() {
 	pageContext.setAttribute("onSale", onSale);
 	
 	//조회되고 있는 거래완료 창의 상품 인덱스 얻기
-	String pldx=request.getParameter("product_idx");
+	//String pldx=request.getParameter("product_idx");
 	//스콥 객체에 할당
-	pageContext.setAttribute("pldx", pldx );
+	//pageContext.setAttribute("pldx", pldx );
 	%>
 <!-- forEach로 반복하기 -->
 <c:forEach var="os" items="${onSale}">
-<form method="post" action="Mypage_delete_process.jsp?product_idx=${pldx}" id="deleteFrm">
+<form method="post" action="Mypage_delete_process.jsp?product_idx=${os.product_idx}" id="deleteFrm">
 	<div class="on_sale_item">
 		<div class="on_sale_item_img">
 			<a href="">

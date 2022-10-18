@@ -37,8 +37,8 @@ String product_idx=request.getParameter("product_idx");
 //String id=(String)session.getAttribute("id");
 
 //PostDAO생성과 이미지 불러오기
-PostDAO pDao=PostDAO.getInstance();
-List<ImgVO> ImgDel=pDao.selectImg(product_idx);
+//PostDAO pDao=PostDAO.getInstance();
+//List<ImgVO> ImgDel=pDao.selectImg(product_idx);
 
 ///////////////////////////////////////////
 msDAO.deleteBoard(product_idx);
@@ -46,7 +46,7 @@ msDAO.deleteBoard(product_idx);
 
 
 //이후에 다시 거래완료 목록이 조회된 페이지로 돌아감.
-response.sendRedirect("deal_complete.jsp");
+response.sendRedirect("on_sale.jsp");
 %>
 
 </body>
