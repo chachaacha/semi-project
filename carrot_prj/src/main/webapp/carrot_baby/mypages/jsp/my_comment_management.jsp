@@ -42,9 +42,16 @@ function oneCommDelete(pIdx, cIdx, rIdx) { // 댓글삭제 버튼을 누를 시 
 	}
 }
 
+//페이징
+function pageMove( page ) {
+	$("#pageFlag").val(page);
+	$("#pageFrm").submit();
+}
+
 </script>
 </head>
 <body>
+<%-- 세션만료시 로그인을 복귀 --%>
 <c:if test="${ empty sessionScope.id }">
 <c:redirect url="../../login/jsp/user_login.jsp" />
 </c:if>
@@ -53,8 +60,12 @@ function oneCommDelete(pIdx, cIdx, rIdx) { // 댓글삭제 버튼을 누를 시 
 //내댓글목록불러오기
 request.setCharacterEncoding("UTF-8");
 MyCommDAO mcDAO = MyCommDAO.getInstance();
-List<MyCommVO> mcList = mcDAO.selectMC((String)session.getAttribute("id"));
+List<MyCommVO> mcList = mcDAO.selectMC((String)session.getAttribute("id"),request.getParameter("pageFlag") == null ? 1:Integer.parseInt(request.getParameter("pageFlag")));
 pageContext.setAttribute("mcList", mcList);
+
+//총 댓글 수
+int total = mcDAO.selectMCTotal((String)session.getAttribute("id"));
+pageContext.setAttribute("total", total);
 %>
 
 <div class="wrap">
@@ -73,8 +84,14 @@ pageContext.setAttribute("mcList", mcList);
 <input type="hidden" id="oneDelete" name="oneDelete" value="${ param.oneDelete }"/>
 </form>
 
+<%-- 페이징폼 --%>
+<form id="pageFrm" method="get">
+<input type="hidden" id="pageFlag" name="pageFlag" value="${ param.pageFlag }"/>
+</form>
+
 <div class="mcm_title_wrap">
-	<div class="mcm_title">내 댓글 관리</div><!-- mcm title -->
+	<!-- //////////////////////////////////////////////수정부탁/////////////////////////////////////////// -->
+	<div class="mcm_title">내 댓글 관리<span>(총 댓글 수<c:out value="${ total }"/>개)</span></div><!-- mcm title -->
 		
 		<div class="my_comment_list">
 			<div class="mcl_title">
@@ -114,6 +131,30 @@ pageContext.setAttribute("mcList", mcList);
 					</form> 
 				</div><!-- mcl_content_wrap-->
 		</div><!-- 댓글관리 리스트 전체-->
+		<!-- 페이징 -->
+		<div class="page-bottom" >
+		<c:set var="ceil" value="${ total/10 }"/>
+		<c:set var="lastPage" value="${ ceil+(1-(ceil%1))%1 }"/>
+		<c:set var="curPage" value="${ empty param.pageFlag? 1 : param.pageFlag }"/>
+		<c:set var="startNum" value="${ curPage - (curPage - 1)% 3 }"/>
+		<c:set var="isLast" value="2"/>
+		<c:if test="${ total gt 0 }">
+		<a href="javascript:pageMove(1)" class="page-bottom-next">&lt;&lt;</a>
+		<a href="javascript:pageMove('${ startNum eq 1 ? 1 :  startNum-1 }')" class="page-bottom-next">&lt;</a>
+		
+		<c:if test="${ startNum+3 > lastPage }">
+			<c:set var="isLast" value="${ lastPage - startNum }"/>
+		</c:if>
+		<c:forEach var="i" step="1" begin="0" end="${ isLast }">
+			<a href="javascript:pageMove('${ startNum+ i }')"${ curPage eq startNum+i ? "class='page-bottom-icon-click'": "class='page-bottom-icon'" }><c:out value="&nbsp;${ startNum+i }&nbsp;" escapeXml="false"/></a>
+		</c:forEach>
+		
+		<c:if test="${ lastPage >= startNum+3 }">
+			<a href="javascript:pageMove('${ startNum+3 }')" class="page-bottom-next">&gt;&gt;</a>
+			<a href="javascript:pageMove('${ lastPage }')" class="page-bottom-next">&gt;</a>
+		</c:if>
+		</c:if>
+		</div>
 </div>
 </div><!-- container end -->
 

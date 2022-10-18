@@ -24,7 +24,7 @@ public class MyCommDAO {
 		return mcDAO;
 	}
 	
-	public List<MyCommVO> selectMC(String id) throws SQLException {
+	public List<MyCommVO> selectMC(String id, int pageFlag) throws SQLException {
 		List<MyCommVO> list = new ArrayList<MyCommVO>();
 		
 		DbConnection dc = DbConnection.getInstance();
@@ -32,23 +32,20 @@ public class MyCommDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
-		//1. 드라이버 로딩
 		try {
-		//2. Connection 얻기
 			con = dc.getConn();
-		//3. 쿼리문 생성객체 얻기
 			StringBuilder select = new StringBuilder();
 			select
 			.append(" select pd.product_idx, pc.comment_idx, pc.reply_idx, pd.title, pc.contents, pc.posted_date ")
 			.append(" from product_comment pc, product pd ")
 			.append(" where ( pc.product_idx = pd.product_idx ) and pc.deleted = 'N' and pc.id = ? ")
-			.append(" order by pc.posted_date desc ");
+			.append(" order by pc.posted_date desc ")
+			.append(" offset (?-1)*10 rows")
+			.append(" fetch next 10 rows only");
 		
 			pstmt = con.prepareStatement(select.toString());
-		//4. 바인드 변수에 값 설정
 			pstmt.setString(1, id);
-		//5. 쿼리문 실행 후 결과 얻기
+			pstmt.setInt(2, pageFlag);
 			rs = pstmt.executeQuery();
 			
 			MyCommVO mcVO = null;
@@ -65,12 +62,50 @@ public class MyCommDAO {
 				list.add(mcVO);
 			}
 		} finally {
-		//6. 연결 끊기.
 			dc.dbClose(rs, pstmt, con);
 		}//finally
 		return list;
 	}//selectMC
 	
+	
+	public int selectMCTotal(String id) throws SQLException {
+		int total = 0;
+		DbConnection dc = DbConnection.getInstance();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = dc.getConn();
+			StringBuilder select = new StringBuilder();
+			select
+			.append(" select count(*) count ")
+			.append(" from product_comment pc, product pd ")
+			.append(" where ( pc.product_idx = pd.product_idx ) and pc.deleted = 'N' and pc.id = ? ")
+			.append(" order by pc.posted_date desc ");
+		
+			pstmt = con.prepareStatement(select.toString());
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if( rs.next() ) {
+				total = rs.getInt("count");
+			}
+		} finally {
+			dc.dbClose(rs, pstmt, con);
+		}//finally
+		return total;
+	}//selectMC
+	
+	
+	
+	
+	/**
+	 * 단일 값 삭제
+	 * @param mcVO
+	 * @return
+	 * @throws SQLException
+	 */
 	public int updateDropMc(MyCommVO mcVO) throws SQLException {
 		int resultCnt = 0;
 		DbConnection dc = DbConnection.getInstance();
