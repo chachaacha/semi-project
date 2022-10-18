@@ -61,7 +61,7 @@ public class HomeDAO {
 			   .append(" and ub.id=? ) ");
 			   }
 			   sb.append(" order by liked_cnt desc ")
-			   .append(" offset 1 rows  fetch next 8 rows only ");
+			   .append(" offset 0 rows  fetch next 8 rows only ");
 			   
 			   //System.out.println(sb+" ///id"+id);
 			pstmt= con.prepareStatement(sb.toString());
