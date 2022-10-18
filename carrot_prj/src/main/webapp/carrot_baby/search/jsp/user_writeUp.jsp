@@ -62,8 +62,8 @@ $(function() {
 		} */
 		//$("#inputWrap").last().append("<div>a</div>");//자식으로 삽입
 		//$("#inputWrap").first().append("<div>a</div>");
-		var outDiv = "<div class='imginput-wrap'><label class='filelabel' for='post_img"+ cnt +"'>사진" + cnt + " 업로드</label>"
-		+ " <input type = 'file' id = 'post_img"+ cnt +"' name = 'post_img"+ ++cnt +"' class='inputBox' onchange='readURL(this,"+ (cnt-1) +");'/><br/>"
+		var outDiv = "<div class='imginput-wrap'><label class='filelabel' for='post_img"+ (cnt+1) +"'>사진" + cnt + " 업로드</label>"
+		+ " <input type = 'file' name = 'post_img"+ ++cnt +"' id = 'post_img"+ cnt +"' class='inputBox' onchange='readURL(this,"+ (cnt-1) +");'/><br/>"
 		+ "<img  class='imginput' id='preview"+ (cnt-1) +"' name='preview"+ (cnt-1) +"'/></div>";
 		$("#inputWrap").append(outDiv);
 		++minAppend;
@@ -286,15 +286,15 @@ String user_id =(String)session.getAttribute("id");
 						</div>
 					<div id = "inputWrap" class="inputwrap-wrap">
 					<div class="imginput-wrap">
-					<label class="filelabel" for="post_img0">대표사진 업로드</label>
-					<input type="file" name="post_img0" id="post_img0" class="inputBox" onchange="readURL(this,0);"/>
+					<label class="filelabel" for="post_img1">대표사진 업로드</label>
+					<input type="file" name="post_img1" id="post_img1" class="inputBox" onchange="readURL(this,0);"/>
 					<input type="hidden" value="<%= list_img.get(0).getProduct_img()%>" id="chk_img0" name="chk_img0"/>
 					<br/>
 					<img class="imginput" id="preview0" src="../image/<%= list_img.get(0).getProduct_img()%>"/>
 					</div>
 					<div class="imginput-wrap">
-					<label class="filelabel" for="post_img1">사진1 업로드</label>
-					<input type="file" name="post_img1" id="post_img1"class="inputBox" onchange="readURL(this,1);"/>
+					<label class="filelabel" for="post_img2">사진1 업로드</label>
+					<input type="file" name="post_img2" id="post_img2"class="inputBox" onchange="readURL(this,1);"/>
 					<input type="hidden" value="<%= list_img.get(1).getProduct_img()%>" id="chk_img1" name="chk_img1"/>
 					<br/>
 					<img class="imginput" id="preview1" src="../image/<%= list_img.get(1).getProduct_img()%>" />
@@ -302,12 +302,11 @@ String user_id =(String)session.getAttribute("id");
 					<%if(2 < list_img.size() ) {%>
 					<%for(int i =2; i<list_img.size(); i++) {%>
 					<div class="imginput-wrap">
-					<label class="filelabel" for="post_img<%= i %>">사진<%= i %></label>
-					<input type="file" name="post_img<%= i %>" class="inputBox" onchange="readURL(this,<%= i %>);"/>
+					<label class="filelabel" for="post_img<%= i+1 %>">사진<%= i %></label>
+					<input type="file" name="post_img<%= i+1 %>" id="post_img<%= i+1 %>" class="inputBox" onchange="readURL(this,<%= i %>);"/>
 					<input type="hidden" value="<%= list_img.get(i).getProduct_img()%>" id="chk_img<%= i %>" name="chk_img<%= i %>"/>
 					<br/>
 					<img class="imginput" id="preview<%= i %>" src="../image/<%= list_img.get(i).getProduct_img()%>" >
-					</div>
 					</div>
 					<script type="text/javascript">
 					++cnt
@@ -315,6 +314,7 @@ String user_id =(String)session.getAttribute("id");
 					</script>
 					<%}//end for %>
 					<%}//end if %>
+					</div>
 					</div>
 					</div>
 					<%
