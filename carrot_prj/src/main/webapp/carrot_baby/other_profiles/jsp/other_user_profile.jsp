@@ -36,7 +36,7 @@
  		 //팝업창 열기
  		window.open("report_profile_popup.jsp?id=${param.id}"
  				,"report_profile_popup",
-		"width=520,height=620,top=234,left=979,scrolling=no")
+		"width=580,height=660,top=234,left=979,scrolling=no")
 		//신고하려는 아이디 팝업창으로 전달
 		$("#reportFrm").submit();
 	});//click
@@ -45,9 +45,14 @@
   //차단하기 버튼 클릭 시
   $(function() {
 		$(".block").click(function() {
-			confirm("사용자를 정말 차단하시겠어요?")
-		})
+			var flag = confirm("사용자를 정말 차단하시겠어요?");
+			
+			if(flag==true){
+				$("#blockFrm").submit();
+			}
+		});//click
 	});
+	
   </script>
   <!-- tab끝 -->
 </head>
@@ -93,7 +98,10 @@ pageContext.setAttribute("pVO", pVO);
 				<div class="nick_name">${pVO.nick} ( <c:out value="${fn:substring(pVO.id,0,4) }****"/>)
 					<div class="btns">
 						<button class="confirm" type="button">신고하기</button>
+						<form method="post" action="user_block_process.jsp" id="blockFrm">
+						<input type="hidden" name="id" id="id" value="${param.id }"/>
 						<button class="block" type="button">차단하기</button>
+						</form>
 					</div><!-- btns -->
 				</div><!-- 별명 -->
 				<div class="report_cnt">누적 신고 횟수 : ${pVO.reported_cnt}</div>
@@ -123,7 +131,9 @@ pageContext.setAttribute("paList", paList);
 <c:forEach var="pa" items="${ paList }">
 		    			<div class="ou_item">
 							<div class="ou_img">
+								<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${pa.product_idx }">
 								<img alt="이미지 자리" src="../../search/image/${pa.thumbnail }">
+								</a>
 								<div class="ou_border">
 									<div class="ou_itm_title"><c:out value="${ pa.title }"/>
 										<div class="dong_date"><c:out value="${ pa.gu }"/> ㆍ <c:out value="${ pa.posted_date }"/> </div><!-- dong_date -->
@@ -149,7 +159,9 @@ pageContext.setAttribute("soList", soList);
 <c:forEach var="so" items="${ soList }">
 		    	<div class="ou_item">
 					<div class="ou_img">
+						<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${so.product_idx }">
 						<img alt="이미지 자리" src="../../search/image/${ so.thumbnail }">
+						</a>
 						<div class="ou_border">
 								<div class="ou_itm_title"><c:out value="${ so.title }"/>
 									 <div class="dong_date"><c:out value="${ so.gu }"/> ㆍ ${ so.posted_date } </div><!-- dong_date -->
@@ -176,7 +188,9 @@ pageContext.setAttribute("psList", psList);
 <c:forEach var="ps" items="${ psList }">
 	<div class="ou_item">
 		<div class="ou_img">
+			<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${ps.product_idx }">
 			<img alt="이미지 자리" src="../../search/image/${ ps.thumbnail }">
+			</a>
 			<div class="ou_border">
 				<div class="ou_itm_title"><c:out value="${ ps.title }"/>
 					<div class="dong_date"><c:out value="${ ps.gu }"/> ㆍ <c:out value="${ ps.posted_date }"/> </div><!-- dong_date -->	

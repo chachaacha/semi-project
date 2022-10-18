@@ -59,7 +59,7 @@ pageContext.setAttribute("blList", blList);
 	<div class="purchase_list_item">
 		<div class="purchase_list_img">
 		<!-- 이미지 클릭시 해당 페이지로 이동 -->
-		<a href="">
+		<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${bl.product_idx }">
 			<img alt="이미지 자리" src="../../search/image/${bl.thumbnail}">
 		</a>
 				<div class="purchase_list_border">
