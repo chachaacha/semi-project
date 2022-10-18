@@ -48,7 +48,7 @@ public class ProfilDAO {
 				//3. 쿼리문 생성객체 얻기
 					StringBuilder selectCpEmp = new StringBuilder();
 					selectCpEmp
-					.append("	select id, img, nick, report_cnt	")
+					.append("	select id, img, nick, reported_cnt	")
 					.append("	from	member							")
 					.append("	where id =?								");
 					
@@ -63,7 +63,7 @@ public class ProfilDAO {
 						pVO.setId(rs.getString("id"));
 						pVO.setImg(rs.getString("img"));
 						pVO.setNick(rs.getString("nick"));
-						pVO.setReport_cnt(rs.getInt("report_cnt"));
+						pVO.setReported_cnt(rs.getInt("reported_cnt"));
 					}
 					
 				} finally {
@@ -92,8 +92,9 @@ public class ProfilDAO {
 			StringBuilder select = new StringBuilder();
 			select
 			.append("	select	pd.id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.posted_date, pd.reserved, pd.sold_check, pd.price	 	")
-			.append("	from	product pd, loc_category lc																											")
-			.append("	where	( pd.gu_idx = lc.gu_idx ) and id	=	?																																	");
+			.append("	from	product pd, loc_category lc	")
+			.append("	where	( pd.gu_idx = lc.gu_idx ) and id	=	?	")
+			.append("	order by pd.posted_date desc	");
 			
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
@@ -145,8 +146,9 @@ public class ProfilDAO {
 			StringBuilder select = new StringBuilder();
 			select
 			.append("	select	pd.id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.posted_date, pd.reserved, pd.sold_check, pd.price	 	")
-			.append("	from	product pd, loc_category lc																											")
-			.append("	where	( pd.gu_idx = lc.gu_idx ) and id	=	? and 	sold_check = 'N'																			");
+			.append("	from	product pd, loc_category lc	")
+			.append("	where	( pd.gu_idx = lc.gu_idx ) and id	=	? and 	sold_check = 'N'	")
+			.append("	order by pd.posted_date desc	");
 			
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
@@ -198,8 +200,9 @@ public class ProfilDAO {
 			StringBuilder select = new StringBuilder();
 			select
 			.append("	select	pd.id, pd.product_idx, pd.thumbnail, pd.title, lc.gu_idx, lc.gu, pd.posted_date, pd.reserved, pd.sold_check, pd.price	 	")
-			.append("	from	product pd, loc_category lc																											")
-			.append("	where	( pd.gu_idx = lc.gu_idx ) and id	=	? and 	sold_check = 'Y'																			");
+			.append("	from	product pd, loc_category lc	")
+			.append("	where	( pd.gu_idx = lc.gu_idx ) and id	=	? and 	sold_check = 'Y'	")
+			.append("	order by pd.posted_date desc ");
 			
 			pstmt = con.prepareStatement(select.toString());
 		//4. 바인드 변수에 값 설정
@@ -279,7 +282,7 @@ public class ProfilDAO {
 		return list;
 	}//selectReport
 	
-	//차단하기
+	//신고하기
 	public void insertReportM(ReportMVO pmVO) throws SQLException {
 		
 		DbConnection dc = DbConnection.getInstance();
@@ -307,7 +310,7 @@ public class ProfilDAO {
 		
 	}//insertReportM
 	
-	//차단 수 업데이트
+	//신고 수 업데이트
 	public int updateRU(String id) throws SQLException {
 		int updateCnt = 0;
 		
@@ -324,7 +327,7 @@ public class ProfilDAO {
 				StringBuilder update = new StringBuilder();
 				update
 				.append("	update	member								")
-				.append("	set			report_cnt = report_cnt +1	")
+				.append("	set			reported_cnt = reported_cnt +1	")
 				.append("	where		id = ?									");
 					
 				pstmt=con.prepareStatement(update.toString());
@@ -339,6 +342,44 @@ public class ProfilDAO {
 		
 		return updateCnt;
 	}//updateRU
+	
+	//이전에 해당 아이디에 대해 신고한 적이 있는지 조회
+	public boolean selectReportedId(ReportMVO rmVO) throws SQLException {
+		boolean flag=false;
+		
+		DbConnection dc = DbConnection.getInstance();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		//1. 드라이버 로딩
+		try {
+		//2. Connection 얻기
+			con = dc.getConn();
+		//3. 쿼리문 생성객체 얻기
+			StringBuilder select = new StringBuilder();
+			select
+			.append("	select reported_id	")
+			.append("	from reported_member	")
+			.append("	where id=? and reported_id=?	");
+			
+			pstmt = con.prepareStatement(select.toString());
+		//4. 바인드 변수에 값 설정
+			pstmt.setString(1, rmVO.getId());
+			pstmt.setString(2, rmVO.getReported_id());
+		//5. 쿼리문 생성 후 결과 얻기
+			rs = pstmt.executeQuery(); // rs는 CURSOR의 제어권을 가지고 있다.
+			
+			flag=rs.next(); //검색결과가 있으면 true, 없으면 false
+		} finally {
+		//6. 연결 끊기.
+			dc.dbClose(rs, pstmt, con);
+		}//end finally
+		
+		return flag;
+	}//selectReportedId
+	
 
 //차단하기
 public void insertBlock(BlockUVO buVO) throws SQLException {
@@ -367,4 +408,42 @@ public void insertBlock(BlockUVO buVO) throws SQLException {
 		
 	}//insertBlock
 	
+
+//이전에 해당 아이디에 대해 차단한 적이 있는지 조회
+public boolean selectBlockedId(BlockUVO buVO) throws SQLException {
+	boolean flag=false;
+	
+	DbConnection dc = DbConnection.getInstance();
+	
+	Connection con = null;
+	PreparedStatement pstmt = null;
+	ResultSet rs = null;
+	
+	//1. 드라이버 로딩
+	try {
+		//2. Connection 얻기
+		con = dc.getConn();
+		//3. 쿼리문 생성객체 얻기
+		StringBuilder select = new StringBuilder();
+		select
+		.append("	select blocked_id	")
+		.append("	from user_blocked	")
+		.append("	where id=? and blocked_id=?	");
+		
+		pstmt = con.prepareStatement(select.toString());
+		//4. 바인드 변수에 값 설정
+		pstmt.setString(1, buVO.getId());
+		pstmt.setString(2, buVO.getBlocked_id());
+		//5. 쿼리문 생성 후 결과 얻기
+		rs = pstmt.executeQuery(); // rs는 CURSOR의 제어권을 가지고 있다.
+		
+		flag=rs.next(); //검색결과가 있으면 true, 없으면 false
+	} finally {
+		//6. 연결 끊기.
+		dc.dbClose(rs, pstmt, con);
+	}//end finally
+	
+	return flag;
+	}//selectReportedId
+
 }//ProfilDAO

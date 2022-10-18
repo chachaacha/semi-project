@@ -34,11 +34,13 @@
   //신고하기 버튼 클릭 시
  	 $(".confirm").click(function(){
  		 //팝업창 열기
- 		window.open("report_profile_popup.jsp?id="+id
+ 		window.open("report_profile_popup.jsp?id=${param.id}"
  				,"report_profile_popup",
 		"width=520,height=620,top=234,left=979,scrolling=no")
-})	
-});
+		//신고하려는 아이디 팝업창으로 전달
+		$("#reportFrm").submit();
+	});//click
+});//ready
   
   //차단하기 버튼 클릭 시
   $(function() {
@@ -86,7 +88,7 @@ pageContext.setAttribute("pVO", pVO);
 	<div class="oup_wrap">
 		<div class="profile">
 				<div class="profile_img_wrap">
-					<img alt="프로필이미지" src="../../images/profileImg.png" class="profile-img">
+					<img alt="프로필이미지" src="../../user_profile_upload/${pVO.img }" class="profile-img">
 				</div><!-- profile_img -->
 				<div class="nick_name">${pVO.nick} ( <c:out value="${fn:substring(pVO.id,0,4) }****"/>)
 					<div class="btns">
@@ -94,7 +96,7 @@ pageContext.setAttribute("pVO", pVO);
 						<button class="block" type="button">차단하기</button>
 					</div><!-- btns -->
 				</div><!-- 별명 -->
-				<div class="report_cnt">누적 신고 횟수 : ${pVO.report_cnt}</div>
+				<div class="report_cnt">누적 신고 횟수 : ${pVO.reported_cnt}</div>
 			
 			</div><!-- profile -->
 			
@@ -121,7 +123,7 @@ pageContext.setAttribute("paList", paList);
 <c:forEach var="pa" items="${ paList }">
 		    			<div class="ou_item">
 							<div class="ou_img">
-								<img alt="이미지 자리" src="${pa.thumbnail }">
+								<img alt="이미지 자리" src="../../search/image/${pa.thumbnail }">
 								<div class="ou_border">
 									<div class="ou_itm_title"><c:out value="${ pa.title }"/>
 										<div class="dong_date"><c:out value="${ pa.gu }"/> ㆍ <c:out value="${ pa.posted_date }"/> </div><!-- dong_date -->
@@ -132,6 +134,10 @@ pageContext.setAttribute("paList", paList);
 			</div><!-- ou_img-->
 				</div><!-- ou_item -->
 </c:forEach>
+
+<c:if test="${ empty paList }">
+	거래하신 내역이 없습니다.
+</c:if>	
 		  </div><!-- tabs-1 -->
 		  
 <!-- 판매 상품 조회 -->
@@ -143,7 +149,7 @@ pageContext.setAttribute("soList", soList);
 <c:forEach var="so" items="${ soList }">
 		    	<div class="ou_item">
 					<div class="ou_img">
-						<img alt="이미지 자리" src="${ so.thumbnail }">
+						<img alt="이미지 자리" src="../../search/image/${ so.thumbnail }">
 						<div class="ou_border">
 								<div class="ou_itm_title"><c:out value="${ so.title }"/>
 									 <div class="dong_date"><c:out value="${ so.gu }"/> ㆍ ${ so.posted_date } </div><!-- dong_date -->
@@ -154,6 +160,11 @@ pageContext.setAttribute("soList", soList);
 			</div><!-- ou_img-->
 				</div><!-- ou_item -->
 </c:forEach>
+
+<!-- 사용자가 판매중인 상품이 없을 경우 표시되는 메시지-->
+<c:if test="${ empty soList  }" >
+	판매중인 상품 내역이 없습니다.
+</c:if>
 		  </div><!-- tabs-2 -->
 
 <!-- 판매완료 -->		  
@@ -165,7 +176,7 @@ pageContext.setAttribute("psList", psList);
 <c:forEach var="ps" items="${ psList }">
 	<div class="ou_item">
 		<div class="ou_img">
-			<img alt="이미지 자리" src="${ ps.thumbnail }">
+			<img alt="이미지 자리" src="../../search/image/${ ps.thumbnail }">
 			<div class="ou_border">
 				<div class="ou_itm_title"><c:out value="${ ps.title }"/>
 					<div class="dong_date"><c:out value="${ ps.gu }"/> ㆍ <c:out value="${ ps.posted_date }"/> </div><!-- dong_date -->	
@@ -176,10 +187,13 @@ pageContext.setAttribute("psList", psList);
 				</div><!-- ou_img -->
 					</div><!-- ou_item-->
 </c:forEach>
+
+<!-- 사용자가 거래완료한 상품이 없을 경우 표시되는 메시지-->
+<c:if test="${ empty psList }">
+	거래 완료된 상품 내역이 없습니다.
+</c:if>	
 		  </div><!-- tabs-3 -->
-		  
 	</div><!-- tabs -->
-			
 			<!--<div class="ou_item_wrap">  -->
 
 	
@@ -190,6 +204,11 @@ pageContext.setAttribute("psList", psList);
 
 
 <!-- container end -->
+
+<!-- 신고 팝업창으로 아이디 전달 -->
+<%-- <form method="get" action="report_profile_popup.jsp" id="reportFrm">
+	<input type="hidden" name="id" id="id" value="${param.id }"/>
+</form> --%>
 
 <!-- footer -->
 <%@ include file="../../common/jsp/footer.jsp" %>
