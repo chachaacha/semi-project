@@ -294,18 +294,21 @@ function chkNull(){
 					<tr>
 						<th><label><span style="color:red">*</span>성명</label></th>
 						<td>
+							<input type="hidden"  name="namechk" id="namechk" />
 							<input type="text" placeholder="이름을 입력해주세요" id="name" name="name" class="inputTxt inputName"  maxlength="30" onkeyup="noSpaceForm(this);" />
 						</td>
 					</tr>
 					<tr>
 						<th><label><span style="color:red">*</span>별명</label></th>
 						<td>
+							<input type="hidden"  name="nickchk" id="nickchk" />
 							<input type="text" placeholder="별명을 입력해주세요" id="nick" name="nick" class="inputTxt inputNickName" maxlength="30" onkeyup="noSpaceForm(this);"  />
 						</td>
 					</tr>
 					<tr>
 						<th><label><span style="color:red">*</span>아이디</label></th>
 						<td>
+							<input type="hidden"  name="idchk" id="idchk" />
 							<input type="text" placeholder="아이디를 입력해주세요" name="id" id="id" class="inputTxt inputIdtype"  readonly="readonly" />
 							<input type="button" value="아이디 중복 확인" class="idBtn" id="idbtn" />
 						</td>

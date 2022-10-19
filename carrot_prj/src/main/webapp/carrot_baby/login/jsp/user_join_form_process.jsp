@@ -51,11 +51,17 @@ if(temp.length()> checkSize) {
 System.out.println("***이미지***"+reName);
 //이름
 String name=mr.getParameter("name");
+String namechk=name.toLowerCase();
+System.out.println("***이름***"+namechk);
 //별명
 String nick=mr.getParameter("nick");
+String nickchk=nick.toLowerCase();
+System.out.println("***별명***"+nickchk);
 //아이디
 String id=mr.getParameter("id");
 System.out.println("***아이디***"+id);
+String idchk=id.toLowerCase();
+System.out.println("***아이디***"+idchk);
 //비밀번호
 String pwd=mr.getParameter("password");
 System.out.println("일반비밀번호: "+pwd);
@@ -82,9 +88,13 @@ if(check2 == null){
 //방법 2.
 String email1=mr.getParameter("email1");
 System.out.println(email1);
+String emailchk1=id.toLowerCase();
+System.out.println("***이메일***"+emailchk1);
 String email2=mr.getParameter("email2");
 System.out.println(email2);
-String email=email1+"@"+email2;
+String emailchk2=id.toLowerCase();
+System.out.println("***이메일***"+emailchk2);
+String email=emailchk1+"@"+emailchk2;
 System.out.println("이메일: "+email);
 //우편번호
 String zipcode=mr.getParameter("zipcode");
@@ -97,9 +107,9 @@ String addr2=mr.getParameter("addr2");
 %>
 <jsp:setProperty property="img" name="jVO" value="<%= reName %>"/>
 
-<jsp:setProperty property="name" name="jVO" value="<%= name %>"/>
-<jsp:setProperty property="nick" name="jVO" value="<%= nick %>"/>
-<jsp:setProperty property="id" name="jVO" value="<%= id %>"/>
+<jsp:setProperty property="name" name="jVO" value="<%= namechk %>"/>
+<jsp:setProperty property="nick" name="jVO" value="<%= nickchk %>"/>
+<jsp:setProperty property="id" name="jVO" value="<%= idchk %>"/>
 <jsp:setProperty property="password" name="jVO" value="<%= sha_p %>"/>
 <jsp:setProperty property="birth" name="jVO" value="<%= birth %>"/>
 <jsp:setProperty property="phone_num" name="jVO" value="<%= phone_num %>"/>
