@@ -15,28 +15,38 @@
 			border-radius:8px;
 			margin: 0px auto;
 			cursor: pointer;
+			display: flex;
+			justify-content: space-evenly;
+			align-items: center
 			}	
 .ou_img{width: 110px; /*판매중인 상품 이미지가 들어갈 자리. 사이즈,,,고민 회의 후에 결정하기로*/
 		  height: 110px;/*여기가 보더 안에 있는 것들을 조정하는 곳*/
 		  border: 1px solid #4F4F4F;
-		  margin-left: 25px;
-		  margin-top: 30px; /*안에 상품사진 상품제목,날짜 들어가 있는 곳 위치 조정*/
+		  display: flex;
+		  overflow: hidden;
+		  box-sizing: border-box;
 		  }	
+.ou_img img{box-sizing: border-box;
+    			width: 100%;
+   				height: 100%;
+	
+}
 .ou_border{width: 600px;
 			 height: 110px;
 			 border: 1px solid #6D6D6D; /*content 위치 잡기 위해서 임시로 border를 설정해둠*/
 			 flex-direction: row; /* row는 가로줄 cloumn은 세로줄*/
-			 margin-left: 120px;
-			 margin-top: -18px;
+			 display: flex;
+			
 			}		
 .ou_itm_title{font-size: 15px;
 				font-weight: bold;
-				margin-left: 15px;
-				margin-top: 10px;
+				display: flex;
+				flex-direction: column;
+				 margin-left: 10px;
+				 justify-content: space-evenly;
 				}
-.dong_date{font-size: 11px;
+.dong_date{font-size: 13px;
 			  color: #8E8E8E;
-			  margin-top: 3px;
 			  }
 .oup_wrap{width: 1000px;
 			 margin: 0px auto;
@@ -46,12 +56,10 @@
 }
 .profile{width: 1000px;
 		 height: 90px;
-		 border: 1px solid #C3C3C3;
-		 border-top-right-radius:  8px;
-		 border-top-left-radius: 8px;
 		 display: flex;
-		 flex-direction: column;
-         justify-content: center;
+		 align-items: center;
+		 margin-left: 10px;
+		 
 		 }
 .ou_item_wrap{width: 850px; /*안에 틀을 전체적으로 감싸는 틀, 사이즈 표시용 이후에 지울예정*/
 				   height: 650px;
@@ -62,14 +70,12 @@
 .nick_name{font-weight: bold;
 			  font-size: 18px;
 			  justify-content: center;
-			  margin-left: 120px;
-			  margin-top: -60px;
 			  }
 .region{color: #C3C3C3;
 		 margin-left: 120px;
 		}	
 .report_cnt{color:#FFA953; 
-			  margin-left: 120px;
+			  display: flex;
 			}	
 .btn{margin: 0px auto; }
 .buttons{display: inline-flex;
@@ -87,15 +93,16 @@
 	  border-radius: 8px;
 	  }
 .price{font-weight: bold; 
-		margin-top: 20px;
        }	
 .deal_btn{border:0px;
 			background-color: #FFA953;
 			color: white;
 	  	    font-weight: bold;
 	  		border-radius: 8px;
+	  		margin-right: 8px;
 			}	
-.db_align{margin-top: 15px;
+.db_align{display: flex;
+			align-items: center;
             }	
 .ui-tabs-anchor {background: #FFA953;
 					}
@@ -110,8 +117,10 @@
     color: #ffffff;
 }
 
-.profile_img_wrap {
-	margin-left: 40px;
+.profile_img_wrap {display: flex;
+						overflow: hidden;
+					   box-sizing: border-box;
+					   overflow: hidden;
 }
 
 .profile-img {
@@ -121,7 +130,8 @@
 	border-radius: 50%;
 	margin-right: 10px;
 	background: #f8edeb;
-}
+	box-sizing: border-box;
+}				  
 
 .confirm{width: 90px;
 		   height: 25px;
@@ -141,6 +151,11 @@
 		   font-weight: normal;
 }
 .btns{display:inline-flex;
+		margin-left: 10px;
 }
-
+.nick_btn_wrap{display: flex;
+}
+.item_wrap{display: flex;
+			  flex-direction: column;
+}
 				

@@ -95,7 +95,9 @@ pageContext.setAttribute("pVO", pVO);
 				<div class="profile_img_wrap">
 					<img alt="프로필이미지" src="../../user_profile_upload/${pVO.img }" class="profile-img">
 				</div><!-- profile_img -->
-				<div class="nick_name">${pVO.nick} ( <c:out value="${fn:substring(pVO.id,0,4) }****"/>)
+				<div class="item_wrap">
+				<div class="nick_btn_wrap">
+				<div class="nick_name">${pVO.nick} ( <c:out value="${fn:substring(pVO.id,0,4) }****"/>)</div><!-- 별명 -->
 					<div class="btns">
 						<button class="confirm" type="button">신고하기</button>
 						<form method="post" action="user_block_process.jsp" id="blockFrm">
@@ -103,9 +105,9 @@ pageContext.setAttribute("pVO", pVO);
 						<button class="block" type="button">차단하기</button>
 						</form>
 					</div><!-- btns -->
-				</div><!-- 별명 -->
-				<div class="report_cnt">누적 신고 횟수 : ${pVO.reported_cnt}</div>
-			
+					</div><!-- "nick_btn_wrap" -->
+					<div class="report_cnt">누적 신고 횟수 : ${pVO.reported_cnt}</div>
+					</div>
 			</div><!-- profile -->
 			
 			<!-- <div class="buttons">
@@ -134,6 +136,7 @@ pageContext.setAttribute("paList", paList);
 								<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${pa.product_idx }">
 								<img alt="이미지 자리" src="../../search/image/${pa.thumbnail }">
 								</a>
+								</div><!-- ou_img-->
 								<div class="ou_border">
 									<div class="ou_itm_title"><c:out value="${ pa.title }"/>
 										<div class="dong_date"><c:out value="${ pa.gu }"/> ㆍ <c:out value="${ pa.posted_date }"/> </div><!-- dong_date -->
@@ -141,7 +144,7 @@ pageContext.setAttribute("paList", paList);
 	
 	</div><!-- ou_itm_title-->
 		</div><!-- ou_border-->
-			</div><!-- ou_img-->
+			
 				</div><!-- ou_item -->
 </c:forEach>
 
@@ -162,6 +165,7 @@ pageContext.setAttribute("soList", soList);
 						<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${so.product_idx }">
 						<img alt="이미지 자리" src="../../search/image/${ so.thumbnail }">
 						</a>
+						</div><!-- ou_img-->
 						<div class="ou_border">
 								<div class="ou_itm_title"><c:out value="${ so.title }"/>
 									 <div class="dong_date"><c:out value="${ so.gu }"/> ㆍ ${ so.posted_date } </div><!-- dong_date -->
@@ -169,7 +173,7 @@ pageContext.setAttribute("soList", soList);
 	
 	</div><!-- ou_itm_title-->
 		</div><!-- ou_border-->
-			</div><!-- ou_img-->
+			
 				</div><!-- ou_item -->
 </c:forEach>
 
@@ -191,14 +195,16 @@ pageContext.setAttribute("psList", psList);
 			<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${ps.product_idx }">
 			<img alt="이미지 자리" src="../../search/image/${ ps.thumbnail }">
 			</a>
+			</div><!-- ou_img -->
 			<div class="ou_border">
 				<div class="ou_itm_title"><c:out value="${ ps.title }"/>
 					<div class="dong_date"><c:out value="${ ps.gu }"/> ㆍ <c:out value="${ ps.posted_date }"/> </div><!-- dong_date -->	
-						<div class="db_align"><input type="button" value="거래완료" class="deal_btn" style="width: 100px; height: 30px;"/>가격위치
+						<div class="db_align"><input type="button" value="거래완료" class="deal_btn" style="width: 100px; height: 30px;"/>
+							<div class="price"><fmt:formatNumber pattern="#,###,###" value="${ ps.price }"/>원</div>
 	</div><!-- db_align -->
 		</div><!-- ou_itm_title -->
 			</div><!-- ou_border-->			
-				</div><!-- ou_img -->
+				
 					</div><!-- ou_item-->
 </c:forEach>
 
