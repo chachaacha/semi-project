@@ -97,7 +97,7 @@ $(function () {
 				<span class="infoText">이름 / 생년월일/ 휴대폰으로 찾기</span>
 				<div style="margin: 30px">
 					<input type="text" placeholder="이름 입력" size="18" class="textBox" name="name" id="name" >
-					<input type="text" placeholder="생년월일 입력" size="18" class="textBox" name="birth" id="birth" oninput="birthHyphen(this)" ><br>
+					<input type="text" placeholder="생년월일(2022-01-01)" size="18" class="textBox" name="birth" id="birth" oninput="birthHyphen(this)" ><br>
 					<input type="text" placeholder="휴대번호 입력" size="46" class="textBox" name="phone_num" id="phone_num" style="margin: 5px" oninput="autoHyphen(this)" >
 				</div>
 			</div>

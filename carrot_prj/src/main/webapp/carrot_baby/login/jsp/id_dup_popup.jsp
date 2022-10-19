@@ -71,6 +71,10 @@ function chkNull(){
 		alert("아이디를 입력해 주세요.");
 		return;
 	}
+	if ($("#id").val().length <= 3) 	{
+		alert("아이디를 정확히 입력해주세요");	
+	return;
+	}
 	$.ajax({
 		url:"id_dup_popup_process.jsp",
 		type:"post",
@@ -110,7 +114,7 @@ function btnActive()  {
 	<!-- 1 -->
 	<form method="get" id="frmDup">  
 	<div class="contents">
-		<input type="text" class="idText" id="id" name="id" size="30" autocomplete="off" onkeydown="noKor();"style="ime-mode:disabled;"onkeyup="noSpaceForm(this);"/>
+		<input type="text" class="idText" id="id" name="id" size="30" autocomplete="off" maxlength="16" onkeydown="noKor();"style="ime-mode:disabled;"onkeyup="noSpaceForm(this);"/>
 		<input type="text" style="display:none;"/>
 		<input type="button" value="중복확인" class="chkBtn" id="chkBtn" onclick="btn_on();" />
 	</div>

@@ -58,6 +58,25 @@ const autoHyphen = (target) => {
 	   .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
 }
 
+// 이메일한글입력 방지 
+	function noKor1() {
+		$("#email1").keyup(function(event){
+			if (!(event.keyCode >=37 && event.keyCode<=40)) {
+				var inputVal = $(this).val();
+				$(this).val(inputVal.replace(/[^a-z._0-9^-]/gi,''));		
+			}
+		});
+	}
+// 이메일한글입력 방지 
+	function noKor2() {
+		$("#email2").keyup(function(event){
+			if (!(event.keyCode >=37 && event.keyCode<=40)) {
+				var inputVal = $(this).val();
+				$(this).val(inputVal.replace(/[^a-z._0-9^-]/gi,''));		
+			}
+		});
+	}
+
 //이메일 입력방식 선택
 function selectEmail(e){
   var $e = $(e);
@@ -198,6 +217,11 @@ function chkNull(){
 		$("#phone_num").focus();
 		return;
 	}
+	//번호 유효성
+	if ($("#phone_num").val().length <= 11) {
+		alert("전화번호를 정확히 입력해주세요");	
+	return;
+	}
 	
 	//이메일 필수 입력	
  	if($("#email1").val().trim()=="") {
@@ -205,6 +229,7 @@ function chkNull(){
 		$("#email1").focus();
 		return;
 	}
+	
 	//이메일도메인 필수 입력	
 	if($("#email2").val().trim()=="") {
 		alert("이메일을 확인하세요");
@@ -269,19 +294,19 @@ function chkNull(){
 					<tr>
 						<th><label><span style="color:red">*</span>성명</label></th>
 						<td>
-							<input type="text" placeholder="이름을 입력해주세요" id="name" name="name" class="inputTxt inputName" onkeyup="noSpaceForm(this);" />
+							<input type="text" placeholder="이름을 입력해주세요" id="name" name="name" class="inputTxt inputName"  maxlength="30" onkeyup="noSpaceForm(this);" />
 						</td>
 					</tr>
 					<tr>
 						<th><label><span style="color:red">*</span>별명</label></th>
 						<td>
-							<input type="text" placeholder="별명을 입력해주세요" id="nick" name="nick" class="inputTxt inputNickName" onkeyup="noSpaceForm(this);"  />
+							<input type="text" placeholder="별명을 입력해주세요" id="nick" name="nick" class="inputTxt inputNickName" maxlength="30" onkeyup="noSpaceForm(this);"  />
 						</td>
 					</tr>
 					<tr>
 						<th><label><span style="color:red">*</span>아이디</label></th>
 						<td>
-							<input type="text" placeholder="아이디를 입력해주세요" name="id" id="id" class="inputTxt inputIdtype"  maxlength="20"  readonly="readonly" />
+							<input type="text" placeholder="아이디를 입력해주세요" name="id" id="id" class="inputTxt inputIdtype"  readonly="readonly" />
 							<input type="button" value="아이디 중복 확인" class="idBtn" id="idbtn" />
 						</td>
 					</tr>
@@ -307,7 +332,7 @@ function chkNull(){
 					<tr>
 						<th><span style="color:red">*</span>휴대폰</th>
 						<td>
-							<input type="tel" name="phone_num" id="phone_num" placeholder="전화번호를 입력해주세요" oninput="autoHyphen(this)" />
+							<input type="tel" name="phone_num" id="phone_num" placeholder="전화번호를 입력해주세요" oninput="autoHyphen(this)" maxlength="13"/>
 							<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk"  value="Y"  />
 							<label>SMS 수신동의</label></span>
 						</td>
@@ -317,9 +342,9 @@ function chkNull(){
 						<td class="mail_type">
 						<!--  방법 1-->
 							<input type="hidden"  name="email" id="email" />
-							<input type=text placeholder="이메일 입력" name="email1" id="email1" class="inputEmail" maxlength="100" onkeyup="noSpaceForm(this);"  />
+							<input type=text placeholder="이메일 입력" name="email1" id="email1" class="inputEmail" maxlength="50" onkeydown="noKor1();" onkeyup="noSpaceForm(this);"  />
 							<span class="email_txt">@</span>
-							<input type="text" name="email2" id="email2" class="inputEmail" maxlength="100" />
+							<input type="text" name="email2" id="email2" class="inputEmail" maxlength="50" onkeydown="noKor2();" />
 							<select class="selectEmail" name="email3" id="email3" onchange="selectEmail(this)">
 								<option value='1' >직접 입력</option>
 								<option value='naver.com' >naver.com</option>
