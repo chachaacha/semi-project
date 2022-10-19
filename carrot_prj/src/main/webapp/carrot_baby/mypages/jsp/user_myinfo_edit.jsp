@@ -27,6 +27,7 @@ function readURL(input) {
         reader.onload = function (e) {
         $('#myImg').attr('src', e.target.result);
         $("#deleteChk_img").attr("value", "Y");
+        
         }
         reader.readAsDataURL(input.files[0]);
     }
