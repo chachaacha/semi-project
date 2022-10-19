@@ -43,8 +43,8 @@ session.invalidate();
 
 			<!-- 상단 로고 -->
 			<div>
-				<a href="../../../mainhome/jsp/user_mainhome.jsp"><img
-					src="../../../images/logo.png" width="160" height="50" class="img"></a>
+				<a href="../../../mainhome/jsp/user_mainhome.jsp">
+				<img 	src="../../../images/logo.png" width="160" height="50" class="img"></a>
 			</div>
 
 			<!-- 로그인 박스 -->
@@ -55,9 +55,9 @@ session.invalidate();
 				<div class="loginbox_top">MANAGER LOGIN</div>
 				<!-- 흰색박스  -->
 				<div class="loginbox_main">
-					<input type="text" placeholder="아이디" size=60 class="id" name="manager_id"> <input
-						type="password" placeholder="비밀번호" size=60 class="pass" name="password"> <input
-						type="button" id="btn" value="로그인" class="loginBtn">
+					<input type="text" placeholder="  아이디" size=60 class="id" name="manager_id"> 
+					<input type="password" placeholder="  비밀번호" size=60 class="pass" name="password">
+					<input type="button" id="btn" value="로그인" class="loginBtn">
 				</div>
 
 			</div>

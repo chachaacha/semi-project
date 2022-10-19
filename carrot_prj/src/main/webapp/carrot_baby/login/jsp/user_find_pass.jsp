@@ -88,7 +88,7 @@ System.out.println( "---user_find_pass.jsp---"+session.getAttribute("tempPass"))
 			</div>
 
 			<!--정보 입력 -->
-			<form name="memberFrm" id="memberFrm" method="get" action="user_find_pass_process.jsp" >
+			<form name="memberFrm" id="memberFrm" method="post" action="user_find_pass_process.jsp" >
 			<div class="infoBox">
 				<img src="../../images/check.png" class="infoImg" style="vertical-align: middle;">
 				<span class="infoText">이름 / 아이디 / 휴대폰으로 찾기</span>

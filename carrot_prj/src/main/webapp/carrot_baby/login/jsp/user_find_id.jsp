@@ -91,7 +91,7 @@ $(function () {
 			</div>
 
 			<!--정보 입력 -->
-			<form name="memberFrm" id="memberFrm" method="get" action="user_find_id_process.jsp" >
+			<form name="memberFrm" id="memberFrm" method="post" action="user_find_id_process.jsp" >
 			<div class="infoBox">
 				<img src="../../images/check.png" class="infoImg" style="vertical-align: middle;">
 				<span class="infoText">이름 / 생년월일/ 휴대폰으로 찾기</span>

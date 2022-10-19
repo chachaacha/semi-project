@@ -49,7 +49,7 @@ $(function() {
 	<div class="unregister_msg2">다시한번 비밀번호를 정확하게 기입하시고 탈퇴신청을 해주시기 바랍니다.<br><br>
 										  <p>그동안 애기당근을 이용해주셔서 진심으로 감사합니다.</p></div>
 	<div class="password_input"><img src="../../images/unregister_lock.png">
-			<input type="password" id="password" name="password" placeholder="비밀번호 입력" style="width: 200px; height: 25px;">
+			<input type="password" id="password" name="password" placeholder="  비밀번호 입력" class="pass">
 			</div>
 	<button type="button" class="ok-btn">회원탈퇴</button>
 </div> <!-- container div -->

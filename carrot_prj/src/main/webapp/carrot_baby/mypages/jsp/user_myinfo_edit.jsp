@@ -37,12 +37,13 @@ function deleteFile() {
  	$("#myImg").attr("src", "../../user_profile_upload/profileImg.png");
 }
 
-//전화번호 하이픈입력
+/* //전화번호 하이픈입력
+//oninput="autoHyphen(this)" 
 const autoHyphen = (target) => {
 	 target.value = target.value
 	   .replace(/[^0-9]/g, '')
 	   .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
-}
+} */
 
 //이메일 입력방식 선택
 function selectEmail(ele){
@@ -187,7 +188,7 @@ MyInfoVO miVO = miDAO.selectInfo(id);
 						</tr>
 						<tr>
 							<th><label>휴대폰</label></th>
-							<td><input type="text" name="phone_num" id="phone_num" value="<%=miVO.getPhone_num() %>" oninput="autoHyphen(this)"/>
+							<td><input type="text" name="phone_num" id="phone_num" value="<%=miVO.getPhone_num() %>" readonly="readonly"/>
 								<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk" value="Y" style="cursor: pointer;" <%if(miVO.getSms_chk().equals("Y")) {%> checked="checked" <%} %> />
 								<label>SMS 수신동의</label></span></td>
 						</tr>

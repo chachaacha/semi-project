@@ -66,8 +66,8 @@ $(function () {
 				<div class="loginbox_top">LOGIN</div>
 				<!-- 흰색박스  -->
 				<div class="loginbox_main">
-					<input type="text" placeholder="아이디" size=60 class="id" name="id" id="id"> 
-					<input type="password" placeholder="비밀번호" size=60 class="pass" name="password" id="password">
+					<input type="text" placeholder="  아이디" size=60 class="id" name="id" id="id"> 
+					<input type="password" placeholder="  비밀번호" size=60 class="pass" name="password" id="password">
 					<input type="button" id="btn" value="로그인" class="loginBtn">
 				<div>
 					<div class="logpass">

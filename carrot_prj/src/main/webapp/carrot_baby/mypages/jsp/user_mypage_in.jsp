@@ -45,8 +45,7 @@ $(function(){
 
 			<!-- 아이콘이미지 -->
 			<div style="margin: 0px auto; text-align: center;">
-				<img src="../../images/lock.png"
-					class="iconImg">
+				<img src="../../images/lock.png" class="iconImg">
 			</div>
 
 			<!-- 안내 내용 -->
@@ -58,17 +57,14 @@ $(function(){
 			<!-- 비밀번호 입력  -->
 			<form action="user_mypage_in_process.jsp" method="post" id="passChkFrm">
 			<div style="text-align: center; margin: 50px; display: flex; align-items: center; justify-content: center;">
-				<input type="password" name="password" id="password" placeholder="비밀번호 입력" size="30" class="textBox">
-					<input type="button" value="확인" class="gBtn" id="chkBtn"/>
+				<input type="password" name="password" id="password" placeholder="  비밀번호 입력" size="30" class="textBox">
+				<input type="button" value="확인" class="gBtn" id="chkBtn"/>
 			</div>
 			</form>
 
 			<!-- 메인으로 돌아가기 이동 -->
 			<div style="display: block; margin: 0px auto; width: 150px">
-				<p>
-					<a href="../../mainhome/jsp/user_mainhome.jsp"
-						class="linkText">메인으로 돌아가기</a>
-				</p>
+				<p><a href="../../mainhome/jsp/user_mainhome.jsp" class="linkText">메인으로 돌아가기</a></p>
 			</div>
 
 

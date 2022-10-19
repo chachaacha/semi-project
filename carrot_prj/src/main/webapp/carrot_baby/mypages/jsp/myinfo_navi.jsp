@@ -7,16 +7,10 @@
 			<div class="content">
 				<div id="topBar">
 					<ul>
-						<li><a
-							href="user_myinfo_edit.jsp"
-							style="font-size: 25px">개인 정보 수정</a>
+						<li><a href="user_myinfo_edit.jsp" 	style="font-size: 25px">개인 정보 수정</a>
 							<ul>
-								<li><a
-									href="user_myinfo_edit.jsp">내
-										정보 수정</a></li>
-								<li><a
-									href="user_password_edit.jsp">비밀번호
-										변경</a></li>
+								<li><a href="user_myinfo_edit.jsp">내 정보 수정</a></li>
+								<li><a href="user_password_edit.jsp">비밀번호 변경</a></li>
 								<li><a href="unregister.jsp">회원 탈퇴</a></li>
 							</ul></li>
 						<li><a href="on_sale.jsp" style="font-size: 25px">판매내역 확인</a>
