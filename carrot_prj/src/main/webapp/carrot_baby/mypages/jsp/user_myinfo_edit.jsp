@@ -26,6 +26,7 @@ function readURL(input) {
         var reader = new FileReader();
         reader.onload = function (e) {
         $('#myImg').attr('src', e.target.result);
+        $("#deleteChk_img").attr("value", "Y");
         }
         reader.readAsDataURL(input.files[0]);
     }
@@ -35,6 +36,7 @@ function readURL(input) {
 //프로필사진 등록 삭제
 function deleteFile() {
  	$("#myImg").attr("src", "../../user_profile_upload/profileImg.png");
+ 	$("#deleteChk_img").attr("value", "Y");
 }
 
 /* //전화번호 하이픈입력
@@ -158,6 +160,8 @@ MyInfoVO miVO = miDAO.selectInfo(id);
 									<div>
 										<img src="../../user_profile_upload/<%= miVO.getImg() %>" id="myImg" name="myImg" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
 										<input type="hidden" id="chk_img" name="chk_img" value="<%= miVO.getImg() %>"/>
+										<input type="hidden" id="deleteChk_img" name="deleteChk_img" value="N"/>
+										
 									</div>
 									
 									<div>
