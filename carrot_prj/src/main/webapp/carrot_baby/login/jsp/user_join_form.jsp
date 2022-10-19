@@ -378,7 +378,7 @@ function chkNull(){
 	
 			<div style="text-align: center; margin: 50px; padding-bottom: 50px;">
 				<input type="button" id="btn" value="가입" class="oBtn" >
-				<input type="reset" value="취소" class="gBtn" >
+				<input type="reset" value="취소" class="gBtn" onclick="location.href='../../mainhome/jsp/user_mainhome.jsp'">
 			</div>
 			<!-- 내정보수정 끝 -->
 			</form>
