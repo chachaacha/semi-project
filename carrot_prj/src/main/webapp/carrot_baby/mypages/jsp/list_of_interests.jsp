@@ -56,38 +56,38 @@ pageContext.setAttribute("wlList", wlList);
 %>
 
 <div class="list_of_interests_wrap">
-	<div class="list_of_interests">관심목록</div>
-	<c:forEach var="wl" items="${ wlList }">
-	<div class="list_of_interests_item">
-		<div class="list_of_interests_item_img">
-		<!-- 이미지 클릭시 해당 페이지로 이동 -->
-		<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${wl.product_idx }">
-			<img alt="이미지 자리" src="${wl.thumbnail }">
-		</a>
-				<div class="list_of_interests_item_border">
-					<div class="loi_title">
-					<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${wl.product_idx }"><c:out value="${ wl.title }"/></a> <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="heart_btn" viewBox="0 0 16 16">
-  						<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>
-							<div class="dong_date"><c:out value="${ wl.gu }"/> </div><!-- dong_date -->
-								<div class="price_ch">
-									<div class="price"><fmt:formatNumber pattern="#,###,###" value="${ wl.price }"/>원</div>
-									 	<div class="cmt_n_heart">
-											<div class="heart">하트
-												<div clss="heart_cnt"><c:out value="${ wl.liked_cnt }"/> </div><!-- 하트 카운트 -->
-													</div><!-- 하트 -->
-											<div class="cmt">댓글
-													<div><c:out value="${ wl.comment_cnt }"/> </div><!-- 댓글 카운트 -->
-												</div><!-- 댓글 -->
-										</div><!-- cmt_n_heart -->
-									</div><!-- price_ch -->
-	</div><!-- loi_title -->
-	</div><!-- loi_border-->
-	</div><!-- loi_img -->
-	</div><!-- loi 전체를 담는 div -->
-	</c:forEach>
-	<c:if test="${ empty wlList  }" >
-	관심목록에 담긴 상품이 없습니다.
-	</c:if>
+   <div class="list_of_interests">관심목록</div>
+   <c:forEach var="wl" items="${ wlList }">
+   <div class="list_of_interests_item">
+      <div class="list_of_interests_item_img">
+      <!-- 이미지 클릭시 해당 페이지로 이동 -->
+      <a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${wl.product_idx }">
+         <img alt="이미지 자리" src="${wl.thumbnail }">
+      </a>
+            <div class="list_of_interests_item_border">
+               <div class="loi_title">
+               <a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${wl.product_idx }"><c:out value="${ wl.title }"/></a> <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="heart_btn" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>
+                     <div class="dong_date"><c:out value="${ wl.gu }"/> </div><!-- dong_date -->
+                        <div class="price_ch">
+                           <div class="price"><fmt:formatNumber pattern="#,###,###" value="${ wl.price }"/>원</div>
+                               <div class="cmt_n_heart">
+                                 <div class="heart">하트
+                                    <div clss="heart_cnt"><c:out value="${ wl.liked_cnt }"/> </div><!-- 하트 카운트 -->
+                                       </div><!-- 하트 -->
+                                 <div class="cmt">댓글
+                                       <div><c:out value="${ wl.comment_cnt }"/> </div><!-- 댓글 카운트 -->
+                                    </div><!-- 댓글 -->
+                              </div><!-- cmt_n_heart -->
+                           </div><!-- price_ch -->
+   </div><!-- loi_title -->
+   </div><!-- loi_border-->
+   </div><!-- loi_img -->
+   </div><!-- loi 전체를 담는 div -->
+   </c:forEach>
+   <c:if test="${ empty wlList  }" >
+   관심목록에 담긴 상품이 없습니다.
+   </c:if>
 </div>
 </div>
 <!-- container end -->
