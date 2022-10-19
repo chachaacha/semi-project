@@ -164,7 +164,8 @@ function readURL(input ,cnt) {
 
 	        input.value = '';
 
-	        input.focus(); 
+	        input.focus();
+	        return;
 	    }
 	}
 </script>
