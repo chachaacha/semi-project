@@ -32,7 +32,9 @@ p{margin: 15px;}
 <!-- jQuery google CDN -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
-
+function back() {
+	history.back();
+}
 </script>
 </head>
 <body>
@@ -55,7 +57,7 @@ p{margin: 15px;}
 
 			<!-- 버튼  -->
 			<div style="text-align: center; margin: 30px;">
-				<a href="#void"> <input type="button" value="이전 페이지로" class="btn"></a> 
+				<a href="#void"> <input type="button" value="이전 페이지로" class="btn" onclick="back();"></a> 
 				<a href="../../mainhome/jsp/user_mainhome.jsp"> <input	type="button" value="홈으로 이동" class="btn"></a>
 			</div>
 
