@@ -134,10 +134,15 @@ String deleteChk_img=mr.getParameter("deleteChk_img");
 %>
 <!-- VO의 setter method(property) 호출 -->
 <!-- enctype을 "multipart/form-data"로 선언하고 submit한 데이터들은 request객체가 아닌 MultipartRequest객체로 불러와야 한다. -->
-<jsp:setProperty property="img" name="miVO" value="<%= reName %>"/>
 <!-- file이 null일 때 기본이미지 제공. -->
 <%if( deleteChk_img.equals("Y") ){ %>
 <jsp:setProperty property="img" name="miVO" value="profileImg.png"/>
+<%} %>
+<%if( reName != null ){ %>
+<jsp:setProperty property="img" name="miVO" value="<%= reName %>"/>
+<%} %>
+<%if( reName == null && chk_img != null &&  deleteChk_img.equals("N") ){ %>
+<jsp:setProperty property="img" name="miVO" value="<%= chk_img %>"/>
 <%} %>
 <jsp:setProperty property="name" name="miVO" value="<%= name %>"/>
 <jsp:setProperty property="nick" name="miVO" value="<%= nick %>"/>
