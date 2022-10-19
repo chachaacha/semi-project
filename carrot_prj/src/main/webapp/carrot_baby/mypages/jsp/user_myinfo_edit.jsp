@@ -156,7 +156,7 @@ MyInfoVO miVO = miDAO.selectInfo(id);
 							<td>
 								<div class="profile">
 									<div>
-										<img src="../../user_profile_upload/<%= miVO.getImg() %>" id="myImg" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
+										<img src="../../user_profile_upload/<%= miVO.getImg() %>" id="myImg" name="myImg" style="margin: 5px 30px; width: 70px; height: 70px; background: #f8edeb; border-radius: 50%;">
 										<input type="hidden" id="chk_img" name="chk_img" value="<%= miVO.getImg() %>"/>
 									</div>
 									

@@ -98,6 +98,7 @@ String addr2=mr.getParameter("addr2");
 String zipcode=mr.getParameter("zipcode");
 //기존 이미지와 새로운 이미지 비교.
 String chk_img=mr.getParameter("chk_img");
+String myImg=mr.getParameter("myImg");
 %>
 <!--  -->
 <%if(reName == null && !chk_img.equals("profileImg.png")) {
@@ -135,7 +136,7 @@ String chk_img=mr.getParameter("chk_img");
 <!-- enctype을 "multipart/form-data"로 선언하고 submit한 데이터들은 request객체가 아닌 MultipartRequest객체로 불러와야 한다. -->
 <jsp:setProperty property="img" name="miVO" value="<%= reName %>"/>
 <!-- file이 null일 때 기본이미지 제공. -->
-<%if( reName == null){ %>
+<%if( reName == null && myImg.equals("profileImg.png")){ %>
 <jsp:setProperty property="img" name="miVO" value="profileImg.png"/>
 <%} %>
 <jsp:setProperty property="name" name="miVO" value="<%= name %>"/>
