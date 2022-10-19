@@ -1,9 +1,10 @@
 package userVO;
 
 public class MyBlockVO {
-	private String nickPlusId, blocked_id, addr1, id;
+	private String nickPlusId, blocked_id, addr1, id, img;
 	
 	public MyBlockVO() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public String getNickPlusId() {
@@ -38,12 +39,21 @@ public class MyBlockVO {
 		this.id = id;
 	}
 
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
 	@Override
 	public String toString() {
 		return "MyBlockVO [nickPlusId=" + nickPlusId + ", blocked_id=" + blocked_id + ", addr1=" + addr1 + ", id=" + id
-				+ "]";
+				+ ", img=" + img + "]";
 	}
-
+	
+	
 		
 	
 	

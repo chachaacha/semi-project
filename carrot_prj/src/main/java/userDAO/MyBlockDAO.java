@@ -36,7 +36,7 @@ public class MyBlockDAO {
 			con = dc.getConn();
 			StringBuilder sb = new StringBuilder();
 			sb  
-			.append(" select  m.nick||'('||substr(ub.blocked_id,0,4)||'****'||')' nick,  m.addr1, ub.blocked_id	")
+			.append(" select  m.nick||'('||substr(ub.blocked_id,0,4)||'****'||')' nick,  m.addr1, ub.blocked_id, m.img	")
 			.append(" from member m, USER_BLOCKED ub ")
 			.append(" where ( ub.blocked_id=m.id ) and ub.id=? ");
 			pstmt = con.prepareStatement(sb.toString());
@@ -48,6 +48,7 @@ public class MyBlockDAO {
 				mcVO.setNickPlusId(rs.getString("nick"));
 				mcVO.setAddr1(rs.getString("addr1"));
 				mcVO.setBlocked_id(rs.getString("blocked_id"));
+				mcVO.setImg(rs.getString("img"));
 				list.add(mcVO);
 			}
 		} finally {
