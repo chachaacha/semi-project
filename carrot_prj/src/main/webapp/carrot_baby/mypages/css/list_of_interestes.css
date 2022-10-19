@@ -21,6 +21,9 @@
 				 		 border-radius:10px;
 				  		margin: 0px auto;
 				  		margin-bottom: 30px;
+				  		display: flex;
+				  		justify-content: space-evenly;
+				  		align-items: center;
 				 		 }	
 .list_of_interests_item_img{width: 160px; /*판매완료 상품 이미지*/
 					   height: 160px;
@@ -38,13 +41,11 @@
 							height: 160px;
 							border: 1px solid #C3C3C3; /*content 위치 잡기 위해서 임시로 border를 설정해둠*/
 							flex-direction: row; /* row는 가로줄 cloumn은 세로줄*/
-							
 							}		
 .loi_title{font-size: 20px;
 			margin-left: 15px;
 			margin-top: 10px;
 			font-weight: bold;
-			display: flex;
 			flex-direction: column;
 			}
 
@@ -74,5 +75,5 @@
 }
 .price_ch{display: flex;
 			flex-direction: column;
-			margin-top: 40px;
+			margin-top: 20px;
 }

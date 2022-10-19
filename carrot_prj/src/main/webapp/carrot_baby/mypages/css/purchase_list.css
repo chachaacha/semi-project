@@ -50,8 +50,6 @@
 			margin-left: 15px;
 			margin-top: 10px;
 			font-weight: bold;
-			display: flex;
-			flex-direction: column;
 			}
 .dong_date{font-size: 11px;
 			  color: #8E8E8E;
@@ -59,10 +57,12 @@
 			  }
 .edit_del_btn{background: #fff;
 				float: right;
+				
 			    }
 .btn_price{display: inline-flex;
 			 font-size: 16px;
 			 align-items: center;
+			 margin-top: 20px;
 }
 .complete_btn{width: 100px;
 				  height: 25px;
