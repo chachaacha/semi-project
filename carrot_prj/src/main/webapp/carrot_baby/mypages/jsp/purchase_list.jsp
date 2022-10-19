@@ -63,7 +63,7 @@ pageContext.setAttribute("blList", blList);
 			<img alt="이미지 자리" src="../../search/image/${bl.thumbnail}">
 		</a>
 				<div class="purchase_list_border">
-				<div class="pl_title"><c:out value="${ bl.title }"/>
+				<div class="pl_title"><a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${bl.product_idx }"><c:out value="${ bl.title }"/></a>
 					<a href="javascript:delPro('${ bl.product_idx }')"><button class="edit_del_btn" type="button">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
   						<path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>

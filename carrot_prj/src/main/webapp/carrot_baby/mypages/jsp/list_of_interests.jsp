@@ -65,7 +65,8 @@ pageContext.setAttribute("wlList", wlList);
 			<img alt="이미지 자리" src="${wl.thumbnail }">
 		</a>
 				<div class="list_of_interests_item_border">
-					<div class="loi_title"><c:out value="${ wl.title }"/> <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="heart_btn" viewBox="0 0 16 16">
+					<div class="loi_title">
+					<a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${wl.product_idx }"><c:out value="${ wl.title }"/></a> <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="heart_btn" viewBox="0 0 16 16">
   						<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>
 							<div class="dong_date"><c:out value="${ wl.gu }"/> </div><!-- dong_date -->
 								<div class="price_ch">
