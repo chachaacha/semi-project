@@ -18,9 +18,20 @@ $(function(){
 		newPass1 = $("#newPw").val().trim();
 		newPass2 = $("#newPwChk").val().trim();
 		
-		if(newPass1.length < 3){
-			alert("4자리 이상 입력하세요");
+		var num = newPass1.search(/[0-9]/g);
+		var eng = newPass1.search(/[a-z]/ig);
+		var spe = newPass1.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+		if(newPass1.length < 8 || newPass1.length > 20){
+			alert("8자리 ~ 20자리 이내로 입력해주세요.");
 			return;
+	 	}else if(newPass1.search(/\s/) != -1){
+			alert("비밀번호는 공백 없이 입력해주세요.");
+			return;
+		}else if(num < 0 || eng < 0 || spe < 0 ){
+			alert("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
+			return;
+		}else {
+			console.log("통과"); 
 		}
 		
 		if(newPass1 != newPass2){
@@ -79,7 +90,7 @@ $(function(){
 					<th><label for="password">신규 비밀번호</label></th>
 					<td>
 						<input placeholder="비밀번호를 입력해주세요" name="newPw" id="newPw" class="inputBox" type="password"  />
-						<span>*8~12자의 영문, 숫자, 특수문자 3가지를 조합하여 입력</span>
+						<span>*8~20자의 영문, 숫자, 특수문자 3가지를 조합하여 입력</span>
 					</td>
 				</tr>
 				<tr>
@@ -111,8 +122,8 @@ $(function(){
 <jsp:setProperty property="*" name="lVO"/>
 <c:if test="${ not empty param.newPw }">
 <% 
-lVO.setPassword(DataEncrypt.messageDigest("SHA-1", request.getParameter("password")));
-lVO.setNewPw(DataEncrypt.messageDigest("SHA-1", request.getParameter("newPw")));
+lVO.setPassword(DataEncrypt.messageDigest("SHA-1", request.getParameter("password")).trim());
+lVO.setNewPw(DataEncrypt.messageDigest("SHA-1", request.getParameter("newPw")).trim());
 LoginDAO lDAO = LoginDAO.getInstance();
 int result = lDAO.updatePW(lVO);
 pageContext.setAttribute("result", result);
