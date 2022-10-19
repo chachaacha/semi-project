@@ -48,7 +48,7 @@
 
 <%
 String id = (String)session.getAttribute("id");
-WishListDAO wlDAO = WishListDAO.getInstance();
+WishListDAO wlDAO = WishListDAO.getInstance(); 
 List<WishListVO> wlList = wlDAO.selectWL(id);
 
 //스콥객체에 할당
