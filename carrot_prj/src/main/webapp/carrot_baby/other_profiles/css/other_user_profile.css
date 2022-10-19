@@ -11,7 +11,7 @@
 							}
 .ou_item{width: 800px;/*보더 설정되어있는 곳*/
 			height: 160px;
-			border: 1px solid #4F4F4F;
+			border: 1px solid #C3C3C3;;
 			border-radius:8px;
 			margin: 0px auto;
 			cursor: pointer;
@@ -21,7 +21,7 @@
 			}	
 .ou_img{width: 110px; /*판매중인 상품 이미지가 들어갈 자리. 사이즈,,,고민 회의 후에 결정하기로*/
 		  height: 110px;/*여기가 보더 안에 있는 것들을 조정하는 곳*/
-		  border: 1px solid #4F4F4F;
+		  border: 1px solid #C3C3C3;
 		  display: flex;
 		  overflow: hidden;
 		  box-sizing: border-box;
@@ -33,7 +33,7 @@
 }
 .ou_border{width: 600px;
 			 height: 110px;
-			 border: 1px solid #6D6D6D; /*content 위치 잡기 위해서 임시로 border를 설정해둠*/
+			 border: 1px solid #C3C3C3;
 			 flex-direction: row; /* row는 가로줄 cloumn은 세로줄*/
 			 display: flex;
 			
