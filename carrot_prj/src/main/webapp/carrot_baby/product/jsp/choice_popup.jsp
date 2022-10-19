@@ -28,8 +28,14 @@ $(function() {
 	$(".choice-btn").click(function(){
 		
 		var buyerVal=$('input:radio[name="report"]:checked').val();
-		$("#buyer_id").val(buyerVal);
-		$("#buyerFrm").submit();
+		
+		if(buyerVal!=null) {
+			$("#buyer_id").val(buyerVal);
+			$("#buyerFrm").submit();
+		}else {
+			alert("선택하신 구매자가 없습니다");
+			self.close();
+		}
 	})
 })
 </script>
@@ -46,6 +52,9 @@ String product_idx=request.getParameter("product_idx");
 //거래완료 구매자 리스트 불러오기
 List<UserCommentVO> selCom=bDAO.selectTrader(product_idx);
 pageContext.setAttribute("selCom", selCom);
+
+int cnt=selCom.size();
+pageContext.setAttribute("cnt", cnt);
 
 String buyer_id=request.getParameter("buyer_id");
 
@@ -75,6 +84,9 @@ if(buyer_id!=null){
 </div><!--  -->
 	<div class="contents">
 		<ul>
+			<c:if test="${cnt eq 1}">
+			<li style="display: flex; justify-content: center;">불러올 구매자가 없습니다.</li>
+			</c:if>
 			<c:forEach var="comList" items="${selCom}">
 			<c:if test="${comList.id ne  sessionId}">
 			<li><input type="radio" value="${comList.id }" name="report" class="report-wc-radio">
