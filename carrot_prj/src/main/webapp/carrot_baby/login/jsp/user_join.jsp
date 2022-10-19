@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="../../common/css/user_wrap_container.css"/>
 <link rel="stylesheet" type="text/css" href="../css/user_join.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<% session.invalidate(); %>
 <script type="text/javascript">
 //확인 버튼 클릭시 유효성 검사
 $(function (){
@@ -22,7 +23,7 @@ $(function (){
 			return;
 		}
 		alert("모든 약관에 동의하였습니다.");
-		document.location.href="user_join_form.jsp";
+		document.location.href="user_join_process.jsp";
 	});
 });//ready
 </script>

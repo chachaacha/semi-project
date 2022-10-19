@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="../css/user_join_comp.css" />
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-
+<% session.removeAttribute("joinFlag"); %>
 </head>
 <body>
 	<div class="wrap">

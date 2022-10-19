@@ -17,6 +17,10 @@
 <!-- 다음우편번호API -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <!--  -->
+
+<c:if test="${ empty joinFlag }">
+<c:redirect url="user_join.jsp"/>
+</c:if>
 <script type="text/javascript">
 //프로필사진 등록 미리보기
 function previewFile(input) {
