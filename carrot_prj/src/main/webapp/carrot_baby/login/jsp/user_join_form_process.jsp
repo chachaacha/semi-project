@@ -59,7 +59,7 @@ String nickchk=nick.toLowerCase();
 System.out.println("***별명***"+nickchk);
 //아이디
 String id=mr.getParameter("id");
-System.out.println("***아이디***"+id);
+System.out.println("**아이디**"+id);
 String idchk=id.toLowerCase();
 System.out.println("***아이디***"+idchk);
 //비밀번호
@@ -88,20 +88,20 @@ if(check2 == null){
 //방법 2.
 String email1=mr.getParameter("email1");
 System.out.println(email1);
-String emailchk1=id.toLowerCase();
-System.out.println("***이메일***"+emailchk1);
+String emailchk1=email1.toLowerCase();
+System.out.println("*이메일*"+emailchk1);
 String email2=mr.getParameter("email2");
 System.out.println(email2);
-String emailchk2=id.toLowerCase();
-System.out.println("***이메일***"+emailchk2);
+String emailchk2=email2.toLowerCase();
+System.out.println("*이메일*"+emailchk2);
 String email=emailchk1+"@"+emailchk2;
-System.out.println("이메일: "+email);
+System.out.println("***이메일***: "+email);
 //우편번호
 String zipcode=mr.getParameter("zipcode");
 //<!-- 주소 추출 -->
 String str=mr.getParameter("addr1");
 String addr=str.substring(0,str.lastIndexOf("구")+1);
-System.out.println("--주소: "+addr);
+System.out.println("***주소***: "+addr);
 //상세주소
 String addr2=mr.getParameter("addr2");
 %>
