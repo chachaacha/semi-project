@@ -18,4 +18,18 @@
   <param-name>managerKey</param-name>
   <param-value>aoslwjdlfwh</param-value>
   </context-param>
+  
+  <!-- 세션설정 -->
+  <session-config>
+  <session-timeout>40</session-timeout>
+  </session-config>
+  <!-- 에러 페이지의 설정 : 운영할 때 -->
+  <error-page>
+  <error-code>404</error-code>
+  <location>/WEB-INF/errorpages/404error.html</location>
+  </error-page>
+  <error-page>
+  <error-code>500</error-code>
+  <location>/WEB-INF/errorpages/500error.html</location>
+  </error-page>
 </web-app>
