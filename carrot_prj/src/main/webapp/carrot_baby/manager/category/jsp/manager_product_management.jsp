@@ -47,14 +47,14 @@
 <!-- div1 -->
 	<div style="margin:50px;">
 	  	<select name="country" id="country" class="selectBox">
-	    <option value="강남구" selected>현재 카테고리 현황</option>
-	    <option value="강남구">출산/육아용품</option>
-	    <option value="강동구">유아동 안전/실내용</option>
-	    <option value="강북구">유아동 유아동의류</option>
-	    <option value="강서구">유아동 유아동잡화</option>
-	    <option value="관악구">유아동 유아동가구</option>
-	    <option value="관악구">유아동 유아동교구/완구</option>
-	    <option value="관악구">기타 유아동용품</option>
+	    <option selected >현재 카테고리 현황</option>
+	    <option>출산/육아용품</option>
+	    <option>유아동 안전/실내용</option>
+	    <option>유아동 유아동의류</option>
+	    <option>유아동 유아동잡화</option>
+	    <option>유아동 유아동가구</option>
+	    <option>유아동 유아동교구/완구</option>
+	    <option>기타 유아동용품</option>
 	 	</select>
 	</div>
 <!-- 대시보드 -->

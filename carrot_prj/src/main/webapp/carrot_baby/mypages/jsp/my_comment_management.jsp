@@ -21,6 +21,10 @@ $(function() {
 	//선택삭제 버튼클릭시
 	$("#multipleDelBtn").click(function(){
 		if(confirm("정말로 삭제하시겠습니까?")){
+			if(!$("[name='commChk']").is(":checked")){
+				alert("댓글을 1개 이상 선택해 주세요");
+				return;
+			}
 			$("#multipleDelFrm").submit();//체크박스 값들을 submit
 		}
 	});
