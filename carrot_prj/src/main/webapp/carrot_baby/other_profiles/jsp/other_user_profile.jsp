@@ -30,32 +30,44 @@
     $( "#tabs" ).tabs();
   });
   
-  $(function() {
+  var sessionId="<%= (String)session.getAttribute("id")%>";
+ 
   //신고하기 버튼 클릭 시
+ $(function() {
+	 //로그인 하지 않은 상태로 신고하기 버튼을 눌렀을 때
  	 $(".confirm").click(function(){
+		if(sessionId=="null"){
+			alert("로그인이 필요한 동작입니다.");
+		}else{
  		 //팝업창 열기
  		window.open("report_profile_popup.jsp?id=${param.id}"
  				,"report_profile_popup",
-		"width=580,height=660,top=234,left=979,scrolling=no")
+		"width=522,height=620,top=234,left=979,scrolling=no")
 		//신고하려는 아이디 팝업창으로 전달
 		$("#reportFrm").submit();
+		}//end else
 	});//click
 });//ready
   
   //차단하기 버튼 클릭 시
   $(function() {
-		$(".block").click(function() {
+	$(".block").click(function() {
+	  if(sessionId=="null"){ //로그인 하지 않은 상태로 신고하기 버튼을 눌렀을 때
+		  alert("로그인이 필요한 동작입니다.")
+	  } else{
 			var flag = confirm("사용자를 정말 차단하시겠어요?");
 			
 			if(flag==true){
 				$("#blockFrm").submit();
-			}
+				}
+	  		}//end else
 		});//click
-	});
+	});//ready
 	
   </script>
   <!-- tab끝 -->
 </head>
+
 <body>
 <% //POST방식의 요청 한글 처리
 request.setCharacterEncoding("UTF-8");%>
