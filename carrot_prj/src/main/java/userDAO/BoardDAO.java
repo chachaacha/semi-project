@@ -760,15 +760,15 @@ public class BoardDAO {
 				switch(bVO.getReserved()) {
 				case "N":
 					updateTrader
-					.append(", reserved='N'");
+					.append(", reserved='N' ");
 					break;
 				case "Y":
 					updateTrader
-					.append(", reserved='Y'");
+					.append(", reserved='Y' ");
 				}
 			}
 			
-			updateTrader.append("where product_idx=? ");
+			updateTrader.append(" where product_idx=? ");
 			
 			pstmt=con.prepareStatement(updateTrader.toString());
 			pstmt.setString(1, bVO.getProduct_idx());
