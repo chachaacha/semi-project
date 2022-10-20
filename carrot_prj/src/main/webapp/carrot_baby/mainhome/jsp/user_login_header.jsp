@@ -3,6 +3,17 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="../../mainhome/css/user_login_header.css"/>
 <script>
+
+document.addEventListener('keydown', function(event) {
+	/* var test=$("#keyword").val(); */
+	if(event.keyCode==13) {
+		var test=$("#keyword").val();
+		if(test.trim()==""){
+			event.preventDefault();
+		}
+	}
+})
+
 $(function() {
  /* 스크롤시 헤더 그림자 */
  var header = $('.header');
@@ -18,9 +29,13 @@ $(function() {
  });
  
  	$("#searchIconBtn").click(function() {
+ 		var test=$("#keyword").val();
+ 		if(test.trim().length()==0) {
+ 			return;
+ 		}else{
 		$("#searchInputBar").submit();
+ 		}
  	})
-
  
 })
 </script>
@@ -32,7 +47,7 @@ $(function() {
 			<a href="../../mainhome/jsp/user_mainhome.jsp"><img src="../../images/logo.png" width="136" height="40"></a>
 			<a class="sale-logo" href="../../search/jsp/user_search.jsp">중고거래</a> <!-- 매물창 링크필요 -->
 		<div class="searchWrap">
-			<input type="text" placeholder="어떤 상품을 찾으시나요?" class="searchBar" name="keyword" autocomplete="off" value="${param.keyword}">
+			<input type="text" placeholder="어떤 상품을 찾으시나요?" id="keyword" class="searchBar" name="keyword" autocomplete="off" required="required" value="${param.keyword}">
 			<button type="button" class="searchIcon" id="searchIconBtn">
 				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="css-1o7j8sd">
 				<path stroke="currentColor" d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
