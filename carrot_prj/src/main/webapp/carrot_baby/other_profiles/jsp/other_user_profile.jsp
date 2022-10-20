@@ -31,6 +31,7 @@
   });
   
   var sessionId="<%= (String)session.getAttribute("id")%>";
+  var paramId = "${param.id}";
  
   //신고하기 버튼 클릭 시
  $(function() {
@@ -38,7 +39,7 @@
  	 $(".confirm").click(function(){
 		if(sessionId=="null"){
 			alert("로그인이 필요한 동작입니다.");
-		}else{
+		}else if(paramId!=sessionId){
  		 //팝업창 열기
  		window.open("report_profile_popup.jsp?id=${param.id}"
  				,"report_profile_popup",
@@ -54,7 +55,7 @@
 	$(".block").click(function() {
 	  if(sessionId=="null"){ //로그인 하지 않은 상태로 신고하기 버튼을 눌렀을 때
 		  alert("로그인이 필요한 동작입니다.")
-	  } else{
+	  } else if(paramId!=sessionId){
 			var flag = confirm("사용자를 정말 차단하시겠어요?");
 			
 			if(flag==true){
