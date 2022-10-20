@@ -688,7 +688,7 @@ public class BoardDAO {
 			selectTrader
 			.append("	select pc.id, m.nick, m.img	")
 			.append("	from product_comment pc, member m")
-			.append("	where pc.id=m.id and product_idx=?")
+			.append("	where pc.id=m.id and product_idx=? and DELETED='N'")
 			.append("   group by pc.id, m.nick , m.img ");
 			
 			pstmt=con.prepareStatement(selectTrader.toString());

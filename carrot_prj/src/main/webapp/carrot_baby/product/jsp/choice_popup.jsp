@@ -84,15 +84,28 @@ if(buyer_id!=null){
 </div><!--  -->
 	<div class="contents">
 		<ul>
-			<c:if test="${cnt eq 1}">
+			<c:if test="${cnt eq 0}">
 			<li style="display: flex; justify-content: center;">불러올 구매자가 없습니다.</li>
 			</c:if>
 			<c:forEach var="comList" items="${selCom}">
-			<c:if test="${comList.id ne  sessionId}">
+			<%-- <c:set var="size" value="${fn:length(comList) }"/> --%>
+			<c:choose>
+				<c:when test="${comList.id ne  sessionId}">
+					<li><input type="radio" value="${comList.id }" name="report" class="report-wc-radio">
+					<img alt="프로필이미지"src="../../user_profile_upload/${comList.img }" class="profile-img"> <c:out value="${comList.nick}"/>(<c:out value="${fn:substring(comList.id,0,4) }****"/>)</li>
+				</c:when>
+				<c:when test="${fn:length(selCom)==0 } ">
+					<li style="display: flex; justify-content: center;">불러올 구매자가 없습니다.</li>
+				</c:when> 
+			</c:choose>
+			<%-- <c:if test="${fn:length(selCom)==0 } ">
+					<li style="display: flex; justify-content: center;">불러올 구매자가 없습니다.</li>
+				</c:if> --%>
+			<%-- <c:if test="${comList.id ne  sessionId}">
 			<li><input type="radio" value="${comList.id }" name="report" class="report-wc-radio">
 			<img alt="프로필이미지"src="../../user_profile_upload/${comList.img }" class="profile-img"> <c:out value="${comList.nick}"/>(<c:out value="${fn:substring(comList.id,0,4) }****"/>)</li>
-			</c:if>
-			</c:forEach>
+			</c:if>--%>
+			</c:forEach> 
 		</ul>
 	</div>
 	<button type="button" class="choice-btn">확인</button>
