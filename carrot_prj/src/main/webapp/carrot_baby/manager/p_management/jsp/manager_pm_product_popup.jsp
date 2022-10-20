@@ -167,7 +167,7 @@ pageContext.setAttribute("imgList", imgList);
 		</p>
 		<div class="description-detail">
 			<p>
-				<c:out value="${ bVO.contents }"/>
+				<c:out value="${ bVO.contents }" escapeXml="false"/>
 			</p>
 		</div>
 	</div>
