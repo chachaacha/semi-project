@@ -726,7 +726,7 @@ public class BoardDAO {
 			StringBuilder updateTrader = new StringBuilder();
 			updateTrader
 			.append("	update product 	")
-			.append("	set reserved='N', sold_check='Y' , buyer_id=?	")
+			.append("	set reserved='N', sold_check='Y' , buyer_id=?, PURCHASED_DATE = to_date(sysdate,'yy-mm-dd')	")
 			.append("	where product_idx=? 	");
 			
 			pstmt=con.prepareStatement(updateTrader.toString());

@@ -38,7 +38,7 @@ public class HomeDAO {
 			selectDe
 			.append("select count(product_idx) count, sum(price) sum ")
 			.append("from product ")
-			.append("where sold_check= 'Y' and to_date(purchased_date,'yyyy-mm-dd') = to_date(sysdate,'yyyy-mm-dd')");
+			.append("where sold_check= 'Y' and purchased_date = to_date(sysdate,'yy-mm-dd') " );
 			
 			pstmt = con.prepareStatement(selectDe.toString());
 		//4. 바인드 변수에 값 설정
@@ -51,7 +51,6 @@ public class HomeDAO {
 				hdVO.setDoneDeal(rs.getInt("count"));
 				hdVO.setAmount(rs.getInt("sum"));
 			}//end while
-			
 		} finally {
 		//6. 연결 끊기
 			dc.dbClose(rs, pstmt, con);
@@ -77,7 +76,7 @@ public class HomeDAO {
 			selectDe
 			.append("select count(product_idx) count, sum(price) sum ")
 			.append("from product ")
-			.append("where sold_check ='Y' and to_date(purchased_date,'yyyy-mm-dd') = to_date(sysdate-1,'yyyy-mm-dd')");
+			.append("where sold_check ='Y' and purchased_date = to_date(sysdate,'yy-mm-dd')-1 ");
 			
 			pstmt = con.prepareStatement(selectDe.toString());
 		//4. 바인드 변수에 값 설정
@@ -90,7 +89,6 @@ public class HomeDAO {
 				hdVO.setDoneDeal(rs.getInt("count"));
 				hdVO.setAmount(rs.getInt("sum"));
 			}//end while
-			
 		} finally {
 		//6. 연결 끊기
 			dc.dbClose(rs, pstmt, con);
@@ -116,7 +114,7 @@ public class HomeDAO {
 			selectDe
 			.append("select count(product_idx) count, sum(price) sum ")
 			.append("from product ")
-			.append("where sold_check ='Y' and to_date(purchased_date,'yyyy-mm-dd') between to_date(sysdate-7,'yyyy-mm-dd') and to_date(sysdate,'yyyy-mm-dd')");
+			.append("where sold_check ='Y' and purchased_date between to_date(sysdate,'yy-mm-dd')-7 and to_date(sysdate,'yy-mm-dd') ");
 			
 			pstmt = con.prepareStatement(selectDe.toString());
 		//4. 바인드 변수에 값 설정
@@ -157,7 +155,7 @@ public class HomeDAO {
 			selectMb
 			.append(" select count(id) count ")
 			.append(" from member ")
-			.append(" where to_date(joined_date,'yyyy=mm-dd') = to_date(sysdate,'yyyy-mm-dd') ");
+			.append(" where joined_date = to_date(sysdate,'yy-mm-dd') ");
 			
 			pstmt = con.prepareStatement(selectMb.toString());
 		//4. 바인드 변수에 값 설정
@@ -193,7 +191,7 @@ public class HomeDAO {
 			selectMb
 			.append(" select count(id) count ")
 			.append(" from member ")
-			.append(" where to_date(quit_date,'yyyy-mm-dd') = to_date(sysdate,'yyyy-mm-dd')");
+			.append(" where quit_date = to_date(sysdate,'yy-mm-dd')");
 			pstmt = con.prepareStatement(selectMb.toString());
 		//4. 바인드 변수에 값 설정
 		//5. 쿼리문 생성 후 결과 얻기
