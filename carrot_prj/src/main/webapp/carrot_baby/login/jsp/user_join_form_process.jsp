@@ -88,13 +88,9 @@ if(check2 == null){
 //방법 2.
 String email1=mr.getParameter("email1");
 System.out.println(email1);
-String emailchk1=email1.toLowerCase();
-System.out.println("*이메일*"+emailchk1);
 String email2=mr.getParameter("email2");
 System.out.println(email2);
-String emailchk2=email2.toLowerCase();
-System.out.println("*이메일*"+emailchk2);
-String email=emailchk1+"@"+emailchk2;
+String email=email1+"@"+email2;
 System.out.println("***이메일***: "+email);
 //우편번호
 String zipcode=mr.getParameter("zipcode");
