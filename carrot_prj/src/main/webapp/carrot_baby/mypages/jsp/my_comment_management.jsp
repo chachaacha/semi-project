@@ -121,7 +121,7 @@ pageContext.setAttribute("total", total);
 						 	<input type="checkbox" name="commChk" value="${ mcList.product_idx },${ mcList.comment_idx },${ mcList.reply_idx }" class="mcl_check"/>${ i.count } 
 						 </div>
 					  <div class="content_wrap"><!-- content_wrap 시작 -->
-						<div class="post_style">[글]&nbsp;<c:out value="${ mcList.title }"/></div><!-- mcl_content의 제목 --><!-- 폰트크기 댓글이랑 날짜랑 차이나게 키워야함 -->
+						<div class="post_style"><a href="../../product/jsp/user_buyer_product_comments.jsp?product_idx=${mcList.product_idx }" style="color: #040404;">[글]&nbsp;<c:out value="${ mcList.title }"/></a></div><!-- mcl_content의 제목 --><!-- 폰트크기 댓글이랑 날짜랑 차이나게 키워야함 -->
 						<div class="cmt_style"><c:out value="${ mcList.contents }" /></div> <!-- mcl_comment의 댓글 --><!-- 폰트 색 : gray -->
 						<div class="cmt_style"><fmt:formatDate pattern="yyyy-MM-dd" value="${ mcList.posted_date }"/></div><!-- mcl_content의 날짜 -->
 					</div><!-- content_wrap 끝 -->
