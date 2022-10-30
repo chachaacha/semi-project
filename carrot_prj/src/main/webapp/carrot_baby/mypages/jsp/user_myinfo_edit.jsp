@@ -177,7 +177,7 @@ MyInfoVO miVO = miDAO.selectInfo(id);
 						</tr>
 						<tr>
 							<th><label>성명</label></th>
-							<td><input type="text" value="<%=miVO.getName() %>" id="name" class="inputTxt inputName" readonly="readonly" /></td>
+							<td><input type="text" value="<%=miVO.getName() %>" id="name" class="inputTxt inputName" readonly="readonly" style="color:#808080" /></td>
 						</tr>
 						<tr>
 							<th><label>별명</label></th>
@@ -185,15 +185,15 @@ MyInfoVO miVO = miDAO.selectInfo(id);
 						</tr>
 						<tr>
 							<th><label>아이디</label></th>
-							<td><input type="text" value="${ id }" name="id" id="id" class="inputTxt inputIdtype" maxlength="20" readonly="readonly" /></td>
+							<td><input type="text" value="${ id }" name="id" id="id" class="inputTxt inputIdtype" maxlength="20" readonly="readonly" style="color:#808080" /></td>
 						</tr>
 						<tr>
 							<th scope="row"><label>생년월일</label></th>
-							<td><input type="date" name="birth" id="birth" value="<%=miVO.getBirth() %>" readonly="readonly" /></td>
+							<td><input type="date" name="birth" id="birth" value="<%=miVO.getBirth() %>" readonly="readonly" style="color:#808080" /></td>
 						</tr>
 						<tr>
 							<th><label>휴대폰</label></th>
-							<td><input type="text" name="phone_num" id="phone_num" value="<%=miVO.getPhone_num() %>" readonly="readonly"/>
+							<td><input type="text" name="phone_num" id="phone_num" value="<%=miVO.getPhone_num() %>" readonly="readonly" style="color:#808080" />
 								<span class="label_wrap"><input type="checkbox" id="sms_chk" name="sms_chk" value="Y" style="cursor: pointer;" <%if(miVO.getSms_chk().equals("Y")) {%> checked="checked" <%} %> />
 								<label>SMS 수신동의</label></span></td>
 						</tr>

@@ -120,7 +120,7 @@ pageContext.setAttribute("imgList", imgList);
 			<a class="profile-link" href="#void">
 				<div class="article-profile-image-wrap">
 		              <div class="article-profile-image">
-		                <img alt="프로필이미지" src="../../../images/${ bVO.img }">
+		                <img alt="프로필이미지" src="../../../user_profile_upload/${ bVO.img }">
 		              </div>
 		              <div class="article-profile-left">
 		                <div class="nickname"><c:out value="${ idPlusNick }"/></div>

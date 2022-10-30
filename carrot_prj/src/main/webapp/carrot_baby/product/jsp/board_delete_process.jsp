@@ -11,7 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="http://211.63.89.149/jsp_prj/common/css/main_v1_220901.css"/>
+<link rel="stylesheet" type="text/css" href="http://211.63.89.151/carrot_baby/common/css/main_v1_220901.css"/>
 <style type="text/css">
 
 </style>
@@ -37,7 +37,7 @@ List<ImgVO> list = new ArrayList<ImgVO>();
 list= pDAO.selectImg(product_idx);
 for(int i = 0; i<list.size(); i++){
 	try {
-	    String path = "../../search/image/"+list.get(i).getProduct_img(); // C 드라이브 -> test폴더 -> test.txt
+	    String path = "E:/web_service/carrot_baby/search/image/"+list.get(i).getProduct_img(); // C 드라이브 -> test폴더 -> test.txt
 	    File file = new File(path); // file 생성
 
 	    if(file.delete()){ // f.delete 파일 삭제에 성공하면 true, 실패하면 false

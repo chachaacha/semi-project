@@ -70,7 +70,7 @@ location.href="block_user_management.jsp";
 	<div class="profile">
 			<div class="profile-wrap">
 				<div class="profile_img_wrap">
-					<img alt="프로필이미지" src="../../images/${ mbList.img }" class="profile-img">
+					<img alt="프로필이미지" src="../../user_profile_upload/${ mbList.img }" class="profile-img">
 				</div><!-- profile_img -->
 				<div class="profile-txt-wrap">
 						<div class="nick_name"><c:out value="${ mbList.nickPlusId }" /></div><!-- 별명 -->

@@ -364,9 +364,9 @@ pageContext.setAttribute("hVOList", hVOList);
 								</div>
 								<div class="ant-space-item">
 									<div class="ant-space-item-input">
-											<input type="text" name="input-minPrice" id="input-minPrice" placeholder="최저가" class="ant-input" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+											<input type="text" name="input-minPrice" id="input-minPrice" placeholder="최저가" class="ant-input" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="8">
 											<span>~</span>
-											<input type="text" name="input-maxPrice" id="input-maxPrice" placeholder="최고가" class="ant-input" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+											<input type="text" name="input-maxPrice" id="input-maxPrice" placeholder="최고가" class="ant-input" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="8">
 									</div>
 									<button type="button" class="input-btn">적용</button>
 								</div>
@@ -482,7 +482,7 @@ pageContext.setAttribute("hVOList", hVOList);
 						</c:if>					
 					
 						<%-- // 페이지블럭 구하기 (4개씩만=4개씩만 출력하기원해서 조건값을 줬기 때문)  --%>
-						<c:if test="${startNum + 4 >= lastpage }"> 
+						<c:if test="${startNum + 3 >= lastpage }"> 
 						<%-- // 만약 총페이지수보다 현재페이지가 속한 처음페이지 + 4가 더 크다면 총페이지수에서 - 처음페이지구함 = 마지막 페이지 블럭의 end값 구하기   --%>
 						<%-- // 12 + 4 >= 13 (true) => 13 - 12 = 1 => begin=0 end=1 => 12, 13 까지만 페이지 생성 --%>
 							<c:set var="isLast" value="${lastpage - startNum }"/>
@@ -495,7 +495,7 @@ pageContext.setAttribute("hVOList", hVOList);
 						</c:forEach>
 						
 						<%-- // (>)(>>) 다음 버튼 생성  --%>
-						<c:if test="${startNum + 4 < lastpage }"> <%-- // 마지막 페이지에는 생성이 안되도록 조건 --%>
+						<c:if test="${startNum + 3 < lastpage }"> <%-- // 마지막 페이지에는 생성이 안되도록 조건 --%>
 							<a href="javascript:pageMove(${startNum+4});" class="page-bottom-next">&gt;</a> <%-- // (>)버튼을 누르면 pageFlag에서 + 4 로 이동시킴 --%>
 							<a href="javascript:pageMove(${lastpage});" class="page-bottom-next">&gt;&gt;</a> <%-- // (>>)버튼을 누르면 마지막 페이지로 이동  --%>
 						</c:if>

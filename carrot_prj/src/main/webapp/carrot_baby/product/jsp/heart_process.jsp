@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="http://211.63.89.149/jsp_prj/common/css/main_v1_220901.css"/>
+<link rel="stylesheet" type="text/css" href="http://211.63.89.151/carrot_baby/common/css/main_v1_220901.css"/>
 <jsp:useBean id="bVO" class="userVO.BoardVO" scope="page"/>
 <jsp:useBean id="wVO" class="userVO.WishVO" scope="page"/>
 <jsp:setProperty property="*" name="bVO"/>

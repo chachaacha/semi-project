@@ -156,9 +156,11 @@ function readURL(input ,cnt) {
 <body>
 <%
 String user_id =(String)session.getAttribute("id");
+if(user_id==null) {
 %>
-
+<c:redirect url="../../mainhome/jsp/user_mainhome.jsp"/>
 <%
+}
 		//PostDAO와 연결
 		PostDAO pDAO = PostDAO.getInstance();
 		//VO 리스트로 받기

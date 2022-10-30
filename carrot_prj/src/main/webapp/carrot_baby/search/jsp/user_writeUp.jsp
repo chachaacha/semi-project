@@ -173,7 +173,11 @@ function readURL(input ,cnt) {
 <body>
 <%
 String user_id =(String)session.getAttribute("id");
-
+if(user_id==null) {
+%>
+<c:redirect url="../../mainhome/jsp/user_mainhome.jsp"/>
+<%
+}
 		PostVO pVO = new PostVO();
 		PostVO ppVO = new PostVO();
 		String product_idx= request.getParameter("product_idx");
@@ -205,6 +209,7 @@ String user_id =(String)session.getAttribute("id");
 		
 		%>
 <div class="wrap">
+
 <!-- header -->
 <%@ include file="../../mainhome/jsp/user_login_header.jsp" %>
 <!-- header end-->

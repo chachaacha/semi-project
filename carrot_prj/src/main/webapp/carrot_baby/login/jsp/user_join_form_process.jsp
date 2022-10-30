@@ -26,7 +26,7 @@ request.setCharacterEncoding("UTF-8"); %>
 <!-- 이미지 -->
 <%
 //1.업로드 경로 얻기
-File uploadDir = new File("C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/user_profile_upload");
+File uploadDir = new File("E:/web_service/carrot_baby/user_profile_upload");
 //2.업로드할 파일 크기를 연산
 //5MByte까지의 파일을 업로드
 int maxSize=1024*1024*5;
@@ -38,15 +38,15 @@ String originalName=mr.getOriginalFileName("upfile");
 //변경된 파일명
 String reName=mr.getFilesystemName("upfile");
 if(reName == null){
-	reName = "profileImg.png";
+   reName = "profileImg.png";
 }
 
 boolean flag=false;
 File temp=new File(uploadDir.getAbsolutePath()+"/"+reName);
 int checkSize=1024*1024*5;
 if(temp.length()> checkSize) {
-	flag=false;
-	temp.delete();
+   flag=false;
+   temp.delete();
 }
 System.out.println("***이미지***"+reName);
 //이름
@@ -78,26 +78,24 @@ String phone_num=mr.getParameter("phone_num");
 //<!-- 체크박스 -->
 String check1=mr.getParameter("sms_chk");
 if(check1 == null){
-	check1 = "N";
+   check1 = "N";
 }
 String check2=mr.getParameter("email_chk");
 if(check2 == null){
-	check2 = "N";
+   check2 = "N";
 }
 //<!-- 이메일 추출 -->
 //방법 2.
 String email1=mr.getParameter("email1");
-System.out.println(email1);
 String email2=mr.getParameter("email2");
-System.out.println(email2);
 String email=email1+"@"+email2;
 System.out.println("***이메일***: "+email);
 //우편번호
 String zipcode=mr.getParameter("zipcode");
 //<!-- 주소 추출 -->
-String str=mr.getParameter("addr1");
-String addr=str.substring(0,str.lastIndexOf("구")+1);
-System.out.println("***주소***: "+addr);
+String addr1=mr.getParameter("addr1");
+/* String addr=str.substring(0,str.lastIndexOf("구")+1); */
+System.out.println("***주소***: "+addr1);
 //상세주소
 String addr2=mr.getParameter("addr2");
 %>
@@ -113,7 +111,7 @@ String addr2=mr.getParameter("addr2");
 <jsp:setProperty property="email" name="jVO" value="<%= email %>"/> 
 <jsp:setProperty property="email_chk" name="jVO" value="<%= check2 %>"/>
 <jsp:setProperty property="zipcode" name="jVO" value="<%= zipcode %>"/>
-<jsp:setProperty property="addr1" name="jVO" value="<%= addr %>"/> 
+<jsp:setProperty property="addr1" name="jVO" value="<%= addr1 %>"/> 
 <jsp:setProperty property="addr2" name="jVO" value="<%= addr2 %>"/> 
 
 <!-- DB연결 -->
@@ -127,8 +125,8 @@ JoinDAO jDAO=JoinDAO.getInstance(key);
 jDAO.insertJoin( jVO );%>
 
 <script type="text/javascript">
-	alert("정보작성이 완료되었습니다.");
-	location.href="user_join_comp.jsp";
+   alert("정보작성이 완료되었습니다.");
+   location.href="user_join_comp.jsp";
 </script>
 
 </body>

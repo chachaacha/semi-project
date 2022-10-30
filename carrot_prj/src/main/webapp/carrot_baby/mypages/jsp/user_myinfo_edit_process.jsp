@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="http://211.63.89.148/jsp_prj/common/css/main_v1_220901.css"/>
+<link rel="stylesheet" type="text/css" href="http://211.63.89.151/carrot_baby/common/css/main_v1_220901.css"/>
 <style type="text/css">
 
 </style>
@@ -36,7 +36,7 @@ request.setCharacterEncoding("UTF-8");
 <!-- 이미지 -->
 <%
 //1.업로드 경로 얻기
-File uploadDir = new File("C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/user_profile_upload");
+File uploadDir = new File("E:/web_service/carrot_baby/user_profile_upload");
 //2.업로드할 파일 크기를 연산
 //5MByte까지의 파일을 업로드
 int maxSize=1024*1024*5;
@@ -103,7 +103,7 @@ String deleteChk_img=mr.getParameter("deleteChk_img");
 <!--  -->
 <%if(reName == null && !chk_img.equals("profileImg.png")) {
 	try {
-	    String path = "C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/user_profile_upload/"+chk_img; // C 드라이브 -> test폴더 -> test.txt
+	    String path = "E:/web_service/carrot_baby/user_profile_upload/"+chk_img; // C 드라이브 -> test폴더 -> test.txt
 	    File file = new File(path); // file 생성
 
 	    if(file.delete()){ // f.delete 파일 삭제에 성공하면 true, 실패하면 false
@@ -119,7 +119,7 @@ String deleteChk_img=mr.getParameter("deleteChk_img");
 
 <%if(reName != null && !chk_img.equals("profileImg.png")) {
 	try {
-	    String path = "C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/user_profile_upload/"+chk_img; // C 드라이브 -> test폴더 -> test.txt
+	    String path = "E:/web_service/carrot_baby/user_profile_upload/"+chk_img; // C 드라이브 -> test폴더 -> test.txt
 	    File file = new File(path); // file 생성
 
 	    if(file.delete()){ // f.delete 파일 삭제에 성공하면 true, 실패하면 false

@@ -119,39 +119,5 @@ System.out.println( "---user_find_pass.jsp---"+session.getAttribute("tempPass"))
 
 	</div>
 
-	<script>
- 
- /* 스크롤시 헤더 그림자 */
- var header = $('.header');
-
- $(window).scroll(function(e){
-     if(header.offset().top !== 0){
-         if(!header.hasClass('shadow')){
-             header.addClass('shadow');
-         }
-     }else{
-         header.removeClass('shadow');
-     }
- });
- 
- <!-- main top Swiper JS -->
- <!-- Initialize Swiper -->
-   var swiper = new Swiper(".mySwiper", {
-     spaceBetween: 0,
-     centeredSlides: true,
-     autoplay: {
-       delay: 4000,
-       disableOnInteraction: false,
-     },
-     pagination: {
-       el: ".swiper-pagination",
-       clickable: true,
-     },
-     navigation: {
-       nextEl: ".swiper-button-next",
-       prevEl: ".swiper-button-prev",
-     },
-   });
-</script>
 </body>
 </html>

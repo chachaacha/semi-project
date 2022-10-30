@@ -28,7 +28,7 @@ request.setCharacterEncoding("UTF-8");
 
 <%
 	//1. 업로드 경로 얻기
-	File uploadDir=new File("C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/search/image");
+	File uploadDir=new File("E:/web_service/carrot_baby/search/image");
 	//2. 업로드할 파일 크기를 연산
 	int maxSize=1024*1024*5;
 	//3. 업로드
@@ -98,7 +98,7 @@ pDAO.updatePost(pVO);
 <jsp:setProperty property="img_num" name="iVO" value="<%= i+1 %>"/>
 <%pDAO.deleteImg(iVO); %>
 <% try {
-    String path = "C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/search/image/"+chk_img[i]; // C 드라이브 -> test폴더 -> test.txt
+    String path = "E:/web_service/carrot_baby/search/image/"+chk_img[i]; // C 드라이브 -> test폴더 -> test.txt
     File file = new File(path); // file 생성
 
     if(file.delete()){ // f.delete 파일 삭제에 성공하면 true, 실패하면 false
@@ -126,7 +126,7 @@ pDAO.updatePost(pVO);
 <jsp:setProperty property="img_num" name="iiVO" value="<%= i %>"/>
 <%	pDAO.deleteImg(iiVO);
 try {
-    String path = "C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/search/image/"+deleteChk_img[i-1]; // C 드라이브 -> test폴더 -> test.txt
+    String path = "E:/web_service/carrot_baby/search/image/"+deleteChk_img[i-1]; // C 드라이브 -> test폴더 -> test.txt
     File file = new File(path); // file 생성
 
     if(file.delete()){ // f.delete 파일 삭제에 성공하면 true, 실패하면 false

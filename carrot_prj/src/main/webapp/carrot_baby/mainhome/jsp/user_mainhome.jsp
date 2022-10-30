@@ -20,6 +20,7 @@
 <head>
 <meta charset="UTF-8">
 <title>user main home</title>
+<link rel="shortcut icon" href="../../images/carrot_icon.png" />  
 <link rel="stylesheet" type="text/css" href="../../common/css/reset.css"/> 
 <link rel="stylesheet" type="text/css" href="../../common/css/user_wrap_container.css"/>
 <link rel="stylesheet" type="text/css" href="../css/user_mainhome.css"/>

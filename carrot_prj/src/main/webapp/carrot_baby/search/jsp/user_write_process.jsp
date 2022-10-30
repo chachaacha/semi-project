@@ -27,7 +27,7 @@ request.setCharacterEncoding("UTF-8");
 
 <%
 	//1. 업로드 경로 얻기
-	File uploadDir=new File("C:/Users/user/git/carrot_prj/carrot_prj/src/main/webapp/carrot_baby/search/image");
+	File uploadDir=new File("E:/web_service/carrot_baby/search/image");
 	//2. 업로드할 파일 크기를 연산
 	int maxSize=1024*1024*5;
 	//3. 업로드
